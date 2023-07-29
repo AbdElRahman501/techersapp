@@ -1,0 +1,69 @@
+# macOS
+.DS_Store
+
+# React Native
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+**/ios/Pods/
+**/ios/build/
+**/ios/Pods.xcodeproj/
+**/ios/<YourAppName>.xcworkspace/
+**/ios/<YourAppName>.xcworkspace/xcuserdata/
+**/ios/<YourAppName>.xcodeproj/
+**/ios/<YourAppName>.xcodeproj/project.xcworkspace/
+**/ios/<YourAppName>.xcodeproj/xcuserdata/
+**/ios/<YourAppName>.xcodeproj/xcshareddata/
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>.xcscheme
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>-tvOS.xcscheme
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>-tvOSTests.xcscheme
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>-Release.xcscheme
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>-Debug.xcscheme
+**/ios/<YourAppName>.xcodeproj/xcuserdata/<YourUsername>.xcuserdatad/xcschemes/<YourAppName>-Staging.xcscheme
+
+# Android
+**/android/build/
+**/android/app/build/
+**/android/local.properties
+**/android/gradle-wrapper.properties
+**/android/.gradle
+**/android/.idea/
+**/android/captures/
+**/android/**/generated/
+**/android/**/output.json
+**/android/**/gradle-app.setting
+
+# Logs
+logs/
+*.log
+
+# Build generated
+*.apk
+*.aab
+*.apks
+*.jar
+*.aab
+
+# Dependencies
+/.expo/
+node_modules/
+.expo-shared/
+
+# Compiled Output
+**/lib/
+
+# Mac/OSX specific
+.DS_Store
+profile
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code specific
+.vscode/
+*.code-workspace
