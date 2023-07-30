@@ -1,12 +1,12 @@
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import React from 'react'
-import { Color, FontFamily, FontSize } from '../GlobalStyles'
+import { Color, FontFamily, fontEm } from '../GlobalStyles'
 
 
-export default function PressedText({ title, pressHandler }) {
+export default function PressedText({ title, pressHandler, style }) {
     return (
         <TouchableOpacity onPress={pressHandler}>
-            <Text style={styles.pressedText}>{title}</Text>
+            <Text style={[styles.pressedText, style]}>{title}</Text>
         </TouchableOpacity>
     )
 }
@@ -15,8 +15,7 @@ const styles = StyleSheet.create({
     pressedText: {
         color: Color.darkcyan,
         fontFamily: FontFamily.montserratArabic,
-        fontSize: FontSize.size_md,
-        marginVertical: 18,
-        marginRight: 8,
+        fontSize: fontEm(1),
+        marginHorizontal: 5
     },
 })

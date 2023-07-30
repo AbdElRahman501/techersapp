@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Border, FontFamily, Color, FontSize, Padding } from "../GlobalStyles";
+import { Border, FontFamily, Color, FontSize, Padding, heightPercentage, fontEm, widthPercentage } from "../GlobalStyles";
 import { ImageBackground } from "react-native";
 
 const SignUpOptions = () => {
@@ -10,11 +10,11 @@ const SignUpOptions = () => {
 
   return (
     <View style={[styles.onboarding5, styles.text1FlexBox]}>
-      <TouchableOpacity style={[styles.image2Parent, styles.parentShadowBox]}
-        onPress={() => navigation.navigate("OnboardingPages")}
+      <TouchableOpacity style={[styles.parentShadowBox]}
+        onPress={() => navigation.navigate('SignUpScreen', { user: "teacher" })}
       >
         <ImageBackground
-          style={[styles.image2Icon, styles.image2IconLayout]}
+          style={[styles.image2Icon]}
           imageStyle={{
             resizeMode: "contain",
           }}
@@ -22,11 +22,11 @@ const SignUpOptions = () => {
         />
         <Text style={[styles.text, styles.textTypo]}>انضم كمعلم</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.image2Parent, styles.parentShadowBox]}
-        onPress={() => navigation.navigate("OnboardingPages")}
+      <TouchableOpacity style={[styles.parentShadowBox]}
+        onPress={() => navigation.navigate("SignUpScreen", { user: "student" })}
       >
         <ImageBackground
-          style={[styles.image2Icon, styles.image2IconLayout]}
+          style={[styles.image2Icon]}
           imageStyle={{
             resizeMode: "contain",
           }}
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   parentShadowBox: {
     alignSelf: "stretch",
     padding: 18,
-    marginVertical: 24,
+    marginVertical: fontEm(0.8),
     shadowOpacity: 1,
     elevation: 12,
     shadowRadius: 9,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   signInText: {
-    fontSize: FontSize.size_md,
+    fontSize: fontEm(1),
     fontFamily: FontFamily.montserratArabic
   },
   textTypo: {
@@ -86,8 +86,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.montserratArabic,
   },
   image2Icon: {
-    maxWidth: "100%",
-    height: 220,
+    height: heightPercentage(25),
     alignSelf: "stretch",
   },
   onboarding5: {

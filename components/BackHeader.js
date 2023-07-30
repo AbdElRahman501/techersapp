@@ -1,6 +1,6 @@
 import { StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native'
 import React from 'react'
-import { FontFamily, FontSize, Padding } from '../GlobalStyles'
+import { FontFamily, fontEm, heightPercentage } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 
 export default function BackHeader({ title }) {
@@ -27,23 +27,21 @@ export default function BackHeader({ title }) {
 
 const styles = StyleSheet.create({
     header: {
-        height: 200,
-        paddingHorizontal: 16,
-        paddingTop: 74,
-        paddingBottom: Padding.p_23xl,
+        height: heightPercentage(20),
+        marginHorizontal: fontEm(1),
         flexDirection: 'row',
         justifyContent: "flex-start",
         alignItems: "center",
     },
     backIcon: {
-        width: 36,
-        height: 36
+        width: fontEm(2),
+        height: fontEm(2)
     },
     headerTitle: {
-        paddingRight:36,
+        paddingRight: fontEm(2),
         flex: 1,
         textAlign: "center",
-        fontSize: FontSize.size_xl,
+        fontSize: fontEm(1.2),
         fontFamily: FontFamily.montserratArabic
     }
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ImageBackground, Text, Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { Color, Border, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import { Color, Border, FontFamily, widthPercentage, heightPercentage, fontEm } from "../GlobalStyles";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
@@ -59,7 +59,7 @@ export default function OnboardingPages() {
 
         <ImageBackground
           style={styles.image1Icon}
-          resizeMode="cover"
+          resizeMode="contain"
           source={info[num].imageSource}
         />
         <View
@@ -104,19 +104,19 @@ const styles = StyleSheet.create({
     // fontFamily: FontFamily.montserratArabic,
   },
   skipButton: {
-    marginTop: 50,
-    marginBottom: 24,
+    marginTop: fontEm(1),
+    marginBottom: fontEm(1),
     width: "80%",
     justifyContent: "flex-end"
   },
   skipButtonText: {
-    fontSize: FontSize.size_md,
-    color:Color.gray_200,
+    fontSize: fontEm(1),
+    color: Color.gray_200,
     fontFamily: FontFamily.montserratArabic
   },
   image1Icon: {
-    height: 440,
-    width: 440
+    height: heightPercentage(45),
+    width: widthPercentage(100)
   },
   frameChild: {
     height: 20,
@@ -133,16 +133,15 @@ const styles = StyleSheet.create({
     height: 20,
   },
   title: {
-    fontSize: FontSize.size_xxl,
+    fontSize: fontEm(1.5),
     color: Color.black,
-    marginTop: 18,
     margin: 12,
     alignSelf: "stretch",
     fontFamily: FontFamily.montserratArabic
 
   },
   content: {
-    fontSize: FontSize.size_lg,
+    fontSize: fontEm(1),
     color: Color.gray_200,
     margin: 12,
     alignSelf: "stretch",
@@ -151,13 +150,13 @@ const styles = StyleSheet.create({
   },
   parent: {
     borderRadius: Border.br_13xl,
-    height: 56,
+    height: fontEm(3.5),
     width: "80%",
     justifyContent: "center",
     backgroundColor: Color.darkcyan
   },
   parentText: {
-    fontSize: FontSize.size_lg,
+    fontSize: fontEm(1.5),
     fontWeight: "bold",
     color: "white",
     fontFamily: FontFamily.montserratArabic

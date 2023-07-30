@@ -1,13 +1,13 @@
 import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
-import { Border, Color, FontFamily, FontSize, Height, Margin } from '../GlobalStyles'
+import { Border, Color, FontFamily, Margin, fontEm, } from '../GlobalStyles'
 
 
-export default function FancyButton({ title, pressHandler, leftIcon, rightIcon, btnColor, customStyles }) {
+export default function FancyButton({ title, pressHandler, leftIcon, rightIcon, disabled, btnColor, customStyles }) {
 
     return (
-        <TouchableOpacity style={[styles.parent, styles.parentFlexBox, { backgroundColor: title[1] }, customStyles]} onPress={pressHandler}  >
+        <TouchableOpacity disabled={disabled} style={[styles.parent, styles.parentFlexBox, { backgroundColor: title[1], opacity: disabled ? 0.5 : 1 }, customStyles]} onPress={pressHandler}  >
             {leftIcon &&
                 <Ionicons style={{ marginRight: Margin.m_base }} name={leftIcon[0]} size={leftIcon[1]}
                     color={leftIcon[2]} />
@@ -31,14 +31,13 @@ const styles = StyleSheet.create({
     },
     parent: {
         borderRadius: Border.br_13xl,
-        height: Height.br_xl,
+        height: fontEm(3.5),
         width: "100%",
         justifyContent: "center",
         backgroundColor: Color.darkcyan
     },
-
     parentText: {
-        fontSize: FontSize.size_lg,
+        fontSize: fontEm(1.2),
         fontWeight: "bold",
         color: "white",
         fontFamily: FontFamily.montserratArabic

@@ -1,32 +1,23 @@
 const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import * as Font from 'expo-font';
+import { useFonts } from "expo-font";
 import OnboardingPages from "./screens/OnboardingPages";
 import SplashScreen from "./components/SplashScreen";
 import SignUpOptions from "./screens/SignupOptions";
 import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { IconRegistry, ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet } from "react-native";
 import SigninScreen from "./screens/SigninScreen";
+import SignUpScreen from "./screens/SignupScreen";
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
-  
 
-  React.useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        'Montserrat-Arabic': require('./assets/fonts/Montserrat-Arabic-Regular.ttf'),
-        // Add more font styles if you have different font weights or styles.
-      });
-    }
-
-    loadFonts();
-  }, []);
+  const [fontsLoaded] = useFonts({
+    "Montserrat-Arabic": require("./assets/fonts/Montserrat-Arabic-Regular.ttf"),
+  });
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -35,6 +26,10 @@ const App = () => {
   }, []);
 
 
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <>
       <ApplicationProvider {...eva} theme={eva.light}>
@@ -57,6 +52,11 @@ const App = () => {
               <Stack.Screen
                 name="SigninScreen"
                 component={SigninScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUpScreen"
+                component={SignUpScreen}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>
