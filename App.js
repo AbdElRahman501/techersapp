@@ -11,6 +11,8 @@ import * as eva from "@eva-design/eva";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
+import { Provider } from 'react-redux';
+import store from "./store";
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
@@ -32,39 +34,42 @@ const App = () => {
   }
   return (
     <>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          {hideSplashScreen ? (
-            <Stack.Navigator
-              initialRouteName="OnboardingPages"
-              screenOptions={{ headerShown: false }}
-            >
-              <Stack.Screen
-                name="OnboardingPages"
-                component={OnboardingPages}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SignUpOptions"
-                component={SignUpOptions}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SigninScreen"
-                component={SigninScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SignUpScreen"
-                component={SignUpScreen}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
-          ) : (
-            <SplashScreen />
-          )}
-        </NavigationContainer>
-      </ApplicationProvider>
+      <Provider store={store}>
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <NavigationContainer>
+            {hideSplashScreen ? (
+              <Stack.Navigator
+                initialRouteName="OnboardingPages"
+                screenOptions={{ headerShown: false }}
+              >
+                <Stack.Screen
+                  name="OnboardingPages"
+                  component={OnboardingPages}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SignUpOptions"
+                  component={SignUpOptions}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SigninScreen"
+                  component={SigninScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="SignUpScreen"
+                  component={SignUpScreen}
+                  options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            ) : (
+              <SplashScreen />
+            )}
+          </NavigationContainer>
+        </ApplicationProvider>
+      </Provider>
+
     </>
   );
 };
