@@ -3,9 +3,11 @@ import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Border, FontFamily, Color, FontSize, Padding, heightPercentage, fontEm, widthPercentage } from "../GlobalStyles";
 import { ImageBackground } from "react-native";
+import t from "../actions/cahngeLanguage";
+import { useSelector } from "react-redux";
 
 const SignUpOptions = () => {
-
+  const { language } = useSelector(state => state.languageState); 
   const navigation = useNavigation();
 
   return (
@@ -20,7 +22,7 @@ const SignUpOptions = () => {
           }}
           source={require("../assets/image-2.png")}
         />
-        <Text style={[styles.text, styles.textTypo]}>انضم كمعلم</Text>
+        <Text style={[styles.text, styles.textTypo]}>{t("join as teacher")}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.parentShadowBox]}
         onPress={() => navigation.navigate("SignUpScreen", { user: "student" })}
@@ -32,15 +34,14 @@ const SignUpOptions = () => {
           }}
           source={require("../assets/image-3.png")}
         />
-        <Text style={[styles.text, styles.textTypo]}>انضم كطالب او ولي أمر </Text>
+        <Text style={[styles.text, styles.textTypo]}>{t("join as student or parent")} </Text>
       </TouchableOpacity>
 
-      <View style={styles.signIn}>
+      <View style={[styles.signIn, { flexDirection: language === "en" ? "row-reverse" : "row" }]}>
         <TouchableOpacity onPress={() => navigation.navigate("SigninScreen")}>
-          <Text style={[styles.signInText, { color: Color.darkcyan, marginRight: 5 }]}>تسجيل الدخول</Text>
+          <Text style={[styles.signInText, { color: Color.darkcyan, marginRight: 5 }]}> {t("sign in")}</Text>
         </TouchableOpacity>
-        <Text style={styles.signInText}>لديك حساب بالفعل ؟ </Text>
-
+        <Text style={styles.signInText}>{t("already have an account")}</Text>
       </View>
     </View>
   );
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
   signIn: {
     position: 'absolute',
     bottom: 74, // Adjust the distance from the bottom as needed
-    flexDirection: 'row', // This sets the children in a horizontal layout
     alignItems: 'center', // This centers the children vertically (adjust as needed)
     justifyContent: 'space-between'
   },

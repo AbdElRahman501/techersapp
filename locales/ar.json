@@ -1,0 +1,12 @@
+{
+    "welcome": "مرحبا",
+    "greeting": "مرحبا {name} !",
+    "next": "التالي",
+    "skip": "تخطي",
+    "start": "ابدأ الان",
+    "join as teacher": "انضم كمعلم",
+    "join as student or parent": "انضم كطالب او ولي أمر",
+    "sign in": "تسجيل الدخول",
+    "sign up": "انشاء حساب",
+    "already have an account": "هل لديك حساب؟"
+}

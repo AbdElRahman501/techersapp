@@ -1,0 +1,12 @@
+{
+    "welcome": "Welcome",
+    "greeting": "Hello, {name}!",
+    "next": "Next",
+    "skip": "Skip",
+    "start": "Start Now",
+    "join as teacher": "join as teacher",
+    "join as student or parent": "join as student or parent",
+    "sign in": "Sign in",
+    "sign up": "Sign up",
+    "already have an account": "Already have an account?"
+}
