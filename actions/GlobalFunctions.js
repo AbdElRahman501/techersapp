@@ -22,26 +22,26 @@ export const validateEmail = (email) => {
 
 export const inputChecker = (inputValue, inputType) => {
     if (inputType === "email") {
-        if (!inputValue.trim()) {
+        if (!inputValue?.trim()) {
             return { error: { inputType, message: 'برجاء قم بإدخال البريد الإلكتروني' } };
         } else if (!validateEmail(inputValue)) {
             return { error: { inputType, message: 'برجاء قم بإدخال بريد إلكتروني صحيح' } };
         }
     } else if (inputType === "password") {
-        if (!inputValue.trim()) {
+        if (!inputValue?.trim()) {
             return { error: { inputType, message: 'أدخل كلمة المرور' } };
         } else if (inputValue.length < 6) {
             return { error: { inputType, message: 'كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل' } };
         }
     } else if (inputType === "phone") {
-        if (!inputValue.trim()) {
+        if (!inputValue?.trim()) {
             return { error: { inputType, message: 'أدخل رقم الجوال' } };
         } else if (inputValue.length < 11) {
             return { error: { inputType, message: 'رقم الجوال يجب أن يحتوي على 11 رقم على الأقل' } };
 
         }
     } else if (inputType === "name") {
-        if (!inputValue.trim()) {
+        if (!inputValue?.trim()) {
             return { error: { inputType, message: 'أدخل الاسم ' } };
 
         } else if (inputValue.length < 6) {
@@ -49,7 +49,7 @@ export const inputChecker = (inputValue, inputType) => {
 
         }
     } else {
-        if (!inputValue.trim()) {
+        if (!inputValue?.trim()) {
             return { error: { inputType, message: 'ادخل القيمة ال ' + inputType + ' بشكل صحيح' } };
 
         }

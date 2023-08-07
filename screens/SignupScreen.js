@@ -9,9 +9,14 @@ import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
 import { submitCheck } from '../actions/GlobalFunctions';
+import t from "../actions/cahngeLanguage";
+import { useSelector } from 'react-redux'
+import CustomText from '../components/CustemText';
+
 
 export default function SignUpScreen({ route }) {
     const { user } = route.params;
+    const { language } = useSelector(state => state.languageState)
     const navigation = useNavigation();
     const [state, setState] = useState({})
     const [signUpData, setSignUpData] = useState({ user, fullName: "", policy: false, email: "", password: "" });
@@ -20,7 +25,7 @@ export default function SignUpScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ email: signUpData.email, password: signUpData.password, name: signUpData.fullName }).isValid) {
-            console.log("submit");
+            navigation.navigate("UserDataScreen", { user })
         } else {
             setCheckInputs(true)
         }
@@ -28,46 +33,46 @@ export default function SignUpScreen({ route }) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={[styles.container]} >
-                <BackHeader title={user === "teacher" ? "انشاء حساب معلم" : "انشاء حساب طالب"} />
+                <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                 <View style={[styles.form]}>
                     <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                        placeholder={user === "teacher" ? "ادخل الاسم الثلاثي " : "ادخل اسم الطالب الثلاثي"}
+                        placeholder={user === "teacher" ? t("full-name-teacher") : t("full-name-student")}
                         rightIcon={"person-outline"} leftIcon={"checkmark"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, fullName: e }))}
                     />
                     <FancyInput inputType={"email"} value={signUpData.email} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                        placeholder={"ادخل عنوان البريد الاكتروني"}
+                        placeholder={t("email-input")}
                         rightIcon={"mail-outline"} leftIcon={"checkmark"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, email: e }))}
                     />
                     <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                        placeholder={"انشئ كلمه مرور"} rightIcon={"lock-closed-outline"}
+                        placeholder={t("password-input")} rightIcon={"lock-closed-outline"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
                     />
                     <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
                         {state.error && <Text style={styles.error}>{state.error?.message}</Text>}
                     </View>
-                    <View style={[styles.inputField, styles.parentFlexBox, { justifyContent: "flex-end", marginVertical: fontEm(1) }]}>
-                        <View style={[styles.parentFlexBox, { justifyContent: "flex-end", width: "80%", flexWrap: "wrap-reverse" }]}>
-                            <Text style={styles.regularText}>لتطبيق اساتذتي</Text>
-                            <PressedText title={"سياسة الخصوصية"} pressHandler={() => console.log("pressed")} />
-                            <Text style={styles.regularText}> و </Text>
-                            <PressedText title={"شروط الخدمة"} pressHandler={() => console.log("pressed")} />
-                            <Text style={styles.regularText}>أوافق علي</Text>
-                        </View>
+                    <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
                         <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
+                        <View style={[styles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
+                            <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-1")}</CustomText>
+                            <PressedText title={t("agree-to-terms-and-conditions-2")} pressHandler={() => console.log("pressed")} />
+                            <CustomText style={styles.regularText}>{t("and")}</CustomText>
+                            <PressedText title={t("agree-to-terms-and-conditions-3")} pressHandler={() => console.log("pressed")} />
+                            <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-4")}</CustomText>
+                        </View>
 
                     </View>
-                    <FancyButton title={["انشاء حساب", Color.darkcyan, Color.white]} pressHandler={handleSubmit} disabled={!signUpData.policy} />
-                    <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base }]}>
-                        <PressedText style={{ marginRight: 8 }} title={"تسجيل دخول"} pressHandler={() => navigation.navigate("SignUpOptions")} />
-                        <Text style={styles.regularText}>لديك حساب بالفعل ؟</Text>
+                    <FancyButton title={[t("sign up"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} disabled={!signUpData.policy} />
+                    <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base, flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
+                        <Text style={styles.regularText}>{t("already have an account")}</Text>
+                        <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SignUpOptions")} />
                     </View>
-                    <DividerWithText text="او" />
-                    <FancyButton title={["انشئ حساب عن طريق جوجل", Color.input_fill, Color.black]}
+                    <DividerWithText text={t("or")} />
+                    <FancyButton title={[t("sign up with google"), Color.input_fill, Color.black]}
                         customStyles={{ borderWidth: 2, borderColor: Color.input_stroke }}
                         leftIcon={["logo-google", fontEm(2), "orange"]}
                         pressHandler={() => console.log("pressed")} />

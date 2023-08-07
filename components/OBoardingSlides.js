@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     frameFlexBox: {
         flex: 1,
         alignItems: "center",
+        justifyContent: "center"
     },
     parentFlexBox: {
         flexDirection: "row",
@@ -124,7 +125,8 @@ const styles = StyleSheet.create({
         margin: 12,
         marginHorizontal: fontEm(1),
         alignSelf: "stretch",
-        fontFamily: FontFamily.montserratArabic
+        fontFamily: FontFamily.montserratArabic,
+        lineHeight: fontEm(1.5),
 
     },
     onboarding1Icon: {

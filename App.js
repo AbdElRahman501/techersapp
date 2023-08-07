@@ -13,6 +13,7 @@ import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import { Provider } from 'react-redux';
 import store from "./store";
+import UserDataScreen from "./screens/UserDataScreen";
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
@@ -24,7 +25,7 @@ const App = () => {
   React.useEffect(() => {
     setTimeout(() => {
       setHideSplashScreen(true);
-    }, 1000);
+    }, 5000);
   }, []);
 
 
@@ -42,26 +43,16 @@ const App = () => {
                 initialRouteName="OnboardingPages"
                 screenOptions={{ headerShown: false }}
               >
-                <Stack.Screen
-                  name="OnboardingPages"
-                  component={OnboardingPages}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SignUpOptions"
-                  component={SignUpOptions}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SigninScreen"
-                  component={SigninScreen}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SignUpScreen"
-                  component={SignUpScreen}
-                  options={{ headerShown: false }}
-                />
+                <Stack.Screen name="OnboardingPages" component={OnboardingPages}
+                  options={{ headerShown: false }} />
+                <Stack.Screen name="SignUpOptions" component={SignUpOptions}
+                  options={{ headerShown: false }} />
+                <Stack.Screen name="SigninScreen" component={SigninScreen}
+                  options={{ headerShown: false }} />
+                <Stack.Screen name="SignUpScreen" component={SignUpScreen}
+                  options={{ headerShown: false }} />
+                <Stack.Screen name="UserDataScreen" component={UserDataScreen}
+                  options={{ headerShown: false }} />
               </Stack.Navigator>
             ) : (
               <SplashScreen />

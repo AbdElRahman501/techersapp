@@ -1,12 +1,13 @@
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 import React from 'react'
 import { Color, FontFamily, fontEm } from '../GlobalStyles'
+import CustomText from './CustemText'
 
 
 export default function PressedText({ title, pressHandler, style }) {
     return (
         <TouchableOpacity onPress={pressHandler}>
-            <Text style={[styles.pressedText, style]}>{title}</Text>
+            <CustomText style={[styles.pressedText, style]}>{title}</CustomText>
         </TouchableOpacity>
     )
 }

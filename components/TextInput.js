@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
-import { Border, Color, FontFamily, fontEm } from '../GlobalStyles'
+import { Border, Color, FontFamily, fontEm, widthPercentage } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
 import { getTextInputAlign, inputChecker } from '../actions/GlobalFunctions';
+import { useSelector } from 'react-redux';
 
 
-const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rightIcon, checkInputs, setCheckInputs, setState }) => {
+const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rightIcon, checkInputs, setCheckInputs, setState, children }) => {
+    const { language } = useSelector(state => state.languageState);
     const [isFocused, setIsFocused] = useState(false);
     const [viewPass, setViewPass] = useState(false);
 
@@ -32,8 +34,28 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rig
     }, [checkInputs])
 
     return (
-        <View style={styles.inputField}>
-            <TextInput style={[styles.input, { borderColor: error ? "red" : isFocused ? Color.darkcyan : Color.input_stroke, textAlign: getTextInputAlign(value) || "right" }]}
+        <View style={[styles.inputField, { borderColor: error ? "red" : isFocused ? Color.darkcyan : Color.input_stroke, flexDirection: language === "en" ? "row" : "row-reverse" }]}>
+            {!children ?
+                <Ionicons style={styles.rightIcon} name={rightIcon} size={fontEm(1.5)}
+                    color={error ? "red" : isFocused ? Color.darkcyan : Color.darkgray} />
+                :
+                <View style={styles.rightIcon}>
+                    {React.Children.map(children, (child) => {
+                        return React.cloneElement(child, {
+                            width: fontEm(1.8),
+                            height: fontEm(1.8),
+                            viewBox: "0 0 24 24",
+                            color: error ? "red" : isFocused ? Color.darkcyan : Color.darkgray
+                        });
+                    })}
+                </View>
+            }
+
+
+            <TextInput style={[styles.input, {
+                textAlign: language === "en" ? "left" : (getTextInputAlign(value) || "right"),
+                paddingLeft: (language === "ar" && inputType !== "password" && getTextInputAlign(value) === "left" && !success) ? fontEm(3.5) : 0
+            }]}
                 placeholder={placeholder}
                 secureTextEntry={!viewPass && inputType === "password"}
                 autoCapitalize="none"
@@ -58,9 +80,7 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rig
             {(success && leftIcon) &&
                 < Ionicons style={styles.leftIcon} name={leftIcon} size={fontEm(1.5)} color={Color.darkcyan} />
             }
-            {rightIcon &&
-                <Ionicons style={styles.rightIcon} name={rightIcon} size={fontEm(1.5)}
-                    color={error ? "red" : isFocused ? Color.darkcyan : Color.darkgray} />}
+
 
         </View>
 
@@ -72,28 +92,30 @@ const styles = StyleSheet.create({
     inputField: {
         width: "100%",
         maxWidth: 500,
-    },
-    input: {
-        width: "100%",
         height: fontEm(3.5),
         borderWidth: 1,
         borderColor: Color.input_stroke,
         backgroundColor: Color.white,
         borderRadius: Border.br_6xl,
         marginTop: 18,
-        paddingHorizontal: fontEm(3.5),
+    },
+    input: {
+        // width: widthPercentage(100),
+        flex: 1,
+        height: fontEm(3.5),
+        // paddingHorizontal: fontEm(3.5),
         fontFamily: FontFamily.montserratArabic,
         fontSize: fontEm(1.2)
     },
     leftIcon: {
-        flex: 1,
+        // flex: 1,
         textAlign: "center",
         textAlignVertical: "center",
         width: fontEm(3.5),
         height: fontEm(3.5),
-        position: "absolute",
-        bottom: 0,
-        left: 0,
+        // position: "absolute",
+        // bottom: 0,
+        // left: 0,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -102,9 +124,11 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         width: fontEm(3.5),
         height: fontEm(3.5),
-        position: "absolute",
-        bottom: 0,
-        right: 0
+        justifyContent: "center",
+        alignItems: "center"
+        // position: "absolute",
+        // bottom: 0,
+        // right: 0
     }
 
 });

@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Color.darkgray,
-    marginLeft: 10,
+    margin: 10,
   },
   checkboxLabel: {
     fontSize: fontEm(1),
   },
   checkMark: {
     position: "absolute",
-    right: 0
+    right: 10
   }
 });
 

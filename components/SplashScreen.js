@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Text, StyleSheet, ImageBackground } from "react-native";
+import {  View, Image, StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontFamily, Color } from "../GlobalStyles";
+
 
 const SplashScreen = () => {
   return (
@@ -15,30 +15,32 @@ const SplashScreen = () => {
         resizeMode="cover"
         source={require("../assets/1splashscreen.png")}
       >
-        <Text style={styles.droosLk} numberOfLines={1}>
-          Droos LK
-        </Text>
+        <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
+          <Image
+            style={styles.logo}
+            resizeMode="center"
+            source={require("../assets/logowhite.png")} />
+        </View>
+
       </ImageBackground>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  droosLk: {
-    fontSize: 50,
-    fontWeight: "700",
-    color: Color.white,
-    textAlign: "center",
+  logo: {
+    width: "50%",
+    height: "50%",
   },
   icon: {
-    flex:1,
+    flex: 1,
     overflow: "hidden",
-    justifyContent:"center",
+    justifyContent: "center",
     backgroundColor: "transparent",
   },
   splashScreen: {
     flex: 1,
-    justifyContent:"center"
+    justifyContent: "center"
   },
 });
 

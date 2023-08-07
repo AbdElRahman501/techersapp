@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, ImageBackground, Text, Animated, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, FontFamily, widthPercentage, heightPercentage, fontEm } from "../GlobalStyles";
 import { Ionicons } from '@expo/vector-icons';
 import t from "../actions/cahngeLanguage";
-import ChangeLangButton from "../components/ChangeLangButton";
-import CustomText from "../components/CustemText";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OBoardingSlides from "../components/OBoardingSlides";
+import { changeLanguage } from "../store/actions/langActions";
+import Header from "../components/Header";
 
 export default function OnboardingPages() {
   const navigation = useNavigation();
@@ -27,17 +27,9 @@ export default function OnboardingPages() {
     }
   }
   return (
-    <SafeAreaView
-    style={[styles.onboarding1Icon, styles.frameFlexBox]}>
-      <View style={[styles.parentFlexBox]}>
-        <ChangeLangButton />
-        <TouchableOpacity
-          style={[styles.skipButton]}
-          onPress={() => navigation.navigate("SignUpOptions")}
-        >
-          <Text style={styles.skipButtonText}>{!lastSlide && (language === 'en' ? 'Skip' : 'تخطي')}</Text>
-        </TouchableOpacity>
-      </View>
+    <View
+      style={[styles.onboarding1Icon, styles.frameFlexBox]}>
+      <Header lastSlide={lastSlide} />
       <OBoardingSlides num={num} setLastSlide={setLastSlide} />
       <TouchableOpacity
         style={[styles.parent, styles.parentFlexBox]}
@@ -47,11 +39,11 @@ export default function OnboardingPages() {
         {!lastSlide && <Ionicons name="arrow-forward" size={24}
           color={Color.white} />}
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
 
   );
 };
-
+// parentFlexBox , skipButton, skipButtonText
 const styles = StyleSheet.create({
   frameFlexBox: {
     flex: 1,
@@ -70,19 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center"
   },
-  skipButton: {
-    marginTop: fontEm(1),
-    marginBottom: fontEm(1),
-    width: "40%",
-    justifyContent: "flex-end"
-  },
-  skipButtonText: {
-    textAlign: "right",
-    fontSize: fontEm(1),
-    color: Color.gray_200,
-    fontFamily: FontFamily.montserratArabic
-  },
-  image1Icon: {
+  ge1Icon: {
     height: heightPercentage(45),
     width: widthPercentage(100)
   },
@@ -123,7 +103,8 @@ const styles = StyleSheet.create({
     height: fontEm(3.5),
     width: "80%",
     justifyContent: "center",
-    backgroundColor: Color.darkcyan
+    backgroundColor: Color.darkcyan,
+    marginBottom: 74,
   },
   parentText: {
     fontSize: fontEm(1.5),
@@ -140,7 +121,7 @@ const styles = StyleSheet.create({
   },
   onboarding1Icon: {
     flex: 1,
-    paddingVertical: 74,
+    paddingTop: 50,
   },
 });
 
