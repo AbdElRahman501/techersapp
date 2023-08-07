@@ -12,6 +12,7 @@ import { submitCheck } from '../actions/GlobalFunctions';
 import t from "../actions/cahngeLanguage";
 import { useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
+import { Lock_Svg, Mail_OutLine_Svg, User_Icon_Svg } from '../assets/icons/Icons';
 
 
 export default function SignUpScreen({ route }) {
@@ -38,22 +39,26 @@ export default function SignUpScreen({ route }) {
                     <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                         placeholder={user === "teacher" ? t("full-name-teacher") : t("full-name-student")}
-                        rightIcon={"person-outline"} leftIcon={"checkmark"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, fullName: e }))}
-                    />
+                    >
+                        <User_Icon_Svg />
+                    </FancyInput>
                     <FancyInput inputType={"email"} value={signUpData.email} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                         placeholder={t("email-input")}
-                        rightIcon={"mail-outline"} leftIcon={"checkmark"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, email: e }))}
-                    />
+                    >
+                        <Mail_OutLine_Svg />
+                    </FancyInput>
                     <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                         placeholder={t("password-input")} rightIcon={"lock-closed-outline"}
                         changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
-                    />
+                    >
+                        <Lock_Svg />
+                    </FancyInput>
                     <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                        {state.error && <Text style={styles.error}>{state.error?.message}</Text>}
+                        {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                     </View>
                     <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
                         <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
@@ -69,7 +74,7 @@ export default function SignUpScreen({ route }) {
                     <FancyButton title={[t("sign up"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} disabled={!signUpData.policy} />
                     <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base, flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
                         <Text style={styles.regularText}>{t("already have an account")}</Text>
-                        <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SignUpOptions")} />
+                        <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />
                     </View>
                     <DividerWithText text={t("or")} />
                     <FancyButton title={[t("sign up with google"), Color.input_fill, Color.black]}

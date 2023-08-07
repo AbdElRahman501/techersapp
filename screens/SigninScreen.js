@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/core';
 import { submitCheck } from '../actions/GlobalFunctions';
 import t from "../actions/cahngeLanguage";
 import { useSelector } from "react-redux";
+import { Lock_Svg, Mail_OutLine_Svg } from '../assets/icons/Icons';
 
 export default function SigninScreen() {
     const navigation = useNavigation();
@@ -36,16 +37,20 @@ export default function SigninScreen() {
                     <FancyInput inputType={"email"} value={email} setState={setState}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                         placeholder={t("email-input")}
-                        rightIcon={"mail-outline"} leftIcon={"checkmark"}
+                        keyboardType={"email-address"}
                         changHandler={(e) => setSignInData(pv => ({ ...pv, email: e }))}
-                    />
+                    >
+                        <Mail_OutLine_Svg />
+                    </FancyInput>
                     <FancyInput inputType={"password"} placeholder={t("password-input")}
                         checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={password}
-                        rightIcon={"lock-closed-outline"} setState={setState}
+                        setState={setState}
                         changHandler={(e) => setSignInData(pv => ({ ...pv, password: e }))}
-                    />
+                    >
+                        <Lock_Svg />
+                    </FancyInput>
                     <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                        {state.error && <Text style={styles.error}>{state.error?.message}</Text>}
+                        {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                     </View>
                     <View style={[styles.inputField, styles.forgetPass, { margin: fontEm(1), justifyContent: "flex-end" }]}>
                         <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />

@@ -21,42 +21,102 @@ export const validateEmail = (email) => {
 
 
 export const inputChecker = (inputValue, inputType) => {
-    if (inputType === "email") {
+    if (inputType === 'email') {
         if (!inputValue?.trim()) {
-            return { error: { inputType, message: 'برجاء قم بإدخال البريد الإلكتروني' } };
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'برجاء قم بإدخال البريد الإلكتروني',
+                        en: 'Please enter your email'
+                    }
+                }
+            };
         } else if (!validateEmail(inputValue)) {
-            return { error: { inputType, message: 'برجاء قم بإدخال بريد إلكتروني صحيح' } };
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'برجاء قم بإدخال بريد إلكتروني صحيح',
+                        en: 'Please enter a valid email'
+                    }
+                }
+            };
         }
-    } else if (inputType === "password") {
+    } else if (inputType === 'password') {
         if (!inputValue?.trim()) {
-            return { error: { inputType, message: 'أدخل كلمة المرور' } };
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'أدخل كلمة المرور',
+                        en: 'Please enter your password'
+                    }
+                }
+            };
         } else if (inputValue.length < 6) {
-            return { error: { inputType, message: 'كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل' } };
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل',
+                        en: 'Password should be at least 6 characters long'
+                    }
+                },
+            };
         }
-    } else if (inputType === "phone") {
+    } else if (inputType === 'phone') {
         if (!inputValue?.trim()) {
-            return { error: { inputType, message: 'أدخل رقم الجوال' } };
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'أدخل رقم الجوال',
+                        en: 'Please enter your phone number'
+                    }
+                }
+            };
         } else if (inputValue.length < 11) {
-            return { error: { inputType, message: 'رقم الجوال يجب أن يحتوي على 11 رقم على الأقل' } };
-
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'رقم الجوال يجب أن يحتوي على 11 رقم على الأقل',
+                        en: 'Phone number should be at least 11 digits long'
+                    }
+                },
+            };
         }
-    } else if (inputType === "name") {
+    } else if (inputType === 'name') {
         if (!inputValue?.trim()) {
-            return { error: { inputType, message: 'أدخل الاسم ' } };
-
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'أدخل الاسم',
+                        en: 'Please enter your name'
+                    }
+                }
+            };
         } else if (inputValue.length < 6) {
-            return { error: { inputType, message: 'الاسم يجب أن يحتوي على 6 أحرف على الأقل' } };
-
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'الاسم يجب أن يحتوي على 6 أحرف على الأقل',
+                        en: 'Name should be at least 6 characters long'
+                    }
+                },
+            };
         }
     } else {
         if (!inputValue?.trim()) {
-            return { error: { inputType, message: 'ادخل القيمة ال ' + inputType + ' بشكل صحيح' } };
-
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'ادخل القيمة ال ' + inputType + ' بشكل صحيح',
+                        en: 'Please enter a valid ' + inputType
+                    }
+                },
+            };
         }
     }
 
     return { success: true };
-}
+};
+
 
 export const isArabic = (text) => {
     const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;

@@ -6,7 +6,7 @@ import { getTextInputAlign, inputChecker } from '../actions/GlobalFunctions';
 import { useSelector } from 'react-redux';
 
 
-const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rightIcon, checkInputs, setCheckInputs, setState, children }) => {
+    const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, checkInputs, setCheckInputs, setState, keyboardType, children }) => {
     const { language } = useSelector(state => state.languageState);
     const [isFocused, setIsFocused] = useState(false);
     const [viewPass, setViewPass] = useState(false);
@@ -61,6 +61,7 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rig
                 autoCapitalize="none"
                 onChangeText={changHandler}
                 value={value}
+                keyboardType={keyboardType || "default"}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => {
                     if (value) {
@@ -71,14 +72,14 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, leftIcon, rig
                     setIsFocused(false)
                 }}
             />
-            {inputType === "password" &&
+            {inputType === "password"
+                ?
                 <TouchableOpacity style={styles.leftIcon} onPress={() => setViewPass(pv => pv ? false : true)}>
                     <Ionicons name={viewPass ? "eye-outline" : "eye-off-outline"} size={fontEm(1.5)}
                         color={isFocused ? Color.darkcyan : Color.darkgray} />
                 </TouchableOpacity>
-            }
-            {(success && leftIcon) &&
-                < Ionicons style={styles.leftIcon} name={leftIcon} size={fontEm(1.5)} color={Color.darkcyan} />
+                : success &&
+                < Ionicons style={styles.leftIcon} name={"checkmark"} size={fontEm(1.5)} color={Color.darkcyan} />
             }
 
 
