@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
     paddingTop: Padding.p_23xl,
     paddingBottom: Padding.p_23xl,
     overflow: "hidden",
-    backgroundColor: Color.white,
     justifyContent: "center",
   },
 });

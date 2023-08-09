@@ -49,6 +49,7 @@ export const Border = {
   br_13xl: 32,
   br_37xl: 56,
   br_6xl: 25,
+  br_3xl: 15,
 };
 /* heights */
 export const Height = {

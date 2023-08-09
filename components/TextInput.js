@@ -6,7 +6,7 @@ import { getTextInputAlign, inputChecker } from '../actions/GlobalFunctions';
 import { useSelector } from 'react-redux';
 
 
-    const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, checkInputs, setCheckInputs, setState, keyboardType, children }) => {
+const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, checkInputs, setCheckInputs, setState, keyboardType, children, ...props }) => {
     const { language } = useSelector(state => state.languageState);
     const [isFocused, setIsFocused] = useState(false);
     const [viewPass, setViewPass] = useState(false);
@@ -71,6 +71,7 @@ import { useSelector } from 'react-redux';
                     }
                     setIsFocused(false)
                 }}
+                {...props}
             />
             {inputType === "password"
                 ?

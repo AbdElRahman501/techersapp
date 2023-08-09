@@ -31,8 +31,15 @@
     "placeholder-student-phone": "رقم هاتف الطالب",
     "placeholder-parent-phone": "رقم هاتف ولي الامر",
     "placeholder-schoole-year": "العام الدراسي",
-    "placeholder-birth-day": "التاريخ الميلاد",
-    "placeholder-education-type": "نوع التعليم",
+    "placeholder-birth-day": "تاريخ الميلاد",
+    "placeholder-education-type": "نوع المدرسه",
     "placeholder-address": "العنوان",
-    "submit": "تاكيد"
+    "submit": "تاكيد",
+    "enter-verification-code-title": "الرجاء ادخال رمز التحقق",
+    "enter-verification-code-description": " ادخل رمز التحقق المرسل إليك علي هذا الرقم. \n{number}",
+    "verify": "تحقق",
+    "sec": "({time}) ثانية",
+    "didn't-receive": "لم يتم استلام رمز التحقق",
+    "resend": "اعادة ارسال",
+    "use-email": "استخدم البريد الاكتروني"
 }

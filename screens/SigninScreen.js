@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize, Padding, fontEm } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -30,43 +30,45 @@ export default function SigninScreen() {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={[styles.container]} >
-                <BackHeader title={t("sign in")} />
-                <View style={[styles.form]}>
-                    <Text style={styles.title}>{t("welcome-again")}</Text>
-                    <FancyInput inputType={"email"} value={email} setState={setState}
-                        checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                        placeholder={t("email-input")}
-                        keyboardType={"email-address"}
-                        changHandler={(e) => setSignInData(pv => ({ ...pv, email: e }))}
-                    >
-                        <Mail_OutLine_Svg />
-                    </FancyInput>
-                    <FancyInput inputType={"password"} placeholder={t("password-input")}
-                        checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={password}
-                        setState={setState}
-                        changHandler={(e) => setSignInData(pv => ({ ...pv, password: e }))}
-                    >
-                        <Lock_Svg />
-                    </FancyInput>
-                    <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                        {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
+            <ScrollView style={{ flex: 1 }}>
+                <View style={[styles.container]} >
+                    <BackHeader title={t("sign in")} />
+                    <View style={[styles.form]}>
+                        <Text style={styles.title}>{t("welcome-again")}</Text>
+                        <FancyInput inputType={"email"} value={email} setState={setState}
+                            checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                            placeholder={t("email-input")}
+                            keyboardType={"email-address"}
+                            changHandler={(e) => setSignInData(pv => ({ ...pv, email: e }))}
+                        >
+                            <Mail_OutLine_Svg />
+                        </FancyInput>
+                        <FancyInput inputType={"password"} placeholder={t("password-input")}
+                            checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={password}
+                            setState={setState}
+                            changHandler={(e) => setSignInData(pv => ({ ...pv, password: e }))}
+                        >
+                            <Lock_Svg />
+                        </FancyInput>
+                        <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
+                            {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
+                        </View>
+                        <View style={[styles.inputField, styles.forgetPass, { margin: fontEm(1), justifyContent: "flex-end" }]}>
+                            <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />
+                        </View>
+                        <FancyButton title={[t("sign in"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
+                        <View style={[styles.signUP, { flexDirection: language === "en" ? "row-reverse" : "row" }]}>
+                            <PressedText title={t("sign up")} pressHandler={() => navigation.navigate("SignUpOptions")} />
+                            <Text style={styles.regularText}>{t("dont-have-account")}</Text>
+                        </View>
+                        <DividerWithText text="او" />
+                        <FancyButton title={[t("sign in with google"), Color.input_fill, Color.black]}
+                            customStyles={{ borderWidth: 2, borderColor: Color.input_stroke }}
+                            leftIcon={["logo-google", fontEm(2), "orange"]}
+                            pressHandler={() => console.log("pressed")} />
                     </View>
-                    <View style={[styles.inputField, styles.forgetPass, { margin: fontEm(1), justifyContent: "flex-end" }]}>
-                        <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />
-                    </View>
-                    <FancyButton title={[t("sign in"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
-                    <View style={[styles.signUP, { flexDirection: language === "en" ? "row-reverse" : "row" }]}>
-                        <PressedText title={t("sign up")} pressHandler={() => navigation.navigate("SignUpOptions")} />
-                        <Text style={styles.regularText}>{t("dont-have-account")}</Text>
-                    </View>
-                    <DividerWithText text="او" />
-                    <FancyButton title={[t("sign in with google"), Color.input_fill, Color.black]}
-                        customStyles={{ borderWidth: 2, borderColor: Color.input_stroke }}
-                        leftIcon={["logo-google", fontEm(2), "orange"]}
-                        pressHandler={() => console.log("pressed")} />
                 </View>
-            </View>
+            </ScrollView>
 
         </TouchableWithoutFeedback >
     )

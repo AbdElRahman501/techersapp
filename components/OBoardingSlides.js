@@ -57,7 +57,7 @@ export default function OBoardingSlides({ num, setLastSlide }) {
             }}
             source={info[num].backgroundImageSource}
         >
-            <SafeAreaView style={styles.frameFlexBox}>
+            <View style={styles.frameFlexBox}>
 
                 <ImageBackground
                     style={styles.image1Icon}
@@ -66,13 +66,13 @@ export default function OBoardingSlides({ num, setLastSlide }) {
                 />
                 <View
                     style={[styles.rectangleParent, styles.parentFlexBox]}
-                    collapsable
+
                 >
                     {info.map((x, i) => <Animated.View key={i} style={[num === i ? styles.frameChild : styles.frameItem, styles.frameLayout]} />)}
                 </View>
                 <Text style={[styles.title, styles.headlineTypo]} >{info[num].title[language]}</Text>
                 <Text style={[styles.content, styles.headlineTypo]}>{info[num].content[language]}</Text>
-            </SafeAreaView>
+            </View>
         </ImageBackground>
     )
 }
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     frameFlexBox: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center"
+        // justifyContent: "center"
     },
     parentFlexBox: {
         flexDirection: "row",
@@ -110,6 +110,11 @@ const styles = StyleSheet.create({
         marginTop: 18,
         height: 20,
     },
+    frameLayout: {
+        width: 5,
+        backgroundColor: Color.darkcyan,
+        borderRadius: Border.br_37xl,
+    },
     title: {
         fontSize: fontEm(1.5),
         color: Color.black,
@@ -130,6 +135,7 @@ const styles = StyleSheet.create({
 
     },
     onboarding1Icon: {
+        marginTop: heightPercentage(10),
         flex: 1
-      },
+    },
 })

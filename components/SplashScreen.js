@@ -1,29 +1,36 @@
 import * as React from "react";
-import {  View, Image, StyleSheet, ImageBackground } from "react-native";
+import { View, Image, StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { StatusBar } from "expo-status-bar";
 
 
 const SplashScreen = () => {
   return (
-    <LinearGradient
-      style={styles.splashScreen}
-      locations={[0, 0, 1]}
-      colors={["#014871", "#014871", "#d7ede2"]}
-    >
-      <ImageBackground
-        style={styles.icon}
-        resizeMode="cover"
-        source={require("../assets/1splashscreen.png")}
+    <>
+      <StatusBar
+        backgroundColor="#014871" // Set your desired background color
+        barStyle="light-content"   // Set text and icon color to light
+      />
+      <LinearGradient
+        style={styles.splashScreen}
+        locations={[0, 0, 1]}
+        colors={["#014871", "#014871", "#d7ede2"]}
       >
-        <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
-          <Image
-            style={styles.logo}
-            resizeMode="center"
-            source={require("../assets/logowhite.png")} />
-        </View>
+        <ImageBackground
+          style={styles.icon}
+          resizeMode="cover"
+          source={require("../assets/1splashscreen.png")}
+        >
+          <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
+            <Image
+              style={styles.logo}
+              resizeMode="center"
+              source={require("../assets/logowhite.png")} />
+          </View>
 
-      </ImageBackground>
-    </LinearGradient>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 };
 

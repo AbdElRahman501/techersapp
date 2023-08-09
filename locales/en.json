@@ -32,7 +32,14 @@
     "placeholder-parent-phone": "Parent Phone Number",
     "placeholder-schoole-year": "Schoole Year",
     "placeholder-birth-day": "Birth Day",
-    "placeholder-education-type": "Education Type",
+    "placeholder-education-type": "Schoole Type",
     "placeholder-address": "Address",
-    "submit": "Submit"
+    "submit": "Submit",
+    "enter-verification-code-title": "Enter verification code",
+    "enter-verification-code-description": "Enter the verification code sent to your phone number. \n{number}",
+    "verify": "Verify",
+    "sec": "({time}) sec",
+    "didn't-receive": "Didn't receive the verification code",
+    "resend": "Resend",
+    "use-email": "Use email Address"
 }

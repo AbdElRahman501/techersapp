@@ -128,3 +128,8 @@ export const getTextInputAlign = (text) => {
         return isArabic(text) ? "right" : "left";
     }
 };
+export const formatPhoneNumber = (phoneNumber) => {
+    const maskedDigits = phoneNumber.length - (5);
+    const visiblePart = phoneNumber.substr(0, 3) + '*'.repeat(maskedDigits) + phoneNumber.substr(-2);
+    return visiblePart;
+}
