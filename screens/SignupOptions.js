@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Border, FontFamily, Color, FontSize, Padding, heightPercentage, fontEm, widthPercentage } from "../GlobalStyles";
 import { ImageBackground } from "react-native";
-import t from "../actions/cahngeLanguage";
+import t from "../actions/changeLanguage";
 import { useSelector } from "react-redux";
 
 const SignUpOptions = () => {

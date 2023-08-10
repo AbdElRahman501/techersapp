@@ -1,8 +1,7 @@
 import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, ScrollView, View, Text } from 'react-native'
-
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import BackHeader from '../components/BackHeader'
-import t from '../actions/cahngeLanguage'
+import t from '../actions/changeLanguage'
 import { formatPhoneNumber } from '../actions/GlobalFunctions';
 import CustomText from '../components/CustemText';
 import { Border, Color, FontFamily, fontEm } from '../GlobalStyles';
@@ -10,55 +9,21 @@ import PressedText from '../components/PressedText';
 import { useSelector } from 'react-redux';
 import OTPInput from '../components/OTP';
 import CountdownTimer from '../components/CountdownTimer ';
+import { useNavigation } from '@react-navigation/core';
 
 export default function VerificationCodeScreen({ route }) {
     const { language } = useSelector(state => state.languageState)
     const { userData } = route.params;
-
-    const [time, setTime] = useState("1:59");
-
-
-
-    const [first, setFirst] = useState("");
-    const [second, setSecond] = useState("");
-    const [third, setThird] = useState("");
-    const [fourth, setFourse] = useState("");
-
-    const [isFocused, setIsFocused] = useState(false);
-
-    const inputts = [useRef(null), useRef(null), useRef(null), useRef(null)]
-
-    const focusInput = (inputRef) => {
-        if (inputRef.current) {
-            inputRef.current.focus(); // Use the focus() method on the ref
-        }
-    };
-
-    useEffect(() => {
-        if (first.length === 1) {
-            if (second.length === 1) {
-                if (third.length === 1) {
-                    if (fourth.length === 1) {
-                    } else {
-                        focusInput(inputts[3])
-                    }
-                } else {
-
-                    focusInput(inputts[2])
-                }
-            } else {
-                focusInput(inputts[1])
-            }
-        }
-
-    }, [first, second, third, fourth])
+    const navigation = useNavigation();
+    const [resend, setResend] = useState(false);
 
     const handleOTPComplete = otp => {
-        console.log(`OTP entered: ${otp}`);
+        navigation.navigate("ResetPasswordScreen")
     };
     const handleCountdownFinish = () => {
-        console.log("Done!");
+        setResend(true)
     };
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <ScrollView style={{ flex: 1 }}>
@@ -66,12 +31,12 @@ export default function VerificationCodeScreen({ route }) {
                     <BackHeader />
                     <View style={[styles.form]}>
                         <CustomText style={styles.title}>{t("enter-verification-code-title")}</CustomText>
-                        <CustomText style={styles.regularText}>{t("enter-verification-code-description", { number: formatPhoneNumber(userData.parentPhone) })}</CustomText>
+                        <CustomText style={styles.regularText}>{t("enter-verification-code-description", { number: formatPhoneNumber(userData.parentPhone || userData.email) })}</CustomText>
                         <OTPInput onComplete={handleOTPComplete} />
-                        <CountdownTimer initialTime={60} onCountdownFinish={handleCountdownFinish} />
+                        <CountdownTimer initialTime={60} onCountdownFinish={handleCountdownFinish} resend={resend} setResend={setResend} />
                         <View style={[styles.parentFlexBox, { width: "100%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
                             <CustomText style={styles.regularText}>{t("didn't-receive")}</CustomText>
-                            <PressedText title={t("resend")} pressHandler={() => console.log("pressed")} />
+                            <PressedText disabled={!resend} title={t("resend")} pressHandler={() => setResend(false)} />
                         </View>
                         <PressedText style={{ textAlign: "center", marginVertical: fontEm(1) }} title={t("use-email")} pressHandler={() => console.log("pressed")} />
                     </View>

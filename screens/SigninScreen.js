@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard, ImageBackground } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize, Padding, fontEm } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -8,7 +8,7 @@ import FancyButton from '../components/FancyButton';
 import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import { submitCheck } from '../actions/GlobalFunctions';
-import t from "../actions/cahngeLanguage";
+import t from "../actions/changeLanguage";
 import { useSelector } from "react-redux";
 import { Lock_Svg, Mail_OutLine_Svg } from '../assets/icons/Icons';
 
@@ -16,13 +16,13 @@ export default function SigninScreen() {
     const navigation = useNavigation();
     const { language } = useSelector(state => state.languageState);
     const [state, setState] = useState({})
-    const [{ email, password }, setSignInData] = useState({ email: "", password: "" });
+    const [{ email, phoneNumber, password }, setSignInData] = useState({ email: "", phoneNumber: "", password: "" });
     const [checkInputs, setCheckInputs] = useState(false)
 
 
     const handleSubmit = () => {
         if (submitCheck({ email, password }).isValid) {
-            console.log("submit");
+            navigation.navigate("HomeScreen")
         } else {
             setCheckInputs(true)
         }
@@ -34,6 +34,11 @@ export default function SigninScreen() {
                 <View style={[styles.container]} >
                     <BackHeader title={t("sign in")} />
                     <View style={[styles.form]}>
+                        <ImageBackground
+                            style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
+                            resizeMode="contain"
+                            source={require('../assets/logoColoredTextMs.png')}
+                        />
                         <Text style={styles.title}>{t("welcome-again")}</Text>
                         <FancyInput inputType={"email"} value={email} setState={setState}
                             checkInputs={checkInputs} setCheckInputs={setCheckInputs}
@@ -54,7 +59,7 @@ export default function SigninScreen() {
                             {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                         </View>
                         <View style={[styles.inputField, styles.forgetPass, { margin: fontEm(1), justifyContent: "flex-end" }]}>
-                            <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />
+                            <PressedText title={t("forgot-password")} pressHandler={() => navigation.navigate("VerificationCodeScreen", { userData: { email: email || "bedo.ahmed416@gmail.com", phoneNumber } })} />
                         </View>
                         <FancyButton title={[t("sign in"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
                         <View style={[styles.signUP, { flexDirection: language === "en" ? "row-reverse" : "row" }]}>
@@ -97,9 +102,10 @@ const styles = StyleSheet.create({
     },
     error: {
         color: "red",
-        fontSize: FontSize.size_base,
+        fontSize: fontEm(0.9),
         fontFamily: FontFamily.montserratArabic,
         paddingHorizontal: 8,
+        marginVertical: 5
     },
     title: {
         fontSize: fontEm(1.2),

@@ -41,5 +41,8 @@
     "sec": "({time}) sec",
     "didn't-receive": "Didn't receive the verification code",
     "resend": "Resend",
-    "use-email": "Use email Address"
+    "use-email": "Use email Address",
+    "password-input-confirm": "Confirm password",
+    "create-new-password": "Create new password",
+    "create-new-password-description": "Create your new password to log in."
 }

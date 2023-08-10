@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Color, Border, FontFamily, widthPercentage, heightPercentage, fontEm } from "../GlobalStyles";
 import { Ionicons } from '@expo/vector-icons';
-import t from "../actions/cahngeLanguage";
+import t from "../actions/changeLanguage";
 import { useDispatch, useSelector } from "react-redux";
 import OBoardingSlides from "../components/OBoardingSlides";
 import { changeLanguage } from "../store/actions/langActions";

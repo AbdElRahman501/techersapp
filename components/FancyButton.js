@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.darkcyan
     },
     parentText: {
-        fontSize: fontEm(1.2),
+        fontSize: fontEm(1.3),
         fontWeight: "bold",
         color: "white",
         fontFamily: FontFamily.montserratArabic

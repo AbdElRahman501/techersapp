@@ -1,7 +1,7 @@
 import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import FancyInput from '../components/TextInput';
-import t from '../actions/cahngeLanguage'
+import t from '../actions/changeLanguage'
 import BackHeader from '../components/BackHeader'
 import { Address_Mark_Svg, Calender_Svg, Language_Svg, Lock_Svg, Mail_OutLine_Svg, Parent_Phone_Svg, School_SVG, Student_Phone_SVG, User_Icon_Svg } from '../assets/icons/Icons'
 import { Color, FontFamily, fontEm } from '../GlobalStyles';
@@ -38,7 +38,7 @@ export default function UserDataScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ phone: signUpData.parentPhone }).isValid) {
-            navigation.navigate("VerificationCodeScreen", { userData: signUpData })
+            navigation.navigate("HomeScreen")
         } else {
             setCheckInputs(true)
         }

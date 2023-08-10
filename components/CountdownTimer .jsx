@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Color, FontFamily, fontEm } from '../GlobalStyles';
-import t from '../actions/cahngeLanguage';
+import t from '../actions/changeLanguage';
 
-const CountdownTimer = ({ initialTime, onCountdownFinish }) => {
+const CountdownTimer = ({ initialTime, onCountdownFinish, resend, setResend }) => {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
+    let interval
+    useEffect(() => {
+        if (!resend && timeRemaining === 0) {
+            clearInterval(interval);
+            setTimeRemaining(initialTime);
+        }
+    }, [resend]);
 
     useEffect(() => {
         if (timeRemaining > 0) {
-            const interval = setInterval(() => {
+            setResend(false)
+            interval = setInterval(() => {
                 setTimeRemaining(prevTime => prevTime - 1);
             }, 1000);
 

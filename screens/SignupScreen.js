@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Color, FontFamily, FontSize, Margin, Padding, fontEm } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -9,7 +9,7 @@ import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
 import { submitCheck } from '../actions/GlobalFunctions';
-import t from "../actions/cahngeLanguage";
+import t from "../actions/changeLanguage";
 import { useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import { Lock_Svg, Mail_OutLine_Svg, User_Icon_Svg } from '../assets/icons/Icons';
@@ -36,9 +36,14 @@ export default function SignUpScreen({ route }) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <ScrollView style={{ flex: 1 }}>
                 <View style={[styles.container]} >
-                   
+
                     <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                     <View style={[styles.form]}>
+                        <ImageBackground
+                            style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
+                            resizeMode="contain"
+                            source={require('../assets/logoColoredTextMs.png')}
+                        />
                         <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
                             checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                             autoCapitalize="words"
@@ -118,9 +123,10 @@ const styles = StyleSheet.create({
     },
     error: {
         color: "red",
-        fontSize: FontSize.size_base,
+        fontSize: fontEm(0.9),
         fontFamily: FontFamily.montserratArabic,
         paddingHorizontal: 8,
+        marginVertical: 5
     },
     title: {
         fontSize: fontEm(1.2),

@@ -41,5 +41,8 @@
     "sec": "({time}) ثانية",
     "didn't-receive": "لم يتم استلام رمز التحقق",
     "resend": "اعادة ارسال",
-    "use-email": "استخدم البريد الاكتروني"
+    "use-email": "استخدم البريد الاكتروني",
+    "password-input-confirm": "تاكيد كلمة المرور",
+    "create-new-password": "انشاء كلمة مرور جديدة",
+    "create-new-password-description": "انشاء كلمة مرور جديدة لتسجيل الدخول."
 }
