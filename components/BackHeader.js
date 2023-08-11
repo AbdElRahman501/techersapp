@@ -1,26 +1,44 @@
-import { StyleSheet, Image, TouchableOpacity, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Image, TouchableOpacity, Text, View, BackHandler } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { FontFamily, fontEm, heightPercentage } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
-
+import { handleBackPress } from '../actions/navigationActions';
+import { useNavigationState } from '@react-navigation/native';
 export default function BackHeader({ title }) {
 
     const navigation = useNavigation();
+
+    const [history, setHistory] = useState([]);
+    const navigationState = useNavigationState(state => state);
+
+    useEffect(() => {
+        setHistory(navigationState.routes.map(route => route.name));
+    }, [navigationState]);
+
+    useEffect(() => {
+        const backAction = () => {
+            return handleBackPress(history);
+        }
+        BackHandler.addEventListener('hardwareBackPress', backAction);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', backAction);
+        };
+    }, [history]);
 
     const handleGoBack = () => {
         navigation.goBack();
     };
     return (
         <View style={styles.header}>
-            <TouchableOpacity onPress={handleGoBack}>
+            {history.length > 1 && <TouchableOpacity onPress={handleGoBack}>
                 <Image style={[styles.backIcon]}
                     imageStyle={{
                         resizeMode: "contain",
                     }}
                     source={require("../assets/icons/back-icon.png")}
                 />
-            </TouchableOpacity>
-            <Text style={[styles.headerTitle]}>{title}</Text>
+            </TouchableOpacity>}
+            <Text style={[styles.headerTitle, { paddingRight: history.length > 1 ? fontEm(2) : 0 }]}>{title}</Text>
         </View>
     )
 }
@@ -38,7 +56,6 @@ const styles = StyleSheet.create({
         height: fontEm(2)
     },
     headerTitle: {
-        paddingRight: fontEm(2),
         flex: 1,
         textAlign: "center",
         fontSize: fontEm(1.2),

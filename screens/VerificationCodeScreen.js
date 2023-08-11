@@ -18,7 +18,7 @@ export default function VerificationCodeScreen({ route }) {
     const [resend, setResend] = useState(false);
 
     const handleOTPComplete = otp => {
-        navigation.navigate("ResetPasswordScreen")
+        navigation.navigate("ResetPasswordScreen", { userData })
     };
     const handleCountdownFinish = () => {
         setResend(true)

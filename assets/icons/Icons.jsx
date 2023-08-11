@@ -1,5 +1,5 @@
-import * as React from "react"
-import Svg, { G, Path, Defs, ClipPath } from "react-native-svg"
+import * as React from "react";
+import Svg, { G, Mask, Path, Defs, ClipPath } from "react-native-svg";
 export const Mail_OutLine_Svg = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +25,7 @@ export const Mail_OutLine_Svg = (props) => (
       d="m17 9-3.13 2.5c-1.03.82-2.72.82-3.75 0L7 9"
     />
   </Svg>
-)
-
+);
 
 export const Parent_Phone_Svg = (props) => (
   <Svg
@@ -41,7 +40,7 @@ export const Parent_Phone_Svg = (props) => (
       d="M8.23 20.314a3.897 3.897 0 0 0-.028 1.794C3.645 21.464 1 18.248 1 15.112v-.89a2.667 2.667 0 0 1 2.667-2.666h10.708c.026.631.226 1.246.583 1.778H3.667a.889.889 0 0 0-.89.889v.889c0 2.227 1.935 4.622 5.454 5.202ZM9.89 0a4.89 4.89 0 1 1 0 9.779A4.89 4.89 0 0 1 9.89 0Zm0 1.778A3.111 3.111 0 1 0 9.89 8a3.111 3.111 0 0 0 0-6.222Zm6.371 9.033.503-1.333c.459-1.21 1.888-1.807 3.094-1.293l.69.295c.84.36 1.537 1.01 1.683 1.885C23.044 15.21 18.84 22.1 14 23.859c-.875.316-1.82.07-2.57-.438l-.614-.417a2.105 2.105 0 0 1-.363-3.183l.969-1.079a1.894 1.894 0 0 1 1.838-.574l2.178.515c1.726-1.079 2.652-2.595 2.777-4.55l-1.561-1.53a1.665 1.665 0 0 1-.393-1.792Z"
     />
   </Svg>
-)
+);
 
 export const User_Icon_Svg = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
@@ -54,10 +53,9 @@ export const User_Icon_Svg = (props) => (
       <Path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM20.59 22c0-3.87-3.85-7-8.59-7s-8.59 3.13-8.59 7" />
     </G>
   </Svg>
-)
+);
 
 export const Student_Phone_SVG = (props) => (
-
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
     <G fill={props.color || "#A1A8B0"} clipPath="url(#a)">
       <Path
@@ -76,11 +74,9 @@ export const Student_Phone_SVG = (props) => (
       </ClipPath>
     </Defs>
   </Svg>
-)
-
+);
 
 export const School_SVG = (props) => (
-
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
     <G clipPath="url(#a)">
       <Path
@@ -95,8 +91,7 @@ export const School_SVG = (props) => (
       </ClipPath>
     </Defs>
   </Svg>
-)
-
+);
 
 export const Lock_Svg = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
@@ -115,7 +110,7 @@ export const Lock_Svg = (props) => (
       d="M15.996 16h.01M11.995 16h.01M7.995 16h.008"
     />
   </Svg>
-)
+);
 
 export const Calender_Svg = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
@@ -136,8 +131,7 @@ export const Calender_Svg = (props) => (
       clipRule="evenodd"
     />
   </Svg>
-)
-
+);
 
 export const Language_Svg = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
@@ -151,7 +145,7 @@ export const Language_Svg = (props) => (
       </ClipPath>
     </Defs>
   </Svg>
-)
+);
 
 export const Address_Mark_Svg = (props) => (
   <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
@@ -160,4 +154,135 @@ export const Address_Mark_Svg = (props) => (
       d="M12.4 5.4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0-5.4a8.4 8.4 0 0 1 8.4 8.4c0 6.3-8.4 15.6-8.4 15.6S4 14.7 4 8.4A8.4 8.4 0 0 1 12.4 0Zm0 2.4a6 6 0 0 0-6 6c0 1.2 0 3.6 6 11.652 6-8.052 6-10.452 6-11.652a6 6 0 0 0-6-6Z"
     />
   </Svg>
-)
+);
+
+export const Home_icon_Svg = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={22}
+    height={22}
+    fill="none"
+    {...props}
+  >
+    <Path
+      stroke={props.color || "#ADADAD"}
+      strokeWidth={2}
+      d="M8.144 19.782v-3.067c0-.777.632-1.408 1.414-1.413h2.875c.786 0 1.423.633 1.423 1.413v3.058c0 .674.548 1.222 1.227 1.227h1.96a3.46 3.46 0 0 0 2.444-1 3.41 3.41 0 0 0 1.013-2.422V8.866c0-.735-.328-1.431-.895-1.902l-6.662-5.29a3.115 3.115 0 0 0-3.958.071L2.467 6.963A2.474 2.474 0 0 0 1.5 8.867v8.703C1.5 19.464 3.047 21 4.956 21h1.916c.327.002.641-.125.873-.354.232-.228.363-.54.363-.864h.036Z"
+    />
+  </Svg>
+);
+
+export const Calender_home_Svg = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={22}
+    fill="none"
+    {...props}
+  >
+    <Path
+      stroke={props.color || "#ADADAD"}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M1.093 8.404h17.824M14.442 12.31h.01M10.005 12.31h.009M5.558 12.31h.01M14.442 16.196h.01M10.005 16.196h.009M5.558 16.196h.01M14.044 1v3.29M5.966 1v3.29"
+    />
+    <Path
+      stroke={props.color || "#ADADAD"}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M14.238 2.58H5.771C2.834 2.58 1 4.214 1 7.221v9.05C1 19.326 2.834 21 5.771 21h8.458C17.175 21 19 19.355 19 16.348V7.222c.01-3.007-1.816-4.643-4.762-4.643Z"
+      clipRule="evenodd"
+    />
+  </Svg>
+);
+
+export const Notification_icon_Svg = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={19}
+    height={22}
+    fill="none"
+    {...props}
+  >
+    <Path
+      stroke={props.color || "#101623"}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M9.366 16.848c5.341 0 7.812-.724 8.05-3.627 0-2.902-1.722-2.716-1.722-6.276C15.694 4.165 13.197 1 9.366 1 5.534 1 3.038 4.164 3.038 6.945c0 3.56-1.723 3.374-1.723 6.275.24 2.915 2.71 3.628 8.05 3.628Z"
+      clipRule="evenodd"
+    />
+    <Path
+      stroke={props.color || "#101623"}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M11.629 19.857c-1.293 1.515-3.308 1.533-4.613 0"
+    />
+  </Svg>
+);
+
+export const Search_icon_Svg = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16}
+    height={17}
+    fill="none"
+    {...props}
+  >
+    <Mask
+      id="a"
+      width={16}
+      height={16}
+      x={0}
+      y={0}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: "luminance",
+      }}
+    >
+      <Path
+        fill="#fff"
+        fillRule="evenodd"
+        d="M.5.5h14.608v14.608H.5V.5Z"
+        clipRule="evenodd"
+      />
+    </Mask>
+    <G mask="url(#a)">
+      <Path
+        fill={props.color || "#ADADAD"}
+        fillRule="evenodd"
+        d="M7.804 1.625a6.186 6.186 0 0 0-6.18 6.178 6.186 6.186 0 0 0 6.18 6.18 6.186 6.186 0 0 0 6.179-6.18 6.185 6.185 0 0 0-6.179-6.178Zm0 13.483C3.777 15.108.5 11.83.5 7.803.5 3.776 3.777.5 7.804.5c4.028 0 7.304 3.276 7.304 7.303 0 4.028-3.276 7.305-7.304 7.305Z"
+        clipRule="evenodd"
+      />
+    </G>
+    <Mask
+      id="b"
+      width={5}
+      height={5}
+      x={11}
+      y={12}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: "luminance",
+      }}
+    >
+      <Path
+        fill="#fff"
+        fillRule="evenodd"
+        d="M11.93 12.28h3.768v3.761H11.93v-3.76Z"
+        clipRule="evenodd"
+      />
+    </Mask>
+    <G mask="url(#b)">
+      <Path
+        fill={props.color || "#ADADAD"}
+        fillRule="evenodd"
+        d="M15.136 16.041a.563.563 0 0 1-.398-.164l-2.643-2.636a.563.563 0 0 1 .795-.797l2.643 2.636a.562.562 0 0 1-.397.961Z"
+        clipRule="evenodd"
+      />
+    </G>
+  </Svg>
+);

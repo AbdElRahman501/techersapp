@@ -1,5 +1,5 @@
 const Stack = createNativeStackNavigator();
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import OnboardingPages from "./screens/OnboardingPages";
@@ -14,25 +14,15 @@ import { Provider } from 'react-redux';
 import store from "./store";
 import UserDataScreen from "./screens/UserDataScreen";
 import VerificationCodeScreen from "./screens/VerificationCodeScreen";
-import { Color } from "./GlobalStyles";
 import { StatusBar } from "expo-status-bar";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import HomeScreen from "./screens/HomeScreen";
 
 const App = () => {
-  const [hideSplashScreen, setHideSplashScreen] = React.useState(false);
-
+  const [TheInitialRouteName, setInitialRouteName] = useState("");
   const [fontsLoaded] = useFonts({
     "Montserrat-Arabic": require("./assets/fonts/Montserrat-Arabic-Regular.ttf"),
   });
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setHideSplashScreen(true);
-    }, 5000);
-  }, []);
-
-
 
   if (!fontsLoaded) {
     return null;
@@ -42,14 +32,14 @@ const App = () => {
       <Provider store={store}>
         <ApplicationProvider {...eva} theme={eva.light}>
           <NavigationContainer>
-            {hideSplashScreen ? (
+            {TheInitialRouteName ? (
               <>
                 <StatusBar
-                  backgroundColor={Color.darkcyan}
+                  backgroundColor="#f2f2f2"
                   barStyle="light-content"
                 />
                 <Stack.Navigator
-                  initialRouteName="OnboardingPages"
+                  initialRouteName={TheInitialRouteName}
                   screenOptions={{ headerShown: false }}
                 >
                   <Stack.Screen name="OnboardingPages" component={OnboardingPages}
@@ -71,7 +61,7 @@ const App = () => {
                 </Stack.Navigator>
               </>
             ) : (
-              <SplashScreen />
+              <SplashScreen setInitialRouteName={setInitialRouteName} />
             )}
           </NavigationContainer>
         </ApplicationProvider>

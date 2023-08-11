@@ -1,10 +1,40 @@
-import * as React from "react";
+import React, { useState, useEffect } from 'react'
 import { View, Image, StyleSheet, ImageBackground } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserData } from '../store/actions/userActions';
 
 
-const SplashScreen = () => {
+const SplashScreen = ({ setInitialRouteName }) => {
+  const [hideSplashScreen, setHideSplashScreen] = useState(false);
+  const { loading, userInfo, error } = useSelector(state => state.userInfo);
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      setHideSplashScreen(true);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    if (!loading && hideSplashScreen) {
+      console.log("🚀 ~ file: SplashScreen.js:28 ~ useEffect ~ userInfo:", userInfo)
+      if (userInfo) {
+        setInitialRouteName("HomeScreen")
+      } else {
+        setInitialRouteName("OnboardingPages")
+      }
+    }
+  }, [userInfo, hideSplashScreen])
+
+  useEffect(() => {
+    dispatch(getUserData())
+  }, [dispatch]);
+
+
   return (
     <>
       <StatusBar

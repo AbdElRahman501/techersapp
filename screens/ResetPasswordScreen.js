@@ -1,30 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, ImageBackground, ScrollView, View, Text } from 'react-native'
 import BackHeader from '../components/BackHeader'
 import { Border, Color, FontFamily, FontSize, fontEm } from '../GlobalStyles';
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomText from '../components/CustemText';
 import { Lock_Svg } from '../assets/icons/Icons';
 import FancyButton from '../components/FancyButton';
 import { getTextInputAlign, submitCheck } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
+import { signIn } from '../store/actions/userActions';
 
-const ResetPasswordScreen = () => {
+const ResetPasswordScreen = ({ route }) => {
     const { language } = useSelector(state => state.languageState)
+    const { loading, userInfo, error } = useSelector(state => state.userInfo)
     const navigation = useNavigation();
-
+    const { userData } = route.params;
     const [checkInputs, setCheckInputs] = useState(false)
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [state, setState] = useState({})
+    const dispatch = useDispatch();
+
 
 
     const handleSubmit = () => {
         if (password === confirmPassword) {
             if (submitCheck({ password, password: confirmPassword }).isValid) {
-                navigation.navigate("HomeScreen")
+                dispatch(signIn({ email: userData.email, phoneNumber: userData.phoneNumber, password }))
             } else {
                 setCheckInputs(true)
             }
@@ -48,7 +52,7 @@ const ResetPasswordScreen = () => {
                     <BackHeader />
                     <View style={[styles.form]}>
                         <ImageBackground
-                            style={{ height: fontEm(6), alignSelf: "center", width: "100%",marginBottom: fontEm(1) }}
+                            style={{ height: fontEm(6), alignSelf: "center", width: "100%", marginBottom: fontEm(1) }}
                             resizeMode="contain"
                             source={require('../assets/logoColoredTextMs.png')}
                         />
@@ -71,7 +75,7 @@ const ResetPasswordScreen = () => {
                         <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
                             {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                         </View>
-                        <FancyButton customStyles={{ marginTop: fontEm(2) }} title={[t("submit"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
+                        <FancyButton customStyles={{ marginTop: fontEm(2) }} title={[t(loading ? "loading" : "submit"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
                     </View>
                 </View>
             </ScrollView>

@@ -1,33 +1,45 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Color, FontFamily, FontSize, Padding, fontEm } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
 import DividerWithText from '../components/DividerWithText ';
 import FancyInput from '../components/TextInput';
 import FancyButton from '../components/FancyButton';
 import PressedText from '../components/PressedText';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from "@react-navigation/native";
 import { submitCheck } from '../actions/GlobalFunctions';
 import t from "../actions/changeLanguage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Lock_Svg, Mail_OutLine_Svg } from '../assets/icons/Icons';
+import { signIn } from '../store/actions/userActions';
 
 export default function SigninScreen() {
     const navigation = useNavigation();
     const { language } = useSelector(state => state.languageState);
+    const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
     const [{ email, phoneNumber, password }, setSignInData] = useState({ email: "", phoneNumber: "", password: "" });
     const [checkInputs, setCheckInputs] = useState(false)
-
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (submitCheck({ email, password }).isValid) {
-            navigation.navigate("HomeScreen")
+            dispatch(signIn({ email, phoneNumber, password }))
         } else {
             setCheckInputs(true)
         }
     };
 
+    useEffect(() => {
+        if (userInfo) {
+            console.log("🚀 ~ file: SigninScreen.js:35 ~ useEffect ~ userInfo:", userInfo)
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeScreen' }],
+              });
+            // navigation.navigate("HomeScreen")
+        }
+    }, [userInfo])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <ScrollView style={{ flex: 1 }}>
@@ -61,7 +73,7 @@ export default function SigninScreen() {
                         <View style={[styles.inputField, styles.forgetPass, { margin: fontEm(1), justifyContent: "flex-end" }]}>
                             <PressedText title={t("forgot-password")} pressHandler={() => navigation.navigate("VerificationCodeScreen", { userData: { email: email || "bedo.ahmed416@gmail.com", phoneNumber } })} />
                         </View>
-                        <FancyButton title={[t("sign in"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
+                        <FancyButton title={[t(loading ? "loading" : "sign in"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
                         <View style={[styles.signUP, { flexDirection: language === "en" ? "row-reverse" : "row" }]}>
                             <PressedText title={t("sign up")} pressHandler={() => navigation.navigate("SignUpOptions")} />
                             <Text style={styles.regularText}>{t("dont-have-account")}</Text>
@@ -70,7 +82,7 @@ export default function SigninScreen() {
                         <FancyButton title={[t("sign in with google"), Color.input_fill, Color.black]}
                             customStyles={{ borderWidth: 2, borderColor: Color.input_stroke }}
                             leftIcon={["logo-google", fontEm(2), "orange"]}
-                            pressHandler={() => console.log("pressed")} />
+                            pressHandler={() => console.log("pressed")} loading={loading} />
                     </View>
                 </View>
             </ScrollView>
