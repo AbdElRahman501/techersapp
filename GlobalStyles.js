@@ -8,14 +8,14 @@ export const FontFamily = {
 };
 /* font sizes */
 export const FontSize = {
-  size_sm: 14,
-  size_smi: 13,
-  size_md: 18,
-  size_lg: width * 0.05,
-  size_xl: width * 0.06,
-  size_xxl: width * 0.06,
+  size_smi: 10,
+  size_sm: 12,
+  size_md: 14,
+  size_base: 16,
+  size_lg: 18,
+  size_xl: 24,
+  size_xxl: 32,
   size_3xl: 42,
-  size_base: width * 0.04,
 };
 /* Colors */
 export const Color = {
@@ -24,9 +24,11 @@ export const Color = {
   gray_100: "#101623",
   gray_200: "rgba(16, 22, 35, 0.6)",
   darkcyan: "#199a8e",
+  cyanBackGround: "#E8F3F1",
   darkgray: "#a1a8b0",
   input_fill: "#F9FAFB",
   input_stroke: "#CACDD1",
+
 };
 /* Paddings */
 export const Padding = {
@@ -59,12 +61,12 @@ export const Height = {
 };
 /* heights */
 export const heightPercentage = (parent) => {
-  return (height * parent)/100
+  return (height * parent) / 100
 };
 export const widthPercentage = (parent) => {
-  return (width * parent)/100
+  return (width * parent) / 100
 };
 export const fontEm = (em) => {
-  return (widthPercentage(4)*em)
+  return (widthPercentage(4) * em)
 };
 

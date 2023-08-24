@@ -35,7 +35,7 @@ const App = () => {
             {TheInitialRouteName ? (
               <>
                 <StatusBar
-                  backgroundColor="#f2f2f2"
+                  backgroundColor="#ffffff"
                   barStyle="light-content"
                 />
                 <Stack.Navigator

@@ -1,9 +1,9 @@
 import { StyleSheet, Image, View, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Notification_icon_Svg } from '../assets/icons/Icons'
-import CustomText from '../components/CustemText'
+import CustomText from './CustemText'
 import t from '../actions/changeLanguage'
-import { Color, FontFamily, fontEm } from '../GlobalStyles'
+import { Color, FontFamily, FontSize, fontEm } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
@@ -46,8 +46,8 @@ const HomeHeader = () => {
                 </View>
             </View>
             <Notification_icon_Svg
-                width={fontEm(1.5)}
-                height={fontEm(1.5)}
+                width={24}
+                height={24}
                 viewBox="0 0 24 24" />
         </View>
     )
@@ -60,16 +60,16 @@ export default HomeHeader;
 const styles = StyleSheet.create({
 
     title: {
-        fontSize: fontEm(1.1),
+        fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic,
 
     },
     regularText: {
-        fontSize: fontEm(1),
+        fontSize: FontSize.size_base,
         fontFamily: FontFamily.montserratArabic,
     },
     smallText: {
-        fontSize: fontEm(0.6),
+        fontSize: FontSize.size_sm,
         color: Color.gray_200,
         fontFamily: FontFamily.montserratArabic,
     }

@@ -286,3 +286,32 @@ export const Search_icon_Svg = (props) => (
     </G>
   </Svg>
 );
+export const Next_Icon = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={10}
+    height={17}
+    fill="none"
+    {...props}
+  >
+    <Path
+      fill={props.color || "#199A8E"}
+      d="M1.62 0 .36 1.35 7.02 8.1.36 14.85l1.26 1.35 8.1-8.1L1.62 0Z"
+    />
+  </Svg>
+
+)
+export const Plus_Icon = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    fill="none"
+    {...props}
+  >
+    <Path
+      fill={props.color || "#A1A8B0"}
+      d="M20 0C8.954 0 0 8.954 0 20s8.954 20 20 20 20-8.954 20-20S31.046 0 20 0Zm0 37.54c-9.65 0-17.5-7.89-17.5-17.54 0-9.65 7.85-17.5 17.5-17.5S37.5 10.35 37.5 20 29.65 37.54 20 37.54Zm8.75-18.79h-7.5v-7.5a1.25 1.25 0 0 0-2.5 0v7.5h-7.5a1.25 1.25 0 0 0 0 2.5h7.5v7.5a1.25 1.25 0 0 0 2.5 0v-7.5h7.5a1.25 1.25 0 0 0 0-2.5Z"
+    />
+  </Svg>
+)

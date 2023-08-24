@@ -1,9 +1,9 @@
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, ScrollView, View } from 'react-native'
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage'
 import BackHeader from '../components/BackHeader'
-import { Address_Mark_Svg, Calender_Svg, Language_Svg, Lock_Svg, Mail_OutLine_Svg, Parent_Phone_Svg, School_SVG, Student_Phone_SVG, User_Icon_Svg } from '../assets/icons/Icons'
+import { Address_Mark_Svg, Calender_Svg, Language_Svg, Parent_Phone_Svg, School_SVG, Student_Phone_SVG} from '../assets/icons/Icons'
 import { Color, FontFamily, fontEm } from '../GlobalStyles';
 import CustomText from '../components/CustemText';
 import FancyButton from '../components/FancyButton';
@@ -17,7 +17,7 @@ export default function UserDataScreen({ route }) {
     const { user } = route.params;
     const { language } = useSelector(state => state.languageState)
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({ user, phone: "", parentPhone: "" });
+    const [signUpData, setSignUpData] = useState({ user, phoneNumber: "", parentPhone: "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const navigation = useNavigation();
     const years = [
@@ -37,7 +37,7 @@ export default function UserDataScreen({ route }) {
     ];
 
     const handleSubmit = () => {
-        if (submitCheck({ phone: signUpData.parentPhone }).isValid) {
+        if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
             navigation.navigate("HomeScreen")
         } else {
             setCheckInputs(true)
@@ -52,22 +52,22 @@ export default function UserDataScreen({ route }) {
                     <View style={[styles.form]}>
                         <CustomText style={styles.title}>{t("sign-up-thanks")}</CustomText>
 
-                        <FancyInput inputType={"phone"} value={signUpData.phone} setState={setState}
+                        <FancyInput inputType={"phone"} value={signUpData.phoneNumber || ""} setState={setState}
                             keyboardType={"phone-pad"}
                             checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                             placeholder={t("placeholder-student-phone")} leftIcon={"checkmark"}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, phone: e }))}
+                            changHandler={(e) => setSignUpData(pv => ({ ...pv, phoneNumber: e }))}
                         >
                             <Student_Phone_SVG />
                         </FancyInput>
-                        <FancyInput inputType={"phone"} value={signUpData.parentPhone} setState={setState}
+                        <FancyInput inputType={"phone"} value={signUpData.parentPhoneNumber || ""} setState={setState}
                             checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                             placeholder={t("placeholder-parent-phone")} keyboardType={"phone-pad"}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, parentPhone: e }))}
+                            changHandler={(e) => setSignUpData(pv => ({ ...pv, parentPhoneNumber: e }))}
                         >
                             <Parent_Phone_Svg />
                         </FancyInput>
-                        <FancyInput inputType={"addres"} value={signUpData.address} setState={setState}
+                        <FancyInput inputType={"addres"} value={signUpData.address || ""} setState={setState}
                             checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                             placeholder={t("placeholder-address")} leftIcon={"checkmark"}
                             changHandler={(e) => setSignUpData(pv => ({ ...pv, address: e }))}
@@ -77,14 +77,14 @@ export default function UserDataScreen({ route }) {
                         <ListInput
                             options={years.map(x => x[language])}
                             placeholder={t("placeholder-schoole-year")}
-                            value={signUpData.schooleYear}
+                            value={signUpData.schooleYear || ""}
                             changHandler={(e) => setSignUpData(pv => ({ ...pv, schooleYear: e }))}
                         >
                             <School_SVG />
                         </ListInput>
                         <DatePicker
                             placeholder={t("placeholder-birth-day")}
-                            value={signUpData.birthDay}
+                            value={signUpData.birthDay || ""}
                             changHandler={(e) => setSignUpData(pv => ({ ...pv, birthDay: e }))}
                         >
                             <Calender_Svg />
@@ -92,8 +92,8 @@ export default function UserDataScreen({ route }) {
                         <ListInput
                             options={schoolTypes.map(x => x[language])}
                             placeholder={t("placeholder-education-type")}
-                            value={signUpData.eduType}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, eduType: e }))}
+                            value={signUpData.educationType || ""}
+                            changHandler={(e) => setSignUpData(pv => ({ ...pv, educationType: e }))}
                         >
                             <Language_Svg />
                         </ListInput>

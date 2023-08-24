@@ -46,5 +46,11 @@
     "use-email": "استخدم البريد الاكتروني",
     "password-input-confirm": "تاكيد كلمة المرور",
     "create-new-password": "انشاء كلمة مرور جديدة",
-    "create-new-password-description": "انشاء كلمة مرور جديدة لتسجيل الدخول."
+    "create-new-password-description": "انشاء كلمة مرور جديدة لتسجيل الدخول.",
+    "book-now": "احجز الان",
+    "my-subjects": "موادي",
+    "see-all": "عرض الكل",
+    "my-fav-teachers": "اساتذتي المفضلين",
+    "teacher-title": "الاستاذ {name}",
+    "teacher-content":"مدرس  {subject} في {area}"
 }

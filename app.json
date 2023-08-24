@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tech",
-    "slug": "tech",
+    "name": "alostaz",
+    "slug": "alostaz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +24,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.bedoahmed.alostaz"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "176acfb0-01b9-41df-86a5-34e4dea32ee3"
+      }
+    },
+    "owner": "bedoahmed"
   }
 }

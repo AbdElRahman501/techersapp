@@ -8,7 +8,7 @@ import { Border, Color, FontFamily, fontEm } from '../GlobalStyles';
 import PressedText from '../components/PressedText';
 import { useSelector } from 'react-redux';
 import OTPInput from '../components/OTP';
-import CountdownTimer from '../components/CountdownTimer ';
+import CountdownTimer from '../components/CountdownTimer';
 import { useNavigation } from '@react-navigation/core';
 
 export default function VerificationCodeScreen({ route }) {

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Color, FontFamily, fontEm } from '../GlobalStyles';
 import t from '../actions/changeLanguage';
 
-const CountdownTimer = ({ initialTime, onCountdownFinish, resend, setResend }) => {
+const CountdownTimer= ({ initialTime, onCountdownFinish, resend, setResend }) => {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
     let interval
     useEffect(() => {

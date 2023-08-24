@@ -46,5 +46,11 @@
     "use-email": "Use email Address",
     "password-input-confirm": "Confirm password",
     "create-new-password": "Create new password",
-    "create-new-password-description": "Create your new password to log in."
+    "create-new-password-description": "Create your new password to log in.",
+    "book-now": "Book Now",
+    "my-subjects": "My Subjects",
+    "see-all": "See All",
+    "my-fav-teachers": "My Fav Teachers",
+    "teacher-title": "Mr. {name}",
+    "teacher-content": "Teacher {subject} in {area}"
 }
