@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { View, StyleSheet, TouchableOpacity, VirtualizedList } from 'react-native';
 import { Color, FontFamily, FontSize, heightPercentage, widthPercentage } from '../GlobalStyles';
 import { Next_Icon } from '../assets/icons/Icons';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, State } from 'react-native-gesture-handler';
 import AdItem from './AdItem';
 import { teachers } from '../data';
 
