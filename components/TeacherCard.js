@@ -26,6 +26,8 @@ const TeacherCard = React.memo(({ item }) => {
             </View>
         </TouchableOpacity>
     );
+}, (prevProps, nextProps) => {
+    return prevProps.item.id !== nextProps.item.id;
 });
 export default TeacherCard;
 const styles = StyleSheet.create({

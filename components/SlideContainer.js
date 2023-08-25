@@ -27,7 +27,7 @@ export default function SlideContainer({ type, data, title, pressHandler, presse
     return (
         <View style={styles.container}>
             <ContainerTitle title={title} pressedTitle={pressedTitle} pressHandler={pressHandler} />
-            <View style={{ flex: 1, width: "100%", marginBottom: 20 }}>
+            <View style={{ flex: 1, width: "100%", marginBottom: 20 , overflow: "hidden" }}>
                 <VirtualizedList
                     data={data}
                     renderItem={renderItem}

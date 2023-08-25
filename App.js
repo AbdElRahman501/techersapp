@@ -17,6 +17,11 @@ import VerificationCodeScreen from "./screens/VerificationCodeScreen";
 import { StatusBar } from "expo-status-bar";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import HomeScreen from "./screens/HomeScreen";
+import SubjectScreen from "./screens/SubjectScreen";
+import CommunityScreen from "./screens/CommunityScreen";
+import ScheduleScreen from "./screens/ScheduleScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import TapBottomNavigator from "./components/TapBottomNavigator";
 
 const App = () => {
   const [TheInitialRouteName, setInitialRouteName] = useState("");
@@ -56,13 +61,22 @@ const App = () => {
                     options={{ headerShown: false }} />
                   <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}
                     options={{ headerShown: false }} />
-                  <Stack.Screen name="HomeScreen" component={HomeScreen}
+                  <Stack.Screen name="Home" component={HomeScreen}
+                    options={{ headerShown: false }} />
+                  <Stack.Screen name="Community" component={CommunityScreen}
+                    options={{ headerShown: false }} />
+                  <Stack.Screen name="Schedule" component={ScheduleScreen}
+                    options={{ headerShown: false }} />
+                  <Stack.Screen name="Profile" component={ProfileScreen}
+                    options={{ headerShown: false }} />
+                  <Stack.Screen name="SubjectScreen" component={SubjectScreen}
                     options={{ headerShown: false }} />
                 </Stack.Navigator>
               </>
             ) : (
               <SplashScreen setInitialRouteName={setInitialRouteName} />
             )}
+            <TapBottomNavigator />
           </NavigationContainer>
         </ApplicationProvider>
       </Provider>

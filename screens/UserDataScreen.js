@@ -38,7 +38,7 @@ export default function UserDataScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
-            navigation.navigate("HomeScreen")
+            navigation.navigate("Home")
         } else {
             setCheckInputs(true)
         }

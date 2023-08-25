@@ -1,6 +1,6 @@
 import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, Button, SafeAreaView } from 'react-native'
 import React, { useEffect } from 'react'
-import { Color, fontEm } from '../GlobalStyles'
+import { Color, Height, fontEm } from '../GlobalStyles'
 import HomeHeader from '../components/HomeHeader'
 import { signOut } from '../store/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,11 +11,11 @@ import t from '../actions/changeLanguage';
 import SlideContainer from '../components/SlideContainer';
 import { subjects, teachers } from '../data';
 import ChangeLangButton from '../components/ChangeLangButton';
+import TapBottomNavigator from '../components/TapBottomNavigator';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!userInfo) {
@@ -37,9 +37,6 @@ export default function HomeScreen() {
           <SlideContainer type={"Subject"} data={subjects} title={t("my-subjects")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
           <SlideContainer type={"Teacher"} data={teachers} title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
           <SlideContainer type={"Teacher"} data={teachers} title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
-          <Button title='Sign Out' onPress={() => dispatch(signOut())} />
-          <ChangeLangButton />
-          {/* <Footer /> */}
         </SafeAreaView>
       </ScrollView>
     </TouchableWithoutFeedback >
@@ -53,6 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: fontEm(2),
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingBottom: Height.nav_tap
   }
 })

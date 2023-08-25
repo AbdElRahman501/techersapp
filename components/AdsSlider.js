@@ -72,7 +72,7 @@ export default function AdsSlider() {
         if (!holding) {
             interval = setInterval(() => {
                 scrollToNext()
-            }, 2000);
+            }, 5000);
         }
         return () => clearInterval(interval);
     }, [scrolledIndex, holding]);
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
+        overflow: 'hidden',
     },
     itemContainer: {
         width: widthPercentage(100) - 48,

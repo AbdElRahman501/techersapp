@@ -27,6 +27,8 @@ const AdItem = React.memo(({ item, holdHandler }) => {
             </View>
         </LongPressGestureHandler>
     );
+}, (prevProps, nextProps) => {
+    return prevProps.item.id !== nextProps.item.id;
 });
 export default AdItem;
 

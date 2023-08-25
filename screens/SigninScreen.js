@@ -35,9 +35,9 @@ export default function SigninScreen() {
             console.log("🚀 ~ file: SigninScreen.js:35 ~ useEffect ~ userInfo:", userInfo)
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'HomeScreen' }],
+                routes: [{ name: "Home" }],
               });
-            // navigation.navigate("HomeScreen")
+            // navigation.navigate("Home")
         }
     }, [userInfo])
     return (

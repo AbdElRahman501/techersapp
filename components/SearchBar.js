@@ -1,27 +1,18 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { Search_icon_Svg } from '../assets/icons/Icons';
-import { Border, Color, FontFamily, FontSize, fontEm } from '../GlobalStyles';
+import { Border, Color, FontFamily, FontSize } from '../GlobalStyles';
+import { useSelector } from 'react-redux';
+import { getTextInputAlign } from '../actions/GlobalFunctions';
+import t from '../actions/changeLanguage';
 
 export default function SearchBar() {
+  const { language } = useSelector(state => state.languageState);
   const [value, setValue] = useState("")
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View style={[styles.inputField, { borderColor: isFocused ? Color.darkcyan : Color.input_stroke, flexDirection: "row" }]}>
-
-      <TextInput style={[styles.input, {
-        textAlign: "right",
-        paddingLeft: 46
-      }]}
-        placeholder={"Search"}
-        autoCapitalize="none"
-        onChangeText={e => setValue(e)}
-        value={value}
-        keyboardType={"default"}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
+    <View style={[styles.inputField, { borderColor: isFocused ? Color.darkcyan : Color.input_stroke, flexDirection: language === "ar" ? "row-reverse" : "row" }]}>
       <View style={styles.rightIcon}>
         <Search_icon_Svg
           width={30}
@@ -30,6 +21,19 @@ export default function SearchBar() {
           color={isFocused ? Color.darkcyan : Color.input_stroke}
         />
       </View>
+      <TextInput style={[styles.input, {
+        textAlign: language === "en" ? "left" : (getTextInputAlign(value) || "right"),
+        paddingLeft: (language === "ar" && getTextInputAlign(value) === "left") ? 46 : 0
+      }]}
+        placeholder={t("search")}
+        autoCapitalize="none"
+        onChangeText={e => setValue(e)}
+        value={value}
+        keyboardType={"default"}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
+
     </View>
   )
 }

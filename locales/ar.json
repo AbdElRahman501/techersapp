@@ -52,5 +52,6 @@
     "see-all": "عرض الكل",
     "my-fav-teachers": "اساتذتي المفضلين",
     "teacher-title": "الاستاذ {name}",
-    "teacher-content":"مدرس  {subject} في {area}"
+    "teacher-content": "مدرس  {subject} في {area}",
+    "search": "بحث"
 }

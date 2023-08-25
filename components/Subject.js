@@ -1,22 +1,32 @@
-import { StyleSheet, Image, TouchableOpacity, Text, View, Platform } from 'react-native'
+import { StyleSheet, Image, Text, View, Platform, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/core';
 
 const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
+    const navigation = useNavigation();
+    const pressHandler = () => {
+        navigation.navigate("SubjectScreen", { item })
+    }
+
     return (
-        <TouchableOpacity style={styles.card} onPress={() => console.log(item.id)} >
-            <View style={styles.subject}>
-                <Image
-                    style={{ height: "80%", width: "80%" }}
-                    resizeMode="contain"
-                    source={item.imageSource}
-                />
+        <TouchableWithoutFeedback onPress={pressHandler} >
+            <View style={styles.card} >
+                <View style={styles.subject}>
+                    <Image
+                        style={{ height: "80%", width: "80%" }}
+                        resizeMode="contain"
+                        source={item.imageSource}
+                    />
+                </View>
+                <Text style={styles.title}>{item.title[language]}</Text>
             </View>
-            <Text style={styles.title}>{item.title[language]}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
     );
+}, (prevProps, nextProps) => {
+    return prevProps.item.id !== nextProps.item.id;
 });
 
 export default Subject;
@@ -32,7 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: Color.white,
         ...Platform.select({
             ios: {
-                shadowColor: 'rgba(0, 0, 0, 0.10)',
+                shadowColor: Color.lightGray,
                 shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 1,
                 shadowRadius: 7,

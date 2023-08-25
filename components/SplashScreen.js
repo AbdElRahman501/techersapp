@@ -23,7 +23,7 @@ const SplashScreen = ({ setInitialRouteName }) => {
     if (!loading && hideSplashScreen) {
       console.log("🚀 ~ file: SplashScreen.js:28 ~ useEffect ~ userInfo:", userInfo)
       if (userInfo) {
-        setInitialRouteName("HomeScreen")
+        setInitialRouteName("Home")
       } else {
         setInitialRouteName("OnboardingPages")
       }

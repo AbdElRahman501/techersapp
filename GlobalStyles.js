@@ -21,6 +21,7 @@ export const FontSize = {
 export const Color = {
   white: "#fff",
   black: "#000",
+  lightGray: 'rgba(0, 0, 0, 0.10)',
   gray_100: "#101623",
   gray_200: "rgba(16, 22, 35, 0.6)",
   darkcyan: "#199a8e",
@@ -37,7 +38,7 @@ export const Padding = {
   p_mini_6: 15,
   p_23xl: 42,
   p_5xs: 8,
-  p_B: 74
+  p_B: 74,
 };
 /* Paddings */
 export const Margin = {
@@ -58,6 +59,8 @@ export const Height = {
   hi_s: 32,
   br_lg: 56,
   br_xl: 71,
+  nav_tap: 64,
+
 };
 /* heights */
 export const heightPercentage = (parent) => {
