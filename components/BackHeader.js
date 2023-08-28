@@ -1,6 +1,6 @@
 import { StyleSheet, Image, TouchableOpacity, Text, View, StatusBar, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, FontFamily, fontEm, heightPercentage } from '../GlobalStyles'
+import { Color, FontFamily, Margin, fontEm, heightPercentage } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
@@ -29,7 +29,7 @@ export default function BackHeader({ title }) {
         navigation.goBack();
     };
     return (
-        <View style={[styles.header, { marginTop: statusBarHeight + 25 }]}>
+        <View style={[styles.header, { marginTop: statusBarHeight + 25 , marginBottom: Margin.m_base }]}>
             {history.length > 1 && <TouchableOpacity onPress={handleGoBack}>
                 <Image style={[styles.backIcon]}
                     source={require("../assets/icons/back-icon.png")}
@@ -42,7 +42,6 @@ export default function BackHeader({ title }) {
 
 const styles = StyleSheet.create({
     header: {
-        height: heightPercentage(5),
         flexDirection: 'row',
         justifyContent: 'center',
         width: "100%",

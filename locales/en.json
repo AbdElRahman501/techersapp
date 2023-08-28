@@ -53,5 +53,13 @@
     "my-fav-teachers": "My Fav Teachers",
     "teacher-title": "Mr. {name}",
     "teacher-content": "Teacher {subject} in {area}",
-    "search": "Search"
+    "search": "Search",
+    "days____________________________________": "Days",
+    "late": "Late",
+    "absent": "Absent",
+    "present": "Present",
+    "months____________________________________": "Months",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "coming": "Coming"
 }

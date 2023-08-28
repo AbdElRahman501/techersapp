@@ -311,6 +311,7 @@ export const Next_Icon = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     width={10}
     height={17}
+    viewBox={(props.width && props.height) ? `0 0 ${props.width + 2} ${props.height + 2}` : "0 0 15 24"}
     fill="none"
     {...props}
   >
@@ -318,7 +319,7 @@ export const Next_Icon = (props) => (
       fill={props.color || "#199A8E"}
       d="M1.62 0 .36 1.35 7.02 8.1.36 14.85l1.26 1.35 8.1-8.1L1.62 0Z"
     />
-  </Svg>
+  </Svg >
 
 )
 export const Plus_Icon = (props) => (
@@ -366,4 +367,35 @@ export const Community_Icon_Fill = (props) => (
     />
   </Svg>
 
+)
+
+export const Heart_Icon_Fill = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={22}
+    height={19}
+    fill="none"
+    stroke="#199A8E"
+  >
+    <Path
+      fill={props.fill || "#199A8E"} stroke={props.color || "none"} strokeWidth={1.5} 
+      d="M0 6.459c0 5.367 4.39 8.227 7.602 10.787C8.735 18.15 9.827 19 10.919 19c1.091 0 2.183-.85 3.317-1.755 3.213-2.558 7.601-5.419 7.601-10.785 0-5.367-6.005-9.174-10.918-4.013C6.005-2.715 0 1.09 0 6.459Z"
+    />
+  </Svg>
+)
+export const Chat = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={20}
+    fill="none"
+    {...props}
+  >
+    <Path
+      fill="#fff"
+      fillRule="evenodd"
+      d="M0 10.015C0 4.747 4.21 0 10.02 0 15.7 0 20 4.657 20 9.985 20 16.165 14.96 20 10 20c-1.64 0-3.46-.44-4.92-1.302-.51-.31-.94-.54-1.49-.36l-2.02.6c-.51.16-.97-.24-.82-.78l.67-2.244c.11-.31.09-.641-.07-.902C.49 13.43 0 11.697 0 10.015Zm8.7 0c0 .711.57 1.282 1.28 1.292.71 0 1.28-.58 1.28-1.282 0-.711-.57-1.282-1.28-1.282-.7-.01-1.28.571-1.28 1.272Zm4.61.01c0 .701.57 1.282 1.28 1.282.71 0 1.28-.58 1.28-1.282 0-.711-.57-1.282-1.28-1.282-.71 0-1.28.571-1.28 1.282Zm-7.94 1.282c-.7 0-1.28-.58-1.28-1.282 0-.711.57-1.282 1.28-1.282.71 0 1.28.571 1.28 1.282a1.29 1.29 0 0 1-1.28 1.282Z"
+      clipRule="evenodd"
+    />
+  </Svg>
 )

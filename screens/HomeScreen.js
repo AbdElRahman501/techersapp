@@ -1,17 +1,17 @@
-import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, Button, SafeAreaView } from 'react-native'
+import { Keyboard, ScrollView, StyleSheet, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
 import React, { useEffect } from 'react'
 import { Color, Height, fontEm } from '../GlobalStyles'
 import HomeHeader from '../components/HomeHeader'
-import { signOut } from '../store/actions/userActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import AdsSlider from '../components/AdsSlider';
 import SearchBar from '../components/SearchBar';
 import t from '../actions/changeLanguage';
 import SlideContainer from '../components/SlideContainer';
 import { subjects, teachers } from '../data';
-import ChangeLangButton from '../components/ChangeLangButton';
-import TapBottomNavigator from '../components/TapBottomNavigator';
+import Subject from '../components/Subject';
+import ContainerTitle from '../components/ContainerTitle';
+import TeacherCard from '../components/TeacherCard';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -34,9 +34,18 @@ export default function HomeScreen() {
           <HomeHeader />
           <AdsSlider />
           <SearchBar />
-          <SlideContainer type={"Subject"} data={subjects} title={t("my-subjects")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
-          <SlideContainer type={"Teacher"} data={teachers} title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
-          <SlideContainer type={"Teacher"} data={teachers} title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+          <ContainerTitle style={{ marginTop: 0 }} title={t("my-subjects")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+          <SlideContainer data={subjects}  >
+            <Subject />
+          </SlideContainer>
+          <ContainerTitle title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+          <SlideContainer data={teachers}  >
+            <TeacherCard />
+          </SlideContainer>
+          <ContainerTitle title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+          <SlideContainer data={teachers}  >
+            <TeacherCard />
+          </SlideContainer>
         </SafeAreaView>
       </ScrollView>
     </TouchableWithoutFeedback >
@@ -51,6 +60,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: fontEm(2),
     paddingHorizontal: 20,
-    paddingBottom: Height.nav_tap
+    paddingBottom: Height.nav_tap + 20
   }
 })

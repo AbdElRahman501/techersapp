@@ -27,7 +27,7 @@ export default function SignUpScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ email: signUpData.email, password: signUpData.password, name: signUpData.fullName }).isValid) {
-            navigation.navigate("UserDataScreen", { user })
+            navigation.navigate("UserDataScreen", { signUpData })
         } else {
             setCheckInputs(true)
         }

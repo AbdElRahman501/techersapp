@@ -40,7 +40,7 @@ const App = () => {
             {TheInitialRouteName ? (
               <>
                 <StatusBar
-                  backgroundColor="#ffffff"
+                  backgroundColor="transparent"
                   barStyle="light-content"
                 />
                 <Stack.Navigator

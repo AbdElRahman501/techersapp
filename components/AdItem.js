@@ -11,8 +11,8 @@ const AdItem = React.memo(({ item, holdHandler }) => {
         <LongPressGestureHandler onHandlerStateChange={holdHandler} >
             <View style={styles.itemContainer} >
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.title}>{item.title[language]}</Text>
-                    <Text style={styles.content}>{item.content[language]}</Text>
+                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.content}>{item.mainSubject}</Text>
                     <TouchableOpacity style={styles.primaryButton}>
                         <Text style={styles.primaryButtonText}>
                             {t("book-now")}
@@ -45,12 +45,15 @@ const styles = StyleSheet.create({
     title: {
         fontSize: FontSize.size_xl,
         fontFamily: FontFamily.montserratArabic,
-        color: Color.black
+        color: Color.black,
+        textAlign: 'center'
     },
     content: {
         fontSize: FontSize.size_base,
         fontFamily: FontFamily.montserratArabic,
-        color: Color.gray_200
+        color: Color.gray_200,
+        textAlign: 'center'
+
     },
     primaryButton: {
         marginTop: 10,

@@ -1,9 +1,9 @@
 import { Keyboard, StyleSheet, TouchableWithoutFeedback, ScrollView, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage'
 import BackHeader from '../components/BackHeader'
-import { Address_Mark_Svg, Calender_Svg, Language_Svg, Parent_Phone_Svg, School_SVG, Student_Phone_SVG} from '../assets/icons/Icons'
+import { Address_Mark_Svg, Calender_Svg, Language_Svg, Parent_Phone_Svg, School_SVG, Student_Phone_SVG } from '../assets/icons/Icons'
 import { Color, FontFamily, fontEm } from '../GlobalStyles';
 import CustomText from '../components/CustemText';
 import FancyButton from '../components/FancyButton';
@@ -11,39 +11,39 @@ import { submitCheck } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
 import DatePicker from '../components/DatePicker';
 import ListInput from '../components/ListInput';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
+import { signIn } from '../store/actions/userActions';
+import { years } from '../data';
+import { schoolTypes } from '../data';
 
 export default function UserDataScreen({ route }) {
-    const { user } = route.params;
+    const userData = route.params.signUpData;
     const { language } = useSelector(state => state.languageState)
+    const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({ user, phoneNumber: "", parentPhone: "" });
+    const [signUpData, setSignUpData] = useState({ ...userData, phoneNumber: "", parentPhone: "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const navigation = useNavigation();
-    const years = [
-        { en: "first", ar: "الصف الاول" },
-        { en: "first", ar: "الصف الاول" },
-        { en: "first", ar: "الصف الاول" },
-        { en: "first", ar: "الصف الاول" }];
-    const schoolTypes = [
-        { en: "Public School", ar: "مدرسة حكومية" },
-        { en: "Private School", ar: "مدرسة خاصة" },
-        { en: "International School", ar: "مدرسة دولية" },
-        { en: "Language School", ar: "مدرسة لغات" },
-        { en: "Experimental School", ar: "مدرسة تجريبية" },
-        { en: "Secondary Art School", ar: "مدرسة ثانوية فنية" },
-        { en: "Gifted Students School", ar: "مدرسة متفوقين" },
-        { en: "Al-Azhar School", ar: "مدرسة الازهر" },
-    ];
+
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
-            navigation.navigate("Home")
+            dispatch(signIn({ email: signUpData.email, phoneNumber: signUpData.phoneNumber, password: signUpData.password }))
         } else {
             setCheckInputs(true)
         }
     };
-
+    useEffect(() => {
+        if (userInfo) {
+            console.log("🚀 ~ file: UserDataScreen.js:40 ~ useEffect ~ userInfo:", userInfo)
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "Home" }],
+            });
+            // navigation.navigate("Home")
+        }
+    }, [userInfo])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <ScrollView style={{ flex: 1 }}>

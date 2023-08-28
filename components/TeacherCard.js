@@ -18,8 +18,8 @@ const TeacherCard = React.memo(({ item }) => {
                     }
                 />
             </View>
-            <Text style={styles.title}>{item.title[language]}</Text>
-            <Text style={styles.regular}>{item.content[language]}</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.regular}>{item.mainSubject}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Text style={styles.likes}>25</Text>
                 <Text style={styles.regular}>800 متر</Text>

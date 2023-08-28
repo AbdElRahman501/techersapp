@@ -1,19 +1,26 @@
-import { StyleSheet, Image, Text, View, Platform, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { StyleSheet, Image, Text, View, Platform, Animated, TouchableWithoutFeedback } from 'react-native'
+import React, { useState } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/core';
+import transition from '../actions/transition';
 
 const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
-    const navigation = useNavigation();
-    const pressHandler = () => {
-        navigation.navigate("SubjectScreen", { item })
+    const navigation = useNavigation()
+    const [clicked, setClicked] = useState(false);
+
+    const handelScale = () => {
+        setClicked(true)
+        setTimeout(() => {
+            setClicked(false)
+            navigation.navigate("SubjectScreen", { item })
+        }, 250);
     }
 
     return (
-        <TouchableWithoutFeedback onPress={pressHandler} >
-            <View style={styles.card} >
+        <TouchableWithoutFeedback onPress={handelScale} >
+            <Animated.View style={[styles.card, { transform: [{ scale: transition(1, 0.8, 200, clicked) }] }]}>
                 <View style={styles.subject}>
                     <Image
                         style={{ height: "80%", width: "80%" }}
@@ -22,7 +29,7 @@ const Subject = React.memo(({ item }) => {
                     />
                 </View>
                 <Text style={styles.title}>{item.title[language]}</Text>
-            </View>
+            </Animated.View>
         </TouchableWithoutFeedback>
     );
 }, (prevProps, nextProps) => {
@@ -53,10 +60,8 @@ const styles = StyleSheet.create({
         }),
     },
     card: {
-        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginHorizontal: 10
+        margin: 10
     },
     title: {
         fontSize: FontSize.size_base,

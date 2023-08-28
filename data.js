@@ -7,121 +7,115 @@ export const teachers = [
     {
         id: 1,
         imageSource: require('./assets/teachers/teacher.png'),
-        title: {
-            ar: "الاستاذ احمد",
-            en: "Mr. Ahmed"
-        },
-        content: {
-            ar: "مدرس فيزيا",
-            en: "Physics teacher"
-        }
+        name: "Ahmed",
+        mainSubject: "physics",
+        subjects: ["physics", "math"]
     },
     {
         id: 2,
         imageSource: require('./assets/teachers/teacher.png'),
-        title: {
-            ar: "الاستاذة فاطمة",
-            en: "Ms. Fatima"
-        },
-        content: {
-            ar: "مدرسة لغة إنجليزية",
-            en: "English language teacher"
-        }
+        name: "mohamed",
+        mainSubject: "english",
+        subjects: ["english", "math"]
     },
     {
         id: 3,
         imageSource: require('./assets/teachers/teacher.png'),
-        title: {
-            ar: "الأستاذ محمد",
-            en: "Mr. Mohammed"
-        },
-        content: {
-            ar: "مدرس رياضيات  ",
-            en: "Math teacher  "
-        }
+        name: "مسعد",
+        mainSubject: "science",
+        subjects: ["science", "frinch"]
     },
-    // {
-    //     id: 4,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذة ليلى",
-    //         en: "Ms. Leila"
-    //     },
-    //     content: {
-    //         ar: "مدرسة علوم  ",
-    //         en: "Science teacher  "
-    //     }
-    // },
-    // {
-    //     id: 5,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذ أحمد",
-    //         en: "Mr. Ahmed"
-    //     },
-    //     content: {
-    //         ar: "مدرس تاريخ ",
-    //         en: "History teacher "
-    //     }
-    // },
-    // {
-    //     id: 6,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذة ريم",
-    //         en: "Ms. Reem"
-    //     },
-    //     content: {
-    //         ar: "مدرسة فنون  ",
-    //         en: "Art teacher "
-    //     }
-    // },
-    // {
-    //     id: 7,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذ مصطفى",
-    //         en: "Mr. Mustafa"
-    //     },
-    //     content: {
-    //         ar: "مدرس تكنولوجيا  ",
-    //         en: "Technology teacher "
-    //     }
-    // },
-    // {
-    //     id: 8,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذة سمية",
-    //         en: "Ms. Samia"
-    //     },
-    //     content: {
-    //         ar: "مدرسة عربي ",
-    //         en: "Arabic teacher "
-    //     }
-    // },
-    // {
-    //     id: 9,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذ أحميدة",
-    //         en: "Mr. Ahmed"
-    //     },
-    //     content: {
-    //         ar: "مدرس موسيقى ",
-    //         en: "Music teacher "
-    //     }
-    // },
-    // {
-    //     id: 10,
-    //     imageSource: require('./assets/teachers/teacher.png'),
-    //     title: {
-    //         ar: "الأستاذة نورا",
-    //         en: "Ms. Nora"
-    //     },
-    //     content: {
-    //         ar: "مدرسة دين",
-    //         en: "Religion teacher "
-    //     }
-    // }
+];
+export const days = [
+    {
+        id: 1,
+        day: { ar: "السبت", en: "Sat" },
+        date: 18,
+        attend: true,
+        late: false,
+    },
+    {
+        id: 2,
+        day: { ar: "الأحد", en: "Sun" },
+        date: 19,
+        attend: true,
+        late: false,
+
+    },
+    {
+        id: 3,
+        day: { ar: "الاثنين", en: "Mon" },
+        date: 20,
+        attend: false,
+        late: false,
+
+    },
+    {
+        id: 4,
+        day: { ar: "الثلاثاء", en: "Tue" },
+        date: 21,
+        attend: true,
+        late: true,
+
+    },
+    {
+        id: 5,
+        day: { ar: "الأربعاء", en: "Wen" },
+        date: 22,
+        attend: true,
+        late: false,
+
+    },
+    {
+        id: 6,
+        day: { ar: "الخميس", en: "Thu" },
+        date: 23,
+        attend: true,
+        late: false,
+
+    },
+    {
+        id: 7,
+        day: { ar: "الجمعة", en: "Fri" },
+        date: 24,
+        attend: true,
+        late: false,
+
+    }
+];
+export const months = [
+    {
+        id: 1,
+        month: { ar: "مايو", en: "Jun" },
+        number: 6,
+        payed: true
+    },
+    {
+        id: 2,
+        month: { ar: "يونيو", en: "Jul" },
+        number: 7,
+        payed: true
+    },
+    {
+        id: 3,
+        month: { ar: "اغسطس", en: "Aug" },
+        number: 8,
+        payed: false
+    }
+
+]
+export const years = [
+    { en: "first", ar: "الصف الاول" },
+    { en: "first", ar: "الصف الاول" },
+    { en: "first", ar: "الصف الاول" },
+    { en: "first", ar: "الصف الاول" }];
+export const schoolTypes = [
+    { en: "Public School", ar: "مدرسة حكومية" },
+    { en: "Private School", ar: "مدرسة خاصة" },
+    { en: "International School", ar: "مدرسة دولية" },
+    { en: "Language School", ar: "مدرسة لغات" },
+    { en: "Experimental School", ar: "مدرسة تجريبية" },
+    { en: "Secondary Art School", ar: "مدرسة ثانوية فنية" },
+    { en: "Gifted Students School", ar: "مدرسة متفوقين" },
+    { en: "Al-Azhar School", ar: "مدرسة الازهر" },
 ];

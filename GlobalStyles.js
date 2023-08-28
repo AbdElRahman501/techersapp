@@ -29,16 +29,18 @@ export const Color = {
   darkgray: "#a1a8b0",
   input_fill: "#F9FAFB",
   input_stroke: "#CACDD1",
+  yellow: "#FBBC05",
+  red: "#FF5C5C",
 
 };
 /* Paddings */
 export const Padding = {
-  p_8xl: 27,
-  p_90xl: 109,
-  p_mini_6: 15,
-  p_23xl: 42,
   p_5xs: 8,
+  p_mini_6: 12,
+  p_base: 24,
+  p_23xl: 42,
   p_B: 74,
+  p_90xl: 109,
 };
 /* Paddings */
 export const Margin = {
@@ -60,6 +62,7 @@ export const Height = {
   br_lg: 56,
   br_xl: 71,
   nav_tap: 64,
+  teacher_tap: 64,
 
 };
 /* heights */
