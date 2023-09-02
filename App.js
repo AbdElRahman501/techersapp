@@ -1,5 +1,4 @@
-const Stack = createNativeStackNavigator();
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import OnboardingPages from "./screens/OnboardingPages";
@@ -22,7 +21,9 @@ import CommunityScreen from "./screens/CommunityScreen";
 import ScheduleScreen from "./screens/ScheduleScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import TapBottomNavigator from "./components/TapBottomNavigator";
+import TeacherScreen from "./screens/TeacherScreen";
 
+const Stack = createNativeStackNavigator();
 const App = () => {
   const [TheInitialRouteName, setInitialRouteName] = useState("");
   const [fontsLoaded] = useFonts({
@@ -37,46 +38,48 @@ const App = () => {
       <Provider store={store}>
         <ApplicationProvider {...eva} theme={eva.light}>
           <NavigationContainer>
-            {TheInitialRouteName ? (
-              <>
-                <StatusBar
-                  backgroundColor="transparent"
-                  barStyle="light-content"
-                />
-                <Stack.Navigator
-                  initialRouteName={TheInitialRouteName}
-                  screenOptions={{ headerShown: false }}
-                >
-                  <Stack.Screen name="OnboardingPages" component={OnboardingPages}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="SignUpOptions" component={SignUpOptions}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="SigninScreen" component={SigninScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="SignUpScreen" component={SignUpScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="UserDataScreen" component={UserDataScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="VerificationCodeScreen" component={VerificationCodeScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="Home" component={HomeScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="Community" component={CommunityScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="Schedule" component={ScheduleScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="Profile" component={ProfileScreen}
-                    options={{ headerShown: false }} />
-                  <Stack.Screen name="SubjectScreen" component={SubjectScreen}
-                    options={{ headerShown: false }} />
-                </Stack.Navigator>
-              </>
-            ) : (
-              <SplashScreen setInitialRouteName={setInitialRouteName} />
-            )}
-            <TapBottomNavigator />
+              {TheInitialRouteName ? (
+                <>
+                  <StatusBar
+                    backgroundColor="transparent"
+                    barStyle="light-content"
+                  />
+                  <Stack.Navigator
+                    initialRouteName={TheInitialRouteName}
+                    screenOptions={{ headerShown: false }}
+                  >
+                    <Stack.Screen name="OnboardingPages" component={OnboardingPages}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="SignUpOptions" component={SignUpOptions}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="SigninScreen" component={SigninScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="SignUpScreen" component={SignUpScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="UserDataScreen" component={UserDataScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="VerificationCodeScreen" component={VerificationCodeScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="Home" component={HomeScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="Community" component={CommunityScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="Schedule" component={ScheduleScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="Profile" component={ProfileScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="SubjectScreen" component={SubjectScreen}
+                      options={{ headerShown: false }} />
+                    <Stack.Screen name="TeacherScreen" component={TeacherScreen}
+                      options={{ headerShown: false }} />
+                  </Stack.Navigator>
+                </>
+              ) : (
+                <SplashScreen setInitialRouteName={setInitialRouteName} />
+              )}
+              <TapBottomNavigator />
           </NavigationContainer>
         </ApplicationProvider>
       </Provider>

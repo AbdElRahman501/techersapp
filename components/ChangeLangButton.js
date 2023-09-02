@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { ToggleLanguage } from "../store/actions/langActions";
 import { useDispatch, useSelector } from 'react-redux';
-import { Color, FontFamily, fontEm } from '../GlobalStyles';
+import { Color, FontFamily, FontSize } from '../GlobalStyles';
 
 export default function ChangeLangButton() {
     const dispatch = useDispatch();
@@ -10,25 +10,17 @@ export default function ChangeLangButton() {
     const { language } = useSelector((state) => state.languageState);
 
     return (
-        <TouchableOpacity
-            style={[styles.skipButton]}
-            onPress={() => dispatch(ToggleLanguage())}
-        >
+        <TouchableOpacity onPress={() => dispatch(ToggleLanguage())} >
             <Text style={styles.skipButtonText}>{language === 'en' ? 'Arabic' : 'English'}</Text>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    skipButton: {
-        marginTop: fontEm(1),
-        marginBottom: fontEm(1),
-        width: "40%",
-        justifyContent: "flex-end"
-    },
+
     skipButtonText: {
         textAlign: "left",
-        fontSize: fontEm(1),
+        fontSize: FontSize.size_lg,
         color: Color.gray_200,
         fontFamily: FontFamily.montserratArabic
     },

@@ -27,22 +27,31 @@ export default function HomeScreen() {
   }, [userInfo])
   console.log("🚀 ~ file: HomeScreen.js:15 ~ HomeScreen ~ loading, userInfo,:", loading, userInfo)
 
+  // const favTeachers = teachers.filter((item) => item.likes.find((x) => x.id !== 18));
+  const favTeachers = teachers.slice().filter((teacher) => {
+    return teacher.likes.some((like) => like.id === 18);
+  });
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
         <SafeAreaView style={[styles.container]} >
-          <HomeHeader />
+          <HomeHeader user={userInfo} />
           <AdsSlider />
           <SearchBar />
           <ContainerTitle style={{ marginTop: 0 }} title={t("my-subjects")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
           <SlideContainer data={subjects}  >
             <Subject />
           </SlideContainer>
-          <ContainerTitle title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
-          <SlideContainer data={teachers}  >
-            <TeacherCard />
-          </SlideContainer>
-          <ContainerTitle title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+          {favTeachers.length > 0 && <>
+            <ContainerTitle title={t("my-fav-teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
+            <SlideContainer data={favTeachers}  >
+              <TeacherCard />
+            </SlideContainer>
+          </>}
+          <ContainerTitle title={t("my teachers")} pressedTitle={t("see-all")} pressHandler={() => console.log("all")} />
           <SlideContainer data={teachers}  >
             <TeacherCard />
           </SlideContainer>

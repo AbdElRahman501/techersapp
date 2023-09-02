@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, Platform, Animated, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Platform,  TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
-import transition from '../actions/transition';
 import t from '../actions/changeLanguage';
 
 const MonthItem = React.memo(({ item }) => {
@@ -24,7 +23,7 @@ const MonthItem = React.memo(({ item }) => {
                     </Text>
                 </View>
                 <View style={[styles.subject, { height: 60, borderBottomRightRadius: 0 }]}>
-                    <Text style={styles.title} >{item.month[language]}</Text>
+                    <Text numberOfLines={1} lineBreakMode="tail" style={styles.title} >{item.month[language]}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>
@@ -57,7 +56,8 @@ const styles = StyleSheet.create({
     },
     card: {
         alignItems: 'center',
-        margin: 10
+        margin: 5,
+        height: 80,
     },
     title: {
         fontSize: FontSize.size_lg,

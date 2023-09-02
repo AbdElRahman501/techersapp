@@ -1,15 +1,21 @@
 import { StyleSheet, View, FlatList } from 'react-native'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-export default function SlideContainer({ data, children }) {
+export default function SlideContainer({ scrollAnimation, data, children, select, SelectedId, disabled, handelPress }) {
     const { language } = useSelector(state => state.languageState)
+    const flatListRef = useRef(null);
 
     const renderItem = useCallback(
         ({ item }) => {
-            return React.cloneElement(children, { item })
+            if (select) {
+                return React.cloneElement(children, { item, disabled, SelectedId, handelPress })
+            } else {
+                return React.cloneElement(children, { item, disabled })
+            }
         },
-        []
+        [SelectedId, disabled]
     );
 
     const keyExtractor = useMemo(
@@ -18,10 +24,35 @@ export default function SlideContainer({ data, children }) {
         },
         []
     );
+    const scrollToNext = (offset) => {
+        flatListRef.current.scrollToOffset({
+            offset,
+            animated: "smooth"
+        });
+    };
+
+    useEffect(() => {
+        if (scrollAnimation) {
+            setTimeout(() => {
+                scrollToNext(30)
+                setTimeout(() => {
+                    scrollToNext(0)
+                    setTimeout(() => {
+                        scrollToNext(30)
+                        setTimeout(() => {
+                            scrollToNext(0)
+                        }, 300)
+                    }, 200)
+                }, 200)
+            }, 5000)
+
+        }
+    }, [])
     return (
         <View style={styles.container}>
-            <View style={{  width: "100%", overflow: "hidden" }}>
+            <View style={{ width: "100%", overflow: "hidden" }}>
                 <FlatList
+                    ref={flatListRef}
                     data={data}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}

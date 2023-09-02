@@ -31,23 +31,27 @@ export const Color = {
   input_stroke: "#CACDD1",
   yellow: "#FBBC05",
   red: "#FF5C5C",
+  orange:"#FFA500",
 
 };
 /* Paddings */
 export const Padding = {
-  p_5xs: 8,
-  p_mini_6: 12,
-  p_base: 24,
-  p_23xl: 42,
-  p_B: 74,
-  p_90xl: 109,
+  p_sm: 8,
+  p_m: 12,
+  p_base: 18,
+  p_lg: 24,
+  p_xl: 32,
+  p_xxl: 48,
+  page_p: 20
 };
 /* Paddings */
 export const Margin = {
   m_base: 16,
+  m_sm: 12,
   m_m1: 18,
   m_lg: 24,
   m_xl: 48,
+  m_xxl: 64
 };
 /* border radiuses */
 export const Border = {
@@ -59,7 +63,9 @@ export const Border = {
 /* heights */
 export const Height = {
   hi_s: 32,
-  br_lg: 56,
+  hi_m: 48,
+  hi_md: 56,
+  br_lg: 64,
   br_xl: 71,
   nav_tap: 64,
   teacher_tap: 64,

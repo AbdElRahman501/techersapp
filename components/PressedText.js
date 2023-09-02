@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Color, FontFamily, fontEm } from '../GlobalStyles'
+import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import CustomText from './CustemText'
 
 
@@ -15,7 +15,7 @@ export default function PressedText({ title, pressHandler, style, disabled }) {
 const styles = StyleSheet.create({
     pressedText: {
         fontFamily: FontFamily.montserratArabic,
-        fontSize: fontEm(1),
+        fontSize: FontSize.size_base,
         marginHorizontal: 5
     },
 })

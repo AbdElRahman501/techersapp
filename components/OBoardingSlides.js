@@ -1,141 +1,138 @@
-import { StyleSheet, View, ImageBackground, Text, Animated, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import React from 'react'
-import { Color, Border, FontFamily, widthPercentage, heightPercentage, fontEm } from "../GlobalStyles";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef, useState, useCallback, useMemo } from 'react';
+import { View, StyleSheet, Text, VirtualizedList } from 'react-native';
+import { Color, FontFamily, FontSize, Height, Margin, Padding, widthPercentage } from '../GlobalStyles';
+import { info } from '../data';
+import OnboardSlide from './OnboardSlide';
+import PrimaryButton from './PrimaryButton';
+import { Ionicons } from '@expo/vector-icons';
+import Indicator from './Indicator';
+import { useNavigation } from "@react-navigation/native";
+import t from '../actions/changeLanguage';
 
-export default function OBoardingSlides({ num, setLastSlide }) {
-    const language = useSelector(state => state.languageState.language);
+export default function OBoardingSlides({ setLastSlide }) {
+    const flatListRef = useRef(null);
+    const [scrolledIndex, setScrolledIndex] = useState(0);
+    const navigation = useNavigation();
+    const start = t("start")
 
-    const info = [{
-        backgroundImageSource: require('../assets/onboardingBk1.png'),
-        imageSource: require('../assets/image1.png'),
-        title: {
-            ar: "العثور على أقرب معلم للطلاب",
-            en: "Find the Nearest Teachers for Students"
-        },
-        content: {
-            ar: "يمكنك استخدام التطبيق للبحث عن معلم بالاسم أو المادة أو المنطقة",
-            en: "The app can help you search for a teacher by name, subject, or location."
+    const scrollToNext = () => {
+        if (scrolledIndex < info.length - 1) {
+            flatListRef.current.scrollToIndex({
+                index: scrolledIndex + 1,
+                animated: "smooth"
+            });
+        } else {
+            navigation.navigate("SignUpOptions")
         }
-    }, {
-        backgroundImageSource: require('../assets/onboardingBk2.png'),
-        imageSource: require('../assets/onboarding2.png'),
-        title: {
-            ar: "متابعة تقدم الأبناء للأهل",
-            en: "Track Your Children's Progress for Parents"
-        },
-        content: {
-            ar: "يمكن للأهل معرفة مواعيد الدروس والواجبات والامتحانات وحضور وغياب أولادهم",
-            en: "The Al Ostaz App can help parents know their children's class schedules, homework, exams, and attendance."
+    };
+
+
+    const scrollToPrev = () => {
+        if (scrolledIndex > 0) {
+            flatListRef.current.scrollToIndex({
+                index: scrolledIndex - 1,
+                animated: "smooth"
+            });
         }
-    }, {
-        backgroundImageSource: require('../assets/onboardingBk3.png'),
-        imageSource: require('../assets/onboarding3.png'),
-        title: {
-            ar: "إضافة فعاليات ومتابعة تقدم الطلاب للمعلمين",
-            en: "Teachers Can Add Student Activities and Track Their Progress"
+    };
+    const renderItem = useCallback(
+        ({ item }) => {
+            return <OnboardSlide item={item} />;
         },
-        content: {
-            ar: "يمكن للمعلمين إضافة واجبات ونتائج الامتحانات ومتابعة حضور ونتائج الطلاب ومدفوعاتهم المالية",
-            en: "Teachers can add homework, exam grades, track student attendance, grades, and payments."
-        }
-    }];
-    useEffect(() => {
-        if (num === info.length - 1) {
-            setLastSlide(true)
-        } else (setLastSlide(false))
-    }, [num])
+        []
+    );
+    const keyExtractor = useMemo(
+        () => (item) => {
+            return item.id;
+        },
+        []
+    );
+
+    const onScroll = (event) => {
+        const offsetX = event.nativeEvent.contentOffset.x;
+        const currentIndex = Math.floor(offsetX / (widthPercentage(100) - 5));
+        setLastSlide(currentIndex === info.length - 1);
+        setScrolledIndex(currentIndex);
+    };
+
     return (
-        <ImageBackground
-            style={[styles.onboarding1Icon, styles.frameFlexBox]}
-            imageStyle={{
-                height: "80%",
-                resizeMode: "contain",
-                alignSelf: "flex-start"
-            }}
-            source={info[num].backgroundImageSource}
-        >
-            <View style={styles.frameFlexBox}>
+        <View style={styles.container}>
 
-                <ImageBackground
-                    style={styles.image1Icon}
-                    resizeMode="contain"
-                    source={info[num].imageSource}
+            <View style={{ flex: 1, width: widthPercentage(100) }}>
+                <VirtualizedList
+                    ref={flatListRef}
+                    data={info}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
+                    horizontal
+                    onScrollToIndexFailed={() => { }}
+                    pagingEnabled
+                    onScroll={onScroll}
+                    showsHorizontalScrollIndicator={false}
+                    getItemCount={() => info.length}
+                    getItem={(data, index) => data[index]}
+                    maxToRenderPerBatch={2}
+                    removeClippedSubviews={true}
+                    initialNumToRender={2}
                 />
-                <View
-                    style={[styles.rectangleParent, styles.parentFlexBox]}
-
-                >
-                    {info.map((x, i) => <Animated.View key={i} style={[num === i ? styles.frameChild : styles.frameItem, styles.frameLayout]} />)}
-                </View>
-                <Text style={[styles.title, styles.headlineTypo]} >{info[num].title[language]}</Text>
-                <Text style={[styles.content, styles.headlineTypo]}>{info[num].content[language]}</Text>
             </View>
-        </ImageBackground>
+            <View style={styles.flexContainer} >
+                {scrolledIndex !== info.length - 1 && <Indicator arr={info} activeIndex={scrolledIndex} />}
+                <View style={{ flexDirection: 'row' }}>
+                    {scrolledIndex > 0 &&
+                        <PrimaryButton style={[styles.button, styles.secButton]} onPress={scrollToPrev} >
+                            <Ionicons name="arrow-forward" size={24} style={{ transform: [{ rotate: '180deg' }] }}
+                                color={Color.darkcyan} />
+                        </PrimaryButton>
+                    }
+                    <PrimaryButton style={[styles.button, scrolledIndex === info.length - 1 && styles.flex, { marginLeft: Margin.m_m1 }]} onPress={scrollToNext} >
+                        {scrolledIndex === info.length - 1
+                            ? <Text style={styles.title} >{start}</Text>
+                            : <Ionicons name="arrow-forward" size={24} color={Color.white} />
+                        }
+                    </PrimaryButton>
+
+                </View>
+            </View>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
-    frameFlexBox: {
+    container: {
+        width: "100%",
+        paddingHorizontal: Padding.page_p,
         flex: 1,
-        alignItems: "center",
-        // justifyContent: "center"
-    },
-    parentFlexBox: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    headlineTypo: {
-        justifyContent: "center",
-        textAlign: "center"
-    },
-
-    image1Icon: {
-        height: heightPercentage(45),
-        width: widthPercentage(100)
-    },
-    frameChild: {
-        height: 20,
-        margin: 5,
-    },
-    frameItem: {
-        height: 5,
-        opacity: 0.3,
-        margin: 5,
-    },
-    rectangleParent: {
-        width: 25,
-        marginTop: 18,
-        height: 20,
-    },
-    frameLayout: {
-        width: 5,
-        backgroundColor: Color.darkcyan,
-        borderRadius: Border.br_37xl,
-    },
-    title: {
-        fontSize: fontEm(1.5),
-        color: Color.black,
-        margin: 12,
-        marginHorizontal: fontEm(1),
-        alignSelf: "stretch",
-        fontFamily: FontFamily.montserratArabic
+        justifyContent: 'center',
+        alignItems: 'center',
 
     },
-    content: {
-        fontSize: fontEm(1),
-        color: Color.gray_200,
-        margin: 12,
-        marginHorizontal: fontEm(1),
-        alignSelf: "stretch",
-        fontFamily: FontFamily.montserratArabic,
-        lineHeight: fontEm(1.5),
-
+    flexContainer: {
+        width: "100%",
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: Padding.p_xl
     },
-    onboarding1Icon: {
-        marginTop: heightPercentage(10),
+    button: {
+        width: Height.hi_md,
+        height: Height.hi_md,
+        borderRadius: Height.hi_md / 2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    secButton: {
+        backgroundColor: Color.white,
+        borderColor: Color.darkcyan,
+        borderWidth: 1
+    },
+    flex: {
         flex: 1
     },
+    title: {
+        fontSize: FontSize.size_xl,
+        fontFamily: FontFamily.montserratArabic,
+        color: Color.white
+    }
+
 })

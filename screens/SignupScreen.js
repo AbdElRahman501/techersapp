@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { Color, FontFamily, FontSize, Margin, Padding, fontEm } from '../GlobalStyles'
+import React, { useState } from 'react'
+import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
 import DividerWithText from '../components/DividerWithText ';
 import FancyInput from '../components/TextInput';
-import FancyButton from '../components/FancyButton';
 import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
@@ -13,7 +12,8 @@ import t from "../actions/changeLanguage";
 import { useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import { Lock_Svg, Mail_OutLine_Svg, User_Icon_Svg } from '../assets/icons/Icons';
-import { StatusBar } from 'expo-status-bar';
+import PrimaryButton from '../components/PrimaryButton';
+import { Ionicons } from '@expo/vector-icons';
 
 
 export default function SignUpScreen({ route }) {
@@ -34,10 +34,9 @@ export default function SignUpScreen({ route }) {
     };
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+                <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                 <View style={[styles.container]} >
-
-                    <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                     <View style={[styles.form]}>
                         <ImageBackground
                             style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
@@ -80,16 +79,24 @@ export default function SignUpScreen({ route }) {
                             </View>
 
                         </View>
-                        <FancyButton title={[t("sign up"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} disabled={!signUpData.policy} />
+                        <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy}>
+                            <Text style={styles.title}>
+                                {t("sign up")}
+                            </Text>
+                        </PrimaryButton>
                         <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base, flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
                             <Text style={styles.regularText}>{t("already have an account")}</Text>
                             <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />
                         </View>
                         <DividerWithText text={t("or")} />
-                        <FancyButton title={[t("sign up with google"), Color.input_fill, Color.black]}
-                            customStyles={{ borderWidth: 2, borderColor: Color.input_stroke }}
-                            leftIcon={["logo-google", fontEm(2), "orange"]}
-                            pressHandler={() => console.log("pressed")} />
+                        <PrimaryButton style={styles.googleButton} onPress={() => console.log("pressed")} disabled={!signUpData.policy}>
+                            <Ionicons style={{ marginRight: Margin.m_base }} name={"logo-google"} size={FontSize.size_lg}
+                                color={Color.orange} />
+                            <Text style={[styles.title, { color: Color.black }]}>
+                                {t("sign up with google")}
+                            </Text>
+                        </PrimaryButton>
+
                     </View>
 
                 </View>
@@ -104,6 +111,10 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         alignItems: 'center',
+        justifyContent: "center",
+        minHeight: heightPercentage(80),
+        paddingHorizontal: Padding.page_p,
+
     },
     parentFlexBox: {
         flexDirection: "row",
@@ -111,11 +122,11 @@ const styles = StyleSheet.create({
 
     },
     form: {
-        marginVertical: fontEm(1.5),
-        paddingHorizontal: fontEm(1),
-        flex: 1,
+        marginVertical: Margin.m_base,
+        marginHorizontal: Margin.m_base,
         width: "100%",
-        alignItems: 'center'
+        alignItems: 'center',
+        maxWidth: 400
     },
     inputField: {
         width: "100%",
@@ -123,25 +134,30 @@ const styles = StyleSheet.create({
     },
     error: {
         color: "red",
-        fontSize: fontEm(0.9),
+        fontSize: FontSize.size_sm,
         fontFamily: FontFamily.montserratArabic,
         paddingHorizontal: 8,
         marginVertical: 5
     },
     title: {
-        fontSize: fontEm(1.2),
+        fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(1)
+        color: Color.white
     },
     forgetPass: {
         width: "100%",
         flexDirection: "row",
         alignItems: "center"
     },
-
+    googleButton: {
+        maxWidth: 400,
+        backgroundColor: Color.white,
+        borderColor: Color.lightGray,
+        borderWidth: 2
+    },
     regularText: {
         color: Color.black,
         fontFamily: FontFamily.montserratArabic,
-        fontSize: fontEm(1),
+        fontSize: FontSize.size_base,
     },
 })

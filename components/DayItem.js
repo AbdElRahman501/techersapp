@@ -20,7 +20,7 @@ const DayItem = React.memo(({ item }) => {
                 </View>
 
                 <Animated.View style={[styles.subject, { height: transition(77, 60, 500, trigger), borderBottomRightRadius: transition(16, 0, 500, trigger) }]}>
-                    <Text style={styles.regular} >{item.day[language]}</Text>
+                    <Text numberOfLines={1} lineBreakMode="tail" style={styles.regular} >{item.day[language]}</Text>
                     <Text style={styles.title} >{item.date}</Text>
                     <Animated.View style={[styles.dot, {
                         opacity: transition(1, 0, 500, trigger),
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     },
     card: {
         alignItems: 'center',
-        margin: 10
+        margin: 5,
+        height: 80,
     },
     title: {
         fontSize: FontSize.size_xl,
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
     },
     state: {
         borderRadius: 16,
-
         position: 'absolute',
         width: 55,
         height: 80,

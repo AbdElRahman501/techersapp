@@ -1,37 +1,41 @@
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Color, FontFamily, FontSize, Margin, widthPercentage } from '../GlobalStyles'
+import { Color, FontFamily, FontSize, widthPercentage } from '../GlobalStyles'
 import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { Heart_Icon_Fill, Next_Icon } from '../assets/icons/Icons';
+import { useSelector } from 'react-redux'
+import { getSubjectTitle, getTextInputAlign, getTitle, isArabic } from '../actions/GlobalFunctions'
 
 
 export default function TeacherItem({ item, isSelected, togglePicker }) {
+    const { language } = useSelector(state => state.languageState)
     return (
-        <View style={isSelected ? styles.selectedItem : styles.item}>
-            <View>
+        <View style={[isSelected ? styles.selectedItem : styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
+            <View style={{ width: 30, alignItems: 'center' }}>
                 {isSelected &&
                     <TouchableOpacity onPress={() => console.log("liked")}>
-
                         <Heart_Icon_Fill fill={Color.darkcyan}  />
                     </TouchableOpacity>
                 }
             </View>
-            <View style={styles.content}>
+            <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
-                    <CustomText style={styles.title}>{item.name}</CustomText>
-                    <CustomText style={styles.regular}>{item.mainSubject}</CustomText>
+                    <CustomText numberOfLines={1} lineBreakMode="tail" style={[styles.title]}>{getTitle(item.gender, item.name)}</CustomText>
+                    <CustomText style={[styles.regular]}>{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
                 </View>
                 <CustomImage
-                    style={[styles.image, { marginRight: isSelected ? 0 : 30 }]}
+                    style={[styles.image]}
                     resizeMode="contain"
                     source={item.imageSource} />
-                {isSelected &&
-                    <TouchableOpacity style={styles.dropButton} onPress={togglePicker}>
-                        <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '90deg' }] }} />
-                    </TouchableOpacity>
+                <View style={[styles.dropButton]}>
+                    {isSelected &&
+                        <TouchableOpacity onPress={togglePicker}>
+                            <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '90deg' }] }} />
+                        </TouchableOpacity>
 
-                }
+                    }
+                </View>
             </View>
         </View>
     )
@@ -41,6 +45,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic,
+
     },
     regular: {
         fontFamily: FontFamily.montserratArabic,
@@ -49,8 +54,8 @@ const styles = StyleSheet.create({
     },
     item: {
         paddingVertical: 10,
-        paddingHorizontal: 20,
         width: widthPercentage(100),
+        paddingHorizontal: 10,
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
     selectedItem: {
         backgroundColor: Color.cyanBackGround,
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         height: 64,
         width: widthPercentage(100),
         justifyContent: 'space-between',
@@ -77,18 +82,21 @@ const styles = StyleSheet.create({
     dropButton: {
         height: "100%",
         width: 20,
-        marginLeft: 10
+        alignItems: 'center',
     },
     content: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        width: widthPercentage(100) - 60,
     },
-
+    info: {
+        width: widthPercentage(100) - (50 +20+80),
+    },
     image: {
         height: 60,
         width: 60,
-        borderRadius: 50,
-        marginHorizontal: Margin.m_base,
+        borderRadius: 30,
+        marginHorizontal: 10
     }
 })

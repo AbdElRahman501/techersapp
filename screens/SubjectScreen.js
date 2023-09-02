@@ -25,7 +25,7 @@ export default function SubjectScreen({ route }) {
     };
 
     const revDays = days.slice().reverse();
-    const revMonths = months.slice().reverse(); 
+    const revMonths = months.slice().reverse();
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={item.title[language]} />
@@ -34,19 +34,19 @@ export default function SubjectScreen({ route }) {
             </CustomDropdown>
             <ScrollView style={{ flex: 1 }} >
                 <View style={[styles.appContainer]}>
-                    <ContainerTitle title={"الحضور"} />
+                    <ContainerTitle title={t("attendance")} />
                     <SlideContainer data={revDays}  >
                         <DayItem />
                     </SlideContainer>
-                    <ContainerTitle title={"الواجبات"} />
+                    <ContainerTitle title={t("homework")} />
                     <SlideContainer data={revDays}  >
                         <DayItem />
                     </SlideContainer>
-                    <ContainerTitle title={"مصارف"} />
+                    <ContainerTitle title={t("payment")} />
                     <SlideContainer data={revMonths}  >
                         <MonthItem />
                     </SlideContainer>
-                    <ContainerTitle title={"الامتحانات"} />
+                    <ContainerTitle title={t("exams")} />
                     <SlideContainer data={revMonths}  >
                         <MonthItem />
                     </SlideContainer>

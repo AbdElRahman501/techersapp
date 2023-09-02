@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, ImageBackground, ScrollView, View, Text } from 'react-native'
+import React, { useState } from 'react';
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, ImageBackground, ScrollView, View, Text } from 'react-native'
 import BackHeader from '../components/BackHeader'
-import { Border, Color, FontFamily, FontSize, fontEm } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles';
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomText from '../components/CustemText';
 import { Lock_Svg } from '../assets/icons/Icons';
-import FancyButton from '../components/FancyButton';
-import { getTextInputAlign, submitCheck } from '../actions/GlobalFunctions';
+import { submitCheck } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
-import { signIn } from '../store/actions/userActions';
+import PrimaryButton from '../components/PrimaryButton';
 
 const ResetPasswordScreen = ({ route }) => {
     const { language } = useSelector(state => state.languageState)
@@ -28,7 +27,7 @@ const ResetPasswordScreen = ({ route }) => {
     const handleSubmit = () => {
         if (password === confirmPassword) {
             if (submitCheck({ password, password: confirmPassword }).isValid) {
-                dispatch(signIn({ email: userData.email, phoneNumber: userData.phoneNumber, password }))
+                // dispatch(signIn({ email: userData.email, phoneNumber: userData.phoneNumber, password }))
             } else {
                 setCheckInputs(true)
             }
@@ -47,9 +46,9 @@ const ResetPasswordScreen = ({ route }) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1 }}>
-                <View style={[styles.container]} >
-                    <BackHeader />
+            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+                <BackHeader />
+                <View style={styles.container} >
                     <View style={[styles.form]}>
                         <ImageBackground
                             style={{ height: fontEm(6), alignSelf: "center", width: "100%", marginBottom: fontEm(1) }}
@@ -72,12 +71,18 @@ const ResetPasswordScreen = ({ route }) => {
                         >
                             <Lock_Svg />
                         </FancyInput>
+
                         <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
                             {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                         </View>
-                        <FancyButton customStyles={{ marginTop: fontEm(2) }} title={[t(loading ? "loading" : "submit"), Color.darkcyan, Color.white]} pressHandler={handleSubmit} />
+                        <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
+                            <Text style={[styles.title, { color: Color.white }]}>
+                                {t(loading ? "loading" : "submit")}
+                            </Text>
+                        </PrimaryButton>
                     </View>
                 </View>
+
             </ScrollView>
         </TouchableWithoutFeedback>
     );
@@ -86,28 +91,29 @@ const ResetPasswordScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center'
+        width: "100%",
+        alignItems: 'center',
+        justifyContent: "center",
+        minHeight: heightPercentage(80),
+        paddingHorizontal: Padding.page_p,
+
     },
     form: {
-        flex: 1,
+        marginVertical: Margin.m_base,
+        marginHorizontal: Margin.m_base,
         width: "100%",
-        marginVertical: fontEm(1.5),
-        paddingHorizontal: fontEm(1),
+        alignItems: 'center',
+        maxWidth: 400
     },
     title: {
-        fontSize: fontEm(2),
+        fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(0.5),
-        textAlign: "center",
-
+        color: Color.black
     },
     regularText: {
-        fontSize: fontEm(1),
-        color: Color.gray_200,
+        color: Color.darkgray,
         fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(0.5),
-        textAlign: "center",
-
+        fontSize: FontSize.size_base,
     },
     inputField: {
         width: "100%",

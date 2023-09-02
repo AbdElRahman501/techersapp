@@ -1,10 +1,10 @@
-import { Keyboard, StyleSheet, TextInput, TouchableWithoutFeedback, ScrollView, View, Text } from 'react-native'
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import BackHeader from '../components/BackHeader'
 import t from '../actions/changeLanguage'
 import { formatPhoneNumber } from '../actions/GlobalFunctions';
 import CustomText from '../components/CustemText';
-import { Border, Color, FontFamily, fontEm } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles';
 import PressedText from '../components/PressedText';
 import { useSelector } from 'react-redux';
 import OTPInput from '../components/OTP';
@@ -26,9 +26,9 @@ export default function VerificationCodeScreen({ route }) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+                <BackHeader />
                 <View style={[styles.container]} >
-                    <BackHeader />
                     <View style={[styles.form]}>
                         <CustomText style={styles.title}>{t("enter-verification-code-title")}</CustomText>
                         <CustomText style={styles.regularText}>{t("enter-verification-code-description", { number: formatPhoneNumber(userData.parentPhone || userData.email) })}</CustomText>
@@ -49,7 +49,10 @@ export default function VerificationCodeScreen({ route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        width: "100%",
+        alignItems: 'center',
+        justifyContent: "center",
+        minHeight: heightPercentage(80)
     },
     parentFlexBox: {
         justifyContent: "center",
@@ -58,45 +61,26 @@ const styles = StyleSheet.create({
 
     },
     form: {
-        flex: 1,
         width: "100%",
-        marginVertical: fontEm(1.5),
-        paddingHorizontal: fontEm(1),
+        marginVertical: Margin.m_base,
+        paddingHorizontal: Padding.page_p,
     },
     title: {
-        fontSize: fontEm(2),
+        fontSize: FontSize.size_xxl,
         fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(0.5),
+        marginBottom: Margin.m_base,
         textAlign: "center",
 
     },
     regularText: {
-        fontSize: fontEm(1),
+        fontSize: FontSize.size_base,
         color: Color.gray_200,
         fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(0.5),
+        marginBottom: Margin.m_base,
         textAlign: "center",
 
     },
-    inputContainer: {
-        flex: 1,
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-    },
-    input: {
-        backgroundColor: Color.white,
-        borderRadius: Border.br_6xl,
-        borderWidth: 2,
-        height: fontEm(4),
-        width: fontEm(4),
-        fontSize: fontEm(2),
-        fontFamily: FontFamily.montserratArabic,
-        textAlign: "center",
-    },
-    fancyButton: {
-        marginVertical: fontEm(2),
-    }
+
 
 
 })

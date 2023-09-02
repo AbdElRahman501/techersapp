@@ -1,4 +1,4 @@
-import { StyleSheet, Image, View, BackHandler } from 'react-native'
+import { StyleSheet, Image, View, BackHandler, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Notification_icon_Svg } from '../assets/icons/Icons'
 import CustomText from './CustemText'
@@ -6,14 +6,16 @@ import t from '../actions/changeLanguage'
 import { Color, FontFamily, FontSize, fontEm } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { handleBackPress } from '../actions/navigationActions';
-import { useNavigationState } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 
-const HomeHeader = () => {
-    const { language } = useSelector(state => state.languageState)
 
-    const [history, setHistory] = useState([]);
+const HomeHeader = ({ user }) => {
+    const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
+
+    const { language } = useSelector(state => state.languageState)
+    const [history, setHistory] = useState([]);
 
     useEffect(() => {
         setHistory(navigationState.routes.map(route => route.name));
@@ -29,20 +31,21 @@ const HomeHeader = () => {
         };
     }, [history]);
 
-    const name = "Abdelrahman Ahmed"
-    const year = "الصف الثالث الثانوي"
+
     return (
         <View style={{ width: "100%", flexDirection: language === "en" ? "row" : "row-reverse", justifyContent: "space-between", marginTop: 10, alignItems: "center" }}>
             <View style={{ flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }}>
-                <Image
-                    style={{ height: fontEm(3.5), width: fontEm(3.5), borderRadius: 50 }}
-                    resizeMode="contain"
-                    source={require('../assets/teachers/boy.png')}
-                />
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                    <Image
+                        style={{ height: fontEm(3.5), width: fontEm(3.5), borderRadius: 50 }}
+                        resizeMode="contain"
+                        source={require('../assets/teachers/boy.png')}
+                    />
+                </TouchableOpacity>
                 <View style={{ marginHorizontal: fontEm(1) }}>
                     <CustomText style={[styles.title, { color: Color.darkcyan }]}>{t("welcome")}</CustomText>
-                    <CustomText style={styles.regularText}>{name}</CustomText>
-                    <CustomText style={styles.smallText}>{year}</CustomText>
+                    <CustomText style={styles.regularText}>{user?.fullName || ""}</CustomText>
+                    <CustomText style={styles.smallText}>{user?.schoolYear[language] || ""}</CustomText>
                 </View>
             </View>
             <Notification_icon_Svg

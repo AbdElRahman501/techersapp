@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
-import { Border, Color, FontFamily, fontEm, widthPercentage } from '../GlobalStyles'
+import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
 import { getTextInputAlign, inputChecker } from '../actions/GlobalFunctions';
 import { useSelector } from 'react-redux';
@@ -36,14 +36,14 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, ch
     return (
         <View style={[styles.inputField, { borderColor: error ? "red" : isFocused ? Color.darkcyan : Color.input_stroke, flexDirection: language === "en" ? "row" : "row-reverse" }]}>
             {!children ?
-                <Ionicons style={styles.rightIcon} name={rightIcon} size={fontEm(1.5)}
+                <Ionicons style={styles.rightIcon} name={rightIcon} size={FontSize.size_xl}
                     color={error ? "red" : isFocused ? Color.darkcyan : Color.darkgray} />
                 :
                 <View style={styles.rightIcon}>
                     {React.Children.map(children, (child) => {
                         return React.cloneElement(child, {
-                            width: fontEm(1.8),
-                            height: fontEm(1.8),
+                            width: 24,
+                            height: 24,
                             viewBox: "0 0 24 24",
                             color: error ? "red" : isFocused ? Color.darkcyan : Color.darkgray
                         });
@@ -54,7 +54,7 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, ch
 
             <TextInput style={[styles.input, {
                 textAlign: language === "en" ? "left" : (getTextInputAlign(value) || "right"),
-                paddingLeft: (language === "ar" && inputType !== "password" && getTextInputAlign(value) === "left" && !success) ? fontEm(3.5) : 0
+                paddingLeft: (language === "ar" && inputType !== "password" && getTextInputAlign(value) === "left" && !success) ? Height.hi_md : 0
             }]}
                 placeholder={placeholder}
                 secureTextEntry={!viewPass && inputType === "password"}
@@ -76,11 +76,11 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, ch
             {inputType === "password"
                 ?
                 <TouchableOpacity style={styles.leftIcon} onPress={() => setViewPass(pv => pv ? false : true)}>
-                    <Ionicons name={viewPass ? "eye-outline" : "eye-off-outline"} size={fontEm(1.5)}
+                    <Ionicons name={viewPass ? "eye-outline" : "eye-off-outline"} size={FontSize.size_xl}
                         color={isFocused ? Color.darkcyan : Color.darkgray} />
                 </TouchableOpacity>
                 : success &&
-                < Ionicons style={styles.leftIcon} name={"checkmark"} size={fontEm(1.5)} color={Color.darkcyan} />
+                < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
             }
 
 
@@ -93,44 +93,35 @@ const styles = StyleSheet.create({
 
     inputField: {
         width: "100%",
-        maxWidth: 500,
-        height: fontEm(3.5),
+        maxWidth: 400,
+        height: Height.hi_md,
         borderWidth: 1,
         borderColor: Color.input_stroke,
-        backgroundColor: Color.white,
+        backgroundColor: Color.input_fill,
         borderRadius: Border.br_6xl,
         marginTop: 18,
     },
     input: {
-        // width: widthPercentage(100),
         flex: 1,
-        height: fontEm(3.5),
-        // paddingHorizontal: fontEm(3.5),
+        height: Height.hi_md,
         fontFamily: FontFamily.montserratArabic,
-        fontSize: fontEm(1.2)
+        fontSize: FontSize.size_md
     },
     leftIcon: {
-        // flex: 1,
         textAlign: "center",
         textAlignVertical: "center",
-        width: fontEm(3.5),
-        height: fontEm(3.5),
-        // position: "absolute",
-        // bottom: 0,
-        // left: 0,
+        width: Height.hi_md,
+        height: Height.hi_md,
         justifyContent: "center",
         alignItems: "center"
     },
     rightIcon: {
         textAlign: "center",
         textAlignVertical: "center",
-        width: fontEm(3.5),
-        height: fontEm(3.5),
+        width: Height.hi_md,
+        height: Height.hi_md,
         justifyContent: "center",
         alignItems: "center"
-        // position: "absolute",
-        // bottom: 0,
-        // right: 0
     }
 
 });

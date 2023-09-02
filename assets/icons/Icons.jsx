@@ -375,7 +375,7 @@ export const Heart_Icon_Fill = (props) => (
     width={22}
     height={19}
     fill="none"
-    stroke="#199A8E"
+    {...props}
   >
     <Path
       fill={props.fill || "#199A8E"} stroke={props.color || "none"} strokeWidth={1.5} 
@@ -383,7 +383,7 @@ export const Heart_Icon_Fill = (props) => (
     />
   </Svg>
 )
-export const Chat = (props) => (
+export const Chat_Icon = (props) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={20}

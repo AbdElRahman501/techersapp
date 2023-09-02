@@ -133,3 +133,48 @@ export const formatPhoneNumber = (phoneNumber) => {
     const visiblePart = phoneNumber.substr(0, 3) + '*'.repeat(maskedDigits) + phoneNumber.substr(-2);
     return visiblePart;
 }
+
+export const formatDistance = (distance, lang) => {
+    if (distance >= 1000) {
+        const kilometers = distance / 1000;
+        return kilometers.toFixed(0) + (lang === 'ar' ? ' كم' : ' km');
+    } else {
+        return distance + (lang === 'ar' ? ' م' : ' m');
+    }
+};
+export const checkArrayForUserId = (array, userId) => {
+    return array.some((item) => item.id === userId);
+};
+
+export const getTitle = (gender, name) => {
+    let language = isArabic(name) ? "ar" : "en"
+    if (language === 'ar') {
+        if (gender === 'male') {
+            return 'الأستاذ. ' + name;
+        } else if (gender === 'female') {
+            return 'الأستاذة. ' + name;
+        }
+    } else if (language === 'en') {
+        if (gender === 'male') {
+            return 'Mr. ' + name;
+        } else if (gender === 'female') {
+            return 'Ms. ' + name;
+        }
+    }
+
+    return '';
+}
+export const getSubjectTitle = (gender, subject) => {
+    let language = isArabic(subject) ? "ar" : "en"
+    if (language === 'ar') {
+        if (gender === 'male') {
+            return 'مدرس ' + subject;
+        } else if (gender === 'female') {
+            return 'مدرسة ' + subject;
+        }
+    } else if (language === 'en') {
+        return subject + " Teacher";
+    }
+
+    return '';
+}

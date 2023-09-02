@@ -1,29 +1,147 @@
+
+export const info = [{
+    id: 1,
+    backgroundImageSource: require('./assets/onboardingBk1.png'),
+    imageSource: require('./assets/image1.png'),
+    title: {
+        ar: "العثور على أقرب معلم للطلاب",
+        en: "Find the Nearest Teachers for Students"
+    },
+    content: {
+        ar: "يمكنك استخدام التطبيق للبحث عن معلم بالاسم أو المادة أو المنطقة",
+        en: "The app can help you search for a teacher by name, subject, or location."
+    }
+}, {
+    id: 2,
+    backgroundImageSource: require('./assets/onboardingBk2.png'),
+    imageSource: require('./assets/onboarding2.png'),
+    title: {
+        ar: "متابعة تقدم الأبناء للأهل",
+        en: "Track Your Children's Progress for Parents"
+    },
+    content: {
+        ar: "يمكن للأهل معرفة مواعيد الدروس والواجبات والامتحانات وحضور وغياب أولادهم",
+        en: "The Al Ostaz App can help parents know their children's class schedules, homework, exams, and attendance."
+    }
+}, {
+    id: 3,
+    backgroundImageSource: require('./assets/onboardingBk3.png'),
+    imageSource: require('./assets/onboarding3.png'),
+    title: {
+        ar: "إضافة فعاليات ومتابعة تقدم الطلاب للمعلمين",
+        en: "Teachers Can Add Student Activities and Track Their Progress"
+    },
+    content: {
+        ar: "يمكن للمعلمين إضافة واجبات ونتائج الامتحانات ومتابعة حضور ونتائج الطلاب ومدفوعاتهم المالية",
+        en: "Teachers can add homework, exam grades, track student attendance, grades, and payments."
+    }
+}];
 export const subjects = [
     { id: 1, title: { ar: "فيزياء", en: "Physics" }, imageSource: require('./assets/subjects/physics.png') },
     { id: 2, title: { ar: "رياضايات", en: "Math" }, imageSource: require('./assets/subjects/math.png') },
     { id: 3, title: { ar: "انجليزي", en: "English" }, imageSource: require('./assets/subjects/english.png') },
 ]
+export const userData = {
+    "address": "banha",
+    "birthDay": "06/18/2000",
+    "educationType": { "ar": "مدرسة حكومية", "en": "Public School" },
+    "email": "abdelrahman.6182@gmail.com",
+    "fullName": "Abdelrahman Ahmed",
+    "parentPhoneNumber": "01015753392",
+    "password": "bedo4ahmed", "phoneNumber": "01015753392",
+    "policy": true,
+    "schoolYear": { "ar": "الصف الثاني الثانوي", "en": "Second grade secondary" },
+    "user": "student"
+}
+
 export const teachers = [
     {
         id: 1,
         imageSource: require('./assets/teachers/teacher.png'),
-        name: "Ahmed",
-        mainSubject: "physics",
-        subjects: ["physics", "math"]
+        name: "Ahmed Mohamed",
+        mainSubject: { ar: "فيزياء", en: "physics" },
+        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        distance: 1200,
+        gender: "male",
+        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+        price: 300,
+        likes: [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+        ]
     },
     {
         id: 2,
         imageSource: require('./assets/teachers/teacher.png'),
-        name: "mohamed",
-        mainSubject: "english",
-        subjects: ["english", "math"]
+        name: "Mohamed Ahmed",
+        mainSubject: { ar: "فيزياء", en: "physics" },
+        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        gender: "male",
+        distance: 800,
+        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+        price: 200,
+        likes: [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+            { id: 4 }
+        ]
+
     },
     {
         id: 3,
         imageSource: require('./assets/teachers/teacher.png'),
-        name: "مسعد",
-        mainSubject: "science",
-        subjects: ["science", "frinch"]
+        name: "مسعد سعيد",
+        mainSubject: { ar: "اللغة الانجليزية", en: "English" },
+        subjects: [{ ar: "اللغة الانجليزية", en: "English" }],
+        gender: "male",
+        distance: 11500,
+        about: `هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة  هذه نبذة `,
+        price: 400,
+        likes: [
+            { id: 1 },
+
+        ]
+
+    },
+    {
+        id: 4,
+        imageSource: require('./assets/teachers/teacher.png'),
+        name: "Amira Ahmed",
+        mainSubject: { ar: "رياضيات", en: "math" },
+        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        gender: "female",
+        distance: 11500,
+        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+        price: 220,
+        likes: [
+            { id: 1 },
+            { id: 18 },
+
+        ]
+
+    },
+    {
+        id: 5,
+        imageSource: require('./assets/teachers/teacher.png'),
+        name: "Shahinda Abdelrahman",
+        mainSubject: { ar: "فن", en: "art" },
+        subjects: [{ ar: "فن", en: "art" }, { ar: "موسيقى", en: "music" }],
+        gender: "female",
+        distance: 250,
+        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+        price: 220,
+        likes: [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+            { id: 4 },
+            { id: 5 },
+            { id: 18 }
+
+        ]
+
     },
 ];
 export const days = [
@@ -105,10 +223,10 @@ export const months = [
 
 ]
 export const years = [
-    { en: "first", ar: "الصف الاول" },
-    { en: "first", ar: "الصف الاول" },
-    { en: "first", ar: "الصف الاول" },
-    { en: "first", ar: "الصف الاول" }];
+    { en: "First grade secondary", ar: "الصف الاول الثانوي" },
+    { en: "Second grade secondary", ar: "الصف الثاني الثانوي" },
+    { en: "Third grade secondary", ar: "الصف الثالث الثانوي" }
+];
 export const schoolTypes = [
     { en: "Public School", ar: "مدرسة حكومية" },
     { en: "Private School", ar: "مدرسة خاصة" },
@@ -118,4 +236,34 @@ export const schoolTypes = [
     { en: "Secondary Art School", ar: "مدرسة ثانوية فنية" },
     { en: "Gifted Students School", ar: "مدرسة متفوقين" },
     { en: "Al-Azhar School", ar: "مدرسة الازهر" },
+];
+
+export const hours = [
+    { "id": 4, "time": "9:00 AM", "timeIn24Format": "9:00AM" },
+    { "id": 7, "time": "12:00 PM", "timeIn24Format": "12:00PM" },
+    { "id": 9, "time": "2:00 PM", "timeIn24Format": "2:00PM" },
+    { "id": 10, "time": "3:00 PM", "timeIn24Format": "3:00PM" },
+    { "id": 12, "time": "5:00 PM", "timeIn24Format": "5:00PM" },
+    { "id": 13, "time": "6:00 PM", "timeIn24Format": "6:00PM" },
+    { "id": 15, "time": "8:00 PM", "timeIn24Format": "8:00PM" }
+]
+
+export const friends = [
+    {
+        id: 1, name: 'John', distance: 10,
+        imageSource: require('./assets/teachers/boy.png')
+    },
+    {
+        id: 2, name: 'Alice', distance: 5,
+        imageSource: require('./assets/teachers/boy.png')
+    },
+    {
+        id: 3, name: 'Bob', distance: 8,
+        imageSource: require('./assets/teachers/boy.png')
+    },
+    {
+        id: 4, name: 'Emily', distance: 12,
+        imageSource: require('./assets/teachers/boy.png')
+    },
+    // Add more friend objects as needed
 ];

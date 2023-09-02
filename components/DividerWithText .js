@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Color, FontFamily, Margin, fontEm } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, fontEm } from '../GlobalStyles';
 
 const DividerWithText = ({ text }) => {
     return (
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     line: {
         flex: 1,
         height: 1,
-        backgroundColor: Color.darkgray, // Adjust the color of the divider as needed
+        backgroundColor: Color.lightGray, // Adjust the color of the divider as needed
     },
     text: {
         marginHorizontal: Margin.m_base,
-        fontSize: fontEm(1.2),
+        fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic,
         color: Color.darkgray, // Adjust the color of the text as needed
     },

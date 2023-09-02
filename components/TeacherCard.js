@@ -1,12 +1,22 @@
 import { StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
-import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/core';
+import { checkArrayForUserId, formatDistance, getSubjectTitle, } from '../actions/GlobalFunctions'
+import { useSelector } from 'react-redux';
+import { Heart_Icon_Fill } from '../assets/icons/Icons';
+
 
 const TeacherCard = React.memo(({ item }) => {
+    const navigation = useNavigation()
     const { language } = useSelector(state => state.languageState)
+    const id = 18
+    const handlePress = () => {
+        navigation.navigate("TeacherScreen", { item })
+    }
+
     return (
-        <TouchableOpacity style={styles.card} onPress={() => console.log(item.id)} >
+        <TouchableOpacity style={styles.card} onPress={handlePress} >
             <View style={styles.imagContainer}>
                 <Image
                     style={{ height: 100, width: 100, borderRadius: 50 }}
@@ -18,11 +28,18 @@ const TeacherCard = React.memo(({ item }) => {
                     }
                 />
             </View>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.regular}>{item.mainSubject}</Text>
+            <Text style={styles.title} numberOfLines={1} lineBreakMode='tail'>{item.name}</Text>
+            <Text style={styles.regular} numberOfLines={1} lineBreakMode='tail' >{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Text style={styles.likes}>25</Text>
-                <Text style={styles.regular}>800 متر</Text>
+                <View style={styles.likes}>
+                    <Heart_Icon_Fill
+                        width={10} height={10}
+                        viewBox="0 0 22 19"
+                        fill={checkArrayForUserId(item.likes, id) ? Color.darkcyan : "none"}
+                        color={checkArrayForUserId(item.likes, id) ? "none" : Color.darkcyan} />
+                    <Text style={[styles.regular, { color: Color.darkcyan }]}>{item.likes.length}</Text>
+                </View>
+                <Text style={styles.regular}>{formatDistance(item.distance, language)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -49,7 +66,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: FontSize.size_lg,
+        fontSize: FontSize.size_base,
         fontFamily: FontFamily.montserratArabic,
     },
     regular: {
@@ -59,9 +76,13 @@ const styles = StyleSheet.create({
     },
     likes: {
         backgroundColor: Color.cyanBackGround,
-        color: Color.darkcyan,
         paddingVertical: 2,
         paddingHorizontal: 6,
-        borderRadius: 5
-    }
+        borderRadius: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: 35
+    },
+
 }) 
