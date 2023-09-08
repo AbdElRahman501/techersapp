@@ -178,3 +178,18 @@ export const getSubjectTitle = (gender, subject) => {
 
     return '';
 }
+
+export const filterArrayByIds = (array, idArray) => {
+    const ids = idArray.map(x => x.id)
+    return array.filter(item => ids.includes(item.id));
+};
+
+export const searchEngin = (array, value) => {
+    if (value) {
+        
+        return (array.filter(item => item.name.toLowerCase().includes(value.toLowerCase())))
+    }else{
+        return array
+    }
+
+}
