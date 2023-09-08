@@ -4,7 +4,7 @@ import { Color, FontFamily, Margin, fontEm, heightPercentage } from '../GlobalSt
 import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
-export default function BackHeader({ title }) {
+export default function BackHeader({ title, onPress, onPressHandler }) {
     const statusBarHeight = StatusBar.currentHeight;
     const navigation = useNavigation();
 
@@ -29,8 +29,8 @@ export default function BackHeader({ title }) {
         navigation.goBack();
     };
     return (
-        <View style={[styles.header, { marginTop: statusBarHeight + 25 , marginBottom: Margin.m_base }]}>
-            {history.length > 1 && <TouchableOpacity onPress={handleGoBack}>
+        <View style={[styles.header, { marginTop: statusBarHeight + 25, marginBottom: Margin.m_base }]}>
+            {(history.length > 1 || onPress) && <TouchableOpacity onPress={onPress ? onPressHandler : handleGoBack}>
                 <Image style={[styles.backIcon]}
                     source={require("../assets/icons/back-icon.png")}
                 />

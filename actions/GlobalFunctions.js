@@ -186,10 +186,18 @@ export const filterArrayByIds = (array, idArray) => {
 
 export const searchEngin = (array, value) => {
     if (value) {
-        
+
         return (array.filter(item => item.name.toLowerCase().includes(value.toLowerCase())))
-    }else{
+    } else {
         return array
     }
 
+}
+
+export const teacherByYears = (array, year) => {
+    return array.map(item => {
+        if (item.mainSubject.schoolYears.find(x => x.id === year.id)) {
+            return item
+        }
+    })
 }

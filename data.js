@@ -37,30 +37,25 @@ export const info = [{
     }
 }];
 export const subjects = [
-    { id: 1, title: { ar: "فيزياء", en: "Physics" }, imageSource: require('./assets/subjects/physics.png') },
-    { id: 2, title: { ar: "رياضايات", en: "Math" }, imageSource: require('./assets/subjects/math.png') },
-    { id: 3, title: { ar: "انجليزي", en: "English" }, imageSource: require('./assets/subjects/english.png') },
+    { id: 1, ar: "فيزياء", en: "Physics", imageSource: require('./assets/subjects/physics.png') },
+    { id: 2, ar: "رياضايات", en: "Math", imageSource: require('./assets/subjects/math.png') },
+    { id: 3, ar: "انجليزي", en: "English", imageSource: require('./assets/subjects/english.png') },
+    { id: 4, ar: "فن", en: "art", imageSource: require('./assets/subjects/english.png') },
+    { id: 5, ar: "موسيقي", en: "music", imageSource: require('./assets/subjects/english.png') },
 ]
-export const userData = {
-    "address": "banha",
-    "birthDay": "06/18/2000",
-    "educationType": { "ar": "مدرسة حكومية", "en": "Public School" },
-    "email": "abdelrahman.6182@gmail.com",
-    "fullName": "Abdelrahman Ahmed",
-    "parentPhoneNumber": "01015753392",
-    "password": "bedo4ahmed", "phoneNumber": "01015753392",
-    "policy": true,
-    "schoolYear": { "ar": "الصف الثاني الثانوي", "en": "Second grade secondary" },
-    "user": "student"
-}
 
+export const years = [
+    { id: 1, en: "First grade secondary", ar: "الصف الاول الثانوي" },
+    { id: 2, en: "Second grade secondary", ar: "الصف الثاني الثانوي" },
+    { id: 3, en: "Third grade secondary", ar: "الصف الثالث الثانوي" }
+];
 export const teachers = [
     {
         id: 1,
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Ahmed Mohamed",
-        mainSubject: { ar: "فيزياء", en: "physics" },
-        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        subjects: [{ ...subjects[0], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[1], schoolYears: [years[0]] }],
         distance: 1200,
         gender: "male",
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -69,14 +64,14 @@ export const teachers = [
             { id: 1 },
             { id: 2 },
             { id: 3 },
-        ]
+        ],
     },
     {
         id: 2,
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Mohamed Ahmed",
-        mainSubject: { ar: "فيزياء", en: "physics" },
-        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        subjects: [{ ...subjects[0], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[1], schoolYears: [years[0]] }],
         gender: "male",
         distance: 800,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -93,8 +88,8 @@ export const teachers = [
         id: 3,
         imageSource: require('./assets/teachers/teacher.png'),
         name: "مسعد سعيد",
-        mainSubject: { ar: "اللغة الانجليزية", en: "English" },
-        subjects: [{ ar: "اللغة الانجليزية", en: "English" }],
+        mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        subjects: [{ ...subjects[0], schoolYears: [years[0], years[2]] }, { ...subjects[1], schoolYears: [years[2]] }],
         gender: "male",
         distance: 11500,
         about: `هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة  هذه نبذة `,
@@ -109,8 +104,8 @@ export const teachers = [
         id: 4,
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Amira Ahmed",
-        mainSubject: { ar: "رياضيات", en: "math" },
-        subjects: [{ ar: "فيزياء", en: "physics" }, { ar: "رياضيات", en: "math" }],
+        mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
+        subjects: [{ ...subjects[3], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[0], schoolYears: [years[0]] }],
         gender: "female",
         distance: 11500,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -126,8 +121,8 @@ export const teachers = [
         id: 5,
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Shahinda Abdelrahman",
-        mainSubject: { ar: "فن", en: "art" },
-        subjects: [{ ar: "فن", en: "art" }, { ar: "موسيقى", en: "music" }],
+        mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
+        subjects: [{ ...subjects[4], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[3], schoolYears: [years[0], years[1], years[2]] }],
         gender: "female",
         distance: 250,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -144,6 +139,28 @@ export const teachers = [
 
     },
 ];
+export const userData = {
+    "address": "banha",
+    "birthDay": "06/18/2000",
+    "educationType": { "ar": "مدرسة حكومية", "en": "Public School" },
+    "email": "abdelrahman.6182@gmail.com",
+    "fullName": "Abdelrahman Ahmed",
+    "parentPhoneNumber": "01015753392",
+    "password": "bedo4ahmed", "phoneNumber": "01015753392",
+    "policy": true,
+    "schoolYear": { "id": 1, "en": "First grade secondary", "ar": "الصف الاول الثانوي" },
+    "user": "student",
+    myFavTeachers: [
+        { id: 4 },
+        { id: 5 },
+    ],
+    myTeachers: [
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+    ]
+}
 export const days = [
     {
         id: 1,
@@ -222,11 +239,7 @@ export const months = [
     }
 
 ]
-export const years = [
-    { en: "First grade secondary", ar: "الصف الاول الثانوي" },
-    { en: "Second grade secondary", ar: "الصف الثاني الثانوي" },
-    { en: "Third grade secondary", ar: "الصف الثالث الثانوي" }
-];
+
 export const schoolTypes = [
     { en: "Public School", ar: "مدرسة حكومية" },
     { en: "Private School", ar: "مدرسة خاصة" },

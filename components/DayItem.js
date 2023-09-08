@@ -19,13 +19,9 @@ const DayItem = React.memo(({ item }) => {
                     </Text>
                 </View>
 
-                <Animated.View style={[styles.subject, { height: transition(77, 60, 500, trigger), borderBottomRightRadius: transition(16, 0, 500, trigger) }]}>
+                <Animated.View style={[styles.subject, { height: 60, borderBottomRightRadius: 0 }]}>
                     <Text numberOfLines={1} lineBreakMode="tail" style={styles.regular} >{item.day[language]}</Text>
                     <Text style={styles.title} >{item.date}</Text>
-                    <Animated.View style={[styles.dot, {
-                        opacity: transition(1, 0, 500, trigger),
-                        backgroundColor: item.attend ? item.late ? Color.yellow : Color.darkcyan : Color.red
-                    }]}></Animated.View>
                 </Animated.View>
 
             </View>

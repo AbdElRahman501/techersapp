@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity, VirtualizedList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Color, FontFamily, FontSize, heightPercentage, widthPercentage } from '../GlobalStyles';
 import { Next_Icon } from '../assets/icons/Icons';
 import { GestureHandlerRootView, State } from 'react-native-gesture-handler';
@@ -82,8 +82,8 @@ export default function AdsSlider() {
                 <TouchableOpacity style={styles.button} onPress={scrollToPrev}>
                     <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
                 </TouchableOpacity>
-                <View style={{ flex: 1, width: widthPercentage(100) - 48 }}>
-                    <VirtualizedList
+                <View style={{ flex: 1, overflow: 'hidden', width: widthPercentage(100) - 48 }}>
+                    <FlatList
                         ref={flatListRef}
                         data={teachers}
                         renderItem={renderItem}
@@ -93,11 +93,10 @@ export default function AdsSlider() {
                         pagingEnabled
                         onScroll={onScroll}
                         showsHorizontalScrollIndicator={false}
-                        getItemCount={() => teachers.length}
-                        getItem={(data, index) => data[index]}
-                        maxToRenderPerBatch={2}
+                        maxToRenderPerBatch={1}
                         removeClippedSubviews={true}
-                        initialNumToRender={2}
+                        initialNumToRender={1}
+                        windowSize={1}
                     />
                 </View>
                 <TouchableOpacity style={styles.button} onPress={scrollToNext}>

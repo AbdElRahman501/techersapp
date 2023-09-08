@@ -25,10 +25,12 @@ export default function SlideContainer({ scrollAnimation, data, children, select
         []
     );
     const scrollToNext = (offset) => {
-        flatListRef.current.scrollToOffset({
-            offset,
-            animated: "smooth"
-        });
+        if (flatListRef?.current) {
+            flatListRef.current.scrollToOffset({
+                offset,
+                animated: "smooth"
+            });
+        }
     };
 
     useEffect(() => {

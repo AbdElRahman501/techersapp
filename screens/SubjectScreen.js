@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
 import { useSelector } from 'react-redux';
 import { days, months, teachers } from '../data';
@@ -11,13 +11,16 @@ import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import DayItem from '../components/DayItem';
 import MonthItem from '../components/MonthItem';
+import { filterArrayByIds } from '../actions/GlobalFunctions';
 
 
 
 export default function SubjectScreen({ route }) {
-    const { language } = useSelector(state => state.languageState)
     const { item } = route.params;
-    const [selectedOption, setSelectedOption] = useState(teachers[0]);
+    const { language } = useSelector(state => state.languageState)
+    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const [subjectTeachers, setSubjectTeachers] = useState([]);
+    const [selectedOption, setSelectedOption] = useState();
 
     const handleSelect = option => {
         setSelectedOption(option);
@@ -26,27 +29,40 @@ export default function SubjectScreen({ route }) {
 
     const revDays = days.slice().reverse();
     const revMonths = months.slice().reverse();
-    return (
+
+    useEffect(() => {
+        if (userInfo) {
+            const myT = filterArrayByIds(teachers, userInfo.myTeachers)
+            const theTeachers = myT.filter(x => x.mainSubject.id === item.id)
+            console.log(myT.length, theTeachers[0]);
+            setSubjectTeachers(theTeachers);
+            setSelectedOption(theTeachers[0])
+        }
+    }, [userInfo])
+
+    const [attendance, homework, payment, exams] = [t("attendance"), t("homework"), t("payment"), t("exams")]
+
+    return selectedOption && (
         <SafeAreaView style={[styles.container]} >
-            <BackHeader title={item.title[language]} />
-            <CustomDropdown data={teachers} selectedItem={selectedOption} onSelect={handleSelect} height={250}  >
+            <BackHeader title={item[language]} />
+            <CustomDropdown data={subjectTeachers} selectedItem={selectedOption} onSelect={handleSelect} height={250}  >
                 <TeacherItem />
             </CustomDropdown>
             <ScrollView style={{ flex: 1 }} >
                 <View style={[styles.appContainer]}>
-                    <ContainerTitle title={t("attendance")} />
+                    <ContainerTitle title={attendance} />
                     <SlideContainer data={revDays}  >
                         <DayItem />
                     </SlideContainer>
-                    <ContainerTitle title={t("homework")} />
+                    <ContainerTitle title={homework} />
                     <SlideContainer data={revDays}  >
                         <DayItem />
                     </SlideContainer>
-                    <ContainerTitle title={t("payment")} />
+                    <ContainerTitle title={payment} />
                     <SlideContainer data={revMonths}  >
                         <MonthItem />
                     </SlideContainer>
-                    <ContainerTitle title={t("exams")} />
+                    <ContainerTitle title={exams} />
                     <SlideContainer data={revMonths}  >
                         <MonthItem />
                     </SlideContainer>

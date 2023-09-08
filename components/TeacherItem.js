@@ -1,21 +1,31 @@
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { Color, FontFamily, FontSize, widthPercentage } from '../GlobalStyles'
+import React, { useEffect, useState } from 'react'
+import { Color, FontFamily, FontSize, Height, Padding, widthPercentage } from '../GlobalStyles'
 import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { Heart_Icon_Fill, Next_Icon } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
-import { getSubjectTitle, getTextInputAlign, getTitle, isArabic } from '../actions/GlobalFunctions'
+import { checkArrayForUserId, getSubjectTitle, getTitle } from '../actions/GlobalFunctions'
 
 
-export default function TeacherItem({ item, isSelected, togglePicker }) {
+export default function TeacherItem({ item, isSelected, togglePicker, onlyOne }) {
     const { language } = useSelector(state => state.languageState)
+    const [liked, setLiked] = useState({ state: false, number: item.likes.length })
+    const id = 18
+
+    useEffect(() => {
+        if (checkArrayForUserId(item.likes, id) && !liked.state) {
+            setLiked(pv => ({ ...pv, state: true }))
+        }
+    }, [])
     return (
         <View style={[isSelected ? styles.selectedItem : styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={{ width: 30, alignItems: 'center' }}>
                 {isSelected &&
-                    <TouchableOpacity onPress={() => console.log("liked")}>
-                        <Heart_Icon_Fill fill={Color.darkcyan}  />
+                    <TouchableOpacity onPress={() => setLiked({ state: !liked.state, number: liked.state ? liked.number - 1 : liked.number + 1 })}>
+                        <Heart_Icon_Fill
+                            fill={liked.state ? Color.darkcyan : "none"}
+                            color={liked.state ? "none" : Color.darkcyan} />
                     </TouchableOpacity>
                 }
             </View>
@@ -29,7 +39,7 @@ export default function TeacherItem({ item, isSelected, togglePicker }) {
                     resizeMode="contain"
                     source={item.imageSource} />
                 <View style={[styles.dropButton]}>
-                    {isSelected &&
+                    {isSelected && onlyOne != 1 &&
                         <TouchableOpacity onPress={togglePicker}>
                             <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '90deg' }] }} />
                         </TouchableOpacity>
@@ -53,7 +63,7 @@ const styles = StyleSheet.create({
         color: Color.darkgray
     },
     item: {
-        paddingVertical: 10,
+        paddingVertical: Padding.teacher_tap,
         width: widthPercentage(100),
         paddingHorizontal: 10,
         justifyContent: 'space-between',
@@ -62,9 +72,9 @@ const styles = StyleSheet.create({
     },
     selectedItem: {
         backgroundColor: Color.cyanBackGround,
-        paddingVertical: 10,
+        paddingVertical: Padding.teacher_tap,
         paddingHorizontal: 10,
-        height: 64,
+        height: Height.teacher_tap,
         width: widthPercentage(100),
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -91,7 +101,7 @@ const styles = StyleSheet.create({
         width: widthPercentage(100) - 60,
     },
     info: {
-        width: widthPercentage(100) - (50 +20+80),
+        width: widthPercentage(100) - (50 + 20 + 80),
     },
     image: {
         height: 60,

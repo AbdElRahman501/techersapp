@@ -21,7 +21,7 @@ const SplashScreen = ({ setInitialRouteName }) => {
 
   useEffect(() => {
     if (!loading && hideSplashScreen) {
-      console.log("🚀 ~ file: SplashScreen.js:28 ~ useEffect ~ userInfo:", userInfo)
+      // console.log("🚀 ~ file: SplashScreen.js:28 ~ useEffect ~ userInfo:", userInfo)
       if (userInfo) {
         setInitialRouteName("Home")
       } else {
@@ -49,7 +49,7 @@ const SplashScreen = ({ setInitialRouteName }) => {
         <ImageBackground
           style={styles.icon}
           resizeMode="cover"
-          source={require("../assets/1splashscreen.png")}
+          source={require("../assets/splash.png")}
         >
           <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
             <Image
