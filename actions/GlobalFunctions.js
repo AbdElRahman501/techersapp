@@ -183,6 +183,13 @@ export const filterArrayByIds = (array, idArray) => {
     const ids = idArray.map(x => x.id)
     return array.filter(item => ids.includes(item.id));
 };
+export const findMyTeachers = (array, myTeachersArray) => {
+    const ids = myTeachersArray.map(x => x.id)
+    return array.filter(item => ids.includes(item.id)).map(x => {
+        const mainSubject = myTeachersArray.find(y => y.id === x.id).subject
+        return { ...x, mainSubject }
+    })
+};
 
 export const searchEngin = (array, value) => {
     if (value) {
@@ -200,4 +207,57 @@ export const teacherByYears = (array, year) => {
             return item
         }
     })
+}
+
+export const getTheWeek = () => {
+    function getWeek(startDay) {
+        const week = [];
+        let currentDay = new Date(startDay);
+
+        const dayNames = {
+            '0': { ar: 'الأحد', en: 'Sun' },
+            '1': { ar: 'الاثنين', en: 'Mon' },
+            '2': { ar: 'الثلاثاء', en: 'Tue' },
+            '3': { ar: 'الأربعاء', en: 'Wed' },
+            '4': { ar: 'الخميس', en: 'Thu' },
+            '5': { ar: 'الجمعة', en: 'Fri' },
+            '6': { ar: 'السبت', en: 'Sat' }
+        };
+
+        for (let i = 0; i < 7; i++) {
+            const dayId = currentDay.getDay().toString();
+            const day = {
+                day: dayNames[dayId],
+                date: currentDay.getDate().toString(),
+                id: dayId
+            };
+
+            week.push(day);
+            currentDay.setDate(currentDay.getDate() + 1);
+        }
+
+        return week;
+    }
+
+    // Example usage: Get the current week starting from Sunday
+    const today = new Date();
+    const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
+    const week = getWeek(sunday);
+    return week
+}
+
+export const transformTime = (time, language) => {
+    const [hour, minute] = time.split(':');
+    let convertedHour = parseInt(hour);
+    let period = language === 'ar' ? 'ص' : 'AM';
+
+    if (convertedHour >= 12) {
+        period = language === 'ar' ? 'م' : 'PM';;
+    }
+
+    if (convertedHour > 12) {
+        convertedHour -= 12;
+    }
+
+    return `${convertedHour}:${minute} ${period}`;
 }

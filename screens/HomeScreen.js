@@ -1,5 +1,5 @@
 import { Keyboard, ScrollView, Text, StyleSheet, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Color, Height, fontEm } from '../GlobalStyles'
 import HomeHeader from '../components/HomeHeader'
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import { subjects, teachers } from '../data';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { filterArrayByIds, teacherByYears } from '../actions/GlobalFunctions';
+import { filterArrayByIds, findMyTeachers, teacherByYears } from '../actions/GlobalFunctions';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -21,7 +21,7 @@ export default function HomeScreen() {
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [mySubjects, setMySubjects] = useState([])
   const [isFocused, setIsFocused] = useState(false);
-
+  const scrollViewRef = useRef();
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("see-all")]
 
   function removeDuplicatesById(array) {
@@ -31,7 +31,12 @@ export default function HomeScreen() {
 
     return uniqueArray;
   }
- 
+
+  useEffect(() => {
+    if (isFocused) {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    }
+  }, [isFocused])
   useEffect(() => {
     if (!userInfo) {
       navigation.reset({
@@ -39,18 +44,18 @@ export default function HomeScreen() {
         routes: [{ name: 'SigninScreen' }],
       });
     } else {
-      const myT = filterArrayByIds(teachers, userInfo.myTeachers)
-      const myFav = filterArrayByIds(teachers, userInfo.myFavTeachers)
+      const myT = findMyTeachers(teachers, userInfo.myTeachers)
+      const myFav = filterArrayByIds(myT, userInfo.myFavTeachers)
       setMyTeachers(myT)
       setMyFavTeachers(myFav)
       setMySubjects(removeDuplicatesById(myT.map(x => x.mainSubject)))
-      console.log(teacherByYears(teachers, userInfo.schoolYear));
     }
   }, [userInfo])
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={{ flex: 1, backgroundColor: Color.white }}
+        ref={scrollViewRef}
         scrollEnabled={!isFocused}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

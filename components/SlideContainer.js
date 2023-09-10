@@ -19,8 +19,12 @@ export default function SlideContainer({ scrollAnimation, data, children, select
     );
 
     const keyExtractor = useMemo(
-        () => (item) => {
-            return item.id;
+        () => (item, index) => {
+            if (item.id) {
+                return item.id;
+            } else {
+                return index
+            }
         },
         []
     );

@@ -42,6 +42,8 @@ export const subjects = [
     { id: 3, ar: "انجليزي", en: "English", imageSource: require('./assets/subjects/english.png') },
     { id: 4, ar: "فن", en: "art", imageSource: require('./assets/subjects/english.png') },
     { id: 5, ar: "موسيقي", en: "music", imageSource: require('./assets/subjects/english.png') },
+    { id: 6, ar: "كيمياء", en: "chemistry", imageSource: require('./assets/subjects/physics.png') },
+
 ]
 
 export const years = [
@@ -55,7 +57,188 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Ahmed Mohamed",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
-        subjects: [{ ...subjects[0], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[1], schoolYears: [years[0]] }],
+        subjects: [
+            {
+                ...subjects[0], schoolYears: [{
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                }, {
+                    ...years[2], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
+            },
+            {
+                ...subjects[5], schoolYears: [{
+                    ...years[0], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                },]
+            }]
+        ,
         distance: 1200,
         gender: "male",
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -71,7 +254,188 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Mohamed Ahmed",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
-        subjects: [{ ...subjects[0], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[1], schoolYears: [years[0]] }],
+        subjects: [
+            {
+                ...subjects[1], schoolYears: [{
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                }, {
+                    ...years[2], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
+            },
+            {
+                ...subjects[5], schoolYears: [{
+                    ...years[0], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                },]
+            }]
+        ,
         gender: "male",
         distance: 800,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -89,7 +453,188 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "مسعد سعيد",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
-        subjects: [{ ...subjects[0], schoolYears: [years[0], years[2]] }, { ...subjects[1], schoolYears: [years[2]] }],
+        subjects: [
+            {
+                ...subjects[0], schoolYears: [{
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                }, {
+                    ...years[2], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
+            },
+            {
+                ...subjects[5], schoolYears: [{
+                    ...years[0], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                },]
+            }]
+        ,
         gender: "male",
         distance: 11500,
         about: `هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة  هذه نبذة `,
@@ -105,7 +650,188 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Amira Ahmed",
         mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
-        subjects: [{ ...subjects[3], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[0], schoolYears: [years[0]] }],
+        subjects: [
+            {
+                ...subjects[3], schoolYears: [{
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                }, {
+                    ...years[2], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
+            },
+            {
+                ...subjects[2], schoolYears: [{
+                    ...years[0], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                },]
+            }]
+        ,
         gender: "female",
         distance: 11500,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -122,7 +848,188 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Shahinda Abdelrahman",
         mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
-        subjects: [{ ...subjects[4], schoolYears: [years[0], years[1], years[2]] }, { ...subjects[3], schoolYears: [years[0], years[1], years[2]] }],
+        subjects: [
+            {
+                ...subjects[4], schoolYears: [{
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "17:00", duration: 60 },
+
+
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "14:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                }, {
+                    ...years[2], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
+            },
+            {
+                ...subjects[3], schoolYears: [{
+                    ...years[0], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "9:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                    }
+                },]
+            }]
+        ,
         gender: "female",
         distance: 250,
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -148,23 +1055,55 @@ export const userData = {
     "parentPhoneNumber": "01015753392",
     "password": "bedo4ahmed", "phoneNumber": "01015753392",
     "policy": true,
-    "schoolYear": { "id": 1, "en": "First grade secondary", "ar": "الصف الاول الثانوي" },
+    "schoolYear": years[1],
     "user": "student",
     myFavTeachers: [
-        { id: 4 },
-        { id: 5 },
+        { id: 4, subject: subjects[3] },
+        { id: 5, subject: subjects[4] },
     ],
     myTeachers: [
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
+        {
+            id: 2, subject: subjects[1],
+            schedule: {
+                days: ["monday", "thursday"],
+                hours: { timeIn24Format: "11:00", duration: 60 }
+
+            }
+
+        },
+        {
+            id: 3, subject: subjects[0],
+            schedule: {
+                days: ["sunday", "wednesday"],
+                hours: { timeIn24Format: "14:00", duration: 60 },
+
+
+            }
+        },
+        {
+            id: 4, subject: subjects[3],
+            schedule: {
+                days: ["monday", "thursday"],
+                hours: { timeIn24Format: "14:00", duration: 60 },
+
+            }
+        },
+        {
+            id: 5, subject: subjects[4],
+            schedule: {
+                days: ["sunday", "wednesday"],
+                hours: { timeIn24Format: "11:00", duration: 60 }
+
+            }
+
+        },
     ]
 }
 export const days = [
     {
         id: 1,
         day: { ar: "السبت", en: "Sat" },
+        fullName: "saturday",
         date: 18,
         attend: true,
         late: false,
@@ -172,6 +1111,7 @@ export const days = [
     {
         id: 2,
         day: { ar: "الأحد", en: "Sun" },
+        fullName: "sunday",
         date: 19,
         attend: true,
         late: false,
@@ -180,6 +1120,7 @@ export const days = [
     {
         id: 3,
         day: { ar: "الاثنين", en: "Mon" },
+        fullName: "monday",
         date: 20,
         attend: false,
         late: false,
@@ -188,6 +1129,7 @@ export const days = [
     {
         id: 4,
         day: { ar: "الثلاثاء", en: "Tue" },
+        fullName: "tuesday",
         date: 21,
         attend: true,
         late: true,
@@ -196,6 +1138,7 @@ export const days = [
     {
         id: 5,
         day: { ar: "الأربعاء", en: "Wen" },
+        fullName: "wednesday",
         date: 22,
         attend: true,
         late: false,
@@ -204,6 +1147,7 @@ export const days = [
     {
         id: 6,
         day: { ar: "الخميس", en: "Thu" },
+        fullName: "thursday",
         date: 23,
         attend: true,
         late: false,
@@ -212,6 +1156,7 @@ export const days = [
     {
         id: 7,
         day: { ar: "الجمعة", en: "Fri" },
+        fullName: "friday",
         date: 24,
         attend: true,
         late: false,

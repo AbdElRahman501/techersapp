@@ -5,11 +5,9 @@ import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { Heart_Icon_Fill } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
-import { formatDistance, checkArrayForUserId, getTitle, getTextInputAlign } from '../actions/GlobalFunctions'
-import t from '../actions/changeLanguage'
+import { formatDistance, checkArrayForUserId, getTitle } from '../actions/GlobalFunctions'
 
-
-export default function TeacherMainCard({ item }) {
+export default function TeacherMainCard({ item, selectedSubject, setSelectedSubject, userInfo }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
     const id = 18
@@ -19,13 +17,25 @@ export default function TeacherMainCard({ item }) {
             setLiked(pv => ({ ...pv, state: true }))
         }
     }, [])
-    const and = t("and")
+
     return (
         <View style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item.gender, item.name)}</CustomText>
-                    <CustomText style={styles.regular}>{item.subjects.map(subject => subject[language]).join(" " + and + " ")}</CustomText>
+                    <View style={{ justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
+                        {item.subjects.map((subject, i) => {
+                            let subjectSchedule = subject.schoolYears.find(x => x.id === userInfo?.schoolYear.id)
+                            return <TouchableOpacity key={i} style={{ marginHorizontal: 10 }} disabled={!subjectSchedule} onPress={() => setSelectedSubject(subject)} >
+                                <CustomText style={[styles.regular, {
+                                    opacity: !subjectSchedule ? 0.5 : 1,
+                                    color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
+                                }]}>
+                                    {subject[language]}
+                                </CustomText>
+                            </TouchableOpacity>
+                        })}
+                    </View>
                     <View style={{ justifyContent: "space-between", flexDirection: language === 'en' ? 'row-reverse' : 'row', alignItems: "center" }}>
                         <TouchableOpacity style={[styles.likes, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]} onPress={() => setLiked({ state: !liked.state, number: liked.state ? liked.number - 1 : liked.number + 1 })}>
                             <Heart_Icon_Fill

@@ -11,7 +11,7 @@ import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import DayItem from '../components/DayItem';
 import MonthItem from '../components/MonthItem';
-import { filterArrayByIds } from '../actions/GlobalFunctions';
+import { filterArrayByIds, findMyTeachers } from '../actions/GlobalFunctions';
 
 
 
@@ -32,7 +32,7 @@ export default function SubjectScreen({ route }) {
 
     useEffect(() => {
         if (userInfo) {
-            const myT = filterArrayByIds(teachers, userInfo.myTeachers)
+            const myT = findMyTeachers(teachers, userInfo.myTeachers)
             const theTeachers = myT.filter(x => x.mainSubject.id === item.id)
             console.log(myT.length, theTeachers[0]);
             setSubjectTeachers(theTeachers);
