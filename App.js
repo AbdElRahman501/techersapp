@@ -16,14 +16,11 @@ const App = () => {
     return null;
   }
   return (
-    <>
-      <Provider store={store}>
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <MainComponents />
-        </ApplicationProvider>
-      </Provider>
-
-    </>
+    <Provider store={store}>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <MainComponents />
+      </ApplicationProvider>
+    </Provider>
   );
 };
 export default App;

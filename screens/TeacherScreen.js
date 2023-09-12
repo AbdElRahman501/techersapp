@@ -11,21 +11,29 @@ import Analytics from '../components/Analytics';
 import DayOption from '../components/DayOption';
 import HoursOption from '../components/HoursOption';
 import FriendItem from '../components/FriendItem';
-import { getTextInputAlign } from '../actions/GlobalFunctions';
+import { calculateEndTime, equalArs, getTextInputAlign, transformTime } from '../actions/GlobalFunctions';
 import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from "../store/actions/showMessageActions";
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
+    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+
     const [selectedDay, setSelectedDay] = useState([]);
-    const [hours, setHours] = useState([]);
     const [selectedHour, setSelectedHour] = useState("00:00");
     const [selectedSubject, setSelectedSubject] = useState()
-    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+
+    const [hours, setHours] = useState([]);
     const [mySchedules, setMySchedules] = useState([])
-    let [bookSeat, changeDate, bookedSeat] = [t("book your seat"), t("change date"), t("your seat is booked")]
-    const [buttonText, setButtonText] = useState(bookSeat)
+    const [myBookedHours, setMyBookedHours] = useState([])
+
+
+    let [bookSeat, changeDate, bookedSeat, chooseDay, chooseHour, and] =
+        [t("book your seat"), t("change date"), t("your seat is booked"), t("choose day"), t("choose hour"), t("and")];
+    const [buttonText, setButtonText] = useState({ text: bookSeat, role: "book" })
+
     const dayHandelPress = (fullName, teacherSchedules) => {
         let schedule = teacherSchedules || mySchedules
         if (schedule) {
@@ -39,26 +47,17 @@ export default function TeacherScreen({ route }) {
             setSelectedDay(times?.days || fullName)
         }
     }
-    useEffect(() => {
-        if (typeof selectedDay === "string") {
-            dayHandelPress(selectedDay)
-        }
-    }, [selectedDay])
 
     const hoursHandelPress = (id) => {
         setSelectedHour(id)
     }
 
-    const isInMyTeachers = (myTeachers, item) => {
-        return myTeachers.find(x => x.id === item.id)
-    }
-
     useEffect(() => {
         if (userInfo) {
-            let myItem = isInMyTeachers(userInfo?.myTeachers || [], item)
+            let myItem = userInfo?.myTeachers?.find(x => x.id === item.id)
             let mySubject = item.subjects.find((subject, i) => {
                 let subjectSchedule = subject.schoolYears.find(x => x.id === userInfo?.schoolYear.id)
-                if (myItem?.subject.id === subject.id) {
+                if (myItem?.subject?.id === subject.id) {
                     return subject
                 } else if (subjectSchedule) {
                     return subject
@@ -74,40 +73,99 @@ export default function TeacherScreen({ route }) {
         }
     }, [userInfo])
 
+    const changeSubjectHandler = (subject) => {
+        setSelectedSubject(subject)
+        let teacherSchedules = (subject.schoolYears.find(x => x.id === userInfo.schoolYear.id)?.schedule.male.times)
+        setSelectedDay([])
+        setHours([])
+        setSelectedHour("00:00")
+        setMySchedules(teacherSchedules)
+    }
+
     useEffect(() => {
         if (userInfo) {
-            let myItem = isInMyTeachers(userInfo?.myTeachers || [], item)
+            let myItem = userInfo?.myTeachers?.find(x => x.id === item.id)
             if (myItem && selectedHour !== "00:00" && selectedDay.length > 0 && selectedSubject) {
-                if ((selectedSubject.id !== myItem?.subject.id) || (selectedDay[0] !== myItem?.schedule.days[0]) || (selectedHour !== myItem?.schedule.hours.timeIn24Format)) {
-                    setButtonText(changeDate)
+                if ((selectedSubject.id === myItem?.subject.id)) {
+                    if ((!equalArs(selectedDay, myItem?.schedule.days)) || (selectedHour !== myItem?.schedule.hours.timeIn24Format)) {
+                        setButtonText({ text: changeDate, role: "change" })
+                    } else {
+                        setButtonText({ text: bookedSeat, role: "booked" })
+                    }
                 } else {
-                    setButtonText(bookedSeat)
+                    setButtonText({ text: bookSeat, role: "book" })
+                }
+            } else {
+                if (selectedDay.length === 0) {
+                    setButtonText({ text: chooseDay, role: "choose day" })
+                } else if (selectedHour === "00:00") {
+                    setButtonText({ text: chooseHour, role: "choose hour" })
+                } else {
+                    setButtonText({ text: bookSeat, role: "book" })
                 }
             }
         }
-    }, [selectedHour, selectedSubject, selectedDay, selectedHour])
+    }, [selectedHour, selectedSubject, selectedDay])
+
+
+    useEffect(() => {
+        if (userInfo && selectedDay.length > 0) {
+
+            let mySubject = userInfo.myTeachers?.find(x => x.id === item.id)?.subject
+
+            if (mySubject?.id === selectedSubject.id) {
+                let myBookedDates = userInfo.myTeachers?.filter(x => x.id !== item.id).filter(x => x.schedule.days[0] === selectedDay[0]).map(x => {
+                    return { ...x.schedule, id: x.id }
+                })
+                let myBookedHours = myBookedDates.map(x => {
+                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                })
+                setMyBookedHours(myBookedHours)
+            } else {
+                let myBookedDates = userInfo.myTeachers?.filter(x => x.schedule.days.includes(selectedDay[0])).map(x => {
+                    return { ...x.schedule, id: x.id }
+                })
+                let myBookedHours = myBookedDates.map(x => {
+                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                })
+                setMyBookedHours(myBookedHours)
+            }
+        }
+
+    }, [userInfo, selectedDay, selectedSubject])
+
+
+    const dispatch = useDispatch();
+    const { language } = useSelector((state) => state.languageState);
+    const showMessageHandler = () => {
+        if (selectedDay.length > 0 && selectedHour !== "00:00") {
+            let theDays = days.filter(x => selectedDay.includes(x.fullName)).map(x => x.day[language]).join(" " + and + " ")
+            let hours = transformTime(selectedHour, language)
+            dispatch(showMessage(language === "en" ? `You have been booked on ${theDays} at ${hours}` : `تم تحجز مقعدك في يوم ${theDays} الساعة ${hours}`));
+        }
+    }
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
             <ScrollView style={{ flex: 1 }}
-                showsVerticalScrollIndicator={false} // Hide vertical scroll bar
-                showsHorizontalScrollIndicator={false} // Hide horizontal scroll bar
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
             >
-                <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} setSelectedSubject={setSelectedSubject} />
+                <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
                 <View style={[styles.appContainer]}>
                     <ContainerTitle title={t("about teacher")} />
                     <LongText content={item.about} style={[styles.regular, { textAlign: getTextInputAlign(item.about) }]} />
                     <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <Analytics item={item} />
                     <ContainerTitle title={t("schedule")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
-                    <SlideContainer select={true} SelectedId={selectedDay} handelPress={dayHandelPress} data={days}  >
+                    <SlideContainer data={days} SelectedId={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />
                     </SlideContainer>
                     <View style={styles.lineContainer}>
                         <View style={styles.line} />
                     </View>
                     {hours.length > 0 &&
-                        <SlideContainer disabled={selectedDay === 0} select={true} SelectedId={selectedHour} handelPress={hoursHandelPress} data={hours}  >
+                        <SlideContainer myBookedHours={myBookedHours} data={hours} SelectedId={selectedHour} handelPress={hoursHandelPress}   >
                             <HoursOption />
                         </SlideContainer>
                     }
@@ -126,10 +184,9 @@ export default function TeacherScreen({ route }) {
                         EL {item.price}
                     </Text>
                 </View>
-                <PrimaryButton style={{ width: "65%" }} pressHandler={() => console.log("book")} disabled={selectedDay.length === 0 || selectedHour === "00:00"} >
-                    <Text style={styles.buttonText}>{buttonText}</Text>
+                <PrimaryButton style={{ width: "65%" }} onPress={showMessageHandler} disabled={selectedDay.length === 0 || selectedHour === "00:00" || buttonText.role === "booked"} >
+                    <Text style={styles.buttonText}>{buttonText.text}</Text>
                 </PrimaryButton>
-                {/* title, pressHandler, leftIcon, rightIcon, disabled, btnColor, customStyles */}
             </View>
         </SafeAreaView>
     )

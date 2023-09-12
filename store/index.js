@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import counterReducer from './reducers/counterReducer';
 import languageReducer from './reducers/languageReducer';
 import { signInReducer, userReducer } from './reducers/userReducer';
+import messageReducer from './reducers/messageReducer';
 
 
 const initialState = {
@@ -15,6 +16,7 @@ const store = configureStore({
     reducer: {
         counter: counterReducer,
         languageState: languageReducer,
+        messageState: messageReducer,
         userInfo: userReducer,
         userSignIn: signInReducer,
     },

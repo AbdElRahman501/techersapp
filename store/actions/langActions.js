@@ -1,4 +1,4 @@
-import { LANGUAGE } from "../constatnts/languageConstatnts";
+import { LANGUAGE } from "../constants/languageConstants";
 
 export const changeLanguage = (language) => async (dispatch) => {
     dispatch({

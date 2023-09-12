@@ -632,7 +632,67 @@ export const teachers = [
 
                         },
                     }
-                },]
+                }, {
+                    ...years[1], schedule: {
+                        male: {
+                            times: [
+                                {
+                                    days: ["saturday", "tuesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["friday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+
+                        },
+                        female: {
+                            times: [
+                                {
+                                    days: ["sunday", "wednesday"],
+                                    hours: [
+                                        { timeIn24Format: "10:00", duration: 60 },
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["monday", "thursday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "16:00", duration: 60 },
+                                    ]
+                                },
+                                {
+                                    days: ["tuesday", "saturday"],
+                                    hours: [
+                                        { timeIn24Format: "12:00", duration: 60 },
+                                        { timeIn24Format: "15:00", duration: 60 },
+                                        { timeIn24Format: "18:00", duration: 60 },
+                                    ]
+                                }
+                            ],
+                        },
+                    }
+                }]
             }]
         ,
         gender: "male",
@@ -1046,6 +1106,11 @@ export const teachers = [
 
     },
 ];
+export const emptyData = {
+    myFavTeachers: [],
+    myTeachers: []
+}
+
 export const userData = {
     "address": "banha",
     "birthDay": "06/18/2000",
@@ -1076,8 +1141,6 @@ export const userData = {
             schedule: {
                 days: ["sunday", "wednesday"],
                 hours: { timeIn24Format: "14:00", duration: 60 },
-
-
             }
         },
         {
@@ -1092,7 +1155,7 @@ export const userData = {
             id: 5, subject: subjects[4],
             schedule: {
                 days: ["sunday", "wednesday"],
-                hours: { timeIn24Format: "11:00", duration: 60 }
+                hours: { timeIn24Format: "11:00", duration: 90 }
 
             }
 

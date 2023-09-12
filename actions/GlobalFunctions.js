@@ -122,7 +122,17 @@ export const isArabic = (text) => {
     const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
     return arabicRegex.test(text);
 };
+export const getModifiedName = (fullName) => {
+    if (isArabic(fullName)) {
+        return fullName;
 
+    } else {
+        const names = fullName.split(' ');
+        const modifiedNames = names.filter((name, index) => index === 0 || index === names.length - 1);
+        const modifiedFullName = modifiedNames.map((name) => name.charAt(0).toUpperCase() + name.slice(1)).join(' ');
+        return modifiedFullName;
+    }
+}
 export const getTextInputAlign = (text) => {
     if (text) {
         return isArabic(text) ? "right" : "left";
@@ -260,4 +270,51 @@ export const transformTime = (time, language) => {
     }
 
     return `${convertedHour}:${minute} ${period}`;
+}
+export const calculateEndTime = (startTime, duration) => {
+    // Convert the start time to minutes
+    const [startHour, startMinute] = startTime.split(":");
+    const startMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+
+    // Calculate the end time in minutes
+    const endMinutes = startMinutes + duration;
+
+    // Convert the end time back to 24-hour format
+    const endHour = Math.floor(endMinutes / 60);
+    const endMinute = endMinutes % 60;
+    const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
+
+    return endTime;
+}
+export const isTimeBetween = (time, startTime, endTime) => {
+    const [timeHour, timeMinute] = time.split(":");
+    const [startHour, startMinute] = startTime.split(":");
+    const [endHour, endMinute] = endTime.split(":");
+
+    const timeMinutes = parseInt(timeHour) * 60 + parseInt(timeMinute);
+    const startMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+    const endMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+
+    return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
+}
+
+export const equalArs = (array1, array2) => {
+    if (array1.length !== array2.length) {
+        return false;
+    }
+
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export const removeDuplicatesById = (array) => {
+    const uniqueArray = array.filter((item, index, self) => {
+        return index === self.findIndex(obj => obj.id === item.id);
+    });
+    return uniqueArray;
 }

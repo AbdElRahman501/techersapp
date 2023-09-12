@@ -7,7 +7,7 @@ import { Heart_Icon_Fill } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { formatDistance, checkArrayForUserId, getTitle } from '../actions/GlobalFunctions'
 
-export default function TeacherMainCard({ item, selectedSubject, setSelectedSubject, userInfo }) {
+export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler, userInfo }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
     const id = 18
@@ -26,9 +26,12 @@ export default function TeacherMainCard({ item, selectedSubject, setSelectedSubj
                     <View style={{ justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
                         {item.subjects.map((subject, i) => {
                             let subjectSchedule = subject.schoolYears.find(x => x.id === userInfo?.schoolYear.id)
-                            return <TouchableOpacity key={i} style={{ marginHorizontal: 10 }} disabled={!subjectSchedule} onPress={() => setSelectedSubject(subject)} >
+                            return <TouchableOpacity key={i} style={{
+                                marginRight: language === 'en' ? 10 : 0,
+                                marginLeft: language === 'ar' ? 10 : 0
+                            }} disabled={!subjectSchedule} onPress={() => changeSubjectHandler(subject)} >
                                 <CustomText style={[styles.regular, {
-                                    opacity: !subjectSchedule ? 0.5 : 1,
+                                    opacity: !subjectSchedule && selectedSubject ? 0.5 : 1,
                                     color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
                                 }]}>
                                     {subject[language]}
@@ -85,7 +88,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 20,
-        padding: Padding.p_base
+        padding: Padding.p_base,
+
     },
     info: {
         height: 120,

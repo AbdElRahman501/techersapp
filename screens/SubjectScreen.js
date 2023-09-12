@@ -24,7 +24,6 @@ export default function SubjectScreen({ route }) {
 
     const handleSelect = option => {
         setSelectedOption(option);
-        console.log('Selected:', option);
     };
 
     const revDays = days.slice().reverse();
@@ -34,7 +33,6 @@ export default function SubjectScreen({ route }) {
         if (userInfo) {
             const myT = findMyTeachers(teachers, userInfo.myTeachers)
             const theTeachers = myT.filter(x => x.mainSubject.id === item.id)
-            console.log(myT.length, theTeachers[0]);
             setSubjectTeachers(theTeachers);
             setSelectedOption(theTeachers[0])
         }

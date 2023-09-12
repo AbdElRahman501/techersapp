@@ -20,8 +20,11 @@ const DayItem = React.memo(({ item, SelectedId, handelPress }) => {
     return (
         <TouchableWithoutFeedback onPress={() => handelPress(item.fullName)} >
             <View style={[styles.card]}>
-                <Animated.View style={[styles.subject, { backgroundColor: transition(Color.white, Color.darkcyan, 200, trigger) }]}>
-                    <Animated.Text numberOfLines={1} lineBreakMode="tail" style={[styles.regular, { color: transition(Color.black, Color.white, 200, trigger) }]} >{item.day[language]}</Animated.Text>
+                <Animated.View style={[styles.subject, { backgroundColor: transition(Color.white, Color.darkcyan, 50, trigger) }]}>
+                    <Animated.Text numberOfLines={1} lineBreakMode="tail"
+                        style={[styles.regular, { color: transition(Color.black, Color.white, 50, trigger) }]} >
+                        {item.day[language]}
+                    </Animated.Text>
                 </Animated.View>
             </View>
         </TouchableWithoutFeedback >

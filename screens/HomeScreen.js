@@ -8,35 +8,20 @@ import AdsSlider from '../components/AdsSlider';
 import SearchBar from '../components/SearchBar';
 import t from '../actions/changeLanguage';
 import SlideContainer from '../components/SlideContainer';
-import { subjects, teachers } from '../data';
+import { teachers } from '../data';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { filterArrayByIds, findMyTeachers, teacherByYears } from '../actions/GlobalFunctions';
-
+import { filterArrayByIds, findMyTeachers, removeDuplicatesById } from '../actions/GlobalFunctions';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
   const [myTeachers, setMyTeachers] = useState([])
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [mySubjects, setMySubjects] = useState([])
-  const [isFocused, setIsFocused] = useState(false);
-  const scrollViewRef = useRef();
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("see-all")]
 
-  function removeDuplicatesById(array) {
-    const uniqueArray = array.filter((item, index, self) => {
-      return index === self.findIndex(obj => obj.id === item.id);
-    });
 
-    return uniqueArray;
-  }
-
-  useEffect(() => {
-    if (isFocused) {
-      scrollViewRef.current.scrollTo({ y: 0, animated: true });
-    }
-  }, [isFocused])
   useEffect(() => {
     if (!userInfo) {
       navigation.reset({
@@ -44,8 +29,8 @@ export default function HomeScreen() {
         routes: [{ name: 'SigninScreen' }],
       });
     } else {
-      const myT = findMyTeachers(teachers, userInfo.myTeachers)
-      const myFav = filterArrayByIds(myT, userInfo.myFavTeachers)
+      const myT = findMyTeachers(teachers, userInfo.myTeachers || [])
+      const myFav = filterArrayByIds(myT, userInfo.myFavTeachers || [])
       setMyTeachers(myT)
       setMyFavTeachers(myFav)
       setMySubjects(removeDuplicatesById(myT.map(x => x.mainSubject)))
@@ -55,15 +40,13 @@ export default function HomeScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={{ flex: 1, backgroundColor: Color.white }}
-        ref={scrollViewRef}
-        scrollEnabled={!isFocused}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
         <SafeAreaView style={[styles.container]} >
           <HomeHeader user={userInfo} />
           <AdsSlider />
-          <SearchBar isFocused={isFocused} setIsFocused={setIsFocused} />
+          <SearchBar button={true} />
           <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
           {mySubjects.length > 0 ?
             <SlideContainer data={mySubjects}  >

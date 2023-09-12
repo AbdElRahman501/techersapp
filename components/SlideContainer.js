@@ -3,19 +3,16 @@ import React, { useCallback, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-export default function SlideContainer({ scrollAnimation, data, children, select, SelectedId, disabled, handelPress }) {
+export default function SlideContainer(props) {
+    const { scrollAnimation, data, children } = props
     const { language } = useSelector(state => state.languageState)
     const flatListRef = useRef(null);
 
     const renderItem = useCallback(
         ({ item }) => {
-            if (select) {
-                return React.cloneElement(children, { item, disabled, SelectedId, handelPress })
-            } else {
-                return React.cloneElement(children, { item, disabled })
-            }
+            return React.cloneElement(children, { item, ...props })
         },
-        [SelectedId, disabled]
+        [props]
     );
 
     const keyExtractor = useMemo(
