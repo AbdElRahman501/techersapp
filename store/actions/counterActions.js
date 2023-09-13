@@ -1,4 +1,4 @@
-import { DECREMENT, INCREMENT, RESET_COUNTER } from "../constatnts/conterContatnts";
+import { DECREMENT, INCREMENT, RESET_COUNTER } from "../constants/counterConstants";
 
 export const increment = () => async (dispatch, getState) => {
     dispatch({

@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     parentFlexBox: {
         flexDirection: "row",
         alignItems: "center",
-        width: 25,
         height: 20,
     },
 

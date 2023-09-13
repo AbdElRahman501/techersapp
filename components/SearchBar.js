@@ -2,17 +2,38 @@ import { StyleSheet, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { Search_icon_Svg } from '../assets/icons/Icons';
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles';
-import { useSelector } from 'react-redux';
-import { getTextInputAlign } from '../actions/GlobalFunctions';
-import t from '../actions/changeLanguage';
+import { useNavigation } from '@react-navigation/core';
 
-export default function SearchBar() {
-  const { language } = useSelector(state => state.languageState);
-  const [value, setValue] = useState("")
-  const [isFocused, setIsFocused] = useState(false);
+export default function SearchBar({ autoFocus, button, changHandler, value }) {
+  const [isFocused, setIsFocused] = useState(!button)
+  const navigation = useNavigation()
 
   return (
-    <View style={[styles.inputField, { borderColor: isFocused ? Color.darkcyan : Color.input_stroke, flexDirection: language === "ar" ? "row-reverse" : "row" }]}>
+    <View style={[styles.inputField, {
+      shadowColor: isFocused ? Color.darkcyan : Color.darkgray,
+      borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+      flexDirection: "row"
+    }]}>
+      <TextInput style={[styles.input, {
+        textAlign: "right",
+        paddingLeft: 46
+      }]}
+        autoFocus={autoFocus}
+        placeholder={"Search"}
+        autoCapitalize="none"
+        onChangeText={changHandler}
+        value={value}
+        keyboardType={"default"}
+        onFocus={() => {
+          if (button) {
+            navigation.navigate("SearchScreen")
+          } else {
+            setIsFocused(true)
+          }
+        }
+        }
+        onBlur={() => setIsFocused(false)}
+      />
       <View style={styles.rightIcon}>
         <Search_icon_Svg
           width={30}
@@ -21,19 +42,6 @@ export default function SearchBar() {
           color={isFocused ? Color.darkcyan : Color.input_stroke}
         />
       </View>
-      <TextInput style={[styles.input, {
-        textAlign: language === "en" ? "left" : (getTextInputAlign(value) || "right"),
-        paddingLeft: (language === "ar" && getTextInputAlign(value) === "left") ? 46 : 0
-      }]}
-        placeholder={t("search")}
-        autoCapitalize="none"
-        onChangeText={e => setValue(e)}
-        value={value}
-        keyboardType={"default"}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-      />
-
     </View>
   )
 }
@@ -43,11 +51,16 @@ const styles = StyleSheet.create({
     width: "95%",
     maxWidth: 500,
     height: 46,
-    borderWidth: 1,
-    borderColor: Color.input_stroke,
     backgroundColor: Color.input_fill,
     borderRadius: Border.br_6xl,
-    marginBottom: 24
+    marginBottom: 24,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: Platform.OS === 'android' ? 10 : 0,
   },
   input: {
     flex: 1,

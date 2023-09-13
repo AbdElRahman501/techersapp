@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform, Animated, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View, Animated, TouchableWithoutFeedback } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
@@ -9,7 +9,7 @@ const DayItem = React.memo(({ item, SelectedId, handelPress }) => {
     const [trigger, setTrigger] = useState(false);
 
     useEffect(() => {
-        if (item.id === SelectedId) {
+        if (SelectedId.includes(item.fullName)) {
             setTrigger(true);
         } else {
             setTrigger(false);
@@ -18,11 +18,13 @@ const DayItem = React.memo(({ item, SelectedId, handelPress }) => {
 
 
     return (
-        <TouchableWithoutFeedback onPress={() => handelPress(item.id)} >
+        <TouchableWithoutFeedback onPress={() => handelPress(item.fullName)} >
             <View style={[styles.card]}>
-                <Animated.View style={[styles.subject, { backgroundColor: transition(Color.white, Color.darkcyan, 200, trigger) }]}>
-                    <Animated.Text style={[styles.regular, { color: transition(Color.black, Color.white, 200, trigger) }]} >{item.day[language]}</Animated.Text>
-                    <Animated.Text style={[styles.title, { color: transition(Color.black, Color.white, 200, trigger) }]} >{item.date}</Animated.Text>
+                <Animated.View style={[styles.subject, { backgroundColor: transition(Color.white, Color.darkcyan, 50, trigger) }]}>
+                    <Animated.Text numberOfLines={1} lineBreakMode="tail"
+                        style={[styles.regular, { color: transition(Color.black, Color.white, 50, trigger) }]} >
+                        {item.day[language]}
+                    </Animated.Text>
                 </Animated.View>
             </View>
         </TouchableWithoutFeedback >
@@ -48,14 +50,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 5
     },
-    title: {
-        fontSize: FontSize.size_xl,
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.black
-    },
     regular: {
         fontFamily: FontFamily.montserratArabic,
-        fontSize: FontSize.size_sm,
+        fontSize: FontSize.size_md,
         color: Color.darkgray
     },
 

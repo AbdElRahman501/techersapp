@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER_FAIL, USER_REQUEST, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_SUCCESS } from "../constatnts/userConstants";
+import { USER_FAIL, USER_REQUEST, USER_SIGNIN_FAIL, USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS, USER_SIGNOUT, USER_SUCCESS } from "../constants/userConstants";
 
 export const signIn = (userData) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_REQUEST });

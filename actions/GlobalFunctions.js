@@ -122,7 +122,17 @@ export const isArabic = (text) => {
     const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
     return arabicRegex.test(text);
 };
+export const getModifiedName = (fullName) => {
+    if (isArabic(fullName)) {
+        return fullName;
 
+    } else {
+        const names = fullName.split(' ');
+        const modifiedNames = names.filter((name, index) => index === 0 || index === names.length - 1);
+        const modifiedFullName = modifiedNames.map((name) => name.charAt(0).toUpperCase() + name.slice(1)).join(' ');
+        return modifiedFullName;
+    }
+}
 export const getTextInputAlign = (text) => {
     if (text) {
         return isArabic(text) ? "right" : "left";
@@ -177,4 +187,134 @@ export const getSubjectTitle = (gender, subject) => {
     }
 
     return '';
+}
+
+export const filterArrayByIds = (array, idArray) => {
+    const ids = idArray.map(x => x.id)
+    return array.filter(item => ids.includes(item.id));
+};
+export const findMyTeachers = (array, myTeachersArray) => {
+    const ids = myTeachersArray.map(x => x.id)
+    return array.filter(item => ids.includes(item.id)).map(x => {
+        const mainSubject = myTeachersArray.find(y => y.id === x.id).subject
+        return { ...x, mainSubject }
+    })
+};
+
+export const searchEngin = (array, value) => {
+    if (value) {
+
+        return (array.filter(item => item.name.toLowerCase().includes(value.toLowerCase())))
+    } else {
+        return array
+    }
+
+}
+
+export const teacherByYears = (array, year) => {
+    return array.map(item => {
+        if (item.mainSubject.schoolYears.find(x => x.id === year.id)) {
+            return item
+        }
+    })
+}
+
+export const getTheWeek = () => {
+    function getWeek(startDay) {
+        const week = [];
+        let currentDay = new Date(startDay);
+
+        const dayNames = {
+            '0': { ar: 'الأحد', en: 'Sun' },
+            '1': { ar: 'الاثنين', en: 'Mon' },
+            '2': { ar: 'الثلاثاء', en: 'Tue' },
+            '3': { ar: 'الأربعاء', en: 'Wed' },
+            '4': { ar: 'الخميس', en: 'Thu' },
+            '5': { ar: 'الجمعة', en: 'Fri' },
+            '6': { ar: 'السبت', en: 'Sat' }
+        };
+
+        for (let i = 0; i < 7; i++) {
+            const dayId = currentDay.getDay().toString();
+            const day = {
+                day: dayNames[dayId],
+                date: currentDay.getDate().toString(),
+                id: dayId
+            };
+
+            week.push(day);
+            currentDay.setDate(currentDay.getDate() + 1);
+        }
+
+        return week;
+    }
+
+    // Example usage: Get the current week starting from Sunday
+    const today = new Date();
+    const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
+    const week = getWeek(sunday);
+    return week
+}
+
+export const transformTime = (time, language) => {
+    const [hour, minute] = time.split(':');
+    let convertedHour = parseInt(hour);
+    let period = language === 'ar' ? 'ص' : 'AM';
+
+    if (convertedHour >= 12) {
+        period = language === 'ar' ? 'م' : 'PM';;
+    }
+
+    if (convertedHour > 12) {
+        convertedHour -= 12;
+    }
+
+    return `${convertedHour}:${minute} ${period}`;
+}
+export const calculateEndTime = (startTime, duration) => {
+    // Convert the start time to minutes
+    const [startHour, startMinute] = startTime.split(":");
+    const startMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+
+    // Calculate the end time in minutes
+    const endMinutes = startMinutes + duration;
+
+    // Convert the end time back to 24-hour format
+    const endHour = Math.floor(endMinutes / 60);
+    const endMinute = endMinutes % 60;
+    const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute.toString().padStart(2, "0")}`;
+
+    return endTime;
+}
+export const isTimeBetween = (time, startTime, endTime) => {
+    const [timeHour, timeMinute] = time.split(":");
+    const [startHour, startMinute] = startTime.split(":");
+    const [endHour, endMinute] = endTime.split(":");
+
+    const timeMinutes = parseInt(timeHour) * 60 + parseInt(timeMinute);
+    const startMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+    const endMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+
+    return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
+}
+
+export const equalArs = (array1, array2) => {
+    if (array1.length !== array2.length) {
+        return false;
+    }
+
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export const removeDuplicatesById = (array) => {
+    const uniqueArray = array.filter((item, index, self) => {
+        return index === self.findIndex(obj => obj.id === item.id);
+    });
+    return uniqueArray;
 }

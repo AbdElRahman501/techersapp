@@ -5,16 +5,21 @@ import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import t from '../actions/changeLanguage';
 import { getSubjectTitle, getTitle } from '../actions/GlobalFunctions';
+import { useNavigation } from '@react-navigation/core';
 
 const AdItem = React.memo(({ item, holdHandler }) => {
     const { language } = useSelector(state => state.languageState)
+    const navigation = useNavigation()
+    const handlePress = () => {
+        navigation.navigate("TeacherScreen", { item })
+    }
     return (
         <LongPressGestureHandler onHandlerStateChange={holdHandler} >
             <View style={styles.itemContainer} >
                 <View style={{ flex: 1 }}>
                     <Text style={styles.title}>{getTitle(item.gender, item.name)}</Text>
                     <Text style={styles.content}>{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
-                    <TouchableOpacity style={styles.primaryButton}>
+                    <TouchableOpacity onPress={handlePress} style={styles.primaryButton}>
                         <Text style={styles.primaryButtonText}>
                             {t("book-now")}
                         </Text>

@@ -28,7 +28,7 @@ const Subject = React.memo(({ item }) => {
                         source={item.imageSource}
                     />
                 </View>
-                <Text style={styles.title}>{item.title[language]}</Text>
+                <Text style={styles.title}>{item[language]}</Text>
             </Animated.View>
         </TouchableWithoutFeedback>
     );

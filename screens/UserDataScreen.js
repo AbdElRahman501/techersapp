@@ -15,6 +15,7 @@ import { signIn } from '../store/actions/userActions';
 import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
+import * as data from '../data';
 
 export default function UserDataScreen({ route }) {
     const userData = route.params.signUpData;
@@ -28,7 +29,7 @@ export default function UserDataScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
-            dispatch(signIn(signUpData))
+            dispatch(signIn({ ...data.emptyData, ...signUpData }))
         } else {
             setCheckInputs(true)
         }

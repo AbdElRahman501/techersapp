@@ -1,4 +1,24 @@
 import { Dimensions } from 'react-native';
+
+// const customScreenWidth = 393; // Replace with your desired width
+// const customScreenHeight = 775; // Replace with your desired height
+
+// Dimensions.set({
+//   screen: {
+//     width: customScreenWidth,
+//     height: customScreenHeight,
+//     scale: Dimensions.get('window').scale,
+//     fontScale: Dimensions.get('window').fontScale,
+//   },
+//   window: {
+//     width: customScreenWidth,
+//     height: customScreenHeight,
+//     scale: Dimensions.get('window').scale,
+//     fontScale: Dimensions.get('window').fontScale,
+//   },
+// });
+
+
 const { width, height } = Dimensions.get('window');
 
 /* fonts */
@@ -31,7 +51,7 @@ export const Color = {
   input_stroke: "#CACDD1",
   yellow: "#FBBC05",
   red: "#FF5C5C",
-  orange:"#FFA500",
+  orange: "#FFA500",
 
 };
 /* Paddings */
@@ -42,7 +62,9 @@ export const Padding = {
   p_lg: 24,
   p_xl: 32,
   p_xxl: 48,
-  page_p: 20
+  page_p: 20,
+  teacher_tap: 10,
+
 };
 /* Paddings */
 export const Margin = {
@@ -82,3 +104,9 @@ export const fontEm = (em) => {
   return (widthPercentage(4) * em)
 };
 
+console.log(width, height);
+
+
+//490.90908026892316 980.4545242037659
+// 392.72727272727275 774.9090909090909
+//374.8372915849355 739.6095077476829
