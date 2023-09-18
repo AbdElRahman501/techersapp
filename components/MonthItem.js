@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform,  TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Platform, TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
@@ -22,7 +22,11 @@ const MonthItem = React.memo(({ item }) => {
                         {item.payed ? t("paid") : checkFirstInDays() ? t("coming") : t("unpaid")}
                     </Text>
                 </View>
-                <View style={[styles.subject, { height: 60, borderBottomRightRadius: 0 }]}>
+                <View style={[styles.subject, {
+                    height: 60, borderBottomRightRadius: 0,
+                    borderColor: Color.lightGray,
+                    borderWidth: 1
+                }]}>
                     <Text numberOfLines={1} lineBreakMode="tail" style={styles.title} >{item.month[language]}</Text>
                 </View>
             </View>
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
         height: 80,
     },
     title: {
-        fontSize: FontSize.size_lg,
+        fontSize: FontSize.size_base,
         fontFamily: FontFamily.montserratArabic,
         color: Color.black,
     },

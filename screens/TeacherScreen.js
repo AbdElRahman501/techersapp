@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
 import { days, friends } from '../data';
 import t from '../actions/changeLanguage';
-import { Color, FontFamily, FontSize, Margin, Padding } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding, globalStyles, widthPercentage } from '../GlobalStyles';
 import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherMainCard from '../components/TeacherMainCard';
@@ -175,7 +175,7 @@ export default function TeacherScreen({ route }) {
                     </SlideContainer>
                 </View>
             </ScrollView>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: Padding.page_p }}>
+            <View style={[styles.buttonContainer]}>
                 <View style={{ paddingHorizontal: Padding.p_sm }} >
                     <Text style={[styles.regular]}>
                         {t("per month")}
@@ -225,8 +225,25 @@ const styles = StyleSheet.create({
         fontSize: FontSize.size_lg,
         color: Color.white
     },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: Padding.page_p,
+        backgroundColor: Color.white,
+        borderWidth: 1,
+        borderColor: Color.lightGray,
+        borderTopRightRadius: 52,
+        borderTopLeftRadius: 52,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 24
+
+
+    },
     title: {
         fontSize: FontSize.size_xl,
         fontWeight: 'bold',
-    },
+    }
+
 })

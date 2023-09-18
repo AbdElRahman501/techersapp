@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Keyboard, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -44,11 +44,13 @@ export default function SigninScreen() {
     }, [userInfo])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+            <ScrollView 
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={t("sign in")} />
                 <View style={[styles.container]} >
                     <View style={[styles.form]}>
-                        <ImageBackground
+                        <Image
                             style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
                             resizeMode="contain"
                             source={require('../assets/logoColoredTextMs.png')}

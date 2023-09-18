@@ -257,7 +257,7 @@ export const getTheWeek = () => {
 }
 
 export const transformTime = (time, language) => {
-    const [hour, minute] = time.split(':');
+    const [hour, minute] = typeof time === 'string' ? time.split(':') : [time, "00"];
     let convertedHour = parseInt(hour);
     let period = language === 'ar' ? 'ص' : 'AM';
 

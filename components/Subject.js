@@ -21,7 +21,10 @@ const Subject = React.memo(({ item }) => {
     return (
         <TouchableWithoutFeedback onPress={handelScale} >
             <Animated.View style={[styles.card, { transform: [{ scale: transition(1, 0.8, 200, clicked) }] }]}>
-                <View style={styles.subject}>
+                <View style={[styles.subject, {
+                    borderColor: Color.lightGray,
+                    borderWidth: 1
+                }]}>
                     <Image
                         style={{ height: "80%", width: "80%" }}
                         resizeMode="contain"

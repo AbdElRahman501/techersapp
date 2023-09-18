@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Color, FontFamily, FontSize, Height, Padding, widthPercentage } from '../GlobalStyles'
 import CustomImage from './CustomImage '
 import CustomText from './CustemText'
-import { Heart_Icon_Fill, Next_Icon } from '../assets/icons/Icons';
+import { Heart_Icon_Fill, Heart_Stroke, Next_Icon } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { checkArrayForUserId, getSubjectTitle, getTitle } from '../actions/GlobalFunctions'
 
@@ -23,9 +23,7 @@ export default function TeacherItem({ item, isSelected, togglePicker, onlyOne })
             <View style={{ width: 30, alignItems: 'center' }}>
                 {isSelected &&
                     <TouchableOpacity onPress={() => setLiked({ state: !liked.state, number: liked.state ? liked.number - 1 : liked.number + 1 })}>
-                        <Heart_Icon_Fill
-                            fill={liked.state ? Color.darkcyan : "none"}
-                            color={liked.state ? "none" : Color.darkcyan} />
+                        {liked.state ? <Heart_Icon_Fill /> : <Heart_Stroke />}
                     </TouchableOpacity>
                 }
             </View>
