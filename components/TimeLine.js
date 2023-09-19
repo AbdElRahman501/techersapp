@@ -18,7 +18,7 @@ export default function TimeLine({ events }) {
     useEffect(() => {
         scrollViewRef.current.scrollTo({
             y: currentHour * 100,
-            animated: false
+            animated: "smooth"
         });
     }, [])
 

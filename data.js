@@ -1129,6 +1129,7 @@ export const userData = {
     myTeachers: [
         {
             id: 2, subject: subjects[1],
+            color: "#ff0000",
             schedule: {
                 days: ["monday", "thursday"],
                 hours: { timeIn24Format: "11:00", duration: 60 }
@@ -1145,6 +1146,7 @@ export const userData = {
         },
         {
             id: 4, subject: subjects[3],
+            color: "#4B0082",
             schedule: {
                 days: ["monday", "thursday"],
                 hours: { timeIn24Format: "14:00", duration: 60 },
@@ -1153,6 +1155,7 @@ export const userData = {
         },
         {
             id: 5, subject: subjects[4],
+            color: "#8B00FF",
             schedule: {
                 days: ["sunday", "wednesday"],
                 hours: { timeIn24Format: "11:00", duration: 90 }

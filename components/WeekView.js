@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native'
-import React, { useMemo, useRef, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
 import ScheduleDayOption from './ScheduleDayIOption';
@@ -12,12 +12,12 @@ export default function WeekView({ weeks, selectedMonth, selectedDay, dayHandelP
         if (initialScrolledIndex >= 0) {
             scrollViewRef.current.scrollTo({
                 x: (widthPercentage(100) - 20) * initialScrolledIndex,
-                animated: "smooth",
+                animated: false,
             });
         } else {
             scrollViewRef.current.scrollTo({
                 x: (widthPercentage(100) - 20) * weeks.length - 1,
-                animated: "smooth",
+                animated: false,
             });
         }
     }, [weeks])

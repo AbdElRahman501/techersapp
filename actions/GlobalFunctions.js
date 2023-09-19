@@ -367,3 +367,13 @@ export const removeDuplicatesById = (array) => {
     });
     return uniqueArray;
 }
+
+export const getEvents = (myTeachers, day) => {
+    if (!myTeachers || !day) return []
+    let theEvents = myTeachers?.filter((x, i) => {
+        return x.schedule?.days.map(y => y.toLowerCase()).includes(day.toLowerCase())
+    }).map((x, i) => {
+        return { eventTime: x.schedule?.hours.timeIn24Format, duration: x.schedule?.hours.duration, teacherId: x.id, ...x }
+    })
+    return theEvents
+}

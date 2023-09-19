@@ -4,7 +4,7 @@ import { Color, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { Next_Icon } from '../assets/icons/Icons'
 
-export default function MonthSelection({ months, currentMonth, setMonth }) {
+export default function MonthSelection({ selectedMonth, months, currentMonth, setMonth }) {
     const { language } = useSelector(state => state.languageState)
     const [scrolledIndex, setScrolledIndex] = useState(1);
     const flatListRef = useRef(null);
@@ -50,7 +50,18 @@ export default function MonthSelection({ months, currentMonth, setMonth }) {
 
 
     useEffect(() => {
-        // Scroll to the current month
+        let index = months.map(x => x.id).indexOf(selectedMonth.id)
+        if (index >= 0 && index < months.length) {
+            setScrolledIndex(index)
+            flatListRef.current.scrollToIndex({
+                index: index,
+                animated: "smooth"
+            });
+        }
+    }, [selectedMonth])
+
+
+    useEffect(() => {
         flatListRef.current.scrollToIndex({
             index: scrolledIndex,
             animated: false,

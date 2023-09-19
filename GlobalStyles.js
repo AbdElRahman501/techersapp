@@ -46,7 +46,8 @@ export const Color = {
   yellow: "#FBBC05",
   red: "#FF5C5C",
   orange: "#FFA500",
-  blue: "blue"
+  blue: "blue",
+  green: "green",
 };
 
 /* Paddings */
@@ -99,8 +100,8 @@ export const fontEm = (em) => {
   return (widthPercentage(4) * em)
 };
 export const getColorByIndex = (index) => {
-  const colors = [Color.darkcyan, Color.blue, Color.yellow, Color.red, Color.orange];
-  const colorIndex = index % colors.length;
+  const colors = ['#FF0000', '#FF7F00', '#808000', '#008000', '#0000FF', '#4B0082', '#8B00FF']
+  const colorIndex = index % colors.length || 0;
   return colors[colorIndex];
 }
 export const globalStyles = StyleSheet.create({
@@ -162,12 +163,11 @@ export const globalStyles = StyleSheet.create({
   eventBall: {
     width: 5,
     height: 5,
-    borderRadius: 2.5
+    borderRadius: 5
   },
   eventCard: {
     position: 'absolute',
-    left: 80,
-    width: widthPercentage(100) - 160,
+    width: widthPercentage(100) - 100,
     backgroundColor: Color.white,
     borderRadius: Border.br_13xl,
     padding: 10

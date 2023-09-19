@@ -1,9 +1,13 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, fontEm, getColorByIndex, globalStyles, widthPercentage } from '../GlobalStyles'
+import { Color, fontEm, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
+import { getEvents } from '../actions/GlobalFunctions'
 
 const ScheduleDayOption = ({ item, selectedMonth, SelectedId, today, handelPress }) => {
+    const { loading, userInfo, error } = useSelector(state => state.userInfo)
+    const events = getEvents(userInfo?.myTeachers, item.fullName)
+
     let isToday = today?.id === item?.id
     let isThisMonth = Number(item?.id.split("-")[1]) === Number(selectedMonth?.id) + 1
 
@@ -18,9 +22,8 @@ const ScheduleDayOption = ({ item, selectedMonth, SelectedId, today, handelPress
         }
     }, [SelectedId])
 
-    const events = [1, 2]
     return (
-        <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth} style={{ opacity: isThisMonth ? 1 : 0.5 }} >
+        <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth} style={{ opacity: isThisMonth ? 1 : 0.2 }} >
             <View style={[globalStyles.dayCard, { width: ((widthPercentage(100) - 20) / 7) - 10, borderWidth: 0, backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
                 <Text numberOfLines={1} lineBreakMode="tail"
                     style={[globalStyles.contentText, { fontSize: fontEm(0.7), color: trigger ? Color.white : isToday ? Color.darkcyan : Color.darkgray }]} >
@@ -31,7 +34,7 @@ const ScheduleDayOption = ({ item, selectedMonth, SelectedId, today, handelPress
                 </Text>
                 <View style={{ flexDirection: 'row', marginTop: 5 }}>
                     {events.map((event, index) =>
-                        <View key={index} style={[globalStyles.eventBall, { marginLeft: 1, backgroundColor: trigger ? Color.white : getColorByIndex(index) }]} ></View>
+                        <View key={index} style={[globalStyles.eventBall, { marginLeft: 1, backgroundColor: event.color ? event.color : trigger ? Color.white : Color.darkcyan }]} />
                     )}
                 </View>
             </View>
