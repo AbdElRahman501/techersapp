@@ -79,7 +79,10 @@ export default function AdsSlider() {
                     snapToInterval={width}
                     pagingEnabled={true}
                     disableIntervalMomentum={true}
-                    onScroll={onScroll} ref={scrollViewRef} horizontal showsHorizontalScrollIndicator={false}>
+                    onScroll={onScroll} 
+                    ref={scrollViewRef} 
+                    horizontal 
+                    showsHorizontalScrollIndicator={false}>
                     {addFirstElementAfterLast(teachers).map((item, index) => {
                         return <AdItem item={item} holdHandler={holdHandler} key={index} />
                     })}

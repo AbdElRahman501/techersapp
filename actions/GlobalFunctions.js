@@ -219,41 +219,90 @@ export const teacherByYears = (array, year) => {
     })
 }
 
-export const getTheWeek = () => {
-    function getWeek(startDay) {
-        const week = [];
-        let currentDay = new Date(startDay);
+const dayNames = {
+    '0': { ar: 'الأحد', en: 'Sun', fullName: 'Sunday' },
+    '1': { ar: 'الاثنين', en: 'Mon', fullName: 'Monday' },
+    '2': { ar: 'الثلاثاء', en: 'Tue', fullName: 'Tuesday' },
+    '3': { ar: 'الأربعاء', en: 'Wed', fullName: 'Wednesday' },
+    '4': { ar: 'الخميس', en: 'Thu', fullName: 'Thursday' },
+    '5': { ar: 'الجمعة', en: 'Fri', fullName: 'Friday' },
+    '6': { ar: 'السبت', en: 'Sat', fullName: 'Saturday' }
+};
 
-        const dayNames = {
-            '0': { ar: 'الأحد', en: 'Sun' },
-            '1': { ar: 'الاثنين', en: 'Mon' },
-            '2': { ar: 'الثلاثاء', en: 'Tue' },
-            '3': { ar: 'الأربعاء', en: 'Wed' },
-            '4': { ar: 'الخميس', en: 'Thu' },
-            '5': { ar: 'الجمعة', en: 'Fri' },
-            '6': { ar: 'السبت', en: 'Sat' }
-        };
-
-        for (let i = 0; i < 7; i++) {
-            const dayId = currentDay.getDay().toString();
-            const day = {
-                day: dayNames[dayId],
-                date: currentDay.getDate().toString(),
-                id: dayId
-            };
-
-            week.push(day);
-            currentDay.setDate(currentDay.getDate() + 1);
-        }
-
-        return week;
-    }
-
-    // Example usage: Get the current week starting from Sunday
+const monthNames = {
+    '0': { ar: 'يناير', en: 'January', fullName: 'January' },
+    '1': { ar: 'فبراير', en: 'February', fullName: 'February' },
+    '2': { ar: 'مارس', en: 'March', fullName: 'March' },
+    '3': { ar: 'أبريل', en: 'April', fullName: 'April' },
+    '4': { ar: 'مايو', en: 'May', fullName: 'May' },
+    '5': { ar: 'يونيو', en: 'June', fullName: 'June' },
+    '6': { ar: 'يوليو', en: 'July', fullName: 'July' },
+    '7': { ar: 'أغسطس', en: 'August', fullName: 'August' },
+    '8': { ar: 'سبتمبر', en: 'September', fullName: 'September' },
+    '9': { ar: 'أكتوبر', en: 'October', fullName: 'October' },
+    '10': { ar: 'نوفمبر', en: 'November', fullName: 'November' },
+    '11': { ar: 'ديسمبر', en: 'December', fullName: 'December' }
+};
+export const getTheMonths = () => {
     const today = new Date();
     const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
-    const week = getWeek(sunday);
-    return week
+    const week = [];
+    let currentDay = new Date(sunday);
+
+    const currentMonthIndex = today.getMonth();
+    const months = [
+        { ...monthNames[currentMonthIndex - 1], id: currentMonthIndex - 1 },
+        { ...monthNames[currentMonthIndex], id: currentMonthIndex }
+    ];
+    for (let i = 0; i < 7; i++) {
+        const dayId = currentDay.getDay().toString();
+        const day = {
+            day: dayNames[dayId],
+            date: currentDay.getDate().toString(),
+            id: `${currentDay.getFullYear()}-${currentDay.getMonth() + 1}-${currentDay.getDate()}`,
+            fullName: dayNames[dayId].fullName
+
+        };
+        week.push(day);
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+
+    const todayIndex = new Date().getDay();
+    const todayObj = week[todayIndex];
+
+    const currentMonth = months[1];
+
+    return { today: todayObj, week, months, currentMonth };
+};
+export const getWeeksOfMonth = (currentMonthIndex) => {
+    const weeks = [];
+    const firstDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex, 1);
+    const lastDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex + 1, 0);
+
+    let currentDay = new Date(firstDayOfMonth);
+    let theLastDay = new Date(lastDayOfMonth);
+
+    theLastDay.setDate(theLastDay.getDate() + (6 - theLastDay.getDay()));
+    currentDay.setDate(currentDay.getDate() - currentDay.getDay());
+
+    while (currentDay <= theLastDay || weeks[weeks.length - 1]?.length < 7) {
+        const dayId = currentDay.getDay().toString();
+        const day = {
+            day: dayNames[dayId],
+            date: currentDay.getDate().toString(),
+            id: `${currentDay.getFullYear()}-${currentDay.getMonth() + 1}-${currentDay.getDate()}`,
+            fullName: dayNames[dayId].fullName
+        };
+
+        if (dayId === '0') {
+            weeks.push([]);
+        }
+        weeks[weeks.length - 1].push(day);
+
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+
+    return weeks;
 }
 
 export const transformTime = (time, language) => {

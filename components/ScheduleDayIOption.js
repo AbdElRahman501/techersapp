@@ -1,14 +1,17 @@
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, getColorByIndex, globalStyles } from '../GlobalStyles'
+import { Color, fontEm, getColorByIndex, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 
-const ScheduleDayOption = React.memo(({ item, SelectedId, handelPress }) => {
+const ScheduleDayOption = ({ item, selectedMonth, SelectedId, today, handelPress }) => {
+    let isToday = today?.id === item?.id
+    let isThisMonth = Number(item?.id.split("-")[1]) === Number(selectedMonth?.id) + 1
+
     const { language } = useSelector(state => state.languageState)
     const [trigger, setTrigger] = useState(false);
 
     useEffect(() => {
-        if (SelectedId.includes(item.fullName)) {
+        if (SelectedId?.id === item?.id) {
             setTrigger(true);
         } else {
             setTrigger(false);
@@ -16,15 +19,14 @@ const ScheduleDayOption = React.memo(({ item, SelectedId, handelPress }) => {
     }, [SelectedId])
 
     const events = [1, 2]
-
     return (
-        <TouchableWithoutFeedback onPress={() => handelPress(item.fullName)} >
-            <View style={[globalStyles.dayCard, { borderWidth: 0, backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
+        <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth} style={{ opacity: isThisMonth ? 1 : 0.5 }} >
+            <View style={[globalStyles.dayCard, { width: ((widthPercentage(100) - 20) / 7) - 10, borderWidth: 0, backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
                 <Text numberOfLines={1} lineBreakMode="tail"
-                    style={[globalStyles.contentText, { color: trigger ? Color.white : Color.darkgray }]} >
+                    style={[globalStyles.contentText, { fontSize: fontEm(0.7), color: trigger ? Color.white : isToday ? Color.darkcyan : Color.darkgray }]} >
                     {item.day[language]}
                 </Text>
-                <Text style={[globalStyles.title, { color: trigger ? Color.white : Color.black }]}>
+                <Text style={[globalStyles.title, { color: trigger ? Color.white : isToday ? Color.darkcyan : Color.black }]}>
                     {item.date}
                 </Text>
                 <View style={{ flexDirection: 'row', marginTop: 5 }}>
@@ -33,10 +35,8 @@ const ScheduleDayOption = React.memo(({ item, SelectedId, handelPress }) => {
                     )}
                 </View>
             </View>
-        </TouchableWithoutFeedback >
+        </TouchableOpacity >
     );
-}, (prevProps, nextProps) => {
-    return prevProps.item.id !== nextProps.item.id;
-});
+}
 
 export default ScheduleDayOption;

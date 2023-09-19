@@ -1,17 +1,47 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { ScrollView, StyleSheet, View, Text } from 'react-native'
-import { globalStyles, widthPercentage } from '../GlobalStyles'
+import { Color, globalStyles, widthPercentage } from '../GlobalStyles'
 import Svg, { Line } from 'react-native-svg';
 import EventItem from '../components/EventItem'
 import { useSelector } from 'react-redux';
 import { transformTime } from '../actions/GlobalFunctions';
+import { useState } from 'react';
 
 export default function TimeLine({ events }) {
     const { language } = useSelector(state => state.languageState)
+    const scrollViewRef = useRef(null);
+
     const hours = Array.from({ length: 24 }, (_, i) => i); // Create an array of 24 hours
+    const [currentHour, setCurrentHour] = useState(new Date().getHours())
+    const [currentMinute, setCurrentMinute] = useState(new Date().getMinutes())
+
+    useEffect(() => {
+        scrollViewRef.current.scrollTo({
+            y: currentHour * 100,
+            animated: false
+        });
+    }, [])
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentMinute((prevMinute) => {
+                if (prevMinute < 60) {
+                    return prevMinute + (5 / 60)
+                } else {
+                    setCurrentHour((prevHour) => prevHour + 1);
+                    return 0
+                }
+            });
+        }, 5000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView
+            ref={scrollViewRef}
+            showsVerticalScrollIndicator={false} >
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
                 <Svg height="2400" width={widthPercentage(100)} >
                     {hours.map((hour) => (
@@ -41,6 +71,14 @@ export default function TimeLine({ events }) {
                             </Text>
                         </View>
                     ))}
+                    <Line
+                        x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 80}
+                        y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                        x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 20 : language === 'ar' ? widthPercentage(100) - 80 : widthPercentage(100) - 20}
+                        y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                        stroke={Color.darkcyan}
+                        strokeWidth="2"
+                    />
                     {events.map((event, index) => (
                         <EventItem key={index} event={event} />
                     ))}

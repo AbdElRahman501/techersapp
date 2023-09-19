@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: Padding.page_p,
+        paddingBottom: Padding.page_p
     },
     regular: {
         fontFamily: FontFamily.montserratArabic,
@@ -237,9 +238,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 52,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
-        elevation: 24
-
-
+        elevation: 24,
     },
     title: {
         fontSize: FontSize.size_xl,

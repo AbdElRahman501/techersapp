@@ -1,19 +1,20 @@
-import React, { useRef, useCallback, useMemo, useState } from 'react'
+import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native'
 import { Color, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { Next_Icon } from '../assets/icons/Icons'
 
-export default function MonthSelection() {
+export default function MonthSelection({ months, currentMonth, setMonth }) {
     const { language } = useSelector(state => state.languageState)
-    const [scrolledIndex, setScrolledIndex] = useState(0);
-    const data = ["يناير", "فبراير", "مارس"]
+    const [scrolledIndex, setScrolledIndex] = useState(1);
     const flatListRef = useRef(null);
 
     const renderItem = useCallback(
         ({ item }) => {
             return <View style={{ width: widthPercentage(100) - 200, height: "100%" }}>
-                <Text style={globalStyles.title}>{item}</Text>
+                <Text style={[globalStyles.title, {
+                    color: currentMonth.id === item.id ? Color.darkcyan : Color.black
+                }]}>{item[language]}</Text>
             </View>
         }
     )
@@ -24,7 +25,9 @@ export default function MonthSelection() {
         }
     )
     const scrollToNext = () => {
-        if (scrolledIndex < data.length - 1) {
+        if (scrolledIndex < months.length - 1) {
+            setScrolledIndex(scrolledIndex + 1);
+            setMonth(months[scrolledIndex + 1]);
             flatListRef.current.scrollToIndex({
                 index: scrolledIndex + 1,
                 animated: "smooth"
@@ -35,6 +38,8 @@ export default function MonthSelection() {
 
     const scrollToPrev = () => {
         if (scrolledIndex > 0) {
+            setScrolledIndex(scrolledIndex - 1);
+            setMonth(months[scrolledIndex - 1]);
             flatListRef.current.scrollToIndex({
                 index: scrolledIndex - 1,
                 animated: "smooth"
@@ -44,35 +49,44 @@ export default function MonthSelection() {
     };
 
 
+    useEffect(() => {
+        // Scroll to the current month
+        flatListRef.current.scrollToIndex({
+            index: scrolledIndex,
+            animated: false,
+        });
+    }, []);
 
-    const onScroll = (event) => {
-        const offsetX = event.nativeEvent.contentOffset.x;
-        const currentIndex = Math.floor(offsetX / (widthPercentage(100) - 201));
-        setScrolledIndex(currentIndex);
-    };
+    const getItemLayout = (data, index) => ({
+        length: (widthPercentage(100) - 200), // Replace with the actual height of each month item
+        offset: (widthPercentage(100) - 200) * index,
+        index,
+    });
+
     return (
         <View style={[styles.sliderContainer]}>
-            <TouchableOpacity style={[styles.button, { paddingBottom: 10, marginLeft: 50 }]} onPress={scrollToPrev}>
-                <Next_Icon width={24} height={24} color={Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
+            <TouchableOpacity style={[styles.button, { paddingBottom: 10, marginLeft: 50 }]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
+                <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
             </TouchableOpacity>
             <View style={{ flex: 1 }}>
                 <FlatList
                     ref={flatListRef}
-                    data={data}
-                    onScroll={onScroll}
+                    data={months}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
                     horizontal
                     pagingEnabled
-                    inverted={language === 'ar'}
                     showsHorizontalScrollIndicator={false}
                     snapToInterval={null}
+                    getItemLayout={getItemLayout}
+                    initialScrollIndex={scrolledIndex}
                     snapToAlignment="start"
+                    scrollEnabled={false}
 
                 />
             </View>
-            <TouchableOpacity style={[styles.button, { paddingTop: 10, marginRight: 50 }]} onPress={scrollToNext}>
-                <Next_Icon width={24} height={24} color={Color.darkcyan} />
+            <TouchableOpacity style={[styles.button, { paddingTop: 10, marginRight: 50 }]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
+                <Next_Icon width={24} height={24} color={scrolledIndex > 0 ? Color.darkgray : Color.darkcyan} />
             </TouchableOpacity>
         </View>
     )
