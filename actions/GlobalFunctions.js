@@ -1,3 +1,5 @@
+import { teachers } from "../data";
+
 export const submitCheck = (inputs) => {
     const errors = {};
     for (const property in inputs) {
@@ -376,4 +378,29 @@ export const getEvents = (myTeachers, day) => {
         return { eventTime: x.schedule?.hours.timeIn24Format, duration: x.schedule?.hours.duration, teacherId: x.id, ...x }
     })
     return theEvents
+}
+
+export const getEventsDuration = (userInfo) => {
+    if (!userInfo) return []
+    let eventsDuration = teachers.filter(x => userInfo?.myTeachers.find(y => y.id === x.id)
+    ).map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday }))
+    return eventsDuration
+}
+
+export const isDateAfter = (dateString, comparisonDate) => {
+    const dateParts = dateString.split("-");
+    const year = new Date().getFullYear();
+    const date = new Date(year, parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+    const comparisonParts = comparisonDate.split("-");
+    const comparison = new Date(year, parseInt(comparisonParts[0]) - 1, parseInt(comparisonParts[1]));
+
+    return date > comparison;
+}
+export const getStartedEvents = (events, eventsDuration, selectedDay) => {
+    let theEvents = events.filter(event => {
+        let eventDuration = eventsDuration?.find(x => x.teacherID === event.teacherId);
+        let isTheYearStarts = eventDuration && isDateAfter(selectedDay.id, eventDuration.studyingYear.start)
+        return isTheYearStarts
+    })
+    return theEvents;
 }

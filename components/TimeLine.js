@@ -4,10 +4,10 @@ import { Color, globalStyles, widthPercentage } from '../GlobalStyles'
 import Svg, { Line } from 'react-native-svg';
 import EventItem from '../components/EventItem'
 import { useSelector } from 'react-redux';
-import { transformTime } from '../actions/GlobalFunctions';
+import { getStartedEvents, transformTime } from '../actions/GlobalFunctions';
 import { useState } from 'react';
 
-export default function TimeLine({ events }) {
+export default function TimeLine({ today, eventsDuration, events, selectedDay }) {
     const { language } = useSelector(state => state.languageState)
     const scrollViewRef = useRef(null);
 
@@ -15,12 +15,16 @@ export default function TimeLine({ events }) {
     const [currentHour, setCurrentHour] = useState(new Date().getHours())
     const [currentMinute, setCurrentMinute] = useState(new Date().getMinutes())
 
+    let isToday = today?.id === selectedDay?.id
+    let theFilterEvents = getStartedEvents(events, eventsDuration, selectedDay)
+    const hour = theFilterEvents.length > 0 ? Math.min(...theFilterEvents.map(x => x.eventTime.split(":")[0])) : 0
+
     useEffect(() => {
         scrollViewRef.current.scrollTo({
-            y: currentHour * 100,
+            y: isToday ? currentHour * 100 : hour * 100,
             animated: "smooth"
         });
-    }, [])
+    }, [events])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -43,7 +47,7 @@ export default function TimeLine({ events }) {
             ref={scrollViewRef}
             showsVerticalScrollIndicator={false} >
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
-                <Svg height="2400" width={widthPercentage(100)} >
+                <Svg height={24 * 100} width={widthPercentage(100)} >
                     {hours.map((hour) => (
                         <View key={hour}>
                             <Line
@@ -71,17 +75,17 @@ export default function TimeLine({ events }) {
                             </Text>
                         </View>
                     ))}
-                    <Line
-                        x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 80}
-                        y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
-                        x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 20 : language === 'ar' ? widthPercentage(100) - 80 : widthPercentage(100) - 20}
-                        y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
-                        stroke={Color.darkcyan}
-                        strokeWidth="2"
-                    />
-                    {events.map((event, index) => (
-                        <EventItem key={index} event={event} />
-                    ))}
+                    {isToday &&
+                        <Line
+                            x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 80}
+                            y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                            x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 20 : language === 'ar' ? widthPercentage(100) - 80 : widthPercentage(100) - 20}
+                            y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                            stroke={Color.darkcyan}
+                            strokeWidth="2"
+                        />
+                    }
+                    {theFilterEvents.map((event, index) => <EventItem isToday={isToday} currentHour={currentHour} currentMinute={currentMinute} key={index} event={event} />)}
                 </Svg>
             </View>
         </ScrollView>

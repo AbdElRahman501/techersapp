@@ -4,7 +4,7 @@ import { globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
 import ScheduleDayOption from './ScheduleDayIOption';
 
-export default function WeekView({ weeks, selectedMonth, selectedDay, dayHandelPress, today }) {
+export default function WeekView({ weeks, eventsDuration, selectedMonth, selectedDay, dayHandelPress, today }) {
     const { language } = useSelector(state => state.languageState)
     let initialScrolledIndex = weeks.findIndex(week => week.find(item => item.id === selectedDay.id));
     const scrollViewRef = useRef(null);
@@ -35,7 +35,7 @@ export default function WeekView({ weeks, selectedMonth, selectedDay, dayHandelP
         >
             {weeks.map((week, index) =>
                 <View key={index} style={[globalStyles.container, language === 'ar' && { transform: [{ scaleX: -1 }] }, { flexDirection: language === 'en' ? 'row' : 'row-reverse' }]}>
-                    {week.map((item, index) => <ScheduleDayOption item={item} selectedMonth={selectedMonth} key={index} SelectedId={selectedDay} handelPress={dayHandelPress} today={today} />)}
+                    {week.map((item, index) => <ScheduleDayOption eventsDuration={eventsDuration} item={item} selectedMonth={selectedMonth} key={index} SelectedId={selectedDay} handelPress={dayHandelPress} today={today} />)}
                 </View>
             )}
         </ScrollView>

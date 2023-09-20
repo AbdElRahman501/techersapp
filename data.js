@@ -57,6 +57,9 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Ahmed Mohamed",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        bookingLimits: { start: "08-01", end: "09-01" },
+        studyingYear: { start: "09-01", end: "06-31" },
+        midYearHoliday: { start: "12-21", end: "01-05" },
         subjects: [
             {
                 ...subjects[0], schoolYears: [{
@@ -254,6 +257,9 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Mohamed Ahmed",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        bookingLimits: { start: "08-01", end: "09-01" },
+        studyingYear: { start: "09-10", end: "06-31" },
+        midYearHoliday: { start: "12-21", end: "01-05" },
         subjects: [
             {
                 ...subjects[1], schoolYears: [{
@@ -271,7 +277,7 @@ export const teachers = [
                                 {
                                     days: ["monday", "thursday"],
                                     hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
+                                        { timeIn24Format: "9:00", duration: 60 },
                                         { timeIn24Format: "14:00", duration: 60 },
                                         { timeIn24Format: "17:00", duration: 60 },
 
@@ -453,6 +459,9 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "مسعد سعيد",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+        bookingLimits: { start: "08-01", end: "09-01" },
+        studyingYear: { start: "09-01", end: "06-31" },
+        midYearHoliday: { start: "12-21", end: "01-05" },
         subjects: [
             {
                 ...subjects[0], schoolYears: [{
@@ -463,7 +472,7 @@ export const teachers = [
                                     days: ["sunday", "wednesday"],
                                     hours: [
                                         { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
+                                        { timeIn24Format: "14:30", duration: 60 },
 
                                     ]
                                 },
@@ -710,6 +719,9 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Amira Ahmed",
         mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
+        bookingLimits: { start: "08-01", end: "09-01" },
+        studyingYear: { start: "09-01", end: "06-31" },
+        midYearHoliday: { start: "12-21", end: "01-05" },
         subjects: [
             {
                 ...subjects[3], schoolYears: [{
@@ -908,6 +920,9 @@ export const teachers = [
         imageSource: require('./assets/teachers/teacher.png'),
         name: "Shahinda Abdelrahman",
         mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
+        bookingLimits: { start: "08-01", end: "09-01" },
+        studyingYear: { start: "09-01", end: "06-31" },
+        midYearHoliday: { start: "12-21", end: "01-05" },
         subjects: [
             {
                 ...subjects[4], schoolYears: [{
@@ -1132,7 +1147,7 @@ export const userData = {
             color: "#ff0000",
             schedule: {
                 days: ["monday", "thursday"],
-                hours: { timeIn24Format: "11:00", duration: 60 }
+                hours: { timeIn24Format: "9:00", duration: 60 }
 
             }
 
@@ -1141,7 +1156,7 @@ export const userData = {
             id: 3, subject: subjects[0],
             schedule: {
                 days: ["sunday", "wednesday"],
-                hours: { timeIn24Format: "14:00", duration: 60 },
+                hours: { timeIn24Format: "14:30", duration: 60 },
             }
         },
         {
