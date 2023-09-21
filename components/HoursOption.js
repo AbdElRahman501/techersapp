@@ -1,8 +1,8 @@
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, FontFamily, FontSize, globalStyles } from '../GlobalStyles'
+import { Color, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
-import { isTimeBetween, transformTime } from '../actions/GlobalFunctions';
+import {  areAppointmentsOverlapping, transformTime } from '../actions/GlobalFunctions';
 import BookingModal from './BookingModal';
 
 const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, disabled }) => {
@@ -18,11 +18,12 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
         }
     }, [SelectedId])
 
+    
 
     useEffect(() => {
         if (myBookedHours) {
-            let unAvailable = myBookedHours.find(time => isTimeBetween(item.timeIn24Format, time.start, time.end));
-            setUnavailable(unAvailable ? true : false)
+            let overlapping = myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem));
+            setUnavailable(overlapping ? true : false)
         }
     }, [myBookedHours])
     const [isModalVisible, setModalVisible] = useState(false);
@@ -31,11 +32,10 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
         setModalVisible(false);
     };
 
-
     return (
         <>
             <BookingModal
-                myBookedHour={myBookedHours?.find(time => isTimeBetween(item.timeIn24Format, time.start, time.end))}
+                myBookedHour={myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem))}
                 isBooked={isModalVisible}
                 onClose={handleCloseModal}
             />

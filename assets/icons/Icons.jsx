@@ -155,7 +155,11 @@ export const Language_Svg = (props) => (
 );
 
 export const Address_Mark_Svg = (props) => (
-  <Svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
+  <Svg xmlns="http://www.w3.org/2000/svg"
+    width={22}
+    height={22}
+    fill="none"
+    {...props}>
     <Path
       fill={props.color || "#A1A8B0"}
       d="M12.4 5.4a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0-5.4a8.4 8.4 0 0 1 8.4 8.4c0 6.3-8.4 15.6-8.4 15.6S4 14.7 4 8.4A8.4 8.4 0 0 1 12.4 0Zm0 2.4a6 6 0 0 0-6 6c0 1.2 0 3.6 6 11.652 6-8.052 6-10.452 6-11.652a6 6 0 0 0-6-6Z"

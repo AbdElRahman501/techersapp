@@ -348,7 +348,18 @@ export const isTimeBetween = (time, startTime, endTime) => {
 
     return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
 }
+export const areAppointmentsOverlapping = (firstTime, secondTime) => {
+    const firstTimeParts = firstTime.timeIn24Format.split(":");
+    const secondTimeParts = secondTime.timeIn24Format.split(":");
 
+    const firstTimeInMinutes = parseInt(firstTimeParts[0]) * 60 + parseInt(firstTimeParts[1]);
+    const secondTimeInMinutes = parseInt(secondTimeParts[0]) * 60 + parseInt(secondTimeParts[1]);
+
+    const firstEndTimeInMinutes = firstTimeInMinutes + firstTime.duration;
+    const secondEndTimeInMinutes = secondTimeInMinutes + secondTime.duration;
+
+    return firstTimeInMinutes < secondEndTimeInMinutes && secondTimeInMinutes < firstEndTimeInMinutes;
+}
 export const equalArs = (array1, array2) => {
     if (array1.length !== array2.length) {
         return false;

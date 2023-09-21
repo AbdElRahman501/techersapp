@@ -3,18 +3,20 @@ import { Modal, Text, StyleSheet, View } from "react-native";
 import PrimaryButton from "./PrimaryButton";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 import { teachers } from "../data";
-import { getTitle } from "../actions/GlobalFunctions";
+import { getTitle, transformTime } from "../actions/GlobalFunctions";
 import { useNavigation } from '@react-navigation/core';
+import { useSelector } from "react-redux";
 
 const BookingModal = ({ myBookedHour, isBooked, onClose }) => {
+    const { language } = useSelector(state => state.languageState)
     const [teacher, setTeacher] = useState()
     const navigation = useNavigation()
 
     useEffect(() => {
-        if (myBookedHour?.id) {
-            setTeacher(teachers.find(x => x.id === myBookedHour.id))
+        if (myBookedHour?.teacherId) {
+            setTeacher(teachers.find(x => x.id === myBookedHour.teacherId))
         }
-    }, [myBookedHour?.id])
+    }, [myBookedHour?.teacherId])
     const handleChangeDate = () => {
         if (teacher) {
             onClose()
@@ -25,7 +27,7 @@ const BookingModal = ({ myBookedHour, isBooked, onClose }) => {
         <Modal visible={isBooked} animationType="fade" transparent>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalText}>This time is already booked. by you for  {getTitle(teacher?.gender, teacher?.name)} class </Text>
+                    <Text style={styles.modalText}>you have booked a time at  {transformTime(myBookedHour?.timeIn24Format, language)}. for  {getTitle(teacher?.gender, teacher?.name)} class </Text>
                     <View style={{ width: "80%", flexDirection: "row" }}>
                         <PrimaryButton
                             style={[styles.button, { backgroundColor: Color.white, borderWidth: 1, borderColor: Color.darkcyan }]}

@@ -5,7 +5,7 @@ import { teachers } from '../data';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 
-export default function EventItem({ currentHour, isToday, currentMinute, event: { eventTime, subject, duration, color, teacherId } }) {
+export default function EventItem({ currentHour, dayStart, dayEnd, isToday, currentMinute, event: { eventTime, subject, duration, color, teacherId } }) {
     const { language } = useSelector(state => state.languageState)
     const teacher = teachers.find(x => x.id === teacherId)
     const [hour, minute] = eventTime.split(":")
@@ -17,7 +17,7 @@ export default function EventItem({ currentHour, isToday, currentMinute, event: 
         <View style={[globalStyles.eventCard, language === 'ar' ? { right: 80 } : { left: 80 }, {
             borderTopLeftRadius: language === 'ar' ? Border.br_13xl : 0,
             borderTopRightRadius: language === 'en' ? Border.br_13xl : 0,
-            top: (theEventTime * 100) + 1,
+            top: ((theEventTime - dayStart) * 100) + 1,
             height: theDuration * 99,
             overflow: "hidden"
         }]} >

@@ -34,6 +34,7 @@ export const FontSize = {
 /* Colors */
 export const Color = {
   white: "#fff",
+  ofWhite: "#F9FAFB",
   black: "#000",
   lightGray: isDark ? "rgba(200, 200, 200, 0.9)" : 'rgba(0, 0, 0, 0.10)',
   gray_100: "#101623",
@@ -88,6 +89,7 @@ export const Height = {
   br_xl: 71,
   nav_tap: 64,
   teacher_tap: 64,
+  hi_container: 80
 
 };
 export const heightPercentage = (parent) => {
@@ -171,6 +173,17 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: Color.white,
     borderRadius: Border.br_13xl,
     padding: 10
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Color.lightGray, // Adjust the color of the divider as needed
+  },
+  sliderContainer:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
   }
 });
 

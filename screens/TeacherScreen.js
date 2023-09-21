@@ -118,7 +118,7 @@ export default function TeacherScreen({ route }) {
                     return { ...x.schedule, id: x.id }
                 })
                 let myBookedHours = myBookedDates.map(x => {
-                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
                 })
                 setMyBookedHours(myBookedHours)
             } else {
@@ -126,7 +126,7 @@ export default function TeacherScreen({ route }) {
                     return { ...x.schedule, id: x.id }
                 })
                 let myBookedHours = myBookedDates.map(x => {
-                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
                 })
                 setMyBookedHours(myBookedHours)
             }
