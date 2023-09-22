@@ -38,13 +38,13 @@ export default function MainComponents() {
                 setInitialRouteName("OnboardingPages")
             }
         }
-    }, [userInfo])
+    }, [userInfo, loading])
 
     useEffect(() => {
         if (!userInfo) {
             dispatch(getUserData())
         }
-    }, [dispatch]);
+    }, [userInfo]);
     return TheInitialRouteName && (
         <NavigationContainer >
             <Stack.Navigator
@@ -81,7 +81,7 @@ export default function MainComponents() {
                     options={{ headerShown: false }} />
             </Stack.Navigator>
             <Message />
-            <TapBottomNavigator />
+            <TapBottomNavigator TheInitialRouteName={TheInitialRouteName} />
         </NavigationContainer >
     )
 }

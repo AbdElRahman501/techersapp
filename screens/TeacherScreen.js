@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
 import { days, friends } from '../data';
 import t from '../actions/changeLanguage';
-import { Color, FontFamily, FontSize, Margin, Padding } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding, globalStyles, widthPercentage } from '../GlobalStyles';
 import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherMainCard from '../components/TeacherMainCard';
@@ -118,7 +118,7 @@ export default function TeacherScreen({ route }) {
                     return { ...x.schedule, id: x.id }
                 })
                 let myBookedHours = myBookedDates.map(x => {
-                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
                 })
                 setMyBookedHours(myBookedHours)
             } else {
@@ -126,7 +126,7 @@ export default function TeacherScreen({ route }) {
                     return { ...x.schedule, id: x.id }
                 })
                 let myBookedHours = myBookedDates.map(x => {
-                    return { start: x.hours.timeIn24Format, end: calculateEndTime(x.hours.timeIn24Format, x.hours.duration), id: x.id }
+                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
                 })
                 setMyBookedHours(myBookedHours)
             }
@@ -175,7 +175,7 @@ export default function TeacherScreen({ route }) {
                     </SlideContainer>
                 </View>
             </ScrollView>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: Padding.page_p }}>
+            <View style={[styles.buttonContainer]}>
                 <View style={{ paddingHorizontal: Padding.p_sm }} >
                     <Text style={[styles.regular]}>
                         {t("per month")}
@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: Padding.page_p,
+        paddingBottom: Padding.page_p
     },
     regular: {
         fontFamily: FontFamily.montserratArabic,
@@ -225,8 +226,23 @@ const styles = StyleSheet.create({
         fontSize: FontSize.size_lg,
         color: Color.white
     },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: Padding.page_p,
+        backgroundColor: Color.white,
+        borderWidth: 1,
+        borderColor: Color.lightGray,
+        borderTopRightRadius: 52,
+        borderTopLeftRadius: 52,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 24,
+    },
     title: {
         fontSize: FontSize.size_xl,
         fontWeight: 'bold',
-    },
+    }
+
 })

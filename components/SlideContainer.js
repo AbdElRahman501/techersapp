@@ -65,9 +65,9 @@ export default function SlideContainer(props) {
                     showsHorizontalScrollIndicator={false}
                     snapToInterval={null} // Turn off snapping
                     snapToAlignment="start" // Adjust alignment according to your needs
-                    maxToRenderPerBatch={4}
-                    removeClippedSubviews={true}
-                    initialNumToRender={4}
+                    // maxToRenderPerBatch={7}
+                    // removeClippedSubviews={true}
+                    // initialNumToRender={7}
                 />
             </View>
         </View>

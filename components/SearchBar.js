@@ -1,22 +1,23 @@
-import { StyleSheet, TextInput, View } from 'react-native'
+import { Platform, StyleSheet, TextInput, View, useColorScheme } from 'react-native'
 import React, { useState } from 'react'
 import { Search_icon_Svg } from '../assets/icons/Icons';
-import { Border, Color, FontFamily, FontSize } from '../GlobalStyles';
+import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles';
 import { useNavigation } from '@react-navigation/core';
 
 export default function SearchBar({ autoFocus, button, changHandler, value }) {
   const [isFocused, setIsFocused] = useState(!button)
   const navigation = useNavigation()
 
+  const isDark = useColorScheme() === 'dark'
+
   return (
     <View style={[styles.inputField, {
-      shadowColor: isFocused ? Color.darkcyan : Color.darkgray,
-      borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+      shadowColor: isFocused ? Color.darkcyan : isDark ? "none" : Color.darkgray,
       flexDirection: "row"
     }]}>
       <TextInput style={[styles.input, {
         textAlign: "right",
-        paddingLeft: 46
+        paddingLeft: Height.hi_input
       }]}
         autoFocus={autoFocus}
         placeholder={"Search"}
@@ -48,9 +49,10 @@ export default function SearchBar({ autoFocus, button, changHandler, value }) {
 
 const styles = StyleSheet.create({
   inputField: {
-    width: "95%",
+    width: "100%",
+    flex: 1,
     maxWidth: 500,
-    height: 46,
+    height: Height.hi_input,
     backgroundColor: Color.input_fill,
     borderRadius: Border.br_6xl,
     marginBottom: 24,
@@ -64,14 +66,14 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 46,
+    height: Height.hi_input,
     fontFamily: FontFamily.montserratArabic,
     fontSize: FontSize.size_base
   },
   rightIcon: {
     paddingTop: 8,
-    width: 46,
-    height: 46,
+    width: Height.hi_input,
+    height: Height.hi_input,
     justifyContent: "center",
     alignItems: "center"
   }

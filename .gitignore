@@ -67,3 +67,4 @@ profile
 # Visual Studio Code specific
 .vscode/
 *.code-workspace
+archive.js

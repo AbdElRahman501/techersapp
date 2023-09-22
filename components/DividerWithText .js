@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Color, FontFamily, FontSize, Margin, fontEm } from '../GlobalStyles';
+import { Color, globalStyles } from '../GlobalStyles';
 
-const DividerWithText = ({ text }) => {
+const DividerWithText = ({ text, style }) => {
     return (
-        <View style={styles.container}>
-            <View style={styles.line} />
-            <Text style={styles.text}>{text}</Text>
-            <View style={styles.line} />
+        <View style={[styles.container, style]}>
+            <View style={globalStyles.line} />
+            {text && <Text style={[globalStyles.title, { color: Color.darkgray }]}>{text}</Text>}
+            <View style={globalStyles.line} />
         </View>
     );
 };
@@ -17,19 +17,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: Margin.m_base,
     },
-    line: {
-        flex: 1,
-        height: 1,
-        backgroundColor: Color.lightGray, // Adjust the color of the divider as needed
-    },
-    text: {
-        marginHorizontal: Margin.m_base,
-        fontSize: FontSize.size_lg,
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.darkgray, // Adjust the color of the text as needed
-    },
+
 });
 
 export default DividerWithText;

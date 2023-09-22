@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Color, FontFamily, FontSize, Padding, widthPercentage } from '../GlobalStyles'
 import CustomImage from './CustomImage '
 import CustomText from './CustemText'
-import { Heart_Icon_Fill } from '../assets/icons/Icons';
+import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { formatDistance, checkArrayForUserId, getTitle } from '../actions/GlobalFunctions'
 
@@ -41,11 +41,14 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
                     </View>
                     <View style={{ justifyContent: "space-between", flexDirection: language === 'en' ? 'row-reverse' : 'row', alignItems: "center" }}>
                         <TouchableOpacity style={[styles.likes, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]} onPress={() => setLiked({ state: !liked.state, number: liked.state ? liked.number - 1 : liked.number + 1 })}>
-                            <Heart_Icon_Fill
-                                width={15} height={15}
-                                viewBox="0 0 22 19"
-                                fill={liked.state ? Color.darkcyan : "none"}
-                                color={liked.state ? "none" : Color.darkcyan} />
+                            {liked.state ?
+                                <Heart_Icon_Fill
+                                    width={15} height={15}
+                                    viewBox="0 0 22 19" />
+                                :
+                                <Heart_Stroke width={15} height={15}
+                                    viewBox="0 0 22 19" />
+                            }
                             <CustomText style={[styles.regular, { color: liked.state ? Color.darkcyan : Color.darkgray }]}>
                                 {liked.number}
                             </CustomText>

@@ -1,18 +1,21 @@
 {
   "expo": {
     "name": "alostaz",
+    "title": "alostaz",
+    "description": "Your perfect app to find your perfect teacher",
     "slug": "alostaz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "transparent"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/176acfb0-01b9-41df-86a5-34e4dea32ee3"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,7 +26,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#000000"
       },
       "package": "com.bedoahmed.alostaz"
     },
@@ -35,6 +38,9 @@
         "projectId": "176acfb0-01b9-41df-86a5-34e4dea32ee3"
       }
     },
-    "owner": "bedoahmed"
+    "owner": "bedoahmed",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }

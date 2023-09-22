@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform, Animated, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Platform, TouchableWithoutFeedback } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
@@ -13,16 +13,22 @@ const DayItem = React.memo(({ item }) => {
     return (
         <TouchableWithoutFeedback onPress={() => setTrigger(!trigger)} >
             <View style={[styles.card]}>
-                <View style={[styles.state, { backgroundColor: item.attend ? item.late ? Color.yellow : Color.darkcyan : Color.red }]}>
+                <View style={[styles.state, {
+                    backgroundColor: item.attend ? item.late ? Color.yellow : Color.darkcyan : Color.red
+                }]}>
                     <Text style={styles.stateText} >
                         {item.attend ? item.late ? t("late") : t("present") : t("absent")}
                     </Text>
                 </View>
 
-                <Animated.View style={[styles.subject, { height: 60, borderBottomRightRadius: 0 }]}>
+                <View style={[styles.subject, {
+                    height: 60, borderBottomRightRadius: 0,
+                    borderColor: Color.lightGray,
+                    borderWidth: 1
+                }]}>
                     <Text numberOfLines={1} lineBreakMode="tail" style={styles.regular} >{item.day[language]}</Text>
                     <Text style={styles.title} >{item.date}</Text>
-                </Animated.View>
+                </View>
 
             </View>
         </TouchableWithoutFeedback>

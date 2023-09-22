@@ -1,9 +1,8 @@
-import { StyleSheet, View, Animated, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, FontFamily, FontSize } from '../GlobalStyles'
-import transition from '../actions/transition';
+import { Color, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
-import { isTimeBetween, transformTime } from '../actions/GlobalFunctions';
+import {  areAppointmentsOverlapping, transformTime } from '../actions/GlobalFunctions';
 import BookingModal from './BookingModal';
 
 const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, disabled }) => {
@@ -19,11 +18,12 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
         }
     }, [SelectedId])
 
+    
 
     useEffect(() => {
         if (myBookedHours) {
-            let unAvailable = myBookedHours.find(time => isTimeBetween(item.timeIn24Format, time.start, time.end));
-            setUnavailable(unAvailable ? true : false)
+            let overlapping = myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem));
+            setUnavailable(overlapping ? true : false)
         }
     }, [myBookedHours])
     const [isModalVisible, setModalVisible] = useState(false);
@@ -32,11 +32,10 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
         setModalVisible(false);
     };
 
-
     return (
         <>
             <BookingModal
-                myBookedHour={myBookedHours?.find(time => isTimeBetween(item.timeIn24Format, time.start, time.end))}
+                myBookedHour={myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem))}
                 isBooked={isModalVisible}
                 onClose={handleCloseModal}
             />
@@ -48,13 +47,15 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
                         handelPress(item.timeIn24Format)
                     }
                 }}   >
-
-                <View style={[styles.card]}>
-                    <Animated.View style={[styles.subject, { backgroundColor: transition(Color.white, Color.darkcyan, 50, trigger), opacity: unavailable ? 0.5 : 1 }]}>
-                        <Animated.Text style={[styles.title, { color: transition(Color.black, Color.white, 50, trigger) }]} >
-                            {transformTime(item.timeIn24Format, language)}
-                        </Animated.Text>
-                    </Animated.View>
+                <View style={[globalStyles.dayCard, {
+                    width: 100,
+                    height: 40,
+                    backgroundColor: trigger ? Color.darkcyan : Color.white,
+                    opacity: unavailable ? 0.5 : 1
+                }]}>
+                    <Text style={[globalStyles.regular, { color: trigger ? Color.white : Color.black }]} >
+                        {transformTime(item.timeIn24Format, language)}
+                    </Text>
                 </View>
             </TouchableWithoutFeedback >
         </>
@@ -64,26 +65,3 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
 });
 
 export default HoursOption;
-const styles = StyleSheet.create({
-    subject: {
-        width: 100,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 16,
-        padding: 5,
-        borderColor: Color.lightGray,
-        borderWidth: 1,
-        marginBottom: 5
-
-    },
-    card: {
-        alignItems: 'center',
-        marginHorizontal: 5
-    },
-    title: {
-        fontSize: FontSize.size_base,
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.black
-    }
-})

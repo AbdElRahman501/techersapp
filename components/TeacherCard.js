@@ -4,7 +4,7 @@ import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { checkArrayForUserId, formatDistance, getSubjectTitle, } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux';
-import { Heart_Icon_Fill } from '../assets/icons/Icons';
+import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 
 
 const TeacherCard = React.memo(({ item }) => {
@@ -32,11 +32,13 @@ const TeacherCard = React.memo(({ item }) => {
             <Text style={styles.regular} numberOfLines={1} lineBreakMode='tail' >{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={styles.likes}>
-                    <Heart_Icon_Fill
-                        width={10} height={10}
-                        viewBox="0 0 22 19"
-                        fill={checkArrayForUserId(item.likes, id) ? Color.darkcyan : "none"}
-                        color={checkArrayForUserId(item.likes, id) ? "none" : Color.darkcyan} />
+                    {checkArrayForUserId(item.likes, id) ?
+                        <Heart_Icon_Fill
+                            width={10} height={10}
+                            viewBox="0 0 22 19" />
+                        : <Heart_Stroke
+                            width={10} height={10}
+                            viewBox="0 0 22 19" />}
                     <Text style={[styles.regular, { color: Color.darkcyan }]}>{item.likes.length}</Text>
                 </View>
                 <Text style={styles.regular}>{formatDistance(item.distance, language)}</Text>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         marginHorizontal: 10,
-        borderColor: 'rgba(0, 0, 0, 0.10)',
+        borderColor: Color.lightGray,
         padding: 10,
         borderWidth: 1,
         borderRadius: 15

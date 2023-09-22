@@ -1,3 +1,5 @@
+import { teachers } from "../data";
+
 export const submitCheck = (inputs) => {
     const errors = {};
     for (const property in inputs) {
@@ -219,45 +221,94 @@ export const teacherByYears = (array, year) => {
     })
 }
 
-export const getTheWeek = () => {
-    function getWeek(startDay) {
-        const week = [];
-        let currentDay = new Date(startDay);
+const dayNames = {
+    '0': { ar: 'الأحد', en: 'Sun', fullName: 'Sunday' },
+    '1': { ar: 'الاثنين', en: 'Mon', fullName: 'Monday' },
+    '2': { ar: 'الثلاثاء', en: 'Tue', fullName: 'Tuesday' },
+    '3': { ar: 'الأربعاء', en: 'Wed', fullName: 'Wednesday' },
+    '4': { ar: 'الخميس', en: 'Thu', fullName: 'Thursday' },
+    '5': { ar: 'الجمعة', en: 'Fri', fullName: 'Friday' },
+    '6': { ar: 'السبت', en: 'Sat', fullName: 'Saturday' }
+};
 
-        const dayNames = {
-            '0': { ar: 'الأحد', en: 'Sun' },
-            '1': { ar: 'الاثنين', en: 'Mon' },
-            '2': { ar: 'الثلاثاء', en: 'Tue' },
-            '3': { ar: 'الأربعاء', en: 'Wed' },
-            '4': { ar: 'الخميس', en: 'Thu' },
-            '5': { ar: 'الجمعة', en: 'Fri' },
-            '6': { ar: 'السبت', en: 'Sat' }
-        };
-
-        for (let i = 0; i < 7; i++) {
-            const dayId = currentDay.getDay().toString();
-            const day = {
-                day: dayNames[dayId],
-                date: currentDay.getDate().toString(),
-                id: dayId
-            };
-
-            week.push(day);
-            currentDay.setDate(currentDay.getDate() + 1);
-        }
-
-        return week;
-    }
-
-    // Example usage: Get the current week starting from Sunday
+const monthNames = {
+    '0': { ar: 'يناير', en: 'January', fullName: 'January' },
+    '1': { ar: 'فبراير', en: 'February', fullName: 'February' },
+    '2': { ar: 'مارس', en: 'March', fullName: 'March' },
+    '3': { ar: 'أبريل', en: 'April', fullName: 'April' },
+    '4': { ar: 'مايو', en: 'May', fullName: 'May' },
+    '5': { ar: 'يونيو', en: 'June', fullName: 'June' },
+    '6': { ar: 'يوليو', en: 'July', fullName: 'July' },
+    '7': { ar: 'أغسطس', en: 'August', fullName: 'August' },
+    '8': { ar: 'سبتمبر', en: 'September', fullName: 'September' },
+    '9': { ar: 'أكتوبر', en: 'October', fullName: 'October' },
+    '10': { ar: 'نوفمبر', en: 'November', fullName: 'November' },
+    '11': { ar: 'ديسمبر', en: 'December', fullName: 'December' }
+};
+export const getTheMonths = () => {
     const today = new Date();
     const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
-    const week = getWeek(sunday);
-    return week
+    const week = [];
+    let currentDay = new Date(sunday);
+
+    const currentMonthIndex = today.getMonth();
+    const months = [
+        { ...monthNames[currentMonthIndex - 1], id: currentMonthIndex - 1 },
+        { ...monthNames[currentMonthIndex], id: currentMonthIndex }
+    ];
+    for (let i = 0; i < 7; i++) {
+        const dayId = currentDay.getDay().toString();
+        const day = {
+            day: dayNames[dayId],
+            date: currentDay.getDate().toString(),
+            id: `${currentDay.getFullYear()}-${currentDay.getMonth() + 1}-${currentDay.getDate()}`,
+            fullName: dayNames[dayId].fullName
+
+        };
+        week.push(day);
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+
+    const todayIndex = new Date().getDay();
+    const todayObj = week[todayIndex];
+
+    const currentMonth = months[1];
+
+    return { today: todayObj, week, months, currentMonth };
+};
+export const getWeeksOfMonth = (currentMonthIndex) => {
+    const weeks = [];
+    const firstDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex, 1);
+    const lastDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex + 1, 0);
+
+    let currentDay = new Date(firstDayOfMonth);
+    let theLastDay = new Date(lastDayOfMonth);
+
+    theLastDay.setDate(theLastDay.getDate() + (6 - theLastDay.getDay()));
+    currentDay.setDate(currentDay.getDate() - currentDay.getDay());
+
+    while (currentDay <= theLastDay || weeks[weeks.length - 1]?.length < 7) {
+        const dayId = currentDay.getDay().toString();
+        const day = {
+            day: dayNames[dayId],
+            date: currentDay.getDate().toString(),
+            id: `${currentDay.getFullYear()}-${currentDay.getMonth() + 1}-${currentDay.getDate()}`,
+            fullName: dayNames[dayId].fullName
+        };
+
+        if (dayId === '0') {
+            weeks.push([]);
+        }
+        weeks[weeks.length - 1].push(day);
+
+        currentDay.setDate(currentDay.getDate() + 1);
+    }
+
+    return weeks;
 }
 
 export const transformTime = (time, language) => {
-    const [hour, minute] = time.split(':');
+    const [hour, minute] = typeof time === 'string' ? time.split(':') : [time, "00"];
     let convertedHour = parseInt(hour);
     let period = language === 'ar' ? 'ص' : 'AM';
 
@@ -297,7 +348,18 @@ export const isTimeBetween = (time, startTime, endTime) => {
 
     return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
 }
+export const areAppointmentsOverlapping = (firstTime, secondTime) => {
+    const firstTimeParts = firstTime.timeIn24Format.split(":");
+    const secondTimeParts = secondTime.timeIn24Format.split(":");
 
+    const firstTimeInMinutes = parseInt(firstTimeParts[0]) * 60 + parseInt(firstTimeParts[1]);
+    const secondTimeInMinutes = parseInt(secondTimeParts[0]) * 60 + parseInt(secondTimeParts[1]);
+
+    const firstEndTimeInMinutes = firstTimeInMinutes + firstTime.duration;
+    const secondEndTimeInMinutes = secondTimeInMinutes + secondTime.duration;
+
+    return firstTimeInMinutes < secondEndTimeInMinutes && secondTimeInMinutes < firstEndTimeInMinutes;
+}
 export const equalArs = (array1, array2) => {
     if (array1.length !== array2.length) {
         return false;
@@ -317,4 +379,39 @@ export const removeDuplicatesById = (array) => {
         return index === self.findIndex(obj => obj.id === item.id);
     });
     return uniqueArray;
+}
+
+export const getEvents = (myTeachers, day) => {
+    if (!myTeachers || !day) return []
+    let theEvents = myTeachers?.filter((x, i) => {
+        return x.schedule?.days.map(y => y.toLowerCase()).includes(day.toLowerCase())
+    }).map((x, i) => {
+        return { eventTime: x.schedule?.hours.timeIn24Format, duration: x.schedule?.hours.duration, teacherId: x.id, ...x }
+    })
+    return theEvents
+}
+
+export const getEventsDuration = (userInfo) => {
+    if (!userInfo) return []
+    let eventsDuration = teachers.filter(x => userInfo?.myTeachers.find(y => y.id === x.id)
+    ).map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday }))
+    return eventsDuration
+}
+
+export const isDateAfter = (dateString, comparisonDate) => {
+    const dateParts = dateString.split("-");
+    const year = new Date().getFullYear();
+    const date = new Date(year, parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
+    const comparisonParts = comparisonDate.split("-");
+    const comparison = new Date(year, parseInt(comparisonParts[0]) - 1, parseInt(comparisonParts[1]));
+
+    return date > comparison;
+}
+export const getStartedEvents = (events, eventsDuration, selectedDay) => {
+    let theEvents = events.filter(event => {
+        let eventDuration = eventsDuration?.find(x => x.teacherID === event.teacherId);
+        let isTheYearStarts = eventDuration && isDateAfter(selectedDay.id, eventDuration.studyingYear.start)
+        return isTheYearStarts
+    })
+    return theEvents;
 }

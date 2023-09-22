@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "npx expo run",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "start": "npx expo start",
+    "android": "npx expo start --android",
+    "ios": "npx expo start --ios",
+    "web": "npx expo start --web"
   },
   "dependencies": {
     "@eva-design/eva": "^2.1.1",
@@ -25,6 +25,7 @@
     "expo-linear-gradient": "~12.3.0",
     "expo-splash-screen": "^0.20.5",
     "expo-status-bar": "~1.6.0",
+    "expo-updates": "~0.18.13",
     "metro-core": "^0.78.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -37,8 +38,7 @@
     "react-native-svg": "13.9.0",
     "react-redux": "^8.1.2",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2",
-    "expo-updates": "~0.18.12"
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
