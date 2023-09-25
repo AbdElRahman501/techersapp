@@ -6,6 +6,7 @@ import EventItem from '../components/EventItem'
 import { useSelector } from 'react-redux';
 import { getStartedEvents, transformTime } from '../actions/GlobalFunctions';
 import { useState } from 'react';
+import t from '../actions/changeLanguage';
 
 export default function TimeLine({ today, eventsDuration, events, selectedDay }) {
     const { language } = useSelector(state => state.languageState)
@@ -18,6 +19,8 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
     const [currentMinute, setCurrentMinute] = useState(hourState ? new Date().getMinutes() : 0)
 
     let isToday = today?.id === selectedDay?.id
+    let isPassed = new Date(today?.id) > new Date(selectedDay?.id)
+
     let theFilterEvents = getStartedEvents(events, eventsDuration, selectedDay)
     const theHour = theFilterEvents.length > 0 ? Math.min(...theFilterEvents.map(x => x.eventTime.split(":")[0])) - dayStart : 0
 
@@ -47,6 +50,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
         };
     }, []);
 
+    const [now, dayStartedTime] = [t("now"), t("day_started", { time: transformTime(dayStart, language) })]
     return (
         <ScrollView
             ref={scrollViewRef}
@@ -54,44 +58,59 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
                 <Svg height={hours.length * 100} width={widthPercentage(100)} >
                     {hours.map((hour, i) => (
-                        <View key={i}>
-                            <Line
-                                x1={language === 'ar' ? 20 : 80}
-                                y1={i * 100}
-                                x2={language === 'ar' ? widthPercentage(100) - 80 : widthPercentage(100) - 20}
-                                y2={i * 100}
-                                stroke="black"
-                                opacity={0.1}
-                                strokeWidth="2"
-                            />
-                            {i < dayEnd - dayStart - 1 && (
-                                <Line
-                                    x1={50}
-                                    y1={(i + 0.5) * 100}
-                                    x2={widthPercentage(100) - 50}
-                                    y2={(i + 0.5) * 100}
-                                    stroke="black"
-                                    opacity={0.1}
-                                    strokeWidth="1"
-                                />
-                            )}
-                            <Text style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { color: "black", opacity: 0.3, position: 'absolute', top: (i * 100) - 12 }]} >
-                                {transformTime(hour, language)}
-                            </Text>
-                        </View>
-                    ))}
-                    {isToday &&
                         <Line
-                            x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 80}
-                            y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
-                            x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 20 : language === 'ar' ? widthPercentage(100) - 80 : widthPercentage(100) - 20}
-                            y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
-                            stroke={Color.darkcyan}
+                            key={i}
+                            x1={language === 'ar' ? 20 : 100}
+                            y1={i * 100}
+                            x2={language === 'ar' ? widthPercentage(100) - 100 : widthPercentage(100) - 20}
+                            y2={i * 100}
+                            stroke="black"
+                            opacity={0.1}
                             strokeWidth="2"
                         />
+
+                    ))}
+                    {hours.map((hour, i) => {
+                        return i < dayEnd - dayStart - 1 && (
+                            <Line
+                                key={i}
+                                x1={50}
+                                y1={(i + 0.5) * 100}
+                                x2={widthPercentage(100) - 50}
+                                y2={(i + 0.5) * 100}
+                                stroke="black"
+                                opacity={0.1}
+                                strokeWidth="1"
+                            />
+                        )
+                    })}
+
+                    {isToday &&
+                        <>
+                            <Line
+                                x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 100}
+                                y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                                x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 50 : language === 'ar' ? widthPercentage(100) - 100 : widthPercentage(100) - 20}
+                                y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
+                                stroke={Color.darkcyan}
+                                strokeWidth="2"
+                            />
+                            <View style={[language === 'ar' ? { left: 20 } : { right: 20 },
+                            { backgroundColor: Color.darkcyan, position: 'absolute', borderRadius: 10, padding: 4, paddingHorizontal: 10, top: (currentHour * 100) + ((currentMinute / 60) * 100) - 12 }]}>
+                                <Text style={[globalStyles.smallText, { color: Color.white, }]}  >
+                                    {hourState ? now : dayStartedTime}
+                                </Text>
+                            </View>
+                        </>
                     }
-                    {theFilterEvents.map((event, index) => <EventItem isToday={isToday} dayStart={dayStart} dayEnd={dayEnd} currentHour={currentHour} currentMinute={currentMinute} key={index} event={event} />)}
+
                 </Svg>
+                {hours.map((hour, i) => (
+                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { color: "black", opacity: 0.3, position: 'absolute', top: (i * 100) + 5 }]} >
+                        {transformTime(hour, language)}
+                    </Text>
+                ))}
+                {theFilterEvents.map((event, index) => <EventItem isToday={isToday} isPassed={isPassed} dayStart={dayStart} dayEnd={dayEnd} currentHour={currentHour} currentMinute={currentMinute} key={index} event={event} />)}
             </View>
         </ScrollView>
     )

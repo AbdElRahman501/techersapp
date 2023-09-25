@@ -5,7 +5,7 @@ import { teachers } from '../data';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 
-export default function EventItem({ currentHour, dayStart, dayEnd, isToday, currentMinute, event: { eventTime, subject, duration, color, teacherId } }) {
+export default function EventItem({ currentHour, dayStart, isPassed, dayEnd, isToday, currentMinute, event: { eventTime, subject, duration, color, teacherId } }) {
     const { language } = useSelector(state => state.languageState)
     const teacher = teachers.find(x => x.id === teacherId)
     const [hour, minute] = eventTime.split(":")
@@ -13,16 +13,17 @@ export default function EventItem({ currentHour, dayStart, dayEnd, isToday, curr
     const theDuration = duration / 60
     let theTimeFill = ((currentHour * 100) + ((currentMinute / 60) * 100)) - ((theEventTime * 100) + 1)
     theTimeFill = isToday ? theTimeFill > 0 ? theTimeFill < theDuration * 99 ? theTimeFill : theDuration * 99 : 0 : 0
+
+
     return (
-        <View style={[globalStyles.eventCard, language === 'ar' ? { right: 80 } : { left: 80 }, {
+        <View style={[globalStyles.eventCard, language === 'ar' ? { right: 100 } : { left: 100 }, {
             borderTopLeftRadius: language === 'ar' ? Border.br_13xl : 0,
             borderTopRightRadius: language === 'en' ? Border.br_13xl : 0,
-            top: ((theEventTime - dayStart) * 100) + 1,
+            top: ((theEventTime - dayStart) * 100) + 15,
             height: theDuration * 99,
             overflow: "hidden"
         }]} >
-            <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.darkcyan, opacity: 0.4, height: theTimeFill, width: widthPercentage(100) - 100 }} >
-            </View>
+            <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.darkcyan, opacity: 0.4, height: isPassed ? theDuration * 99 : theTimeFill, width: widthPercentage(100) - 100 }} />
             <Text style={[globalStyles.title, { color: color || Color.darkcyan }]}> {subject[language]} </Text>
             <View style={[globalStyles.container, { flexDirection: language === 'ar' ? 'row-reverse' : 'row', paddingHorizontal: 10 }]}>
                 <Image

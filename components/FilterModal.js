@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Modal, StyleSheet, PanResponder, Animated, ScrollView, Text, TouchableOpacity } from 'react-native';
+import React, { useState, } from 'react';
+import { View, Modal, StyleSheet, PanResponder, Animated, ScrollView } from 'react-native';
 import { Border, Color, globalStyles, heightPercentage } from '../GlobalStyles';
 import SortingContainer from './SortingContainer';
 import DistanceFilter from './DistanceFilter';
@@ -13,8 +13,8 @@ const FilterModal = ({ isVisible, onClose, onApply }) => {
     const sortingOptions = ["Default", "A-Z", "Z-A", "Price: Low to High", "Price: High to Low"]
     const [selectedOption, setSelectedOption] = useState(0)
 
-    
-    const distances = ["0.2", "1Km", "1.5Km", "2Km", "4Km"]
+
+    const distances = [1000, 2000, 3000, 4000, 5000]
     const [selectedDistance, setSelectedDistance] = useState(1)
 
 
@@ -43,17 +43,19 @@ const FilterModal = ({ isVisible, onClose, onApply }) => {
 
 
     return (
-        <Modal visible={isVisible} animationType="slide" transparent>
+        <Modal visible={isVisible}
+            // onRequestClose={onClose}
+            animationType="slide" transparent>
             <Animated.View style={[styles.container]}>
                 <Animated.View style={[styles.modal, animatedStyles]} >
-                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center", height: 20 }} {...panResponder.panHandlers}>
-                        {Array.from({ length: 4 }, (_, i) => i).map(x => (
-                            <View key={x} style={[globalStyles.eventBall, { margin: 4, backgroundColor: Color.darkgray }]} />
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: "center", height: 30 }} {...panResponder.panHandlers}>
+                        {Array.from({ length: 3 }, (_, i) => i).map(x => (
+                            <View key={x} style={[globalStyles.eventBall, { margin: 2, backgroundColor: Color.darkgray }]} />
                         ))}
                     </View>
                     <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false} >
                         <DividerWithText style={{ marginBottom: 20 }} />
-                        <SortingContainer sortingOptions={sortingOptions}  selectedOption={selectedOption}  setSelectedOption={setSelectedOption} />
+                        <SortingContainer sortingOptions={sortingOptions} selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
                         <DividerWithText style={{ marginVertical: 20 }} />
                         <DistanceFilter distances={distances} selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
                         <DividerWithText style={{ marginVertical: 20 }} />

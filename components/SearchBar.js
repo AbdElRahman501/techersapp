@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   inputField: {
     width: "100%",
     flex: 1,
-    maxWidth: 500,
     height: Height.hi_input,
     backgroundColor: Color.input_fill,
     borderRadius: Border.br_6xl,
@@ -60,8 +59,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
     elevation: Platform.OS === 'android' ? 10 : 0,
   },
   input: {

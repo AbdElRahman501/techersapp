@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, ImageBackground, Image, View } from "react-native";
+import { StyleSheet, Text, ImageBackground, Image, View, SafeAreaView, Platform } from "react-native";
 import { Border, FontFamily, Color, FontSize, Padding, heightPercentage, widthPercentage, Margin } from "../GlobalStyles";
 import { useSelector } from "react-redux";
 import PrimaryButton from "../components/PrimaryButton";
@@ -13,16 +13,15 @@ const SignUpOptions = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <Header lastSlide={true} />
-
+    <SafeAreaView style={styles.container}>
       <ImageBackground
-        style={{ justifyContent: "center", alignItems: "center", width: widthPercentage(100) }}
-        resizeMode="contain"
+        style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%" }}
         source={require('../assets/onboardingBk1.png')}
       >
+        <Header lastSlide={true} />
+
         <Image
-          style={{ width: widthPercentage(70), height: heightPercentage(70) }}
+          style={{ flex: 1, width: "90%" , maxWidth: 450 }}
           resizeMode="contain"
           source={require("../assets/image-2.png")}
         />
@@ -47,16 +46,17 @@ const SignUpOptions = () => {
             </PrimaryButton>
           </View>
         </View>
-      </ImageBackground>
-      <View style={[styles.flexContainer]} >
-        <View style={{ flexDirection: 'row' }}>
+        <View style={[styles.flexContainer , {marginBottom: Platform.select({
+            ios: Margin.m_xxl,
+            android: Margin.m_base,
+          }),}]} >
           <View style={[styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
             <Text style={styles.regularText}>{t("already have an account")}</Text>
             <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />
           </View>
         </View>
-      </View>
-    </View >
+      </ImageBackground>
+    </SafeAreaView >
   );
 };
 
@@ -68,12 +68,7 @@ const SignUpOptions = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: Color.white,
-    paddingHorizontal: Padding.page_p,
-
   },
   parentFlexBox: {
     flexDirection: "row",
@@ -103,7 +98,7 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   title: {
-    fontSize: FontSize.size_lg,
+    fontSize: FontSize.size_base,
     fontFamily: FontFamily.montserratArabic,
     textAlign: 'center',
 

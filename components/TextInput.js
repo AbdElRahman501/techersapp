@@ -100,6 +100,8 @@ const styles = StyleSheet.create({
         backgroundColor: Color.input_fill,
         borderRadius: Border.br_6xl,
         marginTop: 18,
+        alignItems: "center"
+
     },
     input: {
         flex: 1,
@@ -109,9 +111,7 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         textAlign: "center",
-        textAlignVertical: "center",
         width: Height.hi_md,
-        height: Height.hi_md,
         justifyContent: "center",
         alignItems: "center"
     },

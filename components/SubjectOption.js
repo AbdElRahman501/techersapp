@@ -15,8 +15,8 @@ const SubjectOptions = React.memo(({ item, selectedSubjects, setSelectedSubject 
         }
     }
     return (
-        <TouchableOpacity onPress={() => pressHandler(item)} style={[globalStyles.dayCard, { backgroundColor: selected ? Color.darkcyan : Color.white, width: 80, height: 40, }]} >
-            <Text numberOfLines={1} lineBreakMode="tail" style={[globalStyles.regular, { color: selected ? Color.white : Color.black, width: 80 ,height: 40,textAlignVertical:'center', textAlign: 'center'}]}> {item[language]}</Text>
+        <TouchableOpacity onPress={() => pressHandler(item)} style={[globalStyles.dayCard, { backgroundColor: selected ? Color.darkcyan : Color.white, width: "auto", height: 40, }]} >
+            <Text style={[globalStyles.regular, { color: selected ? Color.white : Color.black, width: "100%", paddingHorizontal: 10, textAlign: 'center' }]}> {item[language]}</Text>
         </TouchableOpacity>
     )
 }, (prevProps, nextProps) => {

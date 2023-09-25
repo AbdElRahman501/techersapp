@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -34,74 +34,77 @@ export default function SignUpScreen({ route }) {
     };
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
-                <View style={[styles.container]} >
-                    <View style={[styles.form]}>
-                        <ImageBackground
-                            style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
-                            resizeMode="contain"
-                            source={require('../assets/logoColoredTextMs.png')}
-                        />
-                        <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
-                            checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                            autoCapitalize="words"
-                            placeholder={user === "teacher" ? t("full-name-teacher") : t("full-name-student")}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, fullName: e }))}
-                        >
-                            <User_Icon_Svg />
-                        </FancyInput>
-                        <FancyInput inputType={"email"} value={signUpData.email} setState={setState}
-                            checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                            placeholder={t("email-input")} keyboardType={"email-address"}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, email: e }))}
-                        >
-                            <Mail_OutLine_Svg />
-                        </FancyInput>
-                        <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
-                            checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                            placeholder={t("password-input")} rightIcon={"lock-closed-outline"}
-                            changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
-                        >
-                            <Lock_Svg />
-                        </FancyInput>
-                        <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                            {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
-                        </View>
-                        <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
-                            <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
-                            <View style={[styles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
-                                <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-1")}</CustomText>
-                                <PressedText title={t("agree-to-terms-and-conditions-2")} pressHandler={() => console.log("pressed")} />
-                                <CustomText style={styles.regularText}>{t("and")}</CustomText>
-                                <PressedText title={t("agree-to-terms-and-conditions-3")} pressHandler={() => console.log("pressed")} />
-                                <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-4")}</CustomText>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{ flex: 1 }}>
+                    <View style={[styles.container]} >
+                        <View style={[styles.form]}>
+                            <ImageBackground
+                                style={{ height: fontEm(6), width: "100%", marginBottom: fontEm(1), alignSelf: "center" }}
+                                resizeMode="contain"
+                                source={require('../assets/logoColoredTextMs.png')}
+                            />
+                            <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
+                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                autoCapitalize="words"
+                                placeholder={user === "teacher" ? t("full-name-teacher") : t("full-name-student")}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, fullName: e }))}
+                            >
+                                <User_Icon_Svg />
+                            </FancyInput>
+                            <FancyInput inputType={"email"} value={signUpData.email} setState={setState}
+                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                placeholder={t("email-input")} keyboardType={"email-address"}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, email: e }))}
+                            >
+                                <Mail_OutLine_Svg />
+                            </FancyInput>
+                            <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
+                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                placeholder={t("password-input")} rightIcon={"lock-closed-outline"}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
+                            >
+                                <Lock_Svg />
+                            </FancyInput>
+                            <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
+                                {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
                             </View>
+                            <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
+                                <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
+                                <View style={[styles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
+                                    <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-1")}</CustomText>
+                                    <PressedText title={t("agree-to-terms-and-conditions-2")} pressHandler={() => console.log("pressed")} />
+                                    <CustomText style={styles.regularText}>{t("and")}</CustomText>
+                                    <PressedText title={t("agree-to-terms-and-conditions-3")} pressHandler={() => console.log("pressed")} />
+                                    <CustomText style={styles.regularText}>{t("agree-to-terms-and-conditions-4")}</CustomText>
+                                </View>
+
+                            </View>
+                            <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy}>
+                                <Text style={styles.title}>
+                                    {t("sign up")}
+                                </Text>
+                            </PrimaryButton>
+                            <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base, flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
+                                <Text style={styles.regularText}>{t("already have an account")}</Text>
+                                <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />
+                            </View>
+                            <DividerWithText text={t("or")} />
+                            <PrimaryButton style={styles.googleButton} onPress={() => console.log("pressed")} disabled={!signUpData.policy}>
+                                <Ionicons style={{ marginRight: Margin.m_base }} name={"logo-google"} size={FontSize.size_lg}
+                                    color={Color.orange} />
+                                <Text style={[styles.title, { color: Color.black }]}>
+                                    {t("sign up with google")}
+                                </Text>
+                            </PrimaryButton>
 
                         </View>
-                        <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy}>
-                            <Text style={styles.title}>
-                                {t("sign up")}
-                            </Text>
-                        </PrimaryButton>
-                        <View style={[styles.parentFlexBox, { paddingHorizontal: Padding.p_8xl, marginVertical: Margin.m_base, flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
-                            <Text style={styles.regularText}>{t("already have an account")}</Text>
-                            <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />
-                        </View>
-                        <DividerWithText text={t("or")} />
-                        <PrimaryButton style={styles.googleButton} onPress={() => console.log("pressed")} disabled={!signUpData.policy}>
-                            <Ionicons style={{ marginRight: Margin.m_base }} name={"logo-google"} size={FontSize.size_lg}
-                                color={Color.orange} />
-                            <Text style={[styles.title, { color: Color.black }]}>
-                                {t("sign up with google")}
-                            </Text>
-                        </PrimaryButton>
 
                     </View>
-
-                </View>
-            </ScrollView>
-
+                </ScrollView>
+            </SafeAreaView>
         </TouchableWithoutFeedback >
     )
 }

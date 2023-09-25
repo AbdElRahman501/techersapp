@@ -1,18 +1,9 @@
-import { Dimensions, Appearance, StyleSheet } from 'react-native';
-import { } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
-const colorScheme = Appearance.getColorScheme();
-const isDark = colorScheme === 'dark';
-// const isDark = false;
-console.log("🚀 ~ file: GlobalStyles.js:6 ~ isDark:", isDark)
 
 const { width, height } = Dimensions.get('window');
 console.log("🚀 ~ file: GlobalStyles.js:9 ~ width, height:", width, height)
 
-
-// Appearance.addChangeListener(({ colorScheme }) => {
-//   console.log("🚀 ~ file: GlobalStyles.js:14 ~ Appearance.addChangeListener ~ colorScheme:", colorScheme)
-// });
 
 
 /* fonts */
@@ -36,14 +27,14 @@ export const Color = {
   white: "#fff",
   ofWhite: "#F9FAFB",
   black: "#000",
-  lightGray: isDark ? "rgba(200, 200, 200, 0.9)" : 'rgba(0, 0, 0, 0.10)',
+  lightGray: 'rgba(0, 0, 0, 0.10)',
   gray_100: "#101623",
   gray_200: "rgba(16, 22, 35, 0.6)",
   darkcyan: "#199a8e",
   cyanBackGround: "#E8F3F1",
   darkgray: "#a1a8b0",
-  input_fill: isDark ? "rgba(75, 75, 75, .8)" : "#F9FAFB",
-  input_stroke: isDark ? "#101623" : "#CACDD1",
+  input_fill: "#F9FAFB",
+  input_stroke: "#CACDD1",
   yellow: "#FBBC05",
   red: "#FF5C5C",
   orange: "#FFA500",
@@ -123,6 +114,11 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  rowContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start"
+  },
   shadowBox: {
     shadowColor: Color.darkgray,
     shadowOffset: { width: 0, height: 2 },
@@ -157,7 +153,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 16,
-    padding: 5,
     borderColor: Color.lightGray,
     borderWidth: 1,
     marginHorizontal: 5
@@ -165,11 +160,11 @@ export const globalStyles = StyleSheet.create({
   eventBall: {
     width: 5,
     height: 5,
-    borderRadius: 5
+    borderRadius: 2.5
   },
   eventCard: {
     position: 'absolute',
-    width: widthPercentage(100) - 100,
+    width: widthPercentage(100) - 120,
     backgroundColor: Color.white,
     borderRadius: Border.br_13xl,
     padding: 10
@@ -179,11 +174,11 @@ export const globalStyles = StyleSheet.create({
     height: 1,
     backgroundColor: Color.lightGray, // Adjust the color of the divider as needed
   },
-  sliderContainer:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center',
+  sliderContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 

@@ -88,5 +88,7 @@
     "per month": "Monthly",
     "total": "Total",
     "read more": "Read More",
-    "read less": "Read Less"
+    "read less": "Read Less",
+    "now": "Now",
+    "day_started": "Day Started at {time}"
 }

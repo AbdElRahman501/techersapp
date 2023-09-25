@@ -1,9 +1,8 @@
 import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Border, Color, Height, globalStyles } from '../GlobalStyles'
 import transition from '../actions/transition'
-import { useEffect } from 'react';
-
+import * as Haptics from 'expo-haptics';
 
 export default function SortingContainer({ sortingOptions, selectedOption, setSelectedOption }) {
     const scrollViewRef = useRef();
@@ -15,6 +14,10 @@ export default function SortingContainer({ sortingOptions, selectedOption, setSe
         const middleIndex = Math.floor(middleY / itemHeight);
         setSelectedOption(middleIndex - 1);
     };
+
+    useEffect(() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    }, [selectedOption])
 
     scrollToIndex = (index) => {
         scrollViewRef.current.scrollTo({ y: index * (Height.hi_container / 3), animated: true });
@@ -28,6 +31,7 @@ export default function SortingContainer({ sortingOptions, selectedOption, setSe
             ref={scrollViewRef}
             onScroll={handleScroll}
             nestedScrollEnabled
+            scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
             snapToInterval={Height.hi_container / 3}
             disableIntervalMomentum={true}
@@ -39,7 +43,7 @@ export default function SortingContainer({ sortingOptions, selectedOption, setSe
                 {sortingOptions.map((option, index) => {
                     let focused = index === selectedOption
                     return (
-                        <TouchableOpacity key={index} onPress={() => { scrollToIndex(index); setSelectedOption(index) }}>
+                        <TouchableOpacity key={index} onPress={() => scrollToIndex(index)}>
                             <Animated.View style={[styles.option, { opacity: transition(0.5, 1, 500, focused), transform: [{ scale: transition(0.8, 1.5, 500, focused) }] }]} >
                                 <Text style={globalStyles.title}>{option}</Text>
                             </Animated.View>

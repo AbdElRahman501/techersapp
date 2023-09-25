@@ -24,8 +24,6 @@ const MonthItem = React.memo(({ item }) => {
                 </View>
                 <View style={[styles.subject, {
                     height: 60, borderBottomRightRadius: 0,
-                    borderColor: Color.lightGray,
-                    borderWidth: 1
                 }]}>
                     <Text numberOfLines={1} lineBreakMode="tail" style={styles.title} >{item.month[language]}</Text>
                 </View>
@@ -43,7 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,
-        padding: 5,
+        padding: 2,
         marginBottom: 10,
         backgroundColor: Color.white,
         ...Platform.select({
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
         height: 80,
     },
     title: {
-        fontSize: FontSize.size_base,
+        fontSize: FontSize.size_sm,
         fontFamily: FontFamily.montserratArabic,
         color: Color.black,
     },
@@ -79,11 +77,11 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     stateText: {
-        fontSize: FontSize.size_md,
+        fontSize: FontSize.size_sm,
         fontFamily: FontFamily.montserratArabic,
         color: Color.white,
         textAlign: 'center',
-        padding: 2
+        paddingVertical: 4
     },
     dot: {
         position: 'absolute',

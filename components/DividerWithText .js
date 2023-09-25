@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Color, globalStyles } from '../GlobalStyles';
+import { Color, Margin, globalStyles } from '../GlobalStyles';
 
 const DividerWithText = ({ text, style }) => {
     return (
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        marginVertical: Margin.m_base
     },
 
 });

@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import { checkArrayForUserId, formatDistance, getSubjectTitle, } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux';
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
+import CustomText from './CustemText';
 
 
 const TeacherCard = React.memo(({ item }) => {
@@ -20,7 +21,7 @@ const TeacherCard = React.memo(({ item }) => {
             <View style={styles.imagContainer}>
                 <Image
                     style={{ height: 100, width: 100, borderRadius: 50 }}
-                    resizeMode="contain"
+                    resizeMode="center"
                     source={
                         typeof item.imageSource === 'number'
                             ? item.imageSource // Local image require path
@@ -28,8 +29,8 @@ const TeacherCard = React.memo(({ item }) => {
                     }
                 />
             </View>
-            <Text style={styles.title} numberOfLines={1} lineBreakMode='tail'>{item.name}</Text>
-            <Text style={styles.regular} numberOfLines={1} lineBreakMode='tail' >{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
+            <CustomText style={styles.title} numberOfLines={1} lineBreakMode='tail'>{item.name}</CustomText>
+            <CustomText style={[styles.regular, { marginBottom: 5 }]} numberOfLines={1} lineBreakMode='tail' >{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={styles.likes}>
                     {checkArrayForUserId(item.likes, id) ?

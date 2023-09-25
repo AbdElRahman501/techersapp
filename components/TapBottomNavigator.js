@@ -27,25 +27,25 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
 
     return (currentScreen === 'Home' || currentScreen === 'Community' || currentScreen === 'Schedule' || currentScreen === 'Profile') && (
         <View style={styles.container} >
-            <TouchableOpacity onPress={() => goTo("Home")}  >
+            <TouchableOpacity style={{padding: 20}} onPress={() => goTo("Home")}  >
                 {currentScreen === "Home"
                     ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
                     : <Home_icon_Svg />
                 }
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => goTo('Community')}>
+            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Community')}>
                 {currentScreen === 'Community'
                     ? <Community_Icon_Fill />
                     : <Community_Icon />
                 }
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => goTo('Schedule')}>
+            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Schedule')}>
                 {currentScreen === 'Schedule'
                     ? <Calender_home_svg_fill />
                     : <Calender_home_Svg />
                 }
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => goTo('Profile')}>
+            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Profile')}>
                 {currentScreen === 'Profile'
                     ? <User_Icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
                     : <User_Icon_Svg />
@@ -71,13 +71,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         ...Platform.select({
             ios: {
-                shadowColor: "#000",
+                shadowColor: Color.lightGray,
                 shadowOffset: {
                     width: 0,
                     height: -5,
                 },
-                shadowOpacity: 1,
-                shadowRadius: 0,
+                shadowOpacity: 0.5,
+                shadowRadius: 5,
             },
             android: {
 

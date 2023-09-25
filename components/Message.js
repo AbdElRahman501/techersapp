@@ -68,7 +68,6 @@ export default function Message() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: 50,
         width: "100%",
         justifyContent: 'center',
         alignItems: 'flex-end',

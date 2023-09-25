@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
@@ -24,9 +24,10 @@ export default function DatePicker({ value, placeholder, changHandler, children,
         }
     };
 
-
+    let isIos = Platform.OS === "ios";
     return (
         <TouchableOpacity
+            disabled={isIos}
             style={[styles.inputField, {
                 borderColor: datePicker ? Color.darkcyan : Color.input_stroke,
                 flexDirection: language === "en" ? "row" : "row-reverse"
@@ -48,19 +49,24 @@ export default function DatePicker({ value, placeholder, changHandler, children,
                     })}
                 </View>
             }
-            <Text style={[styles.input, { color: value ? Color.black : Color.darkgray }]}>
-                {value || placeholder}
-            </Text>
-            {value &&
-                < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
+            {isIos ? null :
+                <Text style={[styles.input, { color: value ? Color.black : Color.darkgray }]}>
+                    {value || placeholder}
+                </Text>
             }
-            {datePicker &&
+
+            {(isIos || datePicker) &&
                 <DateTimePicker
                     value={date}
+                    style={{ backgroundColor: Color.input_fill, flex: 1, margin: 5 }}
                     minimumDate={new Date(1995, 0, 1)}
                     maximumDate={new Date(2020, 11, 31)}
                     mode="date"
+                    display='calendar'
                     onChange={handleDateChange} />
+            }
+            {value &&
+                < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
             }
         </TouchableOpacity>
     );
@@ -77,6 +83,9 @@ const styles = StyleSheet.create({
         backgroundColor: Color.input_fill,
         borderRadius: Border.br_6xl,
         marginTop: 18,
+        alignItems: "center",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     input: {
         flex: 1,
@@ -88,10 +97,7 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         textAlign: "center",
-        textAlignVertical: "center",
         width: Height.hi_md,
-        height: Height.hi_md,
-
         justifyContent: "center",
         alignItems: "center"
     },

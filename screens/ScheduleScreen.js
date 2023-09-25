@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Border, Color, globalStyles } from '../GlobalStyles'
 import TimeLine from '../components/TimeLine'
 import MonthSelection from '../components/MonthSelection'
 import WeekView from '../components/WeekView'
 import { getEvents, getEventsDuration, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux'
+import * as Haptics from 'expo-haptics';
 
 export default function ScheduleScreen() {
     const { loading, userInfo, error } = useSelector(state => state.userInfo)
@@ -20,6 +21,9 @@ export default function ScheduleScreen() {
 
     const dayHandelPress = (day) => {
         setSelectedDay(day)
+        Haptics.notificationAsync(
+            Haptics.NotificationFeedbackType.Success
+        )
     }
     useEffect(() => {
         if (userInfo) {
@@ -51,7 +55,11 @@ export default function ScheduleScreen() {
             </View>
             <View style={[globalStyles.container, { width: '100%', backgroundColor: Color.white }]}>
                 <View style={[globalStyles.container, { width: '100%', borderTopRightRadius: Border.br_26xl, backgroundColor: Color.cyanBackGround }]}>
-                    <TouchableOpacity style={[globalStyles.container, { position: 'absolute', right: 27, top: 27, width: 50, height: 50, borderRadius: 25, backgroundColor: Color.white }]} onPress={() => setSelectedMonth(currentMonth)} >
+                    <TouchableOpacity style={[globalStyles.container, { position: 'absolute', right: 27, top: 27, width: 50, height: 50, borderRadius: 25, backgroundColor: Color.white }]}
+                        disabled={today.id === selectedDay.id}
+                        onPress={() => {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setSelectedMonth(currentMonth)
+                        }} >
                         <Text style={[globalStyles.title, { color: Color.cyanBackGround }]} >O</Text>
                     </TouchableOpacity>
                     <Text style={[globalStyles.title, { margin: 27, padding: 5 }]} >Next Schedules</Text>

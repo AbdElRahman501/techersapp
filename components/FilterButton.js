@@ -19,8 +19,6 @@ export default function FilterButton({ filter, setFilter }) {
                         scale: transition(1, 1.1, 200, clicked)
                     }],
                     shadowColor: transition(Color.gray_200, Color.darkcyan, 200, clicked),
-                    elevation: transition(10, 15, 200, clicked)
-
                 }
                 ]} >
                     {clicked ? <Filter_Icon_Fill /> :
@@ -45,7 +43,8 @@ const styles = StyleSheet.create({
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 3,
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: Platform.OS === 'android' ? 10 : 0,
     }
 })

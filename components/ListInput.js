@@ -1,69 +1,69 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Modal, StyleSheet, Text, Button, TouchableWithoutFeedback, View } from 'react-native';
 import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { useSelector } from 'react-redux';
+import CustomText from './CustemText';
 
 export default function ListInput({ value, options, placeholder, changHandler, children, rightIcon }) {
     const { language } = useSelector(state => state.languageState);
-
     const [isFocused, setIsFocused] = useState(false);
+
+    let theValue = options.find(x => x.id === value);
     return (
-        <View
-            style={[styles.inputField, {
-                borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
-                flexDirection: language === "en" ? "row" : "row-reverse"
-            }]}
-        >
+        <TouchableWithoutFeedback onPress={() => setIsFocused(!isFocused)} >
+            <View
+                style={[styles.inputField, {
+                    borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+                    flexDirection: language === "en" ? "row" : "row-reverse"
+                }]}
+            >
 
-            {!children ?
-                <Ionicons style={styles.rightIcon} name={rightIcon} size={FontSize.size_xl}
-                    color={isFocused ? Color.darkcyan : Color.darkgray} />
-                :
-                <View style={styles.rightIcon}>
-                    {React.Children.map(children, (child) => {
-                        return React.cloneElement(child, {
-                            width: FontSize.size_xl,
-                            height: FontSize.size_xl,
-                            viewBox: "0 0 24 24",
-                            color: isFocused ? Color.darkcyan : Color.darkgray
-                        });
-                    })}
-                </View>
-            }
-            <View style={[styles.input]}>
-
-                <Picker
-                    pickerStyleType={"dropdown"}
-                    fontFamily={FontFamily.montserratArabic}
-                    selectedValue={value}
-                    onValueChange={changHandler}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                >
-                    <Picker.Item style={styles.item} label={placeholder} value={null} />
-                    {options.map((item, index) => {
-                        return <Picker.Item key={index} style={styles.item} label={item[language] || item} value={item} />
-                    })}
-
-                </Picker>
-                {Platform.OS === 'android' ? (
-                    <View style={styles.inputCove} pointerEvents='none' >
-                        <Text style={[styles.item, { color: value ? Color.black : Color.darkgray }]}>
-                            {(value[language] ? value[language] : value) || placeholder}
-                        </Text>
+                {!children ?
+                    <Ionicons style={styles.rightIcon} name={rightIcon} size={FontSize.size_xl}
+                        color={isFocused ? Color.darkcyan : Color.darkgray} />
+                    :
+                    <View style={styles.rightIcon}>
+                        {React.Children.map(children, (child) => {
+                            return React.cloneElement(child, {
+                                width: FontSize.size_xl,
+                                height: FontSize.size_xl,
+                                viewBox: "0 0 24 24",
+                                color: isFocused ? Color.darkcyan : Color.darkgray
+                            });
+                        })}
                     </View>
-                ) : (<View></View>)}
-            </View>
+                }
+                <View style={{ flex: 1}} >
+                    <Picker
+                        pickerStyleType={"dropdown"}
+                        fontFamily={FontFamily.montserratArabic}
+                        selectedValue={value}
+                        onValueChange={changHandler}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                    >
+                        <Picker.Item style={styles.item} label={placeholder} value={null} />
+                        {options.map((item, index) => {
+                            return <Picker.Item key={index} style={styles.item} label={item[language] || item} value={item.id} />
+                        })}
 
-            {value ?
-                < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
-                : <View style={styles.leftIcon}>
-
+                    </Picker>
                 </View>
-            }
-        </View>
+
+                {/* <CustomText style={[styles.item, { flex: 1, color: value ? Color.black : Color.darkgray }]}>
+                    {(theValue ? theValue[language] : value) || placeholder}
+                </CustomText> */}
+
+                {value ?
+                    < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
+                    : <View style={styles.leftIcon}>
+
+                    </View>
+                }
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -78,21 +78,11 @@ const styles = StyleSheet.create({
         backgroundColor: Color.input_fill,
         borderRadius: Border.br_6xl,
         marginTop: 18,
-    },
-    input: {
-        flex: 1,
-        height: Height.hi_md,
-        textAlignVertical: "center",
-
+        alignItems: "center"
     },
     inputCove: {
-        height: Height.hi_md - 3,
-        width: "100%",
-        marginLeft: Height.hi_md,
-        justifyContent: "center",
-        alignSelf: "flex-end",
-        position: 'absolute',
-        backgroundColor: Color.input_fill,
+        flex: 1,
+        backgroundColor: Color.yellow,
 
     },
     item: {
@@ -101,9 +91,7 @@ const styles = StyleSheet.create({
     },
     leftIcon: {
         textAlign: "center",
-        textAlignVertical: "center",
         width: Height.hi_md,
-        height: Height.hi_md,
         justifyContent: "center",
         alignItems: "center"
     },

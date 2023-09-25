@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Keyboard, StyleSheet, TouchableWithoutFeedback, ImageBackground, ScrollView, View, Text } from 'react-native'
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, ImageBackground, ScrollView, View, Text, SafeAreaView } from 'react-native'
 import BackHeader from '../components/BackHeader'
-import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding, fontEm, globalStyles, heightPercentage } from '../GlobalStyles';
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,44 +46,45 @@ const ResetPasswordScreen = ({ route }) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView style={{ flex: 1, backgroundColor: Color.white }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader />
-                <View style={styles.container} >
-                    <View style={[styles.form]}>
-                        <ImageBackground
-                            style={{ height: fontEm(6), alignSelf: "center", width: "100%", marginBottom: fontEm(1) }}
-                            resizeMode="contain"
-                            source={require('../assets/logoColoredTextMs.png')}
-                        />
-                        <CustomText style={styles.title}>{t("create-new-password")}</CustomText>
-                        <CustomText style={styles.regularText}>{t("create-new-password-description")}</CustomText>
-                        <FancyInput inputType={"password"} placeholder={t("password-input")}
-                            checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={password}
-                            setState={setState}
-                            changHandler={(e) => setPassword(e)}
-                        >
-                            <Lock_Svg />
-                        </FancyInput>
-                        <FancyInput inputType={"password"} placeholder={t("password-input-confirm")}
-                            checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={confirmPassword}
-                            setState={setState}
-                            changHandler={(e) => setConfirmPassword(e)}
-                        >
-                            <Lock_Svg />
-                        </FancyInput>
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={styles.container} >
+                        <View style={styles.form}>
+                            <ImageBackground
+                                style={{ height: fontEm(6), alignSelf: "center", width: "100%", marginBottom: fontEm(1) }}
+                                resizeMode="contain"
+                                source={require('../assets/logoColoredTextMs.png')}
+                            />
+                            <CustomText style={globalStyles.title}>{t("create-new-password")}</CustomText>
+                            <CustomText style={[globalStyles.regular, { color: Color.gray_200, marginVertical: Margin.m_base }]}>{t("create-new-password-description")}</CustomText>
+                            <FancyInput inputType={"password"} placeholder={t("password-input")}
+                                checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={password}
+                                setState={setState}
+                                changHandler={(e) => setPassword(e)}
+                            >
+                                <Lock_Svg />
+                            </FancyInput>
+                            <FancyInput inputType={"password"} placeholder={t("password-input-confirm")}
+                                checkInputs={checkInputs} setCheckInputs={setCheckInputs} value={confirmPassword}
+                                setState={setState}
+                                changHandler={(e) => setConfirmPassword(e)}
+                            >
+                                <Lock_Svg />
+                            </FancyInput>
 
-                        <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                            {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
+                            <View style={[globalStyles.rowContainer, { width: "100%"}] }>
+                                {state.error && <Text style={[globalStyles.smallText, { color: Color.red, padding: 5 }]}>{state.error?.message[language]}</Text>}
+                            </View>
+                            <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
+                                <Text style={[globalStyles.title, { color: Color.white }]}>
+                                    {t(loading ? "loading" : "submit")}
+                                </Text>
+                            </PrimaryButton>
                         </View>
-                        <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
-                            <Text style={[styles.title, { color: Color.white }]}>
-                                {t(loading ? "loading" : "submit")}
-                            </Text>
-                        </PrimaryButton>
                     </View>
-                </View>
-
-            </ScrollView>
+                </ScrollView>
+            </SafeAreaView>
         </TouchableWithoutFeedback>
     );
 };
@@ -105,31 +106,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         maxWidth: 400
     },
-    title: {
-        fontSize: FontSize.size_lg,
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.black
-    },
-    regularText: {
-        color: Color.darkgray,
-        fontFamily: FontFamily.montserratArabic,
-        fontSize: FontSize.size_base,
-    },
     inputField: {
         width: "100%",
-        maxWidth: 500,
     },
     forgetPass: {
         width: "100%",
         flexDirection: "row",
         alignItems: "center"
-    },
-    error: {
-        color: "red",
-        fontSize: fontEm(0.9),
-        fontFamily: FontFamily.montserratArabic,
-        paddingHorizontal: 8,
-        marginVertical: 5
     },
 });
 

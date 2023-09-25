@@ -1,11 +1,12 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Color, FontFamily, FontSize, fontEm, heightPercentage, widthPercentage } from '../GlobalStyles';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Color, fontEm, globalStyles, heightPercentage, widthPercentage } from '../GlobalStyles';
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import t from '../actions/changeLanguage';
 import { getSubjectTitle, getTitle } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
+import CustomImage from './CustomImage ';
 
 const AdItem = React.memo(({ item, holdHandler }) => {
     const { language } = useSelector(state => state.languageState)
@@ -17,17 +18,17 @@ const AdItem = React.memo(({ item, holdHandler }) => {
         <LongPressGestureHandler onHandlerStateChange={holdHandler} >
             <View style={styles.itemContainer} >
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.title}>{getTitle(item.gender, item.name)}</Text>
-                    <Text style={styles.content}>{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
+                    <Text style={globalStyles.title}>{getTitle(item.gender, item.name)}</Text>
+                    <Text style={[globalStyles.regular, { color: Color.gray_200, textAlign: 'center' }]}>{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
                     <TouchableOpacity onPress={handlePress} style={styles.primaryButton}>
-                        <Text style={styles.primaryButtonText}>
+                        <Text style={[globalStyles.regular, { color: Color.white }]}>
                             {t("book-now")}
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <Image
-                    style={{ height: heightPercentage(18), width: heightPercentage(18), borderRadius: 100, marginHorizontal: fontEm(1) }}
-                    resizeMode="contain"
+                <CustomImage
+                    style={{ height: heightPercentage(18), width: heightPercentage(18), borderRadius: heightPercentage(18) / 2, marginHorizontal: fontEm(1) }}
+                    resizeMode="center"
                     source={item.imageSource}
                 />
             </View>
@@ -39,27 +40,12 @@ const AdItem = React.memo(({ item, holdHandler }) => {
 export default AdItem;
 
 const styles = StyleSheet.create({
-
     itemContainer: {
         width: widthPercentage(100) - 48,
         height: heightPercentage(20),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-
-    title: {
-        fontSize: fontEm(1.3),
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.black,
-        textAlign: 'center'
-    },
-    content: {
-        fontSize: FontSize.size_base,
-        fontFamily: FontFamily.montserratArabic,
-        color: Color.gray_200,
-        textAlign: 'center'
-
     },
     primaryButton: {
         marginTop: 10,
@@ -71,9 +57,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     }
-    , primaryButtonText: {
-        color: Color.white,
-        fontSize: FontSize.size_base,
-        fontFamily: FontFamily.montserratArabic
-    }
+
 })

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Color, FontFamily, fontEm } from '../GlobalStyles';
+import { View, Text } from 'react-native';
+import { Color, globalStyles } from '../GlobalStyles';
 import t from '../actions/changeLanguage';
 
-const CountdownTimer= ({ initialTime, onCountdownFinish, resend, setResend }) => {
+const CountdownTimer = ({ initialTime, onCountdownFinish, resend, setResend }) => {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
     let interval
     useEffect(() => {
@@ -35,25 +35,10 @@ const CountdownTimer= ({ initialTime, onCountdownFinish, resend, setResend }) =>
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={[styles.regularText, { textAlign: "center" }]} >{t("sec", { time: formatTime(timeRemaining) })}</Text>
+        <View style={globalStyles.container}>
+            <Text style={[globalStyles.regular, { color: Color.gray_200, textAlign: "center" }]} >{t("sec", { time: formatTime(timeRemaining) })}</Text>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-    },
-    regularText: {
-        fontSize: fontEm(1),
-        color: Color.gray_200,
-        fontFamily: FontFamily.montserratArabic,
-        marginBottom: fontEm(0.5),
-    },
-
-});
 
 export default CountdownTimer;

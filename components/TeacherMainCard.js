@@ -59,7 +59,7 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
             </View>
             <CustomImage
                 style={[styles.image, language === 'en' ? { marginRight: 10 } : { marginLeft: 10 }]}
-                resizeMode="contain"
+                resizeMode="center"
                 source={item.imageSource} />
         </View >
     )

@@ -1,11 +1,10 @@
-import { StyleSheet, Image, TouchableOpacity, Text, View, StatusBar, BackHandler } from 'react-native'
+import { StyleSheet, Image, TouchableOpacity, Text, View, StatusBar, BackHandler, Platform } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, FontFamily, Margin, fontEm, heightPercentage } from '../GlobalStyles'
+import { FontFamily, FontSize, Margin, fontEm } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
 export default function BackHeader({ title, onPress, onPressHandler, style }) {
-    const statusBarHeight = StatusBar.currentHeight;
     const navigation = useNavigation();
 
     const [history, setHistory] = useState([]);
@@ -29,13 +28,13 @@ export default function BackHeader({ title, onPress, onPressHandler, style }) {
         navigation.goBack();
     };
     return (
-        <View style={[styles.header, { marginTop: statusBarHeight + 25, marginBottom: Margin.m_base }, style]}>
+        <View style={[styles.header, { marginBottom: Margin.m_base }, style]}>
             {(history.length > 1 || onPress) && <TouchableOpacity onPress={onPress ? onPressHandler : handleGoBack}>
                 <Image style={[styles.backIcon]}
                     source={require("../assets/icons/back-icon.png")}
                 />
             </TouchableOpacity>}
-            <Text style={[styles.headerTitle, { paddingRight: history.length > 1 ? fontEm(2.5) : 0 }]}>{title}</Text>
+            <Text style={[styles.headerTitle, { paddingRight: history.length > 1 ? Margin.m_sm*5 : 0 }]}>{title}</Text>
         </View>
     )
 }
@@ -45,18 +44,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         width: "100%",
+        marginTop: Platform.OS === "ios" ? Margin.m_sm : StatusBar.currentHeight + 25,
     },
     backIcon: {
-        width: fontEm(2),
-        height: fontEm(2),
+        width: 24,
+        height: 24,
         resizeMode: "contain",
-        marginLeft: fontEm(0.5)
+        margin: Margin.m_sm
     },
     headerTitle: {
         flex: 1,
         textAlign: "center",
         textAlignVertical: "center",
-        fontSize: fontEm(1.2),
+        fontSize: FontSize.size_lg,
         fontFamily: FontFamily.montserratArabic
     }
 

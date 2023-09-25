@@ -23,8 +23,6 @@ const DayItem = React.memo(({ item }) => {
 
                 <View style={[styles.subject, {
                     height: 60, borderBottomRightRadius: 0,
-                    borderColor: Color.lightGray,
-                    borderWidth: 1
                 }]}>
                     <Text numberOfLines={1} lineBreakMode="tail" style={styles.regular} >{item.day[language]}</Text>
                     <Text style={styles.title} >{item.date}</Text>
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 16,
-        padding: 5,
+        padding: 2,
         marginBottom: 10,
         backgroundColor: Color.white,
         ...Platform.select({
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
                 shadowColor: Color.lightGray,
                 shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 1,
-                shadowRadius: 7,
+                shadowRadius: 5,
             },
             android: {
                 elevation: 6,
@@ -64,6 +62,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 5,
         height: 80,
+        marginVertical: 10,
     },
     title: {
         fontSize: FontSize.size_xl,
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
     },
     regular: {
         fontFamily: FontFamily.montserratArabic,
-        fontSize: FontSize.size_sm,
+        fontSize: FontSize.size_smi,
         color: Color.darkgray
     },
     state: {
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     stateText: {
-        fontSize: FontSize.size_md,
+        fontSize: FontSize.size_sm,
         fontFamily: FontFamily.montserratArabic,
         color: Color.white,
         textAlign: 'center',

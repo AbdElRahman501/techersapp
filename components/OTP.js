@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { Border, Color, FontFamily, FontSize, Height, fontEm } from "../GlobalStyles";
+import { Border, Color, FontFamily, FontSize, Height, Margin, fontEm } from "../GlobalStyles";
 
 const OTPInput = ({ length = 4, onComplete }) => {
   const [otp, setOTP] = useState(new Array(length).fill(""));
@@ -63,9 +63,10 @@ const styles = StyleSheet.create({
   otpContainer: {
     flex: 1,
     width: "100%",
+    maxWidth: 450,
     flexDirection: "row",
     justifyContent: "space-evenly",
-    marginVertical: fontEm(1),
+    marginVertical: Margin.m_m1,
   },
   otpInputField: {
     width: Height.br_lg,

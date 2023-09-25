@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, fontEm, globalStyles, widthPercentage } from '../GlobalStyles'
+import { Color, FontSize, fontEm, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { getEvents, getStartedEvents, isDateAfter } from '../actions/GlobalFunctions'
 
@@ -27,7 +27,7 @@ const ScheduleDayOption = ({ item, eventsDuration, selectedMonth, SelectedId, to
         <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth} style={{ opacity: isThisMonth ? 1 : 0.2 }} >
             <View style={[globalStyles.dayCard, { width: ((widthPercentage(100) - 20) / 7) - 10, borderWidth: 0, backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
                 <Text numberOfLines={1} lineBreakMode="tail"
-                    style={[globalStyles.contentText, { fontSize: fontEm(0.7), color: trigger ? Color.white : isToday ? Color.darkcyan : Color.darkgray }]} >
+                    style={[globalStyles.contentText, { fontSize: FontSize.size_smi, color: trigger ? Color.white : isToday ? Color.darkcyan : Color.darkgray }]} >
                     {item.day[language]}
                 </Text>
                 <Text style={[globalStyles.title, { color: trigger ? Color.white : isToday ? Color.darkcyan : Color.black }]}>

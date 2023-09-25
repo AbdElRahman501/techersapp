@@ -74,12 +74,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: fontEm(2),
-    paddingHorizontal: 20,
-    paddingBottom: Height.nav_tap + 20
+    marginHorizontal: 20,
+    marginBottom: Height.nav_tap + 20
   }
 })

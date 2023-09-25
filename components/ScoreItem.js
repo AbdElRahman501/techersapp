@@ -5,7 +5,7 @@ import { Color, FontFamily, FontSize } from '../GlobalStyles';
 const ScoreItem = ({ score, title, content }) => {
     return (
         <View style={styles.container}>
-            <View style={[styles.circle, { borderColor: getStrokeColor(score) }]}>
+            <View style={[styles.circle, { borderColor: "red" }]}>
                 <Text style={[styles.scoreText]}>{score + "%"}</Text>
             </View>
             <Text style={styles.title}>{title}</Text>
@@ -13,15 +13,7 @@ const ScoreItem = ({ score, title, content }) => {
     );
 };
 
-const getStrokeColor = (score) => {
-    if (score >= 80) {
-        return Color.darkcyan;
-    } else if (score >= 60) {
-        return Color.yellow;
-    } else {
-        return Color.red;
-    }
-};
+
 
 const styles = StyleSheet.create({
     container: {

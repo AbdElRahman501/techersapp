@@ -155,8 +155,8 @@ export default function TeacherScreen({ route }) {
                 <View style={[styles.appContainer]}>
                     <ContainerTitle title={t("about teacher")} />
                     <LongText content={item.about} style={[styles.regular, { textAlign: getTextInputAlign(item.about) }]} />
-                    <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
-                    <Analytics item={item} />
+                    {/* <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
+                    <Analytics item={item} /> */}
                     <ContainerTitle title={t("schedule")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <SlideContainer data={days} SelectedId={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />

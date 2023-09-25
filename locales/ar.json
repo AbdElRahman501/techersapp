@@ -88,5 +88,7 @@
     "per month": "للشهر",
     "total": "الاجمالي",
     "read more": "اقرأ المزيد",
-    "read less": "اقرأ اقل"
+    "read less": "اقرأ اقل",
+    "now": "الآن",
+    "day_started": "يبدأ اليوم في {time}"
 }

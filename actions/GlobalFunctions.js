@@ -146,10 +146,10 @@ export const formatPhoneNumber = (phoneNumber) => {
     return visiblePart;
 }
 
-export const formatDistance = (distance, lang) => {
+export const formatDistance = (distance, lang, index) => {
     if (distance >= 1000) {
         const kilometers = distance / 1000;
-        return kilometers.toFixed(0) + (lang === 'ar' ? ' كم' : ' km');
+        return kilometers.toFixed(index || 0) + (lang === 'ar' ? ' كم' : ' km');
     } else {
         return distance + (lang === 'ar' ? ' م' : ' m');
     }

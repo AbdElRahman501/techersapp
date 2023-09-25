@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Color, fontEm } from '../GlobalStyles';
+import { Color, FontSize, Height, fontEm } from '../GlobalStyles';
 import { Ionicons } from '@expo/vector-icons';
 
 const Checkbox = ({ children, checked, onChange }) => {
@@ -11,7 +11,7 @@ const Checkbox = ({ children, checked, onChange }) => {
   return (
     <TouchableOpacity onPress={handleToggle} style={styles.checkbox}>
       {checked &&
-        < Ionicons style={styles.checkMark} name={"checkmark"} size={fontEm(1.5)} color={Color.darkcyan} />
+        < Ionicons style={styles.checkMark} name={"checkmark"} size={Height.hi_s} color={Color.darkcyan} />
       }
       <View style={styles.checkboxIcon} />
     </TouchableOpacity>
@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   checkboxIcon: {
-    width: fontEm(1.5),
-    height: fontEm(1.5),
+    width: Height.hi_s,
+    height: Height.hi_s,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: Color.darkgray,
     margin: 10,
   },
   checkboxLabel: {
-    fontSize: fontEm(1),
+    fontSize: FontSize.size_base,
   },
   checkMark: {
     position: "absolute",
