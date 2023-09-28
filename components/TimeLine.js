@@ -14,6 +14,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
     const { dayStart, dayEnd } = { dayStart: 6, dayEnd: 20 }
     const hours = Array.from({ length: dayEnd - dayStart }, (_, i) => i + dayStart);
     let hourState = new Date().getHours()
+    hourState = (hourState) + ((new Date().getMinutes() / 60))
     hourState = hourState < dayEnd && hourState > dayStart
     const [currentHour, setCurrentHour] = useState(new Date().getHours() > dayEnd ? dayEnd : new Date().getHours() < dayStart ? 0 : new Date().getHours() - dayStart)
     const [currentMinute, setCurrentMinute] = useState(hourState ? new Date().getMinutes() : 0)
@@ -60,9 +61,9 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
                     {hours.map((hour, i) => (
                         <Line
                             key={i}
-                            x1={language === 'ar' ? 20 : 100}
+                            x1={20}
                             y1={i * 100}
-                            x2={language === 'ar' ? widthPercentage(100) - 100 : widthPercentage(100) - 20}
+                            x2={widthPercentage(100) - 20}
                             y2={i * 100}
                             stroke="black"
                             opacity={0.1}
@@ -88,9 +89,9 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
                     {isToday &&
                         <>
                             <Line
-                                x1={(currentMinute > 10 && currentMinute < 50) ? 20 : language === 'ar' ? 20 : 100}
+                                x1={20}
                                 y1={(currentHour * 100) + ((currentMinute / 60) * 100)}
-                                x2={(currentMinute > 10 && currentMinute < 50) ? widthPercentage(100) - 50 : language === 'ar' ? widthPercentage(100) - 100 : widthPercentage(100) - 20}
+                                x2={widthPercentage(100) - 20}
                                 y2={(currentHour * 100) + ((currentMinute / 60) * 100)}
                                 stroke={Color.darkcyan}
                                 strokeWidth="2"
@@ -106,11 +107,11 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
 
                 </Svg>
                 {hours.map((hour, i) => (
-                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { color: "black", opacity: 0.3, position: 'absolute', top: (i * 100) + 5 }]} >
+                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, {backgroundColor: Color.cyanBackGround,padding: 5, color: Color.darkgray, position: 'absolute', top: (i * 100) -2 }]} >
                         {transformTime(hour, language)}
                     </Text>
                 ))}
-                {theFilterEvents.map((event, index) => <EventItem isToday={isToday} isPassed={isPassed} dayStart={dayStart} dayEnd={dayEnd} currentHour={currentHour} currentMinute={currentMinute} key={index} event={event} />)}
+                {theFilterEvents.map((event, index) => <EventItem isToday={isToday} isPassed={isPassed} dayStart={dayStart} dayEnd={dayEnd} key={index} event={event} />)}
             </View>
         </ScrollView>
     )

@@ -4,15 +4,18 @@ import { Border, Color, globalStyles, widthPercentage } from '../GlobalStyles';
 import { teachers } from '../data';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
+import { calculateEndTime, transformTime } from '../actions/GlobalFunctions';
 
-export default function EventItem({ currentHour, dayStart, isPassed, dayEnd, isToday, currentMinute, event: { eventTime, subject, duration, color, teacherId } }) {
+export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: { eventTime, subject, duration, color, teacherId } }) {
     const { language } = useSelector(state => state.languageState)
     const teacher = teachers.find(x => x.id === teacherId)
     const [hour, minute] = eventTime.split(":")
+    const currentHour = new Date().getHours()
+    const currentMinute = new Date().getMinutes()
     const theEventTime = Number(hour) + (Number(minute) / 60)
     const theDuration = duration / 60
-    let theTimeFill = ((currentHour * 100) + ((currentMinute / 60) * 100)) - ((theEventTime * 100) + 1)
-    theTimeFill = isToday ? theTimeFill > 0 ? theTimeFill < theDuration * 99 ? theTimeFill : theDuration * 99 : 0 : 0
+    let theTimeFill = Math.max(((currentHour * 100) + ((currentMinute / 60) * 100)) - ((theEventTime * 100) + 1), 0)
+    theTimeFill = Math.min(theTimeFill, theDuration * 99)
 
 
     return (
@@ -21,11 +24,18 @@ export default function EventItem({ currentHour, dayStart, isPassed, dayEnd, isT
             borderTopRightRadius: language === 'en' ? Border.br_13xl : 0,
             top: ((theEventTime - dayStart) * 100) + 15,
             height: theDuration * 99,
-            overflow: "hidden"
+            overflow: "hidden",
+            backgroundColor: isPassed ? Color.lightCyan : Color.white
         }]} >
-            <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.darkcyan, opacity: 0.4, height: isPassed ? theDuration * 99 : theTimeFill, width: widthPercentage(100) - 100 }} />
-            <Text style={[globalStyles.title, { color: color || Color.darkcyan }]}> {subject[language]} </Text>
-            <View style={[globalStyles.container, { flexDirection: language === 'ar' ? 'row-reverse' : 'row', paddingHorizontal: 10 }]}>
+            {isToday && <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.lightCyan,  height: theTimeFill, width: widthPercentage(100) - 100 }} />}
+            <View style={[{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', justifyContent: 'space-between', paddingHorizontal: 20 }]}>
+                <Text style={[globalStyles.title, { color: color || Color.darkcyan }]}> {subject[language]} </Text>
+                <View style={{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', gap: 10 }} >
+                    <Text style={[globalStyles.contentText]}>{transformTime(eventTime, language)}</Text>
+                    <Text style={[globalStyles.contentText]}>{transformTime(calculateEndTime(eventTime, duration), language)}</Text>
+                </View>
+            </View>
+            <View style={[globalStyles.container, { flexDirection: language === 'ar' ? 'row-reverse' : 'row', paddingHorizontal: 20 }]}>
                 <Image
                     style={{ width: 24, height: 24, borderRadius: 12, margin: 5 }}
                     source={teacher.imageSource}

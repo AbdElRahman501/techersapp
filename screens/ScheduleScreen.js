@@ -43,6 +43,13 @@ export default function ScheduleScreen() {
         setWeeks(getWeeksOfMonth(selectedMonth.id))
         setSelectedDay(today)
     }, [selectedMonth])
+
+    const reset = () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        setSelectedDay(today);
+        setSelectedMonth(currentMonth);
+    }
+
     return (
         <View style={[globalStyles.body, { backgroundColor: Color.white }]} >
             <MonthSelection selectedMonth={selectedMonth} months={months} currentMonth={currentMonth} setMonth={setSelectedMonth} />
@@ -57,9 +64,7 @@ export default function ScheduleScreen() {
                 <View style={[globalStyles.container, { width: '100%', borderTopRightRadius: Border.br_26xl, backgroundColor: Color.cyanBackGround }]}>
                     <TouchableOpacity style={[globalStyles.container, { position: 'absolute', right: 27, top: 27, width: 50, height: 50, borderRadius: 25, backgroundColor: Color.white }]}
                         disabled={today.id === selectedDay.id}
-                        onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setSelectedMonth(currentMonth)
-                        }} >
+                        onPress={reset} >
                         <Text style={[globalStyles.title, { color: Color.cyanBackGround }]} >O</Text>
                     </TouchableOpacity>
                     <Text style={[globalStyles.title, { margin: 27, padding: 5 }]} >Next Schedules</Text>

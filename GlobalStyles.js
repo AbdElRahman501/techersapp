@@ -31,6 +31,7 @@ export const Color = {
   gray_100: "#101623",
   gray_200: "rgba(16, 22, 35, 0.6)",
   darkcyan: "#199a8e",
+  lightCyan: "#d1ece9",
   cyanBackGround: "#E8F3F1",
   darkgray: "#a1a8b0",
   input_fill: "#F9FAFB",
@@ -41,7 +42,6 @@ export const Color = {
   blue: "blue",
   green: "green",
 };
-
 /* Paddings */
 export const Padding = {
   p_sm: 8,
@@ -167,7 +167,6 @@ export const globalStyles = StyleSheet.create({
     width: widthPercentage(100) - 120,
     backgroundColor: Color.white,
     borderRadius: Border.br_13xl,
-    padding: 10
   },
   line: {
     flex: 1,
