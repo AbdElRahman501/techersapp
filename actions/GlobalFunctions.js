@@ -306,6 +306,32 @@ export const getWeeksOfMonth = (currentMonthIndex) => {
 
     return weeks;
 }
+export const sortArrayByTime = (array) => {
+    return array.sort((a, b) => {
+        const timeA = a.timeIn24Format.split(':');
+        const timeB = b.timeIn24Format.split(':');
+
+        const hourA = parseInt(timeA[0]);
+        const minuteA = parseInt(timeA[1]);
+
+        const hourB = parseInt(timeB[0]);
+        const minuteB = parseInt(timeB[1]);
+
+        if (hourA < hourB) {
+            return -1;
+        } else if (hourA > hourB) {
+            return 1;
+        } else {
+            if (minuteA < minuteB) {
+                return -1;
+            } else if (minuteA > minuteB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    });
+}
 
 export const transformTime = (time, language) => {
     const [hour, minute] = typeof time === 'string' ? time.split(':') : [time, "00"];
@@ -313,7 +339,7 @@ export const transformTime = (time, language) => {
     let period = language === 'ar' ? 'ص' : 'AM';
 
     if (convertedHour >= 12) {
-        period = language === 'ar' ? 'م' : 'PM';;
+        period = language === 'ar' ? 'م' : 'PM';
     }
 
     if (convertedHour > 12) {
@@ -381,13 +407,17 @@ export const removeDuplicatesById = (array) => {
     return uniqueArray;
 }
 
-export const getEvents = (myTeachers, day) => {
+export const getEvents = (myTeachers, day, teachers) => {
     if (!myTeachers || !day) return []
-    let theEvents = myTeachers?.filter((x, i) => {
-        return x.schedule?.days.map(y => y.toLowerCase()).includes(day.toLowerCase())
-    }).map((x, i) => {
-        return { eventTime: x.schedule?.hours.timeIn24Format, duration: x.schedule?.hours.duration, teacherId: x.id, ...x }
+    let theTeachers = teachers.filter(x => myTeachers.map(x => x.id).includes(x.id))
+    let theEvents = theTeachers?.map((x, i) => {
+        let myTeacher = myTeachers?.find(y => y.id === x.id)
+        return x.groups.filter(y => myTeacher.groupsId.includes(y.id)).map(y => ({ ...y, teacherId: x.id, color: myTeacher.color }))
+    }).flat().filter(x => x.days.find(y => y.day.toLowerCase() === day.toLowerCase())).map(x => {
+        let event = x.days.find(y => y.day.toLowerCase() === day.toLowerCase())
+        return { eventTime: event?.timeIn24Format, duration: event?.duration, teacherId: x.teacherId, color: x.color, subject: x.subject, ...event }
     })
+
     return theEvents
 }
 

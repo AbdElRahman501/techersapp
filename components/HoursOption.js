@@ -8,7 +8,7 @@ import BookingModal from './BookingModal';
 const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress, disabled }) => {
     const { language } = useSelector(state => state.languageState)
     const [unavailable, setUnavailable] = useState(false);
-
+    let isSelected = selectedHour === item.timeIn24Format
     useEffect(() => {
         if (myBookedHours) {
             let overlapping = myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem));
@@ -28,7 +28,7 @@ const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress
                 isBooked={isModalVisible}
                 onClose={handleCloseModal}
             />
-            <TouchableWithoutFeedback 
+            <TouchableWithoutFeedback
                 onPress={() => {
                     if (unavailable) {
                         setModalVisible(true)
@@ -39,10 +39,10 @@ const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress
                 <View style={[globalStyles.dayCard, {
                     width: 100,
                     height: 40,
-                    backgroundColor: item.timeIn24Format === selectedHour ? Color.darkcyan : Color.white,
+                    backgroundColor: isSelected ? Color.darkcyan : item?.secondary ? Color.cyanBackGround : Color.white,
                     opacity: unavailable ? 0.5 : 1
                 }]}>
-                    <Text style={[globalStyles.regular, { color: item.timeIn24Format === selectedHour ? Color.white : Color.black }]} >
+                    <Text style={[globalStyles.regular, { color: isSelected ? Color.white : Color.black }]} >
                         {transformTime(item.timeIn24Format, language)}
                     </Text>
                 </View>

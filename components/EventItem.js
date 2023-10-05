@@ -27,9 +27,9 @@ export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: 
             overflow: "hidden",
             backgroundColor: isPassed ? Color.lightCyan : Color.white
         }]} >
-            {isToday && <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.lightCyan,  height: theTimeFill, width: widthPercentage(100) - 100 }} />}
+            {isToday && <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: Color.lightCyan, height: theTimeFill, width: widthPercentage(100) - 100 }} />}
             <View style={[{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', justifyContent: 'space-between', paddingHorizontal: 20 }]}>
-                <Text style={[globalStyles.title, { color: color || Color.darkcyan }]}> {subject[language]} </Text>
+                <Text style={[globalStyles.title, { color: color || Color.darkcyan }]}> {subject ? subject[language] : ""} </Text>
                 <View style={{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', gap: 10 }} >
                     <Text style={[globalStyles.contentText]}>{transformTime(eventTime, language)}</Text>
                     <Text style={[globalStyles.contentText]}>{transformTime(calculateEndTime(eventTime, duration), language)}</Text>

@@ -63,7 +63,7 @@ export const teachers = [
         groups: [
             {
                 id: 1,
-                name: "Group 2-A",
+                name: "Group 2-A physics",
                 schoolYear: years[1],
                 subject: subjects[0],
                 gender: "male",
@@ -164,8 +164,8 @@ export const teachers = [
                 ]
             }, {
                 id: 5,
-                name: "Group 1-A",
-                schoolYear: years[0],
+                name: "Group 2-A chemistry",
+                schoolYear: years[1],
                 subject: subjects[5],
                 gender: "male",
                 days: [
@@ -1084,7 +1084,7 @@ export const userData = {
             id: 1,
             subject: subjects[0],
             color: "#ff0000",
-            groupId: 1,
+            groupsId: [1, 5],
 
         },
         // { id: 5, subject: subjects[4] },
@@ -1094,7 +1094,7 @@ export const userData = {
             id: 1,
             subject: subjects[0],
             color: "#ff0000",
-            groupId: 1,
+            groupsId: [1, 5],
 
         },
         // {

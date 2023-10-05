@@ -7,6 +7,7 @@ import WeekView from '../components/WeekView'
 import { getEvents, getEventsDuration, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux'
 import * as Haptics from 'expo-haptics';
+import { teachers } from '../data'
 
 export default function ScheduleScreen() {
     const { loading, userInfo, error } = useSelector(state => state.userInfo)
@@ -27,7 +28,7 @@ export default function ScheduleScreen() {
     }
     useEffect(() => {
         if (userInfo) {
-            let theEvents = getEvents(userInfo.myTeachers, selectedDay.fullName)
+            let theEvents = getEvents(userInfo.myTeachers, selectedDay.fullName , teachers)
             let theEventsDuration = getEventsDuration(userInfo)
             setEventsDuration(theEventsDuration)
             if (theEvents.length > 0) {
