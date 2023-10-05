@@ -1,26 +1,20 @@
+import React from 'react'
 import { View, Text, TouchableWithoutFeedback } from 'react-native'
-import React, { useState, useEffect } from 'react'
 import { Color, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 
-const DayItem = React.memo(({ item, SelectedId, handelPress }) => {
+const DayItem = React.memo(({ item, selectedDay, handelPress, selectedGroup }) => {
     const { language } = useSelector(state => state.languageState)
-    const [trigger, setTrigger] = useState(false);
-
-    useEffect(() => {
-        if (SelectedId.includes(item.fullName)) {
-            setTrigger(true);
-        } else {
-            setTrigger(false);
-        }
-    }, [SelectedId])
+    let isSelected = selectedDay === item.fullName
+    let isInMyGroup = selectedGroup?.days.map(x => x.day)?.includes(item.fullName)
+    let sameHour = selectedGroup?.days.every((day) => day.time === selectedGroup.days[0].time)
 
 
     return (
         <TouchableWithoutFeedback onPress={() => handelPress(item.fullName)} >
-            <View style={[globalStyles.dayCard, { backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
+            <View style={[globalStyles.dayCard, { backgroundColor: isSelected ? Color.darkcyan : isInMyGroup ? sameHour ? Color.darkcyan : Color.cyanBackGround : Color.white }]}>
                 <Text numberOfLines={1} lineBreakMode="tail"
-                    style={[globalStyles.contentText, { color: trigger ? Color.white : Color.black }]} >
+                    style={[globalStyles.contentText, { color: isSelected ? Color.white : isInMyGroup && sameHour ? Color.white : Color.black }]} >
                     {item.day[language]}
                 </Text>
             </View>

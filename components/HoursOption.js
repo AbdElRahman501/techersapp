@@ -1,24 +1,13 @@
-import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import React, { useState, useEffect } from 'react'
+import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import { Color, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
-import {  areAppointmentsOverlapping, transformTime } from '../actions/GlobalFunctions';
+import { areAppointmentsOverlapping, transformTime } from '../actions/GlobalFunctions';
 import BookingModal from './BookingModal';
 
-const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, disabled }) => {
+const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress, disabled }) => {
     const { language } = useSelector(state => state.languageState)
-    const [trigger, setTrigger] = useState(false);
     const [unavailable, setUnavailable] = useState(false);
-
-    useEffect(() => {
-        if (item.timeIn24Format === SelectedId) {
-            setTrigger(true);
-        } else {
-            setTrigger(false);
-        }
-    }, [SelectedId])
-
-    
 
     useEffect(() => {
         if (myBookedHours) {
@@ -39,21 +28,21 @@ const HoursOption = React.memo(({ item, SelectedId, myBookedHours, handelPress, 
                 isBooked={isModalVisible}
                 onClose={handleCloseModal}
             />
-            <TouchableWithoutFeedback style={{}}
+            <TouchableWithoutFeedback 
                 onPress={() => {
                     if (unavailable) {
                         setModalVisible(true)
                     } else {
-                        handelPress(item.timeIn24Format)
+                        handelPress(item)
                     }
                 }}   >
                 <View style={[globalStyles.dayCard, {
                     width: 100,
                     height: 40,
-                    backgroundColor: trigger ? Color.darkcyan : Color.white,
+                    backgroundColor: item.timeIn24Format === selectedHour ? Color.darkcyan : Color.white,
                     opacity: unavailable ? 0.5 : 1
                 }]}>
-                    <Text style={[globalStyles.regular, { color: trigger ? Color.white : Color.black }]} >
+                    <Text style={[globalStyles.regular, { color: item.timeIn24Format === selectedHour ? Color.white : Color.black }]} >
                         {transformTime(item.timeIn24Format, language)}
                     </Text>
                 </View>

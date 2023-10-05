@@ -21,7 +21,9 @@ export default function TeacherScreen({ route }) {
     const { item } = route.params;
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
 
-    const [selectedDay, setSelectedDay] = useState([]);
+    const [selectedGroup, setSelectedGroup] = useState();
+
+    const [selectedDay, setSelectedDay] = useState();
     const [selectedHour, setSelectedHour] = useState("00:00");
     const [selectedSubject, setSelectedSubject] = useState()
 
@@ -34,115 +36,125 @@ export default function TeacherScreen({ route }) {
         [t("book your seat"), t("change date"), t("your seat is booked"), t("choose day"), t("choose hour"), t("and")];
     const [buttonText, setButtonText] = useState({ text: bookSeat, role: "book" })
 
-    const dayHandelPress = (fullName, teacherSchedules) => {
-        let schedule = teacherSchedules || mySchedules
-        if (schedule) {
-            let times = schedule.find(x => {
-                if (x.days.includes(fullName)) {
-                    return x.days
-                }
-            })
+    const dayHandelPress = (fullName) => {
+        setSelectedDay(fullName)
+        let isTheSameGroup = selectedGroup?.days.map(y => y.day).includes(fullName)
+        if (!isTheSameGroup) {
+            setSelectedGroup()
             setSelectedHour("00:00")
-            setHours(times?.hours.map((x, i) => ({ ...x, id: i + 1 })) || [])
-            setSelectedDay(times?.days || fullName)
+        } else if (selectedGroup) {
+            setSelectedHour(selectedGroup.days.find(x => x.day === fullName).timeIn24Format)
         }
+        setHours(getHours(fullName, selectedSubject))
     }
 
-    const hoursHandelPress = (id) => {
-        setSelectedHour(id)
+    const availableGroups = (dayName, subject) => {
+        let availableGroups = item.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
+        availableGroups = availableGroups.filter(x => x.days.map(y => y.day).includes(dayName))
+        return availableGroups
+    }
+    const hoursHandelPress = (hour) => {
+        let myGroup = item.groups.find(x => x.id === hour.groupId)
+        updateGroup(myGroup)
     }
 
     useEffect(() => {
         if (userInfo) {
-            let myItem = userInfo?.myTeachers?.find(x => x.id === item.id)
-            let mySubject = item.subjects.find((subject, i) => {
-                let subjectSchedule = subject.schoolYears.find(x => x.id === userInfo?.schoolYear.id)
-                if (myItem?.subject?.id === subject.id) {
-                    return subject
-                } else if (subjectSchedule) {
-                    return subject
-                }
-            })
-            setSelectedSubject(mySubject)
-            let teacherSchedules = (mySubject.schoolYears.find(x => x.id === userInfo.schoolYear.id)?.schedule.male.times)
-            setMySchedules(teacherSchedules)
-            if (myItem) {
-                dayHandelPress(myItem.schedule.days[0], teacherSchedules)
-                setSelectedHour(myItem.schedule.hours.timeIn24Format)
+            let myGroupId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupId
+            let myGroup = item.groups.find(x => x.id === myGroupId)
+            if (myGroup) {
+                updateGroup(myGroup)
             }
         }
     }, [userInfo])
 
-    const changeSubjectHandler = (subject) => {
-        setSelectedSubject(subject)
-        let teacherSchedules = (subject.schoolYears.find(x => x.id === userInfo.schoolYear.id)?.schedule.male.times)
-        setSelectedDay([])
-        setHours([])
-        setSelectedHour("00:00")
-        setMySchedules(teacherSchedules)
+
+    const updateGroup = (group) => {
+        if (group) {
+            let theSelectedDay = selectedDay || group.days.map(x => x.day)[0]
+            setSelectedGroup(group)
+            setSelectedSubject(group.subject)
+            setSelectedDay(theSelectedDay)
+            setHours(getHours(theSelectedDay, group.subject))
+            setSelectedHour(group.days.find(x => x.day === theSelectedDay).timeIn24Format)
+        }
     }
 
-    useEffect(() => {
-        if (userInfo) {
-            let myItem = userInfo?.myTeachers?.find(x => x.id === item.id)
-            if (myItem && selectedHour !== "00:00" && selectedDay.length > 0 && selectedSubject) {
-                if ((selectedSubject.id === myItem?.subject.id)) {
-                    if ((!equalArs(selectedDay, myItem?.schedule.days)) || (selectedHour !== myItem?.schedule.hours.timeIn24Format)) {
-                        setButtonText({ text: changeDate, role: "change" })
-                    } else {
-                        setButtonText({ text: bookedSeat, role: "booked" })
-                    }
-                } else {
-                    setButtonText({ text: bookSeat, role: "book" })
-                }
-            } else {
-                if (selectedDay.length === 0) {
-                    setButtonText({ text: chooseDay, role: "choose day" })
-                } else if (selectedHour === "00:00") {
-                    setButtonText({ text: chooseHour, role: "choose hour" })
-                } else {
-                    setButtonText({ text: bookSeat, role: "book" })
-                }
-            }
-        }
-    }, [selectedHour, selectedSubject, selectedDay])
+    const getHours = (day, subject) => {
+        let avGroups = availableGroups(day, subject) || []
+        let avHours = avGroups.map(x => x.days.map(y => ({ ...y, groupId: x.id }))).flat().filter(x => x.day === day)
+        return avHours
+    }
+    const changeSubjectHandler = (subject) => {
+        // setSelectedSubject(subject)
+        // let teacherSchedules = (subject.schoolYears.find(x => x.id === userInfo.schoolYear.id)?.schedule.male.times)
+        // setSelectedDay([])
+        // setHours([])
+        // setSelectedHour("00:00")
+        // setMySchedules(teacherSchedules)
+    }
+
+    // useEffect(() => {
+    //     if (userInfo) {
+    //         let myItem = userInfo?.myTeachers?.find(x => x.id === item.id)
+    //         if (myItem && selectedHour !== "00:00" && selectedDay.length > 0 && selectedSubject) {
+    //             if ((selectedSubject.id === myItem?.subject.id)) {
+    //                 if ((!equalArs(selectedDay, myItem?.schedule.days)) || (selectedHour !== myItem?.schedule.hours.timeIn24Format)) {
+    //                     setButtonText({ text: changeDate, role: "change" })
+    //                 } else {
+    //                     setButtonText({ text: bookedSeat, role: "booked" })
+    //                 }
+    //             } else {
+    //                 setButtonText({ text: bookSeat, role: "book" })
+    //             }
+    //         } else {
+    //             if (selectedDay.length === 0) {
+    //                 setButtonText({ text: chooseDay, role: "choose day" })
+    //             } else if (selectedHour === "00:00") {
+    //                 setButtonText({ text: chooseHour, role: "choose hour" })
+    //             } else {
+    //                 setButtonText({ text: bookSeat, role: "book" })
+    //             }
+    //         }
+    //     }
+    // }, [selectedHour, selectedSubject, selectedDay])
 
 
-    useEffect(() => {
-        if (userInfo && selectedDay.length > 0) {
+    // useEffect(() => {
+    //     if (userInfo && selectedDay.length > 0) {
 
-            let mySubject = userInfo.myTeachers?.find(x => x.id === item.id)?.subject
+    //         let mySubject = userInfo.myTeachers?.find(x => x.id === item.id)?.subject
 
-            if (mySubject?.id === selectedSubject.id) {
-                let myBookedDates = userInfo.myTeachers?.filter(x => x.id !== item.id).filter(x => x.schedule.days[0] === selectedDay[0]).map(x => {
-                    return { ...x.schedule, id: x.id }
-                })
-                let myBookedHours = myBookedDates.map(x => {
-                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
-                })
-                setMyBookedHours(myBookedHours)
-            } else {
-                let myBookedDates = userInfo.myTeachers?.filter(x => x.schedule.days.includes(selectedDay[0])).map(x => {
-                    return { ...x.schedule, id: x.id }
-                })
-                let myBookedHours = myBookedDates.map(x => {
-                    return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
-                })
-                setMyBookedHours(myBookedHours)
-            }
-        }
+    //         if (mySubject?.id === selectedSubject.id) {
+    //             let myBookedDates = userInfo.myTeachers?.filter(x => x.id !== item.id).filter(x => x.schedule.days[0] === selectedDay[0]).map(x => {
+    //                 return { ...x.schedule, id: x.id }
+    //             })
+    //             let myBookedHours = myBookedDates.map(x => {
+    //                 return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
+    //             })
+    //             setMyBookedHours(myBookedHours)
+    //         } else {
+    //             let myBookedDates = userInfo.myTeachers?.filter(x => x.schedule.days.includes(selectedDay[0])).map(x => {
+    //                 return { ...x.schedule, id: x.id }
+    //             })
+    //             let myBookedHours = myBookedDates.map(x => {
+    //                 return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
+    //             })
+    //             setMyBookedHours(myBookedHours)
+    //         }
+    //     }
 
-    }, [userInfo, selectedDay, selectedSubject])
+    // }, [userInfo, selectedDay, selectedSubject])
 
 
-    const dispatch = useDispatch();
-    const { language } = useSelector((state) => state.languageState);
+    // const dispatch = useDispatch();
+    // const { language } = useSelector((state) => state.languageState);
     const showMessageHandler = () => {
-        if (selectedDay.length > 0 && selectedHour !== "00:00") {
-            let theDays = days.filter(x => selectedDay.includes(x.fullName)).map(x => x.day[language]).join(" " + and + " ")
-            let hours = transformTime(selectedHour, language)
-            dispatch(showMessage(language === "en" ? `You have been booked on ${theDays} at ${hours}` : `تم تحجز مقعدك في يوم ${theDays} الساعة ${hours}`));
-        }
+        //     if (selectedDay.length > 0 && selectedHour !== "00:00") {
+        //         let theDays = days.filter(x => selectedDay.includes(x.fullName)).map(x => x.day[language]).join(" " + and + " ")
+        //         let hours = transformTime(selectedHour, language)
+        //         dispatch(showMessage(language === "en" ? `You have been booked on ${theDays} at ${hours}` : `تم تحجز مقعدك في يوم ${theDays} الساعة ${hours}`));
+        //     }
     }
     return (
         <SafeAreaView style={[styles.container]} >
@@ -158,18 +170,18 @@ export default function TeacherScreen({ route }) {
                     {/* <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <Analytics item={item} /> */}
                     <ContainerTitle title={t("schedule")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
-                    <SlideContainer data={days} SelectedId={selectedDay} handelPress={dayHandelPress}   >
+                    <SlideContainer data={days} selectedGroup={selectedGroup} selectedDay={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />
                     </SlideContainer>
                     <View style={styles.lineContainer}>
                         <View style={styles.line} />
                     </View>
                     {hours.length > 0 &&
-                        <SlideContainer myBookedHours={myBookedHours} data={hours} SelectedId={selectedHour} handelPress={hoursHandelPress}   >
+                        <SlideContainer myBookedHours={myBookedHours} data={hours} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
                             <HoursOption />
                         </SlideContainer>
                     }
-                    <ContainerTitle title={t("colleagues")} />
+                     <ContainerTitle title={t("colleagues")} />
                     <SlideContainer data={friends} scrollAnimation={true}  >
                         <FriendItem teacher={item} />
                     </SlideContainer>
@@ -184,7 +196,7 @@ export default function TeacherScreen({ route }) {
                         EL {item.price}
                     </Text>
                 </View>
-                <PrimaryButton style={{ width: "65%" }} onPress={showMessageHandler} disabled={selectedDay.length === 0 || selectedHour === "00:00" || buttonText.role === "booked"} >
+                <PrimaryButton style={{ width: "65%" }} onPress={showMessageHandler} disabled={!selectedDay || selectedHour === "00:00" || buttonText.role === "booked"} >
                     <Text style={styles.buttonText}>{buttonText.text}</Text>
                 </PrimaryButton>
             </View>
@@ -246,3 +258,4 @@ const styles = StyleSheet.create({
     }
 
 })
+

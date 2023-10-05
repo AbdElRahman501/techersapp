@@ -5,11 +5,13 @@ import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
-import { formatDistance, checkArrayForUserId, getTitle } from '../actions/GlobalFunctions'
+import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } from '../actions/GlobalFunctions'
 
 export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler, userInfo }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
+    const subjects = removeDuplicatesById(item.groups.map(x => x.subject))
+
     const id = 18
 
     useEffect(() => {
@@ -23,21 +25,15 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item.gender, item.name)}</CustomText>
-                    <View style={{ justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
-                        {item.subjects.map((subject, i) => {
-                            let subjectSchedule = subject.schoolYears.find(x => x.id === userInfo?.schoolYear.id)
-                            return <TouchableOpacity key={i} style={{
-                                marginRight: language === 'en' ? 10 : 0,
-                                marginLeft: language === 'ar' ? 10 : 0
-                            }} disabled={!subjectSchedule} onPress={() => changeSubjectHandler(subject)} >
-                                <CustomText style={[styles.regular, {
-                                    opacity: !subjectSchedule && selectedSubject ? 0.5 : 1,
-                                    color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
-                                }]}>
-                                    {subject[language]}
-                                </CustomText>
-                            </TouchableOpacity>
-                        })}
+                    <View style={{ gap: 10, justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
+                        {subjects.map((subject, i) => <TouchableOpacity key={i} onPress={() => changeSubjectHandler(subject)} disabled={!selectedSubject} >
+                            <CustomText style={[styles.regular, {
+                                color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
+                            }]}>
+                                {subject[language]}
+                            </CustomText>
+                        </TouchableOpacity>
+                        )}
                     </View>
                     <View style={{ justifyContent: "space-between", flexDirection: language === 'en' ? 'row-reverse' : 'row', alignItems: "center" }}>
                         <TouchableOpacity style={[styles.likes, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]} onPress={() => setLiked({ state: !liked.state, number: liked.state ? liked.number - 1 : liked.number + 1 })}>

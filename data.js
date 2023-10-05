@@ -60,188 +60,130 @@ export const teachers = [
         bookingLimits: { start: "08-01", end: "09-01" },
         studyingYear: { start: "09-01", end: "06-31" },
         midYearHoliday: { start: "12-21", end: "01-05" },
-        subjects: [
+        groups: [
             {
-                ...subjects[0], schoolYears: [{
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
-
-
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
-
-
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
+                id: 1,
+                name: "Group 2-A",
+                schoolYear: years[1],
+                subject: subjects[0],
+                gender: "male",
+                days: [
+                    {
+                        day: "sunday",
+                        time: "11:00 AM",
+                        timeIn24Format: "11:00",
+                        duration: 60
+                    },
+                    {
+                        day: "wednesday",
+                        time: "2:00 PM",
+                        timeIn24Format: "14:00",
+                        duration: 60
                     }
-                }, {
-                    ...years[2], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
+                ]
             },
             {
-                ...subjects[5], schoolYears: [{
-                    ...years[0], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
+                id: 2,
+                name: "Group 2-B",
+                schoolYear: years[1],
+                subject: subjects[0],
+                gender: "male",
+                days: [
+                    {
+                        day: "saturday",
+                        time: "9:00 AM",
+                        timeIn24Format: "9:00",
+                        duration: 60
+                    },
+                    {
+                        day: "tuesday",
+                        time: "9:00 AM",
+                        timeIn24Format: "9:00",
+                        duration: 60
                     }
-                },]
-            }]
-        ,
+                ]
+            }, {
+                id: 6,
+                name: "Group 2-c",
+                schoolYear: years[1],
+                subject: subjects[0],
+                gender: "male",
+                days: [
+                    {
+                        day: "saturday",
+                        time: "3:00 PM",
+                        timeIn24Format: "15:00",
+                        duration: 60
+                    },
+                    {
+                        day: "tuesday",
+                        time: "4:00 PM",
+                        timeIn24Format: "16:00",
+                        duration: 60
+                    }
+                ]
+            }, {
+                id: 3,
+                name: "Group 3-A",
+                schoolYear: years[2],
+                subject: subjects[0],
+                gender: "male",
+                days: [
+                    {
+                        day: "sunday",
+                        time: "12:00 PM",
+                        timeIn24Format: "12:00",
+                        duration: 90
+                    },
+                    {
+                        day: "wednesday",
+                        time: "12:00 PM",
+                        timeIn24Format: "12:00",
+                        duration: 90
+                    }
+                ]
+            }, {
+                id: 4,
+                name: "Group 3-B",
+                schoolYear: years[2],
+                subject: subjects[0],
+                gender: "male",
+                days: [
+                    {
+                        day: "monday",
+                        time: "12:00 PM",
+                        timeIn24Format: "12:00",
+                        duration: 60
+                    },
+                    {
+                        day: "thursday",
+                        time: "12:00 PM",
+                        timeIn24Format: "12:00",
+                        duration: 60
+                    }
+                ]
+            }, {
+                id: 5,
+                name: "Group 1-A",
+                schoolYear: years[0],
+                subject: subjects[5],
+                gender: "male",
+                days: [
+                    {
+                        day: "saturday",
+                        time: "4:00 PM",
+                        timeIn24Format: "16:00",
+                        duration: 60
+                    },
+                    {
+                        day: "tuesday",
+                        time: "4:00 PM",
+                        timeIn24Format: "16:00",
+                        duration: 60
+                    }
+                ]
+            },
+        ],
         distance: 1200,
         gender: "male",
         about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
@@ -252,874 +194,874 @@ export const teachers = [
             { id: 3 },
         ],
     },
-    {
-        id: 2,
-        imageSource: require('./assets/teachers/teacher.png'),
-        name: "Mohamed Ahmed",
-        mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
-        bookingLimits: { start: "08-01", end: "09-01" },
-        studyingYear: { start: "09-10", end: "06-31" },
-        midYearHoliday: { start: "12-21", end: "01-05" },
-        subjects: [
-            {
-                ...subjects[1], schoolYears: [{
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
+    // {
+    //     id: 2,
+    //     imageSource: require('./assets/teachers/teacher.png'),
+    //     name: "Mohamed Ahmed",
+    //     mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+    //     bookingLimits: { start: "08-01", end: "09-01" },
+    //     studyingYear: { start: "09-10", end: "06-31" },
+    //     midYearHoliday: { start: "12-21", end: "01-05" },
+    //     subjects: [
+    //         {
+    //             ...subjects[1], schoolYears: [{
+    //                 ...years[1], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
 
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
-
-
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                        },
-                    }
-                }, {
-                    ...years[2], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
-            },
-            {
-                ...subjects[5], schoolYears: [{
-                    ...years[0], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                    }
-                },]
-            }]
-        ,
-        gender: "male",
-        distance: 800,
-        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
-        price: 200,
-        likes: [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 }
-        ]
-
-    },
-    {
-        id: 3,
-        imageSource: require('./assets/teachers/teacher.png'),
-        name: "مسعد سعيد",
-        mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
-        bookingLimits: { start: "08-01", end: "09-01" },
-        studyingYear: { start: "09-01", end: "06-31" },
-        midYearHoliday: { start: "12-21", end: "01-05" },
-        subjects: [
-            {
-                ...subjects[0], schoolYears: [{
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:30", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
+    //                     },
+    //                 }
+    //             }, {
+    //                 ...years[2], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+    //                     },
+    //                 }
+    //             }]
+    //         },
+    //         {
+    //             ...subjects[5], schoolYears: [{
+    //                 ...years[0], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                     },
+    //                 }
+    //             },]
+    //         }]
+    //     ,
+    //     gender: "male",
+    //     distance: 800,
+    //     about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+    //     price: 200,
+    //     likes: [
+    //         { id: 1 },
+    //         { id: 2 },
+    //         { id: 3 },
+    //         { id: 4 }
+    //     ]
 
-                        },
-                    }
-                }, {
-                    ...years[2], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    // },
+    // {
+    //     id: 3,
+    //     imageSource: require('./assets/teachers/teacher.png'),
+    //     name: "مسعد سعيد",
+    //     mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
+    //     bookingLimits: { start: "08-01", end: "09-01" },
+    //     studyingYear: { start: "09-01", end: "06-31" },
+    //     midYearHoliday: { start: "12-21", end: "01-05" },
+    //     subjects: [
+    //         {
+    //             ...subjects[0], schoolYears: [{
+    //                 ...years[1], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:30", duration: 60 },
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
-            },
-            {
-                ...subjects[5], schoolYears: [{
-                    ...years[0], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                    }
-                }, {
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["saturday", "tuesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["friday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
-            }]
-        ,
-        gender: "male",
-        distance: 11500,
-        about: `هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة  هذه نبذة `,
-        price: 400,
-        likes: [
-            { id: 1 },
-
-        ]
-
-    },
-    {
-        id: 4,
-        imageSource: require('./assets/teachers/teacher.png'),
-        name: "Amira Ahmed",
-        mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
-        bookingLimits: { start: "08-01", end: "09-01" },
-        studyingYear: { start: "09-01", end: "06-31" },
-        midYearHoliday: { start: "12-21", end: "01-05" },
-        subjects: [
-            {
-                ...subjects[3], schoolYears: [{
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
 
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
-
-
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                    }
-                }, {
-                    ...years[2], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
-            },
-            {
-                ...subjects[2], schoolYears: [{
-                    ...years[0], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-
-                        },
-                    }
-                },]
-            }]
-        ,
-        gender: "female",
-        distance: 11500,
-        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
-        price: 220,
-        likes: [
-            { id: 1 },
-            { id: 18 },
-
-        ]
-
-    },
-    {
-        id: 5,
-        imageSource: require('./assets/teachers/teacher.png'),
-        name: "Shahinda Abdelrahman",
-        mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
-        bookingLimits: { start: "08-01", end: "09-01" },
-        studyingYear: { start: "09-01", end: "06-31" },
-        midYearHoliday: { start: "12-21", end: "01-05" },
-        subjects: [
-            {
-                ...subjects[4], schoolYears: [{
-                    ...years[1], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
+    //                     },
+    //                 }
+    //             }, {
+    //                 ...years[2], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                        { timeIn24Format: "17:00", duration: 60 },
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+    //                     },
+    //                 }
+    //             }]
+    //         },
+    //         {
+    //             ...subjects[5], schoolYears: [{
+    //                 ...years[0], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                 }
+    //             }, {
+    //                 ...years[1], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["saturday", "tuesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["friday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+    //                     },
+    //                 }
+    //             }]
+    //         }]
+    //     ,
+    //     gender: "male",
+    //     distance: 11500,
+    //     about: `هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة هذه نبذة  هذه نبذة `,
+    //     price: 400,
+    //     likes: [
+    //         { id: 1 },
+
+    //     ]
+
+    // },
+    // {
+    //     id: 4,
+    //     imageSource: require('./assets/teachers/teacher.png'),
+    //     name: "Amira Ahmed",
+    //     mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
+    //     bookingLimits: { start: "08-01", end: "09-01" },
+    //     studyingYear: { start: "09-01", end: "06-31" },
+    //     midYearHoliday: { start: "12-21", end: "01-05" },
+    //     subjects: [
+    //         {
+    //             ...subjects[3], schoolYears: [{
+    //                 ...years[1], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
 
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                        { timeIn24Format: "11:00", duration: 60 },
-                                        { timeIn24Format: "14:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-                        },
-                    }
-                }, {
-                    ...years[2], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "10:00", duration: 60 },
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "12:00", duration: 60 },
-                                        { timeIn24Format: "15:00", duration: 60 },
-                                        { timeIn24Format: "18:00", duration: 60 },
-                                    ]
-                                }
-                            ],
-                        },
-                    }
-                }]
-            },
-            {
-                ...subjects[3], schoolYears: [{
-                    ...years[0], schedule: {
-                        male: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
 
-                        },
-                        female: {
-                            times: [
-                                {
-                                    days: ["sunday", "wednesday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["monday", "thursday"],
-                                    hours: [
-                                        { timeIn24Format: "9:00", duration: 60 },
-                                    ]
-                                },
-                                {
-                                    days: ["tuesday", "saturday"],
-                                    hours: [
-                                        { timeIn24Format: "16:00", duration: 60 },
-                                    ]
-                                }
-                            ],
 
-                        },
-                    }
-                },]
-            }]
-        ,
-        gender: "female",
-        distance: 250,
-        about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
-        price: 220,
-        likes: [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 },
-            { id: 5 },
-            { id: 18 }
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-        ]
+    //                     },
+    //                 }
+    //             }, {
+    //                 ...years[2], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
 
-    },
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+    //                     },
+    //                 }
+    //             }]
+    //         },
+    //         {
+    //             ...subjects[2], schoolYears: [{
+    //                 ...years[0], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                 }
+    //             },]
+    //         }]
+    //     ,
+    //     gender: "female",
+    //     distance: 11500,
+    //     about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+    //     price: 220,
+    //     likes: [
+    //         { id: 1 },
+    //         { id: 18 },
+
+    //     ]
+
+    // },
+    // {
+    //     id: 5,
+    //     imageSource: require('./assets/teachers/teacher.png'),
+    //     name: "Shahinda Abdelrahman",
+    //     mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
+    //     bookingLimits: { start: "08-01", end: "09-01" },
+    //     studyingYear: { start: "09-01", end: "06-31" },
+    //     midYearHoliday: { start: "12-21", end: "01-05" },
+    //     subjects: [
+    //         {
+    //             ...subjects[4], schoolYears: [{
+    //                 ...years[1], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
+
+
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                     { timeIn24Format: "17:00", duration: 60 },
+
+
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                     { timeIn24Format: "11:00", duration: 60 },
+    //                                     { timeIn24Format: "14:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                 }
+    //             }, {
+    //                 ...years[2], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "10:00", duration: 60 },
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "12:00", duration: 60 },
+    //                                     { timeIn24Format: "15:00", duration: 60 },
+    //                                     { timeIn24Format: "18:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+    //                     },
+    //                 }
+    //             }]
+    //         },
+    //         {
+    //             ...subjects[3], schoolYears: [{
+    //                 ...years[0], schedule: {
+    //                     male: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                     female: {
+    //                         times: [
+    //                             {
+    //                                 days: ["sunday", "wednesday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["monday", "thursday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "9:00", duration: 60 },
+    //                                 ]
+    //                             },
+    //                             {
+    //                                 days: ["tuesday", "saturday"],
+    //                                 hours: [
+    //                                     { timeIn24Format: "16:00", duration: 60 },
+    //                                 ]
+    //                             }
+    //                         ],
+
+    //                     },
+    //                 }
+    //             },]
+    //         }]
+    //     ,
+    //     gender: "female",
+    //     distance: 250,
+    //     about: `this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about this is about`,
+    //     price: 220,
+    //     likes: [
+    //         { id: 1 },
+    //         { id: 2 },
+    //         { id: 3 },
+    //         { id: 4 },
+    //         { id: 5 },
+    //         { id: 18 }
+
+    //     ]
+
+    // },
 ];
 export const emptyData = {
     myFavTeachers: [],
@@ -1138,46 +1080,49 @@ export const userData = {
     "schoolYear": years[1],
     "user": "student",
     myFavTeachers: [
-        { id: 4, subject: subjects[3] },
-        { id: 5, subject: subjects[4] },
+        {
+            id: 1,
+            subject: subjects[0],
+            color: "#ff0000",
+            groupId: 1,
+
+        },
+        // { id: 5, subject: subjects[4] },
     ],
     myTeachers: [
         {
-            id: 2, subject: subjects[1],
+            id: 1,
+            subject: subjects[0],
             color: "#ff0000",
-            schedule: {
-                days: ["monday", "thursday"],
-                hours: { timeIn24Format: "9:00", duration: 60 }
-
-            }
+            groupId: 1,
 
         },
-        {
-            id: 3, subject: subjects[0],
-            schedule: {
-                days: ["sunday", "wednesday"],
-                hours: { timeIn24Format: "14:30", duration: 60 },
-            }
-        },
-        {
-            id: 4, subject: subjects[3],
-            color: "#4B0082",
-            schedule: {
-                days: ["monday", "thursday"],
-                hours: { timeIn24Format: "14:00", duration: 60 },
+        // {
+        //     id: 3, subject: subjects[0],
+        //     schedule: {
+        //         days: ["sunday", "wednesday"],
+        //         hours: { timeIn24Format: "14:30", duration: 60 },
+        //     }
+        // },
+        // {
+        //     id: 4, subject: subjects[3],
+        //     color: "#4B0082",
+        //     schedule: {
+        //         days: ["monday", "thursday"],
+        //         hours: { timeIn24Format: "14:00", duration: 60 },
 
-            }
-        },
-        {
-            id: 5, subject: subjects[4],
-            color: "#8B00FF",
-            schedule: {
-                days: ["sunday", "wednesday"],
-                hours: { timeIn24Format: "11:00", duration: 90 }
+        //     }
+        // },
+        // {
+        //     id: 5, subject: subjects[4],
+        //     color: "#8B00FF",
+        //     schedule: {
+        //         days: ["sunday", "wednesday"],
+        //         hours: { timeIn24Format: "11:00", duration: 90 }
 
-            }
+        //     }
 
-        },
+        // },
     ]
 }
 export const days = [
