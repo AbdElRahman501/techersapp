@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
-import { days, friends } from '../data';
+import { days, friends, teachers } from '../data';
 import t from '../actions/changeLanguage';
 import { Color, FontFamily, FontSize, Margin, Padding, globalStyles, widthPercentage } from '../GlobalStyles';
 import SlideContainer from '../components/SlideContainer';
@@ -11,7 +11,7 @@ import Analytics from '../components/Analytics';
 import DayOption from '../components/DayOption';
 import HoursOption from '../components/HoursOption';
 import FriendItem from '../components/FriendItem';
-import { calculateEndTime, equalArs, getTextInputAlign, sortArrayByTime, transformTime } from '../actions/GlobalFunctions';
+import { areAppointmentsOverlapping, calculateEndTime, equalArs, getEvents, getMyGroups, getTextInputAlign, removeDuplicatesById, sortArrayByTime, transformTime } from '../actions/GlobalFunctions';
 import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,7 +28,7 @@ export default function TeacherScreen({ route }) {
     const [selectedSubject, setSelectedSubject] = useState()
 
     const [hours, setHours] = useState([]);
-    const [myBookedHours, setMyBookedHours] = useState([])
+    const [myGroups, setMyGroups] = useState([])
 
 
     let [bookSeat, changeDate, bookedSeat, chooseDay, chooseHour, noGroupAvailable, and] =
@@ -77,6 +77,7 @@ export default function TeacherScreen({ route }) {
             setSelectedHour(group.days.find(x => x.day === theSelectedDay).timeIn24Format)
         } else {
             setSelectedGroup()
+            setSelectedSubject(removeDuplicatesById(item.groups.map(x => x.subject))[0])
             setSelectedHour("00:00")
             setSelectedDay()
             setHours([])
@@ -105,7 +106,7 @@ export default function TeacherScreen({ route }) {
         } else {
             availableGroups = item.groups
         }
-        let myGroup = availableGroups.find(x => myGroupsId.includes(x.id))
+        let myGroup = availableGroups.find(x => myGroupsId?.includes(x.id))
         if (myGroup) {
             updateGroup(myGroup)
         } else {
@@ -117,6 +118,8 @@ export default function TeacherScreen({ route }) {
     useEffect(() => {
         if (userInfo) {
             init(userInfo)
+            let myTeachers = userInfo.myTeachers.filter(x => x.id !== item.id)
+            setMyGroups(getMyGroups(myTeachers, teachers))
         }
     }, [userInfo])
 
@@ -135,44 +138,15 @@ export default function TeacherScreen({ route }) {
             return ({ text: noGroupAvailable })
         } else if (selectedGroup) {
             let myGroupsId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-            if (myGroupsId.includes(selectedGroup.id)) {
+            if (myGroupsId?.includes(selectedGroup.id)) {
                 return ({ text: bookedSeat, booked: true })
-            } else {
+            } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id)) {
                 return ({ text: changeDate })
+            } else {
+                return ({ text: bookSeat })
             }
-        } else {
-            return ({ text: bookSeat })
         }
     }
-
-    // time overlapping handler
-
-    // useEffect(() => {
-    //     if (userInfo && selectedDay.length > 0) {
-
-    //         let mySubject = userInfo.myTeachers?.find(x => x.id === item.id)?.subject
-
-    //         if (mySubject?.id === selectedSubject.id) {
-    //             let myBookedDates = userInfo.myTeachers?.filter(x => x.id !== item.id).filter(x => x.schedule.days[0] === selectedDay[0]).map(x => {
-    //                 return { ...x.schedule, id: x.id }
-    //             })
-    //             let myBookedHours = myBookedDates.map(x => {
-    //                 return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
-    //             })
-    //             setMyBookedHours(myBookedHours)
-    //         } else {
-    //             let myBookedDates = userInfo.myTeachers?.filter(x => x.schedule.days.includes(selectedDay[0])).map(x => {
-    //                 return { ...x.schedule, id: x.id }
-    //             })
-    //             let myBookedHours = myBookedDates.map(x => {
-    //                 return { timeIn24Format: x.hours.timeIn24Format, days: x.days, duration: x.hours.duration, teacherId: x.id }
-    //             })
-    //             setMyBookedHours(myBookedHours)
-    //         }
-    //     }
-
-    // }, [userInfo, selectedDay, selectedSubject])
-
 
 
     // submit handler
@@ -186,6 +160,7 @@ export default function TeacherScreen({ route }) {
                 ? `You have been booked on ${theDays} at ${hours}`
                 : `تم حجز مقعدك في يوم ${theDays} الساعة ${hours}`
             dispatch(showMessage(message));
+            console.log("🚀 ~ file: TeacherScreen.js:164 ~ showMessageHandler ~teacher, selectedGroup.id, selectedSubject.id:", item.id, selectedGroup.id, selectedSubject.id)
         }
     }
     return (
@@ -208,7 +183,7 @@ export default function TeacherScreen({ route }) {
                     <View style={styles.lineContainer}>
                         <View style={styles.line} />
                     </View>
-                    <SlideContainer data={sortArrayByTime(hours)} myBookedHours={myBookedHours} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
+                    <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups} teacher={item} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
                         <HoursOption />
                     </SlideContainer>
                     <ContainerTitle title={t("colleagues")} />

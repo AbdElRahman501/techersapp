@@ -198,8 +198,8 @@ export const filterArrayByIds = (array, idArray) => {
 export const findMyTeachers = (array, myTeachersArray) => {
     const ids = myTeachersArray.map(x => x.id)
     return array.filter(item => ids.includes(item.id)).map(x => {
-        const mainSubject = myTeachersArray.find(y => y.id === x.id).subject
-        return { ...x, mainSubject }
+        const myTeacher = myTeachersArray.find(y => y.id === x.id)
+        return { ...x, ...myTeacher }
     })
 };
 
@@ -386,6 +386,23 @@ export const areAppointmentsOverlapping = (firstTime, secondTime) => {
 
     return firstTimeInMinutes < secondEndTimeInMinutes && secondTimeInMinutes < firstEndTimeInMinutes;
 }
+export const areGroupsOverLapped = (myGroups, myGroup) => {
+    if (myGroups.length === 0 || !myGroup) {
+        return false;
+    }
+    let allDays = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId }))).flat()
+    let myDays = myGroup.days
+    let overLapped = false
+    let overlappedTime = {}
+    allDays.map(day => {
+        let theDay = myDays.find(y => y.day === day.day)
+        if (theDay && areAppointmentsOverlapping(day, theDay)) {
+            overLapped = true
+            overlappedTime = day
+        }
+    })
+    return { overLapped, overlappedTime };
+}
 export const equalArs = (array1, array2) => {
     if (array1.length !== array2.length) {
         return false;
@@ -420,7 +437,15 @@ export const getEvents = (myTeachers, day, teachers) => {
 
     return theEvents
 }
-
+export const getMyGroups = (myTeachers, teachers) => {
+    if (myTeachers.length === 0 || teachers.length === 0) return []
+    let theTeachers = teachers.filter(x => myTeachers.map(x => x.id).includes(x.id))
+    let myGroups = theTeachers?.map((x, i) => {
+        let myTeacher = myTeachers?.find(y => y.id === x.id)
+        return x.groups.filter(y => myTeacher.groupsId.includes(y.id)).map(y => ({ ...y, teacherId: x.id, color: myTeacher.color }))
+    }).flat()
+    return myGroups
+}
 export const getEventsDuration = (userInfo) => {
     if (!userInfo) return []
     let eventsDuration = teachers.filter(x => userInfo?.myTeachers.find(y => y.id === x.id)

@@ -30,7 +30,7 @@ export default function HomeScreen() {
       });
     } else {
       const myT = findMyTeachers(teachers, userInfo.myTeachers || [])
-      const myFav = filterArrayByIds(myT, userInfo.myFavTeachers || [])
+      const myFav = myT.filter(x => x.favorite === true)
       setMyTeachers(myT)
       setMyFavTeachers(myFav)
       setMySubjects(removeDuplicatesById(myT.map(x => x.mainSubject)))

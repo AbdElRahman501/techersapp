@@ -27,7 +27,7 @@ const BookingModal = ({ myBookedHour, isBooked, onClose }) => {
         <Modal visible={isBooked} animationType="fade" transparent>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalText}>you have booked a time at  {transformTime(myBookedHour?.timeIn24Format, language)}. for  {getTitle(teacher?.gender, teacher?.name)} class </Text>
+                    <Text style={styles.modalText}>you already have a group at  {myBookedHour?.day + " " + transformTime(myBookedHour?.timeIn24Format, language)}. for  {getTitle(teacher?.gender, teacher?.name)} class </Text>
                     <View style={{ width: "80%", flexDirection: "row" }}>
                         <PrimaryButton
                             style={[styles.button, { backgroundColor: Color.white, borderWidth: 1, borderColor: Color.darkcyan }]}

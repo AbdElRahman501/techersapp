@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import { Color, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
-import { areAppointmentsOverlapping, transformTime } from '../actions/GlobalFunctions';
+import { areAppointmentsOverlapping, areGroupsOverLapped, transformTime } from '../actions/GlobalFunctions';
 import BookingModal from './BookingModal';
 
-const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress, disabled }) => {
+const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelPress }) => {
     const { language } = useSelector(state => state.languageState)
-    const [unavailable, setUnavailable] = useState(false);
     let isSelected = selectedHour === item.timeIn24Format
-    useEffect(() => {
-        if (myBookedHours) {
-            let overlapping = myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem));
-            setUnavailable(overlapping ? true : false)
-        }
-    }, [myBookedHours])
+    const { overLapped: unavailable, overlappedTime } = areGroupsOverLapped(myGroups, teacher.groups.find(x => x.id === item.groupId))
     const [isModalVisible, setModalVisible] = useState(false);
 
     const handleCloseModal = () => {
@@ -24,7 +18,7 @@ const HoursOption = React.memo(({ item, selectedHour, myBookedHours, handelPress
     return (
         <>
             <BookingModal
-                myBookedHour={myBookedHours.find(secItem => areAppointmentsOverlapping(item, secItem))}
+                myBookedHour={overlappedTime}
                 isBooked={isModalVisible}
                 onClose={handleCloseModal}
             />
