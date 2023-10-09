@@ -16,6 +16,7 @@ import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from "../store/actions/showMessageActions";
+import { addTeacher } from '../store/actions/bookingFunctions';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
@@ -161,6 +162,7 @@ export default function TeacherScreen({ route }) {
                 : `تم حجز مقعدك في يوم ${theDays} الساعة ${hours}`
             dispatch(showMessage(message));
             console.log("🚀 ~ file: TeacherScreen.js:164 ~ showMessageHandler ~teacher, selectedGroup.id, selectedSubject.id:", item.id, selectedGroup.id, selectedSubject.id)
+            dispatch(addTeacher({ id: item.id, groupsId: [selectedGroup.id], favorite: false }, item, selectedGroup))
         }
     }
     return (

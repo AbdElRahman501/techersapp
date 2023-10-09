@@ -22,8 +22,34 @@ export const validateEmail = (email) => {
 };
 
 
+export const isValidPhoneNumber = (phoneNumber) => {
+    // Regular expression to validate phone number (simplified)
+    const phoneRegex = /^(010|011|012|015)[0-9]{8}$/;
+    return phoneRegex.test(phoneNumber);
+}
+
 export const inputChecker = (inputValue, inputType) => {
-    if (inputType === 'email') {
+    if (inputType === 'emailOrPhoneNumber') {
+        if (!inputValue?.trim()) {
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'برجاء قم بإدخال البريد الإلكتروني أو رقم الجوال',
+                        en: 'Please enter your email or phone number'
+                    }
+                }
+            };
+        } else if (!validateEmail(inputValue) && !isValidPhoneNumber(inputValue)) {
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'برجاء قم بإدخال البريد الإلكتروني أو رقم الجوال صحيح',
+                        en: 'Please enter a valid email or valid phone number'
+                    }
+                }
+            };
+        }
+    } else if (inputType === 'email') {
         if (!inputValue?.trim()) {
             return {
                 error: {
@@ -119,6 +145,34 @@ export const inputChecker = (inputValue, inputType) => {
     return { success: true };
 };
 
+export const getErrorMessage = (error) => {
+    switch (error.message) {
+        case "this email already exists":
+            return {
+                message: {
+                    ar: 'هذا البريد الالكتروني موجود بالفعل',
+                    en: 'this email already exists'
+                }
+            };
+        case "this phoneNumber already exists":
+            return {
+                message: {
+                    ar: 'هذا الرقم موجود بالفعل',
+                    en: 'this phone number already exists'
+                }
+            };
+        case "User not found or incorrect password":
+            return {
+                message: {
+                    ar: 'الحساب غير موجود أو كلمة المرور غير صحيحة', 
+                    en: 'User not found or incorrect password'
+                }
+            }
+        default:
+            return error;
+    }
+
+}
 
 export const isArabic = (text) => {
     const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;

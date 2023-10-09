@@ -14,38 +14,51 @@ import { signIn } from '../store/actions/userActions';
 import { userData } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingModal from '../components/LoadingModal';
 
 export default function SigninScreen() {
     const navigation = useNavigation();
     const { language } = useSelector(state => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
-    const [{ email, phoneNumber, password }, setSignInData] = useState({ email: "", phoneNumber: "", password: "" });
+    const [submitted, setSubmitted] = useState(false)
+    const [{ emailOrPhoneNumber, password }, setSignInData] = useState({ emailOrPhoneNumber: "", password: "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        if (submitCheck({ email, password }).isValid) {
-            // dispatch(signIn({ email, phoneNumber, password }))
+        setSubmitted(true)
+        if (submitCheck({ emailOrPhoneNumber, password }).isValid) {
+            dispatch(signIn({ emailOrPhoneNumber, password }))
         } else {
             setCheckInputs(true)
         }
     };
 
     useEffect(() => {
-        if (userInfo) {
-            console.log("🚀 ~ file: SigninScreen.js:35 ~ useEffect ~ userInfo:", userInfo)
+        if (userInfo && !userInfo?.unCompleted) {
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
             });
-            // navigation.navigate("Home")
+        } else if (userInfo?.unCompleted) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "UserDataScreen" }],
+            });
         }
     }, [userInfo])
+
+    useEffect(() => {
+        if (error?.message && submitted) {
+            setState({ error })
+        }
+    }, [error]);
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={t("sign in")} />
+                <LoadingModal visible={loading} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}>
@@ -57,11 +70,10 @@ export default function SigninScreen() {
                                 source={require('../assets/logoColoredTextMs.png')}
                             />
                             <Text style={styles.title}>{t("welcome-again")}</Text>
-                            <FancyInput inputType={"email"} value={email} setState={setState}
+                            <FancyInput inputType={"emailOrPhoneNumber"} value={emailOrPhoneNumber} setState={setState}
                                 checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("email-input")}
-                                keyboardType={"email-address"}
-                                changHandler={(e) => setSignInData(pv => ({ ...pv, email: e }))}
+                                placeholder={t("email or phone input")}
+                                changHandler={(e) => setSignInData(pv => ({ ...pv, emailOrPhoneNumber: e }))}
                             >
                                 <Mail_OutLine_Svg />
                             </FancyInput>
@@ -73,14 +85,14 @@ export default function SigninScreen() {
                                 <Lock_Svg />
                             </FancyInput>
                             <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                                {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
+                                {state.error && <Text style={styles.error}>{state.error?.message[language] || state.error?.message}</Text>}
                             </View>
                             <View style={[styles.inputField, styles.forgetPass, { margin: Margin.m_base, justifyContent: "flex-end" }]}>
                                 <PressedText title={t("forgot-password")} pressHandler={() => navigation.navigate("VerificationCodeScreen", { userData: { email: email || "bedo.ahmed416@gmail.com", phoneNumber } })} />
                             </View>
-                            <PrimaryButton onPress={handleSubmit}>
+                            <PrimaryButton onPress={handleSubmit} disabled={state.error}>
                                 <Text style={[styles.title, { color: Color.white }]}>
-                                    {t(loading ? "loading" : "sign in")}
+                                    {t("sign in")}
                                 </Text>
                             </PrimaryButton>
 

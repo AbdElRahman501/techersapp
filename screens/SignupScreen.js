@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
 import DividerWithText from '../components/DividerWithText ';
@@ -7,35 +7,74 @@ import FancyInput from '../components/TextInput';
 import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
-import { submitCheck } from '../actions/GlobalFunctions';
+import { isValidPhoneNumber, submitCheck, validateEmail } from '../actions/GlobalFunctions';
 import t from "../actions/changeLanguage";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import { Lock_Svg, Mail_OutLine_Svg, User_Icon_Svg } from '../assets/icons/Icons';
 import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
+import { register } from '../store/actions/userActions';
+import LoadingModal from '../components/LoadingModal';
 
 
 export default function SignUpScreen({ route }) {
     const { user } = route.params;
     const { language } = useSelector(state => state.languageState)
+    const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const navigation = useNavigation();
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({ user, fullName: "", policy: false, email: "", password: "" });
+    const [submitted, setSubmitted] = useState(false)
+    const [signUpData, setSignUpData] = useState({ role: user, fullName: "", policy: false, password: "" });
+    const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("")
     const [checkInputs, setCheckInputs] = useState(false)
 
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        if (submitCheck({ email: signUpData.email, password: signUpData.password, name: signUpData.fullName }).isValid) {
-            navigation.navigate("UserDataScreen", { signUpData })
+        setSubmitted(true)
+        if (submitCheck({ emailOrPhoneNumber: emailOrPhoneNumber, password: signUpData.password, name: signUpData.fullName }).isValid) {
+            let data = signUpData
+            if (validateEmail(emailOrPhoneNumber)) {
+                data = { ...data, email: emailOrPhoneNumber }
+            } else if (isValidPhoneNumber(emailOrPhoneNumber)) {
+                data = { ...data, phoneNumber: emailOrPhoneNumber }
+            }
+            dispatch(register({ ...data, unCompleted: true }))
         } else {
             setCheckInputs(true)
         }
     };
+
+    useEffect(() => {
+        if (userInfo) {
+            if (userInfo && !userInfo?.unCompleted) {
+                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "Home")
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Home" }],
+                });
+            } else if (userInfo?.unCompleted) {
+                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "UserDataScreen")
+
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "UserDataScreen" }],
+                });
+            }
+        }
+    }, [userInfo])
+
+    useEffect(() => {
+        if (error?.message && submitted) {
+            setState({ error })
+        }
+    }, [error]);
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
+                <LoadingModal visible={loading} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}>
@@ -54,10 +93,10 @@ export default function SignUpScreen({ route }) {
                             >
                                 <User_Icon_Svg />
                             </FancyInput>
-                            <FancyInput inputType={"email"} value={signUpData.email} setState={setState}
+                            <FancyInput inputType={"emailOrPhoneNumber"} value={emailOrPhoneNumber} setState={setState}
                                 checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("email-input")} keyboardType={"email-address"}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, email: e }))}
+                                placeholder={t("email or phone input")}
+                                changHandler={(e) => setEmailOrPhoneNumber(e)}
                             >
                                 <Mail_OutLine_Svg />
                             </FancyInput>
@@ -69,7 +108,7 @@ export default function SignUpScreen({ route }) {
                                 <Lock_Svg />
                             </FancyInput>
                             <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                                {state.error && <Text style={styles.error}>{state.error?.message[language]}</Text>}
+                                {state.error && <Text style={styles.error}>{state.error?.message[language] || state.error?.message}</Text>}
                             </View>
                             <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
                                 <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
@@ -82,7 +121,7 @@ export default function SignUpScreen({ route }) {
                                 </View>
 
                             </View>
-                            <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy}>
+                            <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy || state.error}>
                                 <Text style={styles.title}>
                                     {t("sign up")}
                                 </Text>

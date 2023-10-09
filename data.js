@@ -788,32 +788,32 @@ export const userData = {
     "schoolYear": years[1],
     "user": "student",
     myTeachers: [
-        {
-            id: 1,
-            color: "#ff0000",
-            groupsId: [1, 5],
-            favorite: true
+        // {
+        //     id: 1,
+        //     color: "#ff0000",
+        //     groupsId: [1, 5],
+        //     favorite: true
 
-        },
-        {
-            id: 4,
-            color: "#4B0082",
-            groupsId: [2],
-            favorite: true
+        // },
+        // {
+        //     id: 4,
+        //     color: "#4B0082",
+        //     groupsId: [2],
+        //     favorite: true
 
-        }
-        , {
-            id: 3,
-            color: "#8B00FF",
-            groupsId: [2],
+        // }
+        // , {
+        //     id: 3,
+        //     color: "#8B00FF",
+        //     groupsId: [2],
 
-        }
-        , {
-            id: 2,
-            subject: subjects[2],
-            groupsId: [1],
+        // }
+        // , {
+        //     id: 2,
+        //     subject: subjects[2],
+        //     groupsId: [1],
 
-        },
+        // },
     ]
 }
 export const days = [

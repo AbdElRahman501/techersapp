@@ -11,17 +11,16 @@ import { useNavigation } from '@react-navigation/core';
 import DatePicker from '../components/DatePicker';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { signIn } from '../store/actions/userActions';
+import { register, signIn } from '../store/actions/userActions';
 import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import * as data from '../data';
 
-export default function UserDataScreen({ route }) {
-    const userData = route.params.signUpData;
+export default function UserDataScreen() {
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({ ...userData });
+    const [signUpData, setSignUpData] = useState({});
     const [checkInputs, setCheckInputs] = useState(false)
     const navigation = useNavigation();
 
@@ -29,23 +28,28 @@ export default function UserDataScreen({ route }) {
 
     const handleSubmit = () => {
         if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
-            let education = schoolTypes.map((x, i) => ({ id: i + 1, ...x })).find(x => x.id === signUpData.educationType);
-            let theShoolYearSelection = years.map((x, i) => ({ id: i + 1, ...x })).find(x => x.id === signUpData.schoolYear);
-            dispatch(signIn({ ...data.emptyData, educationType: education, schoolYear: theShoolYearSelection, ...signUpData }))
+            console.log("🚀 ~ file: UserDataScreen.js:32 ~ handleSubmit ~ signUpData:", signUpData)
+            // let education = schoolTypes.map((x, i) => ({ id: i + 1, ...x })).find(x => x.id === signUpData.educationType);
+            // let theShoolYearSelection = years.map((x, i) => ({ id: i + 1, ...x })).find(x => x.id === signUpData.schoolYear);
+            dispatch(register(signUpData))
+            // dispatch(signIn({ ...data.emptyData, educationType: education, schoolYear: theShoolYearSelection, ...signUpData }))
         } else {
             setCheckInputs(true)
         }
     };
     useEffect(() => {
-        if (userInfo) {
-            console.log("🚀 ~ file: UserDataScreen.js:40 ~ useEffect ~ userInfo:", userInfo)
+        console.log("🚀 ~ file: UserDataScreen.js:42 ~ useEffect ~ userInfo:", userInfo)
+        if (userInfo && !userInfo?.unCompleted) {
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
             });
-            // navigation.navigate("Home")
+        } else if (userInfo && signUpData.name) {
+            setSignUpData({ ...userInfo })
         }
     }, [userInfo])
+
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >

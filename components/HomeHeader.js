@@ -45,7 +45,7 @@ const HomeHeader = ({ user }) => {
                 <View style={{ marginHorizontal: fontEm(1) }}>
                     <CustomText style={[styles.title, { color: Color.darkcyan }]}>{t("welcome")}</CustomText>
                     <CustomText style={styles.regularText}>{user?.fullName || ""}</CustomText>
-                    <CustomText style={styles.smallText}>{user?.schoolYear[language] || ""}</CustomText>
+                    <CustomText style={styles.smallText}>{user?.schoolYear || ""}</CustomText>
                 </View>
             </View>
             <Notification_icon_Svg
