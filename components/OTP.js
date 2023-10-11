@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Border, Color, FontFamily, FontSize, Height, Margin, fontEm } from "../GlobalStyles";
 
-const OTPInput = ({ length = 4, onComplete }) => {
+const OTPInput = ({ length, onComplete }) => {
   const [otp, setOTP] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 

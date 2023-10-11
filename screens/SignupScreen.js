@@ -1,80 +1,66 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView, Alert } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { Color, FontFamily, FontSize, Margin, Padding, fontEm, heightPercentage } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
 import DividerWithText from '../components/DividerWithText ';
-import FancyInput from '../components/TextInput';
 import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
-import { isValidPhoneNumber, submitCheck, validateEmail } from '../actions/GlobalFunctions';
 import t from "../actions/changeLanguage";
 import { useDispatch, useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
-import { Lock_Svg, Mail_OutLine_Svg, User_Icon_Svg } from '../assets/icons/Icons';
 import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
-import { register } from '../store/actions/userActions';
 import LoadingModal from '../components/LoadingModal';
+import PhoneInput from '../components/PhoneInput';
+import { getErrorMessage } from '../actions/GlobalFunctions';
+import { PHONE_VERIFICATION_URL } from '../store/actions/api';
+import axios from 'axios';
+import CustomModal from '../components/CustomModal';
 
 
 export default function SignUpScreen({ route }) {
     const { user } = route.params;
     const { language } = useSelector(state => state.languageState)
-    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
     const navigation = useNavigation();
-    const [state, setState] = useState({})
-    const [submitted, setSubmitted] = useState(false)
-    const [signUpData, setSignUpData] = useState({ role: user, fullName: "", policy: false, password: "" });
-    const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("")
-    const [checkInputs, setCheckInputs] = useState(false)
-
-    const dispatch = useDispatch();
+    const [signUpData, setSignUpData] = useState({ role: user, policy: false, phoneNumber: "" });
+    const [valid, setValid] = useState(false);
+    const [formattedPhone, setFormattedPhone] = useState("");
 
     const handleSubmit = () => {
-        setSubmitted(true)
-        if (submitCheck({ emailOrPhoneNumber: emailOrPhoneNumber, password: signUpData.password, name: signUpData.fullName }).isValid) {
-            let data = signUpData
-            if (validateEmail(emailOrPhoneNumber)) {
-                data = { ...data, email: emailOrPhoneNumber }
-            } else if (isValidPhoneNumber(emailOrPhoneNumber)) {
-                data = { ...data, phoneNumber: emailOrPhoneNumber }
-            }
-            dispatch(register({ ...data, unCompleted: true }))
+        if (!valid) {
+            Alert.alert('Invalid Phone Number', 'Please enter a valid phone number');
         } else {
-            setCheckInputs(true)
+            phoneNumberVerification(signUpData.phoneNumber)
         }
     };
-
-    useEffect(() => {
-        if (userInfo) {
-            if (userInfo && !userInfo?.unCompleted) {
-                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "Home")
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: "Home" }],
-                });
-            } else if (userInfo?.unCompleted) {
-                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "UserDataScreen")
-
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: "UserDataScreen" }],
-                });
-            }
+    const phoneNumberVerification = async (phoneNumber) => {
+        setLoading(true)
+        try {
+            const { data } = await axios.post(PHONE_VERIFICATION_URL, { phoneNumber, formattedPhone });
+            if (!data) return
+            setLoading(false)
+            navigation.navigate("VerificationCodeScreen", { phoneNumber, code: data.code })
+        } catch (error) {
+            setLoading(false)
+            let errorMessage = getErrorMessage(error?.response?.data || error)?.message
+            setErrorMessage(errorMessage)
         }
-    }, [userInfo])
+    }
 
-    useEffect(() => {
-        if (error?.message && submitted) {
-            setState({ error })
-        }
-    }, [error]);
+    const changeHandler = (text, valid) => {
+        setSignUpData(pv => ({ ...pv, phoneNumber: text }));
+        setValid(valid);
+    }
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                 <LoadingModal visible={loading} />
+                <CustomModal visible={errorMessage !== ""} onClose={() => setErrorMessage("")} buttonTitle={t("sign in")} handleSubmit={() => navigation.navigate("SigninScreen", { phoneNumber: signUpData.phoneNumber })} message={errorMessage[language]} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}>
@@ -85,31 +71,8 @@ export default function SignUpScreen({ route }) {
                                 resizeMode="contain"
                                 source={require('../assets/logoColoredTextMs.png')}
                             />
-                            <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
-                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                autoCapitalize="words"
-                                placeholder={user === "teacher" ? t("full-name-teacher") : t("full-name-student")}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, fullName: e }))}
-                            >
-                                <User_Icon_Svg />
-                            </FancyInput>
-                            <FancyInput inputType={"emailOrPhoneNumber"} value={emailOrPhoneNumber} setState={setState}
-                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("email or phone input")}
-                                changHandler={(e) => setEmailOrPhoneNumber(e)}
-                            >
-                                <Mail_OutLine_Svg />
-                            </FancyInput>
-                            <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
-                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("password-input")} rightIcon={"lock-closed-outline"}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
-                            >
-                                <Lock_Svg />
-                            </FancyInput>
-                            <View style={[styles.inputField, styles.forgetPass, { justifyContent: "flex-start" }]}>
-                                {state.error && <Text style={styles.error}>{state.error?.message[language] || state.error?.message}</Text>}
-                            </View>
+                            <PhoneInput value={signUpData.phoneNumber} onChangHandler={changeHandler} setFormattedPhone={setFormattedPhone} />
+
                             <View style={[styles.inputField, styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
                                 <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
                                 <View style={[styles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
@@ -121,7 +84,7 @@ export default function SignUpScreen({ route }) {
                                 </View>
 
                             </View>
-                            <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy || state.error}>
+                            <PrimaryButton onPress={handleSubmit} disabled={!signUpData.policy || !valid}>
                                 <Text style={styles.title}>
                                     {t("sign up")}
                                 </Text>

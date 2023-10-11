@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk';
 import counterReducer from './reducers/counterReducer';
 import languageReducer from './reducers/languageReducer';
-import { userReducer, userSignupReducer } from './reducers/userReducer';
+import { userReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 
 
@@ -17,8 +17,7 @@ const store = configureStore({
         counter: counterReducer,
         languageState: languageReducer,
         messageState: messageReducer,
-        userInfo: userReducer,
-        userSignUp: userSignupReducer
+        userInfo: userReducer
     },
     preloadedState: initialState,
     devTools: false,

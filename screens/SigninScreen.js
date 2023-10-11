@@ -16,13 +16,14 @@ import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingModal from '../components/LoadingModal';
 
-export default function SigninScreen() {
+export default function SigninScreen({ route }) {
+    const phoneNumber = route.params?.phoneNumber
     const navigation = useNavigation();
     const { language } = useSelector(state => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
     const [submitted, setSubmitted] = useState(false)
-    const [{ emailOrPhoneNumber, password }, setSignInData] = useState({ emailOrPhoneNumber: "", password: "" });
+    const [{ emailOrPhoneNumber, password }, setSignInData] = useState({ emailOrPhoneNumber: phoneNumber || "", password: "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const dispatch = useDispatch();
 
@@ -88,7 +89,7 @@ export default function SigninScreen() {
                                 {state.error && <Text style={styles.error}>{state.error?.message[language] || state.error?.message}</Text>}
                             </View>
                             <View style={[styles.inputField, styles.forgetPass, { margin: Margin.m_base, justifyContent: "flex-end" }]}>
-                                <PressedText title={t("forgot-password")} pressHandler={() => navigation.navigate("VerificationCodeScreen", { userData: { email: email || "bedo.ahmed416@gmail.com", phoneNumber } })} />
+                                <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />
                             </View>
                             <PrimaryButton onPress={handleSubmit} disabled={state.error}>
                                 <Text style={[styles.title, { color: Color.white }]}>
