@@ -22,7 +22,10 @@ export default function OBoardingSlides({ setLastSlide }) {
                 animated: "smooth"
             });
         } else {
-            navigation.navigate("SignUpOptions")
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'SignUpOptions' }],
+            });
         }
     };
 

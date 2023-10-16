@@ -70,6 +70,7 @@ export const inputChecker = (inputValue, inputType) => {
             };
         }
     } else if (inputType === 'password') {
+        const englishRegex = /^[A-Za-z0-9]*$/;
         if (!inputValue?.trim()) {
             return {
                 error: {
@@ -79,11 +80,11 @@ export const inputChecker = (inputValue, inputType) => {
                     }
                 }
             };
-        } else if (inputValue.length < 6) {
+        } else if (!englishRegex.test(inputValue) || inputValue.length < 6) {
             return {
                 error: {
                     inputType, message: {
-                        ar: 'كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل',
+                        ar: 'كلمة المرور يجب أن يحتوي على 6 أحرف على الأقل',
                         en: 'Password should be at least 6 characters long'
                     }
                 },
@@ -129,6 +130,17 @@ export const inputChecker = (inputValue, inputType) => {
                 },
             };
         }
+    } else if (inputType === 'gender') {
+        if (!inputValue?.trim()) {
+            return {
+                error: {
+                    inputType, message: {
+                        ar: 'اختر الجنس',
+                        en: 'Choose gender'
+                    }
+                }
+            };
+        }
     } else {
         if (!inputValue?.trim()) {
             return {
@@ -164,7 +176,7 @@ export const getErrorMessage = (error) => {
         case "User not found or incorrect password":
             return {
                 message: {
-                    ar: 'الحساب غير موجود أو كلمة المرور غير صحيحة', 
+                    ar: 'الحساب غير موجود أو كلمة المرور غير صحيحة',
                     en: 'User not found or incorrect password'
                 }
             }
@@ -492,7 +504,7 @@ export const getEvents = (myTeachers, day, teachers) => {
     return theEvents
 }
 export const getMyGroups = (myTeachers, teachers) => {
-    if (myTeachers.length === 0 || teachers.length === 0) return []
+    if (!myTeachers || !teachers) return []
     let theTeachers = teachers.filter(x => myTeachers.map(x => x.id).includes(x.id))
     let myGroups = theTeachers?.map((x, i) => {
         let myTeacher = myTeachers?.find(y => y.id === x.id)
@@ -501,7 +513,7 @@ export const getMyGroups = (myTeachers, teachers) => {
     return myGroups
 }
 export const getEventsDuration = (userInfo) => {
-    if (!userInfo) return []
+    if (!userInfo?.myTeachers) return []
     let eventsDuration = teachers.filter(x => userInfo?.myTeachers.find(y => y.id === x.id)
     ).map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday }))
     return eventsDuration
@@ -523,4 +535,10 @@ export const getStartedEvents = (events, eventsDuration, selectedDay) => {
         return isTheYearStarts
     })
     return theEvents;
+}
+export const isDataExpired = (storedTime, duration) => {
+    const expirationTime = new Date(storedTime);
+    expirationTime.setSeconds(expirationTime.getSeconds() + duration);
+    const currentTime = new Date();
+    return expirationTime < currentTime;
 }

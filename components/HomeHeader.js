@@ -33,7 +33,7 @@ const HomeHeader = ({ user }) => {
 
 
     return (
-        <View style={{ width: "100%", flexDirection: language === "en" ? "row" : "row-reverse", justifyContent: "space-between", marginTop: 10, alignItems: "center" }}>
+        <View style={{ width: "100%", flexDirection: language === "en" ? "row" : "row-reverse", justifyContent: "space-between",  alignItems: "center" }}>
             <View style={{ flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                     <Image

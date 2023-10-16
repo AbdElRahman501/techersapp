@@ -1,6 +1,6 @@
 import React, { useState, } from 'react';
 import { View, Modal, StyleSheet, PanResponder, Animated, ScrollView } from 'react-native';
-import { Border, Color, globalStyles, heightPercentage } from '../GlobalStyles';
+import { Border, Color, Height, globalStyles, heightPercentage } from '../GlobalStyles';
 import SortingContainer from './SortingContainer';
 import DistanceFilter from './DistanceFilter';
 import DividerWithText from './DividerWithText ';
@@ -55,7 +55,7 @@ const FilterModal = ({ isVisible, onClose, onApply }) => {
                     </View>
                     <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator={false} >
                         <DividerWithText style={{ marginBottom: 20 }} />
-                        <SortingContainer sortingOptions={sortingOptions} selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+                        <SortingContainer placeholder={"Sort By"} height={Height.hi_container} sortingOptions={sortingOptions} selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
                         <DividerWithText style={{ marginVertical: 20 }} />
                         <DistanceFilter distances={distances} selectedDistance={selectedDistance} setSelectedDistance={setSelectedDistance} />
                         <DividerWithText style={{ marginVertical: 20 }} />

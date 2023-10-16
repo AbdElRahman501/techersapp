@@ -1,23 +1,47 @@
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { BackHandler, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import ChangeLangButton from './ChangeLangButton'
-import { Color, FontFamily, FontSize, Padding, } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { Color, FontFamily, FontSize, Margin, Padding, } from "../GlobalStyles";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import t from '../actions/changeLanguage';
+import { handleBackPress } from '../actions/navigationActions';
 
 export default function Header({ lastSlide }) {
     const navigation = useNavigation();
     const skip = t("skip")
+
+    const navigationState = useNavigationState(state => state);
+    const [history, setHistory] = useState([]);
+
+    useEffect(() => {
+        setHistory(navigationState.routes.map(route => route.name));
+    }, [navigationState]);
+
+    useEffect(() => {
+        const backAction = () => {
+            return handleBackPress(history);
+        }
+        BackHandler.addEventListener('hardwareBackPress', backAction);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', backAction);
+        };
+    }, [history]);
+
     return (
         <View style={[styles.container]}>
             <ChangeLangButton />
             <TouchableOpacity
                 style={[styles.skipButton]}
-                onPress={() => navigation.navigate("SignUpOptions")}
+                onPress={() =>
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'SignUpOptions' }],
+                    })
+                }
             >
                 <Text style={styles.skipButtonText}>{!lastSlide && skip}</Text>
             </TouchableOpacity>
-        </View>
+        </View >
     )
 }
 
@@ -28,10 +52,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: Padding.page_p,
-        paddingTop: Platform.select({
-            ios: Padding.p_sm,
-            android: Padding.p_xxl,
-          }),
+        marginTop: Margin.m_sm
 
     },
 

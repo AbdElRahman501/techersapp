@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
-import { Border, Color, globalStyles } from '../GlobalStyles'
+import { Border, Color, Height, Padding, globalStyles } from '../GlobalStyles'
 import TimeLine from '../components/TimeLine'
 import MonthSelection from '../components/MonthSelection'
 import WeekView from '../components/WeekView'
@@ -28,7 +28,7 @@ export default function ScheduleScreen() {
     }
     useEffect(() => {
         if (userInfo) {
-            let theEvents = getEvents(userInfo.myTeachers, selectedDay.fullName , teachers)
+            let theEvents = getEvents(userInfo.myTeachers, selectedDay.fullName, teachers)
             let theEventsDuration = getEventsDuration(userInfo)
             setEventsDuration(theEventsDuration)
             if (theEvents.length > 0) {
@@ -52,7 +52,7 @@ export default function ScheduleScreen() {
     }
 
     return (
-        <View style={[globalStyles.body, { backgroundColor: Color.white }]} >
+        <View style={[globalStyles.container, { backgroundColor: Color.white, paddingTop: Padding.p_m, marginBottom: Height.nav_tap }]} >
             <MonthSelection selectedMonth={selectedMonth} months={months} currentMonth={currentMonth} setMonth={setSelectedMonth} />
             <View style={[globalStyles.container, { maxHeight: 120, width: '100%', backgroundColor: Color.cyanBackGround, borderTopLeftRadius: Border.br_3xl }]}>
                 <View style={[globalStyles.container, { overflow: 'hidden', transform: [{ translateX: 10 }], width: '100%', borderBottomLeftRadius: Border.br_26xl, backgroundColor: Color.white }]}>

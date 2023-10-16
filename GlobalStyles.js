@@ -78,9 +78,11 @@ export const Height = {
   hi_md: 56,
   br_lg: 64,
   br_xl: 71,
+  logo_lg: 110,
   nav_tap: 64,
   teacher_tap: 64,
-  hi_container: 80
+  hi_container: 80,
+  hi_backContainer: (Margin.m_sm * 2) + 24,
 
 };
 export const heightPercentage = (parent) => {
@@ -102,8 +104,15 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Color.white,
-    paddingTop: Height.hi_m
+    paddingTop: Padding.p_m,
+    paddingHorizontal: Padding.page_p,
+    marginBottom: Height.nav_tap + 20
+  },
+  logo: {
+    height: Height.logo_lg,
+    width: "100%",
+    marginBottom: fontEm(1),
+    alignSelf: "center"
   },
   scrollBody: {
     flex: 1,
@@ -113,6 +122,13 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  bodyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: Height.hi_backContainer,
+    paddingHorizontal: Padding.page_p
   },
   rowContainer: {
     flex: 1,
@@ -178,6 +194,61 @@ export const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  form: {
+    marginVertical: Margin.m_base,
+    marginHorizontal: Margin.m_base,
+    width: "100%",
+    alignItems: 'center',
+    maxWidth: 400
+  },
+  parentFlexBox: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  secondaryButton: {
+    backgroundColor: Color.white,
+    borderColor: Color.darkcyan,
+    borderWidth: 2
+  },
+  googleButton: {
+    maxWidth: 400,
+    backgroundColor: Color.input_fill,
+    borderColor: Color.lightGray,
+    borderWidth: 2
+  },
+  student: {
+    padding: 5,
+    marginVertical: Margin.m_sm,
+    borderColor: Color.lightGray,
+    width: "100%",
+    borderWidth: 1,
+    borderRadius: (Height.hi_md / 2) + 5,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    minWidth: "80%",
+    maxWidth: "90%",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 35,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  gender: {
+    height: 90,
+    width: 90,
+    margin: 5,
+    borderRadius: 45,
+    borderWidth: 2,
+    borderColor: Color.lightGray,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 

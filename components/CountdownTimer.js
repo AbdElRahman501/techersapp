@@ -3,30 +3,22 @@ import { View, Text } from 'react-native';
 import { Color, globalStyles } from '../GlobalStyles';
 import t from '../actions/changeLanguage';
 
-const CountdownTimer = ({ initialTime, onCountdownFinish, resend, setResend }) => {
+const CountdownTimer = ({ initialTime }) => {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
     let interval
     useEffect(() => {
-        if (!resend && timeRemaining === 0) {
-            clearInterval(interval);
-            setTimeRemaining(initialTime);
-        }
-    }, [resend]);
+        setTimeRemaining(initialTime);
+    }, [initialTime]);
 
     useEffect(() => {
         if (timeRemaining > 0) {
-            setResend(false)
             interval = setInterval(() => {
                 setTimeRemaining(prevTime => prevTime - 1);
             }, 1000);
 
             return () => clearInterval(interval);
-        } else {
-            if (onCountdownFinish) {
-                onCountdownFinish();
-            }
         }
-    }, [timeRemaining, onCountdownFinish]);
+    }, [timeRemaining]);
 
     const formatTime = seconds => {
         const minutes = Math.floor(seconds / 60);
@@ -35,7 +27,7 @@ const CountdownTimer = ({ initialTime, onCountdownFinish, resend, setResend }) =
     };
 
     return (
-        <View style={globalStyles.container}>
+        <View>
             <Text style={[globalStyles.regular, { color: Color.gray_200, textAlign: "center" }]} >{t("sec", { time: formatTime(timeRemaining) })}</Text>
         </View>
     );

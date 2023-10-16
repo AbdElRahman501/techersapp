@@ -59,22 +59,18 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
                 <Svg height={hours.length * 100} width={widthPercentage(100)} >
                     {hours.map((hour, i) => (
-                        <Line
-                            key={i}
-                            x1={20}
-                            y1={i * 100}
-                            x2={widthPercentage(100) - 20}
-                            y2={i * 100}
-                            stroke="black"
-                            opacity={0.1}
-                            strokeWidth="2"
-                        />
-
-                    ))}
-                    {hours.map((hour, i) => {
-                        return i < dayEnd - dayStart - 1 && (
+                        <>
                             <Line
                                 key={i}
+                                x1={20}
+                                y1={i * 100}
+                                x2={widthPercentage(100) - 20}
+                                y2={i * 100}
+                                stroke="black"
+                                opacity={0.1}
+                                strokeWidth="2"
+                            />
+                            <Line
                                 x1={50}
                                 y1={(i + 0.5) * 100}
                                 x2={widthPercentage(100) - 50}
@@ -83,9 +79,9 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
                                 opacity={0.1}
                                 strokeWidth="1"
                             />
-                        )
-                    })}
+                        </>
 
+                    ))}
                     {isToday &&
                         <>
                             <Line
@@ -107,7 +103,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
 
                 </Svg>
                 {hours.map((hour, i) => (
-                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, {backgroundColor: Color.cyanBackGround,padding: 5, color: Color.darkgray, position: 'absolute', top: (i * 100) -2 }]} >
+                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { backgroundColor: Color.cyanBackGround, padding: 5, color: Color.darkgray, position: 'absolute', top: (i * 100) - 2 }]} >
                         {transformTime(hour, language)}
                     </Text>
                 ))}

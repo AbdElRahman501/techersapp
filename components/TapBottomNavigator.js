@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Platform, TouchableOpacity, View, SafeAreaView } from 'react-native'
 import React from 'react'
 import { Color, Height } from '../GlobalStyles'
 import { Calender_home_Svg, Calender_home_svg_fill, Community_Icon, Community_Icon_Fill, Home_icon_Svg, User_Icon_Svg } from '../assets/icons/Icons'
@@ -26,7 +26,7 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
     
 
     return (currentScreen === 'Home' || currentScreen === 'Community' || currentScreen === 'Schedule' || currentScreen === 'Profile') && (
-        <View style={styles.container} >
+        <SafeAreaView style={styles.container} >
             <TouchableOpacity style={{padding: 20}} onPress={() => goTo("Home")}  >
                 {currentScreen === "Home"
                     ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
@@ -51,7 +51,7 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
                     : <User_Icon_Svg />
                 }
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     )
 }
 

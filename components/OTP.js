@@ -1,10 +1,12 @@
 import React, { useState, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { Border, Color, FontFamily, FontSize, Height, Margin, fontEm } from "../GlobalStyles";
+import { Border, Color, FontFamily, FontSize, Height, Margin, fontEm, widthPercentage } from "../GlobalStyles";
+
 
 const OTPInput = ({ length, onComplete }) => {
   const [otp, setOTP] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
+  const width = (Math.min(500, widthPercentage(80)) - 20) / length
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -29,7 +31,7 @@ const OTPInput = ({ length, onComplete }) => {
   };
 
   return (
-    <View style={styles.otpContainer}>
+    <View style={[styles.otpContainer, { maxHeight: width }]}>
       {otp.map((value, index) => (
         <View
           key={index}
@@ -38,6 +40,8 @@ const OTPInput = ({ length, onComplete }) => {
             {
               borderColor:
                 isFocused === index ? Color.darkcyan : Color.input_stroke,
+              width: width,
+              height: width,
             },
           ]}
         >
@@ -46,7 +50,7 @@ const OTPInput = ({ length, onComplete }) => {
             value={value}
             onChangeText={(text) => handleInputChange(text, index)}
             onKeyPress={(event) => handleInputKeyPress(event, index)}
-            style={styles.otpInput}
+            style={[styles.otpInput, { height: width, }]}
             maxLength={1}
             autoFocus={index === 0}
             keyboardType="numeric"
@@ -69,17 +73,14 @@ const styles = StyleSheet.create({
     marginVertical: Margin.m_m1,
   },
   otpInputField: {
-    width: Height.br_lg,
-    height: Height.br_lg,
     borderWidth: 1,
     backgroundColor: Color.input_fill,
     borderColor: Color.input_stroke,
     borderRadius: FontSize.size_lg,
-    marginTop: 18,
+    marginHorizontal: 5,
   },
   otpInput: {
     flex: 1,
-    height: Height.br_lg,
     fontFamily: FontFamily.montserratArabic,
     fontSize: FontSize.size_xl,
     textAlign: "center",

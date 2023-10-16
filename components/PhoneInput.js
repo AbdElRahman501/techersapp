@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Border, Color, } from '../GlobalStyles'
+import { Border, Color, Height, } from '../GlobalStyles'
 import PhoneNumberInput from 'react-native-phone-number-input';
 import t from "../actions/changeLanguage";
 
@@ -28,7 +28,8 @@ export default function PhoneInput({ value, onChangHandler, setFormattedPhone })
                 }}
                 textInputStyle={{ textAlign: "left" }}
                 textContainerStyle={{ backgroundColor: Color.input_fill }}
-                containerStyle={{ backgroundColor: Color.input_fill }}
+                containerStyle={{ width: "auto", backgroundColor: Color.input_fill }}
+                flagButtonStyle={{ maxWidth: 86 }}
                 defaultValue={value}
                 placeholder={t("phone-number")}
                 defaultCode="EG"

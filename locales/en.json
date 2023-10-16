@@ -16,6 +16,7 @@
     "Join us and explore new ways of learning.": "Join us and explore new ways of learning.",
     "Whether you are a teacher, a student, or a parent, we have something for you.": "Whether you are a teacher, a student, or a parent, we have something for you.",
     "sign in": "Sign in",
+    "sign in as": "Sign in as",
     "sign up": "Sign up",
     "already have an account": "Already have an account?",
     "email-input": "Email",
@@ -43,8 +44,10 @@
     "placeholder-education-type": "Schoole Type",
     "placeholder-address": "Address",
     "submit": "Submit",
+    "edit": "Edit",
     "enter-verification-code-title": "Enter verification code",
     "enter-verification-code-description": "Enter the verification code sent to your phone number. \n{number}",
+    "verification code send via sms": "Verification code sent via SMS",
     "verify": "Verify",
     "sec": "({time}) sec",
     "didn't-receive": "Didn't receive the verification code",
@@ -53,6 +56,7 @@
     "password-input-confirm": "Confirm password",
     "create-new-password": "Create new password",
     "create-new-password-description": "Create your new password to log in.",
+    "create new student": "Create new student",
     "book-now": "Book Now",
     "my-subjects": "My Subjects",
     "see-all": "See All",
@@ -94,5 +98,9 @@
     "read more": "Read More",
     "read less": "Read Less",
     "now": "Now",
-    "day_started": "Day Started at {time}"
+    "day_started": "Day Started at {time}",
+    "boy": "Male",
+    "girl": "Female",
+    "student account": "Student Account",
+    "student-parent account": "Student-Parent Account"
 }

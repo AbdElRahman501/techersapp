@@ -64,7 +64,7 @@ export default function TeacherScreen({ route }) {
     // functions 
     const availableGroups = (dayName, subject) => {
         let availableGroups = item.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
-        availableGroups = availableGroups.filter(x => x.days.map(y => y.day).includes(dayName))
+        availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(dayName))
         return availableGroups
     }
 
@@ -119,7 +119,7 @@ export default function TeacherScreen({ route }) {
     useEffect(() => {
         if (userInfo) {
             init(userInfo)
-            let myTeachers = userInfo.myTeachers.filter(x => x.id !== item.id)
+            let myTeachers = userInfo.myTeachers?.filter(x => x.id !== item.id)
             setMyGroups(getMyGroups(myTeachers, teachers))
         }
     }, [userInfo])

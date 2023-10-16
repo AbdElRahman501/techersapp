@@ -1,6 +1,6 @@
 import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS } from "../constants/userConstants";
 
-export const userReducer = (state = { loading: false }, action) => {
+export const userReducer = (state = { loading: true }, action) => {
     switch (action.type) {
         case USER_REQUEST:
             return { loading: true };

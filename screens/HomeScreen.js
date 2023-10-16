@@ -1,6 +1,6 @@
-import { Keyboard, ScrollView, Text, StyleSheet, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { Color, Height, fontEm } from '../GlobalStyles'
+import { Keyboard, ScrollView, Text, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Color, globalStyles } from '../GlobalStyles'
 import HomeHeader from '../components/HomeHeader'
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
@@ -12,7 +12,7 @@ import { teachers } from '../data';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { filterArrayByIds, findMyTeachers, removeDuplicatesById } from '../actions/GlobalFunctions';
+import { findMyTeachers, removeDuplicatesById } from '../actions/GlobalFunctions';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
@@ -43,7 +43,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        <SafeAreaView style={[styles.container]} >
+        <SafeAreaView style={[globalStyles.body]} >
           <HomeHeader user={userInfo} />
           <AdsSlider />
           <SearchBar button={true} />
@@ -71,14 +71,3 @@ export default function HomeScreen() {
     </TouchableWithoutFeedback >
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: fontEm(2),
-    marginHorizontal: 20,
-    marginBottom: Height.nav_tap + 20
-  }
-})
