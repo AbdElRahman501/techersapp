@@ -11,6 +11,9 @@ export const addTeacher = (serverTeacher, teacher, selectedGroup) => async (disp
         console.log("🚀 ~ file: bookingFunctions.js:11 ~ addTeacher ~ myTeachers:", myTeachers?.length)
 
         if (userData) {
+            if (!userData.myTeachers) {
+                userData = { ...userData, myTeachers: [] }
+            }
             let Teachers = userData.myTeachers.filter(x => x.id !== serverTeacher.id)
             userData = { ...userData, myTeachers: [...Teachers, serverTeacher] }
             await AsyncStorage.setItem("userInfo", JSON.stringify(userData));

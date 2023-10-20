@@ -1,19 +1,27 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS, USER_UPDATE_REQUEST } from "../constants/userConstants";
-import { API_URL, REGISTER_URL, SIGNIN_URL, UPDATE_URL } from "./api";
+import { REGISTER_URL, SIGNIN_URL, UPDATE_URL } from "./api";
 import { getErrorMessage } from "../../actions/GlobalFunctions";
+import { schoolTypes, years } from "../../data";
 
+function getTheYear(yearValue) {
+    return years.find(x => x.value === yearValue)
+}
+function getTheEducation(educationTypeValue) {
+    return schoolTypes.find(x => x.en === educationTypeValue)
+}
 export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        const { data } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
+        let { data } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
         if (!data) return
         if (data.students) {
             dispatch({ type: USER_SUCCESS });
             navigateToUserScreen(data.students);
             return
         }
+        data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
         await AsyncStorage.setItem("userInfo", JSON.stringify(data));
         console.log('Data saved successfully.');
         dispatch({ type: USER_SUCCESS, payload: data });
@@ -27,8 +35,9 @@ export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) =
 export const register = (userData) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        const { data } = await Axios.post(REGISTER_URL, userData);
+        let { data } = await Axios.post(REGISTER_URL, userData);
         if (!data) return
+        data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
         await AsyncStorage.setItem("userInfo", JSON.stringify(data));
         console.log('Data saved successfully.');
         dispatch({ type: USER_SUCCESS, payload: data });
@@ -40,9 +49,9 @@ export const register = (userData) => async (dispatch) => {
 export const update = (userData) => async (dispatch) => {
     dispatch({ type: USER_UPDATE_REQUEST, payload: userData });
     try {
-        const { data } = await Axios.put(UPDATE_URL, userData);
-        console.log("🚀 ~ file: userActions.js:44 ~ update ~ data:", data)
+        let { data } = await Axios.put(UPDATE_URL, userData);
         if (!data) return
+        data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
         await AsyncStorage.setItem("userInfo", JSON.stringify(data));
         console.log('Data saved successfully.');
         dispatch({ type: USER_SUCCESS, payload: data });
@@ -78,6 +87,7 @@ export const getUserData = () => async (dispatch) => {
 };
 export const setUserData = (data) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
+    data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
     try {
         await AsyncStorage.setItem("userInfo", JSON.stringify(data));
         console.log('Data saved successfully.');
