@@ -15,7 +15,7 @@ import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, updateVersion } from './store/actions/userActions';
+import { getUserData, serverWakeUp, updateVersion } from './store/actions/userActions';
 import SearchScreen from './screens/SearchScreen';
 import Message from './components/Message';
 import UserDataFirstScreen from './screens/UserDataFirstScreen';
@@ -52,6 +52,7 @@ export default function MainComponents() {
 
     useEffect(() => {
         dispatch(updateVersion("1.0.0"))
+        dispatch(serverWakeUp())
     }, [])
 
     return TheInitialRouteName && (

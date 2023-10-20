@@ -4,7 +4,7 @@ import { Border, Color, globalStyles } from '../GlobalStyles'
 import transition from '../actions/transition'
 import * as Haptics from 'expo-haptics';
 
-export default function SortingContainer({ height, sortingOptions, selectedOption, setSelectedOption, placeholder }) {
+export default function SortingContainer({ height, sortingOptions, selectedOption, setSelectedOption, placeholder, style }) {
     const scrollViewRef = useRef();
     const ContainerHeight = height || 400;
     const itemHeight = 35;
@@ -19,16 +19,20 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     }, [selectedOption])
 
-    scrollToIndex = (index) => {
+
+    const scrollToIndex = (index) => {
         setSelectedOption(index);
-        scrollViewRef.current.scrollTo({ y: index * (itemHeight), animated: true });
+        scrollViewRef.current.scrollTo({ y: index * (itemHeight), animated: "smooth" });
     }
     useEffect(() => {
-        scrollToIndex(selectedOption)
-    }, [])
+        if (scrollViewRef.current) {
+            setSelectedOption(selectedOption);
+            scrollViewRef.current.scrollTo({ y: selectedOption * (itemHeight), animated: false });
+        }
+    }, [scrollViewRef.current])
     return (
         <ScrollView
-            style={[styles.scrollContainer, { maxHeight: ContainerHeight }]}
+            style={[styles.scrollContainer, { maxHeight: ContainerHeight }, style]}
             ref={scrollViewRef}
             onScroll={handleScroll}
             nestedScrollEnabled

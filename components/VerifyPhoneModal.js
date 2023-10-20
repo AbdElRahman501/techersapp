@@ -17,8 +17,8 @@ export default function VerifyPhoneModal({ phoneNumberVerification, resendDurati
 
     const handleOTPComplete = otp => {
         if (code === otp) {
-            onClose()
             navigation.navigate("UserData1", { students, signUpData })
+            onClose()
         }
     };
 

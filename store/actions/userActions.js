@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS } from "../constants/userConstants";
-import { REGISTER_URL, SIGNIN_URL } from "./api";
+import { API_URL, REGISTER_URL, SIGNIN_URL } from "./api";
 import { getErrorMessage } from "../../actions/GlobalFunctions";
 
 export const signIn = ({ emailOrPhoneNumber, password }) => async (dispatch) => {
@@ -68,6 +68,15 @@ export const updateVersion = (newVersion) => async (dispatch) => {
         } else {
             console.log('your version ' + newVersion + ' is the newest');
         }
+    } catch (error) {
+        console.log('Error clearing local storage:', error);
+    }
+};
+
+export const serverWakeUp = () => async () => {
+    try {
+        const { data } = await Axios.get(API_URL);
+        console.log("🚀 ~ file: userActions.js:79 ~ serverWakeUp ~ data:", data)
     } catch (error) {
         console.log('Error clearing local storage:', error);
     }

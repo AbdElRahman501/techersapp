@@ -1,113 +1,91 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles'
+import { TouchableWithoutFeedback, View } from 'react-native';
+import { Border, Color, FontSize, globalStyles } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import CustomText from './CustemText';
+import SortingContainer from './SortingContainer';
+import SliderModal from './SliderModal';
+const containerHeight = 300
 
 export default function DatePicker({ value, placeholder, changHandler, children, rightIcon }) {
+    const [isFocused, setIsFocused] = useState(false);
     const { language } = useSelector(state => state.languageState);
-    const [datePicker, setDatePicker] = useState(false);
-    const [date, setDate] = useState(new Date(2005, 0, 1));
 
-    const handleDateChange = (event, selectedDate) => {
-        if (selectedDate.toString() !== date.toString()) {
-            setDate(selectedDate);
-        }
-        setDatePicker(false);
-        if (selectedDate.toString() !== date.toString()) {
-            changHandler(Intl.DateTimeFormat('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
-            }).format(selectedDate).toString());
-        }
-    };
+    const years = Array.from({ length: 20 }, (_, i) => new Date().getFullYear() - 3 - i).reverse()
+    const days = Array.from({ length: 31 }, (_, i) => i + 1)
+    const months = Array.from({ length: 12 }, (_, i) => i + 1)
 
-    let isIos = Platform.OS === "ios";
+    const [selectedDay, setSelectedDay] = useState("")
+    const [selectedMonth, setSelectedMonth] = useState("")
+    const [selectedYear, setSelectedYear] = useState("")
+
+    const submitHandler = () => {
+        setIsFocused(false)
+        const date = new Date(years[selectedYear], months[selectedMonth], days[selectedDay])
+        if (years[selectedYear] && months[selectedMonth] && days[selectedDay]) {
+            changHandler(years[selectedYear] + "-" + months[selectedMonth] + "-" + days[selectedDay])
+        }
+    }
+
     return (
-        <TouchableOpacity
-            disabled={isIos}
-            style={[styles.inputField, {
-                borderColor: datePicker ? Color.darkcyan : Color.input_stroke,
-                flexDirection: language === "en" ? "row" : "row-reverse"
-            }]}
-            onPress={() => setDatePicker(true)} >
+        <TouchableWithoutFeedback onPress={() => setIsFocused(!isFocused)} >
+            <View
 
-            {!children ?
-                <Ionicons style={styles.rightIcon} name={rightIcon} size={FontSize.size_xl}
-                    color={datePicker ? Color.darkcyan : Color.darkgray} />
-                :
-                <View style={styles.rightIcon}>
-                    {React.Children.map(children, (child) => {
-                        return React.cloneElement(child, {
-                            width: FontSize.size_xl,
-                            height: FontSize.size_xl,
-                            viewBox: "0 0 24 24",
-                            color: datePicker ? Color.darkcyan : Color.darkgray
-                        });
-                    })}
-                </View>
-            }
-            {isIos ? null :
-                <Text style={[styles.input, { color: value ? Color.black : Color.darkgray }]}>
+                style={[globalStyles.inputField, {
+                    borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+                    flexDirection: language === "en" ? "row" : "row-reverse"
+                }]}
+            >
+                <SliderModal visible={isFocused} submitHandler={submitHandler} containerHeight={containerHeight} >
+                    <View style={{ flexDirection: "row", backgroundColor: Color.ofWhite, borderRadius: Border.br_6xl }}>
+                        <SortingContainer style={{ minWidth: "40%" }}
+                            height={containerHeight} placeholder={"Year"}
+                            sortingOptions={years}
+                            selectedOption={selectedYear} setSelectedOption={setSelectedYear}
+                        />
+                        <SortingContainer style={{ minWidth: "20%" }}
+                            height={containerHeight} placeholder={"Month"}
+                            sortingOptions={months}
+                            selectedOption={selectedMonth} setSelectedOption={setSelectedMonth}
+                        />
+                        <SortingContainer style={{ minWidth: "20%" }}
+                            height={containerHeight} placeholder={"day"}
+                            sortingOptions={days}
+                            selectedOption={selectedDay} setSelectedOption={setSelectedDay}
+                        />
+                    </View>
+                </SliderModal>
+                {
+                    !children ?
+                        <Ionicons style={globalStyles.rightIcon} name={rightIcon} size={FontSize.size_xl}
+                            color={isFocused ? Color.darkcyan : Color.darkgray} />
+                        :
+                        <View style={globalStyles.rightIcon}>
+                            {React.Children.map(children, (child) => {
+                                return React.cloneElement(child, {
+                                    width: FontSize.size_xl,
+                                    height: FontSize.size_xl,
+                                    viewBox: "0 0 24 24",
+                                    color: isFocused ? Color.darkcyan : Color.darkgray
+                                });
+                            })}
+                        </View>
+                }
+
+                <CustomText style={[globalStyles.smallText, { flex: 1, color: value ? Color.black : Color.darkgray }]}>
                     {value || placeholder}
-                </Text>
-            }
+                </CustomText>
 
-            {(isIos || datePicker) &&
-                <DateTimePicker
-                    value={date}
-                    style={{ backgroundColor: Color.input_fill, flex: 1, margin: 5 }}
-                    minimumDate={new Date(1995, 0, 1)}
-                    maximumDate={new Date(2020, 11, 31)}
-                    mode="date"
-                    display='calendar'
-                    onChange={handleDateChange} />
-            }
-            {value &&
-                < Ionicons style={styles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
-            }
-        </TouchableOpacity>
+                {
+                    value ?
+                        < Ionicons style={globalStyles.leftIcon} name={"checkmark"} size={FontSize.size_xl} color={Color.darkcyan} />
+                        : <View style={globalStyles.leftIcon}>
+
+                        </View>
+                }
+            </View >
+        </TouchableWithoutFeedback >
     );
 }
 
-const styles = StyleSheet.create({
-
-    inputField: {
-        width: "100%",
-        maxWidth: 500,
-        height: Height.hi_md,
-        borderWidth: 1,
-        borderColor: Color.input_stroke,
-        backgroundColor: Color.input_fill,
-        borderRadius: Border.br_6xl,
-        marginTop: 18,
-        alignItems: "center",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    input: {
-        flex: 1,
-        height: Height.hi_md,
-        fontFamily: FontFamily.montserratArabic,
-        fontSize: FontSize.size_md,
-        textAlignVertical: "center",
-
-    },
-    leftIcon: {
-        textAlign: "center",
-        width: Height.hi_md,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    rightIcon: {
-        textAlign: "center",
-        textAlignVertical: "center",
-        width: Height.hi_md,
-        height: Height.hi_md,
-        justifyContent: "center",
-        alignItems: "center"
-    }
-
-});

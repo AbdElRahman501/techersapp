@@ -249,6 +249,31 @@ export const globalStyles = StyleSheet.create({
     borderColor: Color.lightGray,
     justifyContent: "center",
     alignItems: "center"
+  },
+  inputField: {
+    width: "100%",
+    maxWidth: 500,
+    height: Height.hi_md,
+    borderWidth: 1,
+    borderColor: Color.input_stroke,
+    backgroundColor: Color.input_fill,
+    borderRadius: Border.br_6xl,
+    marginTop: 18,
+    alignItems: "center"
+  },
+  leftIcon: {
+    textAlign: "center",
+    width: Height.hi_md,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  rightIcon: {
+    textAlign: "center",
+    textAlignVertical: "center",
+    width: Height.hi_md,
+    height: Height.hi_md,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
