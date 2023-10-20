@@ -4,11 +4,16 @@ import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS } from "../constant
 import { API_URL, REGISTER_URL, SIGNIN_URL } from "./api";
 import { getErrorMessage } from "../../actions/GlobalFunctions";
 
-export const signIn = ({ emailOrPhoneNumber, password }) => async (dispatch) => {
+export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
         const { data } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
         if (!data) return
+        if (data.students) {
+            dispatch({ type: USER_SUCCESS });
+            navigateToUserScreen(data.students);
+            return
+        }
         await AsyncStorage.setItem("userInfo", JSON.stringify(data));
         console.log('Data saved successfully.');
         dispatch({ type: USER_SUCCESS, payload: data });
@@ -17,6 +22,8 @@ export const signIn = ({ emailOrPhoneNumber, password }) => async (dispatch) => 
         dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
     }
 };
+
+
 export const register = (userData) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
@@ -55,7 +62,17 @@ export const getUserData = () => async (dispatch) => {
         dispatch({ type: USER_FAIL, payload: error });
     }
 };
-
+export const setUserData = (data) => async (dispatch) => {
+    dispatch({ type: USER_REQUEST });
+    try {
+        await AsyncStorage.setItem("userInfo", JSON.stringify(data));
+        console.log('Data saved successfully.');
+        dispatch({ type: USER_SUCCESS, payload: data });
+    } catch (error) {
+        console.log("🚀 ~ file: userActions.js:29 ~ register ~ error:", error?.response?.data || error)
+        dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
+    }
+};
 export const updateVersion = (newVersion) => async (dispatch) => {
     try {
         const version = await AsyncStorage.getItem('version');
@@ -74,9 +91,11 @@ export const updateVersion = (newVersion) => async (dispatch) => {
 };
 
 export const serverWakeUp = () => async () => {
+    const time = Date.now();
     try {
         const { data } = await Axios.get(API_URL);
-        console.log("🚀 ~ file: userActions.js:79 ~ serverWakeUp ~ data:", data)
+        const timeSpent = Date.now() - time;
+        console.log("🚀 ~ file: userActions.js:79 ~ serverWakeUp ~ data:", data, 'after ' + timeSpent + 'ms');
     } catch (error) {
         console.log('Error clearing local storage:', error);
     }

@@ -16,6 +16,7 @@ import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import PressedText from '../components/PressedText';
+import Address from '../components/Address';
 
 export default function UserDataScreen() {
     const { language } = useSelector(state => state.languageState)
@@ -63,7 +64,7 @@ export default function UserDataScreen() {
                     <View style={globalStyles.bodyContainer} >
                         <View style={[globalStyles.form]}>
                             <CustomText style={[globalStyles.title, { marginBottom: Margin.m_xl }]}>{t("sign-up-thanks")}</CustomText>
-
+                            <Address />
                             <FancyInput inputType={"phone"} value={signUpData.parentPhoneNumber || ""} setState={setState}
                                 checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                                 placeholder={t("placeholder-parent-phone")} keyboardType={"phone-pad"}

@@ -3,17 +3,19 @@ import React from 'react'
 import CustomText from './CustemText'
 import { Color, Height, Margin, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import t from '../actions/changeLanguage'
+import { setUserData } from '../store/actions/userActions'
 
 export default function StudentOption({ student }) {
     const navigation = useNavigation()
     const { language } = useSelector(state => state.languageState)
     const [studentParentAccount, studentAccount] = [t("student-parent account"), t("student account")]
 
+    const dispatch = useDispatch()
     const handlePress = () => {
-        if (student?.parentPhoneNumber) {
-            navigation.navigate("SigninScreen", { phoneNumber: student.parentPhoneNumber })
+        if (student?.isParent) {
+            dispatch(setUserData(student))
         } else {
             Alert.alert(
                 'حساب طالب مستقل',

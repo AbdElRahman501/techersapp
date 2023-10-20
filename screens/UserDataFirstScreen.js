@@ -15,6 +15,7 @@ import StudentOption from '../components/StudentOption';
 import { register } from '../store/actions/userActions';
 import LoadingModal from '../components/LoadingModal';
 import GenderSelection from '../components/GenderSelection';
+import Checkbox from '../components/Checkbox';
 
 
 export default function UserDataFirstScreen({ route }) {
@@ -22,7 +23,7 @@ export default function UserDataFirstScreen({ route }) {
     const { language } = useSelector(state => state.languageState)
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({ ...data, fullName: "", gender: "", password: "" });
+    const [signUpData, setSignUpData] = useState({ ...data, fullName: "", isParent: data.isParent || students?.length > 0, gender: "", password: data.password || "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const [submitted, setSubmitted] = useState(false)
 
@@ -64,9 +65,17 @@ export default function UserDataFirstScreen({ route }) {
         }
     }, [error]);
 
-    const genderSelection = (gender) => {
-        setSignUpData({ ...signUpData, gender });
-    }
+
+    useEffect(() => {
+        if (data.phoneNumber) {
+            if (signUpData.isParent) {
+                setSignUpData({ ...signUpData, parentPhoneNumber: data.phoneNumber, phoneNumber: null })
+            } else {
+                setSignUpData({ ...signUpData, phoneNumber: data.phoneNumber, parentPhoneNumber: null })
+            }
+        }
+    }, [signUpData.isParent])
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
@@ -90,7 +99,7 @@ export default function UserDataFirstScreen({ route }) {
                             <View style={{ width: "100%", display: trigger ? "none" : 'flex' }}>
                                 <GenderSelection checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                                     setState={setState}
-                                    genderSelection={genderSelection} gender={signUpData.gender}
+                                    genderSelection={(e) => setSignUpData({ ...signUpData, gender: e })} gender={signUpData.gender}
                                 />
                                 <FancyInput inputType={"name"} value={signUpData.fullName} setState={setState}
                                     checkInputs={checkInputs} setCheckInputs={setCheckInputs}
@@ -100,17 +109,27 @@ export default function UserDataFirstScreen({ route }) {
                                 >
                                     <User_Icon_Svg />
                                 </FancyInput>
-                                <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
-                                    checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                    placeholder={passwordPlaceholder} rightIcon={"lock-closed-outline"}
-                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
-                                >
-                                    <Lock_Svg />
-                                </FancyInput>
+                                {!data.password &&
+                                    <FancyInput inputType={"password"} value={signUpData.password} setState={setState}
+                                        checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                        placeholder={passwordPlaceholder} rightIcon={"lock-closed-outline"}
+                                        changHandler={(e) => setSignUpData(pv => ({ ...pv, password: e }))}
+                                    >
+                                        <Lock_Svg />
+                                    </FancyInput>
+                                }
                                 <View style={[globalStyles.parentFlexBox, { width: "100%" }]}>
                                     {state.error && <Text style={[globalStyles.smallText, { color: Color.red }]}>{state.error?.message[language] || state.error?.message}</Text>}
                                 </View>
                             </View>
+                            {!students?.length > 0 &&
+                                <View style={[globalStyles.parentFlexBox, { width: "100%", maxWidth: 500, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start" }]}>
+                                    <Checkbox checked={signUpData.isParent} onChange={(e) => setSignUpData(pv => ({ ...pv, isParent: e }))} />
+                                    <View style={[globalStyles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
+                                        <CustomText style={globalStyles.regular}>انا ولي امر</CustomText>
+                                    </View>
+                                </View>
+                            }
 
                             <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit} disabled={state.error}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>

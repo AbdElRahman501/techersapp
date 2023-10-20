@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Color, globalStyles } from '../GlobalStyles';
 import t from '../actions/changeLanguage';
 
-const CountdownTimer = ({ initialTime }) => {
+const CountdownTimer = ({ initialTime, onCountdownFinish }) => {
     const [timeRemaining, setTimeRemaining] = useState(initialTime);
     let interval
     useEffect(() => {
@@ -17,8 +17,12 @@ const CountdownTimer = ({ initialTime }) => {
             }, 1000);
 
             return () => clearInterval(interval);
+        } else {
+            if (onCountdownFinish) {
+                onCountdownFinish();
+            }
         }
-    }, [timeRemaining]);
+    }, [timeRemaining, onCountdownFinish]);
 
     const formatTime = seconds => {
         const minutes = Math.floor(seconds / 60);

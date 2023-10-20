@@ -25,7 +25,6 @@ export default function SignUpScreen({ route }) {
     const { language } = useSelector(state => state.languageState)
     const [loading, setLoading] = useState(false)
     const { loading: theLaoding, userInfo, error } = useSelector(state => state.userInfo);
-    console.log("🚀 ~ file: SignupScreen.js:28 ~ SignUpScreen ~ userInfo:", userInfo)
     const [data, setData] = useState({})
     const [errorMessage, setErrorMessage] = useState("")
     const navigation = useNavigation();
@@ -88,7 +87,7 @@ export default function SignUpScreen({ route }) {
                             />
                             <PhoneInput value={signUpData.phoneNumber} onChangHandler={changeHandler} setFormattedPhone={setFormattedPhone} />
 
-                            <View style={[globalStyles.parentFlexBox, { width: "100%", maxWidth: 500, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: fontEm(1) }]}>
+                            <View style={[globalStyles.parentFlexBox, { width: "100%", maxWidth: 500, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start", marginVertical: Margin.m_sm }]}>
                                 <Checkbox checked={signUpData.policy} onChange={(e) => setSignUpData(pv => ({ ...pv, policy: e }))} />
                                 <View style={[globalStyles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
                                     <CustomText style={globalStyles.regular}>{t("agree-to-terms-and-conditions-1")}</CustomText>

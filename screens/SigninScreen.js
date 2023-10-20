@@ -29,12 +29,22 @@ export default function SigninScreen({ route }) {
     const handleSubmit = () => {
         setSubmitted(true)
         if (submitCheck({ emailOrPhoneNumber, password }).isValid) {
-            dispatch(signIn({ emailOrPhoneNumber, password }))
+            dispatch(signIn({ emailOrPhoneNumber, password, navigateToUserScreen }))
         } else {
             setCheckInputs(true)
         }
     };
 
+    const navigateToUserScreen = (students) => {
+        const signUpData = {
+            role: "student",
+            policy: true,
+            isParent: true,
+            password: password,
+            parentPhoneNumber: students[0].parentPhoneNumber,
+        }
+        navigation.navigate("UserData1", { students, signUpData })
+    }
     useEffect(() => {
         if (userInfo && !userInfo?.unCompleted) {
             navigation.reset({

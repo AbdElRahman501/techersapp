@@ -41,6 +41,14 @@
     "owner": "bedoahmed",
     "runtimeVersion": {
       "policy": "appVersion"
-    }
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Al-Ostaz to use your location."
+        }
+      ]
+    ]
   }
 }
