@@ -47,9 +47,9 @@ export const subjects = [
 ]
 
 export const years = [
-    { id: 1, en: "First grade secondary", ar: "الصف الاول الثانوي" },
-    { id: 2, en: "Second grade secondary", ar: "الصف الثاني الثانوي" },
-    { id: 3, en: "Third grade secondary", ar: "الصف الثالث الثانوي" }
+    { id: 1, value: "1-sec", en: "First grade secondary", ar: "الصف الاول الثانوي" },
+    { id: 2, value: "2-sec", en: "Second grade secondary", ar: "الصف الثاني الثانوي" },
+    { id: 3, value: "3-sec", en: "Third grade secondary", ar: "الصف الثالث الثانوي" }
 ];
 export const teachers = [
     {

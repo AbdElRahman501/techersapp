@@ -43,6 +43,8 @@
     "placeholder-birth-day": "Birth Day",
     "placeholder-education-type": "Schoole Type",
     "placeholder-address": "Address",
+    "placeholder-governorate": "Governorate",
+    "placeholder-city": "City",
     "submit": "Submit",
     "edit": "Edit",
     "enter-verification-code-title": "Enter verification code",

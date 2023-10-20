@@ -11,32 +11,38 @@ import { useNavigation } from '@react-navigation/core';
 import DatePicker from '../components/DatePicker';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { register, signOut } from '../store/actions/userActions';
+import { signOut, update } from '../store/actions/userActions';
 import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import PressedText from '../components/PressedText';
 import Address from '../components/Address';
+import governorates from '../locales/governorates.json';
+import cities from '../locales/cities.json';
+import { getLocation } from '../store/actions/deviceActions';
+import LoadingModal from '../components/LoadingModal';
 
 export default function UserDataScreen() {
     const { language } = useSelector(state => state.languageState)
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { loading: locationLoading, location, error: locationError } = useSelector(state => state.locationState);
     const [state, setState] = useState({})
     const [signUpData, setSignUpData] = useState({});
     const [checkInputs, setCheckInputs] = useState(false)
     const navigation = useNavigation();
-
+    const [phoneNumberPlaceholder, governoratePlaceholder, cityPlaceholder] = [t("placeholder-parent-phone"), t("placeholder-governorate"), t("placeholder-city")];
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        if (submitCheck({ phone: signUpData.parentPhoneNumber }).isValid) {
-            console.log("🚀 ~ file: UserDataScreen.js:32 ~ handleSubmit ~ signUpData:", signUpData)
-            // dispatch(register(signUpData))
+        const { governorate, city, parentPhoneNumber, birthDay, educationType, schoolYear } = signUpData
+        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear) {
+            console.log("🚀 ~ file: UserDataScreen.js:37 ~ handleSubmit ~ signUpData:", signUpData)
+            dispatch(update({ ...signUpData, unCompleted: false }))
         } else {
             setCheckInputs(true)
+            console.log("🚀 ~ file: UserDataScreen.js:47 ~ handleSubmit ~ setCheckInputs:", true)
         }
     };
-    console.log("🚀 ~ file: UserDataScreen.js:44 ~ useEffect ~ userInfo:", userInfo)
     useEffect(() => {
         if (userInfo && !userInfo?.unCompleted) {
             navigation.reset({
@@ -53,37 +59,56 @@ export default function UserDataScreen() {
         }
     }, [userInfo])
 
+    useEffect(() => {
+        if (!location) {
+            dispatch(getLocation())
+        }
+    }, [location])
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
                 <BackHeader title={t("personal-data")} />
+                <LoadingModal visible={loading || locationLoading} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}>
                     <View style={globalStyles.bodyContainer} >
                         <View style={[globalStyles.form]}>
                             <CustomText style={[globalStyles.title, { marginBottom: Margin.m_xl }]}>{t("sign-up-thanks")}</CustomText>
-                            <Address />
-                            <FancyInput inputType={"phone"} value={signUpData.parentPhoneNumber || ""} setState={setState}
-                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("placeholder-parent-phone")} keyboardType={"phone-pad"}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, parentPhoneNumber: e }))}
-                            >
-                                <Parent_Phone_Svg />
-                            </FancyInput>
-                            <FancyInput inputType={"address"} value={signUpData.address || ""} setState={setState}
-                                checkInputs={checkInputs} setCheckInputs={setCheckInputs}
-                                placeholder={t("placeholder-address")} leftIcon={"checkmark"}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, address: e }))}
-                            >
-                                <Address_Mark_Svg />
-                            </FancyInput>
+                            {!userInfo?.parentPhoneNumber &&
+                                <FancyInput inputType={"phone"} value={signUpData.parentPhoneNumber || ""} setState={setState}
+                                    checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                    placeholder={phoneNumberPlaceholder} keyboardType={"phone-pad"}
+                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, parentPhoneNumber: e }))}
+                                >
+                                    <Parent_Phone_Svg />
+                                </FancyInput>
+                            }
+                            <View style={{
+                                display: location ? 'none' : 'flex', width: "100%",
+                                gap: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse"
+                            }} >
+                                <ListInput
+                                    style={{ flex: 2 }}
+                                    value={signUpData.governorate?.[language] || ""}
+                                    data={governorates}
+                                    placeholder={governoratePlaceholder}
+                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, city: "", governorate: e }))}
+                                />
+                                {signUpData.governorate &&
+                                    <ListInput
+                                        style={{ flex: 2 }}
+                                        value={signUpData.city?.[language] || ""}
+                                        data={cities.filter(x => x.governorate_id === signUpData.governorate.id)}
+                                        placeholder={cityPlaceholder}
+                                        changHandler={(e) => setSignUpData(pv => ({ ...pv, city: e }))}
+                                    />
+                                }
+                            </View>
                             <ListInput
-                                options={years.map(x => x[language])}
-                                placeholder={t("placeholder-schoole-year")}
-                                value={signUpData.schoolYear || ""}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, schoolYear: e }))}
+                                data={years} placeholder={t("placeholder-schoole-year")}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, schoolYear: e.value }))}
                             >
                                 <School_SVG />
                             </ListInput>
@@ -95,10 +120,8 @@ export default function UserDataScreen() {
                                 <Calender_Svg />
                             </DatePicker>
                             <ListInput
-                                options={schoolTypes.map(x => x[language])}
-                                placeholder={t("placeholder-education-type")}
-                                value={signUpData.educationType || ""}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, educationType: e }))}
+                                data={schoolTypes} placeholder={t("placeholder-education-type")}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, educationType: e.en }))}
                             >
                                 <Language_Svg />
                             </ListInput>

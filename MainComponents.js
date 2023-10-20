@@ -15,11 +15,12 @@ import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, serverWakeUp, updateVersion } from './store/actions/userActions';
+import { getUserData } from './store/actions/userActions';
 import SearchScreen from './screens/SearchScreen';
 import Message from './components/Message';
 import UserDataFirstScreen from './screens/UserDataFirstScreen';
 import { StatusBar } from 'react-native';
+import { getLocation, serverWakeUp, updateVersion } from './store/actions/deviceActions';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,11 +35,13 @@ export default function MainComponents() {
         if (!loading && !TheInitialRouteName) {
             if (userInfo) {
                 if (userInfo?.unCompleted) {
+                    dispatch(getLocation())
                     setInitialRouteName("UserDataScreen")
                 } else {
                     setInitialRouteName("Home")
                 }
             } else {
+                dispatch(getLocation())
                 setInitialRouteName("OnboardingPages")
             }
         }

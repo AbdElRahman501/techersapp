@@ -5,6 +5,7 @@ import counterReducer from './reducers/counterReducer';
 import languageReducer from './reducers/languageReducer';
 import { userReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
+import { locationReducer } from './reducers/deviceReducers';
 
 
 const initialState = {
@@ -17,7 +18,8 @@ const store = configureStore({
         counter: counterReducer,
         languageState: languageReducer,
         messageState: messageReducer,
-        userInfo: userReducer
+        userInfo: userReducer,
+        locationState: locationReducer
     },
     preloadedState: initialState,
     devTools: false,

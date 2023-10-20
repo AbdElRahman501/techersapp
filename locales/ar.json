@@ -43,6 +43,8 @@
     "placeholder-birth-day": "تاريخ الميلاد",
     "placeholder-education-type": "نوع المدرسه",
     "placeholder-address": "العنوان",
+    "placeholder-governorate": "المحافظه",
+    "placeholder-city": "المدينة",
     "submit": "تاكيد",
     "edit": "تعديل",
     "enter-verification-code-title": "الرجاء ادخال رمز التحقق",

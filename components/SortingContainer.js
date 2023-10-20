@@ -15,13 +15,9 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
         setSelectedOption(middleIndex - 1);
     };
 
-    useEffect(() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-    }, [selectedOption])
-
-
     const scrollToIndex = (index) => {
         setSelectedOption(index);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
         scrollViewRef.current.scrollTo({ y: index * (itemHeight), animated: "smooth" });
     }
     useEffect(() => {
@@ -29,7 +25,7 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
             setSelectedOption(selectedOption);
             scrollViewRef.current.scrollTo({ y: selectedOption * (itemHeight), animated: false });
         }
-    }, [scrollViewRef.current])
+    }, [])
     return (
         <ScrollView
             style={[styles.scrollContainer, { maxHeight: ContainerHeight }, style]}
@@ -39,23 +35,21 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
-            disableIntervalMomentum={true}
+            // disableIntervalMomentum={true}
         >
 
             <View style={{ marginBottom: (ContainerHeight / 2) - (itemHeight * 0.5), marginTop: (ContainerHeight / 2) - (itemHeight * 1.5) }}>
                 <View style={[styles.option, { height: itemHeight, opacity: 0.5, transform: [{ scale: 0.8 }] }]} >
                     <Text style={[globalStyles.title]}>{placeholder}</Text>
                 </View>
-                {sortingOptions.map((option, index) => {
-                    let focused = index === selectedOption
-                    return (
-                        <TouchableOpacity key={index} onPress={() => scrollToIndex(index)}>
-                            <Animated.View style={[styles.option, { height: itemHeight, opacity: transition(0.5, 1, 300, focused), transform: [{ scale: transition(0.8, 1.5, 300, focused) }] }]} >
-                                <Text style={globalStyles.title}>{option}</Text>
-                            </Animated.View>
-                        </TouchableOpacity>
-                    )
-                })}
+                {sortingOptions.map((option, index) => (
+                    <TouchableOpacity key={index} onPress={() => scrollToIndex(index)}>
+                        <Animated.View style={[styles.option, { height: itemHeight, opacity: transition(0.5, 1, 300, index === selectedOption), transform: [{ scale: transition(1, 1.5, 300, index === selectedOption) }] }]} >
+                            <Text style={globalStyles.title}>{option}</Text>
+                        </Animated.View>
+                    </TouchableOpacity>
+                )
+                )}
             </View>
         </ScrollView>
     )
