@@ -59,9 +59,8 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
                 <Svg height={hours.length * 100} width={widthPercentage(100)} >
                     {hours.map((hour, i) => (
-                        <>
+                        <View key={i} >
                             <Line
-                                key={i}
                                 x1={20}
                                 y1={i * 100}
                                 x2={widthPercentage(100) - 20}
@@ -79,7 +78,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
                                 opacity={0.1}
                                 strokeWidth="1"
                             />
-                        </>
+                        </View>
 
                     ))}
                     {isToday &&

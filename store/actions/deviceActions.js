@@ -3,7 +3,7 @@ import Axios from 'axios';
 import * as Location from 'expo-location';
 import { USER_SIGNOUT } from "../constants/userConstants";
 import { LOCATION_FAIL, LOCATION_REQUEST, LOCATION_SUCCESS } from "../constants/deviceConstants";
-import { API_URL } from "./api";
+import { API_URL, LOCATION_URL } from "./api";
 
 export const updateVersion = (newVersion) => async (dispatch) => {
     try {
@@ -35,7 +35,7 @@ export const serverWakeUp = () => async () => {
 
 export const getLocation = () => async (dispatch) => {
     dispatch({ type: LOCATION_REQUEST });
-    console.log("location request");
+
     try {
         let { status } = await Location.requestForegroundPermissionsAsync();
         console.log("🚀 ~ file: deviceActions.js:41 ~ getLocation ~ status:", status)
@@ -45,12 +45,38 @@ export const getLocation = () => async (dispatch) => {
             return;
         }
         let location = await Location.getCurrentPositionAsync({});
-        console.log("🚀 ~ file: deviceActions.js:42 ~ getLocation ~ location:", location)
-        dispatch({ type: LOCATION_SUCCESS, payload: location });
-
+        let address = await Location.reverseGeocodeAsync(location.coords);
+        dispatch({
+            type: LOCATION_SUCCESS, payload: {
+                lat: location.coords.latitude,
+                lon: location.coords.longitude,
+                city: address[0].city,
+                governorate: address[0].region,
+                gps: true
+            }
+        });
     } catch (error) {
         console.log("🚀 ~ file: deviceActions.js:45 ~ getLocation ~ error:", error)
         dispatch({ type: LOCATION_FAIL, payload: error });
     }
 };
 
+export const getLatLon = ({ city, governorate }) => async (dispatch) => {
+    dispatch({ type: LOCATION_REQUEST });
+    try {
+        const { data } = await Axios.get(LOCATION_URL + `egypt,${governorate},${city}`);
+        if (data?.length > 0) {
+            // console.log("🚀 ~ file: deviceActions.js:79 ~ getLatLon ~ data:", data)
+            const lat = data[0].lat;
+            const lon = data[0].lon;
+            dispatch({
+                type: LOCATION_SUCCESS, payload: { lat, lon, city, governorate }
+            });
+        } else {
+            let error = 'No results found for this query';
+            dispatch({ type: LOCATION_FAIL, payload: error });
+        }
+    } catch (error) {
+        dispatch({ type: LOCATION_FAIL, payload: error });
+    }
+};

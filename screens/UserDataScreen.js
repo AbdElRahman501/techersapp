@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import FancyInput from '../components/TextInput';
 import t from '../actions/changeLanguage'
 import BackHeader from '../components/BackHeader'
-import { Address_Mark_Svg, Calender_Svg, Language_Svg, Parent_Phone_Svg, School_SVG } from '../assets/icons/Icons'
+import { Calender_Svg, Language_Svg, Parent_Phone_Svg, School_SVG } from '../assets/icons/Icons'
 import { Color, Margin, globalStyles } from '../GlobalStyles';
 import CustomText from '../components/CustemText';
 import { submitCheck } from '../actions/GlobalFunctions';
@@ -16,10 +16,9 @@ import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import PressedText from '../components/PressedText';
-import Address from '../components/Address';
 import governorates from '../locales/governorates.json';
 import cities from '../locales/cities.json';
-import { getLocation } from '../store/actions/deviceActions';
+import { getLatLon } from '../store/actions/deviceActions';
 import LoadingModal from '../components/LoadingModal';
 
 export default function UserDataScreen() {
@@ -34,13 +33,16 @@ export default function UserDataScreen() {
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        const { governorate, city, parentPhoneNumber, birthDay, educationType, schoolYear } = signUpData
-        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear) {
-            console.log("🚀 ~ file: UserDataScreen.js:37 ~ handleSubmit ~ signUpData:", signUpData)
-            dispatch(update({ ...signUpData, unCompleted: false }))
+        const { parentPhoneNumber, birthDay, educationType, schoolYear } = signUpData
+        const lat = location?.lat;
+        const lon = location?.lon;
+        const city = location?.city || signUpData.city
+        const governorate = location?.governorate || signUpData.governorate
+        console.log(birthDay, educationType, schoolYear, city, governorate, lat, lon);
+        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear && city && governorate && lat && lon) {
+            dispatch(update({ ...signUpData, unCompleted: false, lat, lon, city, governorate }))
         } else {
             setCheckInputs(true)
-            console.log("🚀 ~ file: UserDataScreen.js:47 ~ handleSubmit ~ setCheckInputs:", true)
         }
     };
     useEffect(() => {
@@ -60,16 +62,15 @@ export default function UserDataScreen() {
     }, [userInfo])
 
     useEffect(() => {
-        if (!location) {
-            dispatch(getLocation())
+        if (signUpData?.city) {
+            dispatch(getLatLon({ city: signUpData.city?.en, governorate: signUpData.governorate?.en }))
         }
-    }, [location])
-
+    }, [signUpData?.city])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
                 <BackHeader title={t("personal-data")} />
-                <LoadingModal visible={loading || locationLoading} />
+                <LoadingModal visible={loading} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}>
@@ -86,7 +87,7 @@ export default function UserDataScreen() {
                                 </FancyInput>
                             }
                             <View style={{
-                                display: location ? 'none' : 'flex', width: "100%",
+                                display: location?.gps ? 'none' : 'flex', width: "100%",
                                 gap: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse"
                             }} >
                                 <ListInput
@@ -125,7 +126,7 @@ export default function UserDataScreen() {
                             >
                                 <Language_Svg />
                             </ListInput>
-                            <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
+                            <PrimaryButton disabled={loading || locationLoading} style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>
                                     {t(loading ? "loading" : "submit")}
                                 </Text>

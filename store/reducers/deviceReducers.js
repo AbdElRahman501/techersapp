@@ -1,6 +1,6 @@
 import { LOCATION_FAIL, LOCATION_REQUEST, LOCATION_SUCCESS } from "../constants/deviceConstants";
 
-export const locationReducer = (state = { loading: true }, action) => {
+export const locationReducer = (state = { loading: false }, action) => {
     switch (action.type) {
         case LOCATION_REQUEST:
             return { loading: true };
