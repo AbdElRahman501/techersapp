@@ -1,33 +1,42 @@
-import { StyleSheet, Image, Text, View, Platform, Animated, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Platform, Animated, TouchableWithoutFeedback, Image } from 'react-native'
 import React, { useState } from 'react'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/core';
 import transition from '../actions/transition';
+import CustomImage from './CustomImage ';
 
 const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
     const navigation = useNavigation()
     const [clicked, setClicked] = useState(false);
 
+
     const handelScale = () => {
         setClicked(true)
-        setTimeout(() => {
-            setClicked(false)
-            navigation.navigate("SubjectScreen", { item })
-        }, 250);
+        if (item.addButton) {
+            setTimeout(() => {
+                setClicked(false)
+                console.log("Go To Add Subject Screen")
+            }, 250);
+        } else {
+            setTimeout(() => {
+                setClicked(false)
+                navigation.navigate("SubjectScreen", { item })
+            }, 250);
+        }
     }
-
     return (
         <TouchableWithoutFeedback onPress={handelScale} >
             <Animated.View style={[styles.card, { transform: [{ scale: transition(1, 0.8, 200, clicked) }] }]}>
                 <View style={[styles.subject, {
                 }]}>
-                    <Image
+                    <CustomImage
                         style={{ height: "80%", width: "80%" }}
                         resizeMode="contain"
                         source={item.imageSource}
                     />
+
                 </View>
                 <Text style={styles.title}>{item[language]}</Text>
             </Animated.View>

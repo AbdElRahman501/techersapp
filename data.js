@@ -196,7 +196,7 @@ export const teachers = [
     },
     {
         id: 2,
-        imageSource: require('./assets/teachers/teacher.png'),
+        imageSource: 'https://res.cloudinary.com/dostainla/image/upload/v1698047706/teacher_5_enyfft.jpg',
         name: "Mohamed Ahmed",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
         bookingLimits: { start: "08-01", end: "09-01" },
@@ -340,7 +340,7 @@ export const teachers = [
     },
     {
         id: 3,
-        imageSource: require('./assets/teachers/teacher.png'),
+        imageSource: "https://res.cloudinary.com/dostainla/image/upload/v1698047706/teacher_3_m4qmrr.jpg",
         name: "مسعد سعيد",
         mainSubject: { ...subjects[0], schoolYears: [years[0], years[1], years[2]] },
         bookingLimits: { start: "08-01", end: "09-01" },
@@ -482,7 +482,7 @@ export const teachers = [
     },
     {
         id: 4,
-        imageSource: require('./assets/teachers/teacher.png'),
+        imageSource: 'https://res.cloudinary.com/dostainla/image/upload/v1698047706/teacher_2_b32xrj.jpg',
         name: "Amira Ahmed",
         mainSubject: { ...subjects[3], schoolYears: [years[0], years[1], years[2]] },
         bookingLimits: { start: "08-01", end: "09-01" },
@@ -625,7 +625,7 @@ export const teachers = [
     },
     {
         id: 5,
-        imageSource: require('./assets/teachers/teacher.png'),
+        imageSource: 'https://res.cloudinary.com/dostainla/image/upload/v1698047705/teacher_1_liztkm.jpg',
         name: "Shahinda Abdelrahman",
         mainSubject: { ...subjects[4], schoolYears: [years[0], years[1], years[2]] },
         bookingLimits: { start: "08-01", end: "09-01" },

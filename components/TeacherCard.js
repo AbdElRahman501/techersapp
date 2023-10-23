@@ -6,6 +6,7 @@ import { checkArrayForUserId, formatDistance, getSubjectTitle, } from '../action
 import { useSelector } from 'react-redux';
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import CustomText from './CustemText';
+import CustomImage from './CustomImage ';
 
 
 const TeacherCard = React.memo(({ item }) => {
@@ -19,14 +20,10 @@ const TeacherCard = React.memo(({ item }) => {
     return (
         <TouchableOpacity style={styles.card} onPress={handlePress} >
             <View style={styles.imagContainer}>
-                <Image
+                <CustomImage
                     style={{ height: 100, width: 100, borderRadius: 50 }}
                     resizeMode="center"
-                    source={
-                        typeof item.imageSource === 'number'
-                            ? item.imageSource // Local image require path
-                            : { uri: item.imageSource } // Internet image URL
-                    }
+                    source={item.imageSource}
                 />
             </View>
             <CustomText style={styles.title} numberOfLines={1} lineBreakMode='tail'>{item.name}</CustomText>

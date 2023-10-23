@@ -19,7 +19,7 @@ export default function HomeScreen() {
   const [myTeachers, setMyTeachers] = useState([])
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [mySubjects, setMySubjects] = useState([])
-  const [subjectTitle, myFavTeachersTitle, myTeachersTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("see-all")]
+  const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacher, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
 
 
   useEffect(() => {
@@ -37,6 +37,12 @@ export default function HomeScreen() {
     }
   }, [userInfo])
 
+  const item = {
+    id: 1,
+    addButton: true,
+    en: "Add Subject", ar: "إضافة مادة",
+    imageSource: "https://res.cloudinary.com/dostainla/image/upload/v1698048710/add_kgsfpg.svg"
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView style={{ flex: 1, backgroundColor: Color.white }}
@@ -52,7 +58,7 @@ export default function HomeScreen() {
             <SlideContainer data={mySubjects}  >
               <Subject />
             </SlideContainer>
-            : <Text>Add one</Text>
+            : <Subject item={item} />
           }
           {myFavTeachers.length > 0 && <>
             <ContainerTitle title={myFavTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
@@ -66,6 +72,10 @@ export default function HomeScreen() {
               <TeacherCard />
             </SlideContainer>
           </>}
+          <ContainerTitle title={closeTeacher} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
+          <SlideContainer data={teachers}  >
+            <TeacherCard />
+          </SlideContainer>
         </SafeAreaView>
       </ScrollView>
     </TouchableWithoutFeedback >
