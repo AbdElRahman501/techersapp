@@ -44,3 +44,25 @@ export const addTeacher = (serverTeacher, teacher, selectedGroup) => async (disp
         dispatch({ type: USER_FAIL, payload: error });
     }
 };
+
+
+export const leaveTeacher = (id) => async (dispatch) => {
+    
+    try {
+        const userInfoJSON = await AsyncStorage.getItem("userInfo");
+        let userInfo = JSON.parse(userInfoJSON);
+
+        if (userInfo) {
+            const myTeachers = userInfo.myTeachers.filter(x => x.id !== id)
+            console.log("🚀 ~ file: bookingFunctions.js:55 ~ leaveTeacher ~ myTeachers:", myTeachers.map(x => x.id), id)
+            userInfo = { ...userInfo, myTeachers }
+            await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+            dispatch({ type: USER_SUCCESS, payload: userInfo });
+
+        }
+    } catch (error) {
+        console.log('Error saving data:', error);
+        dispatch({ type: USER_FAIL, payload: error });
+    }
+
+}

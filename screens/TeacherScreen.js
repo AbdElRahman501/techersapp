@@ -16,7 +16,7 @@ import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from "../store/actions/showMessageActions";
-import { addTeacher } from '../store/actions/bookingFunctions';
+import { addTeacher, leaveTeacher } from '../store/actions/bookingFunctions';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
@@ -32,8 +32,8 @@ export default function TeacherScreen({ route }) {
     const [myGroups, setMyGroups] = useState([])
 
 
-    let [bookSeat, changeDate, bookedSeat, chooseDay, chooseHour, noGroupAvailable, and] =
-        [t("book your seat"), t("change date"), t("your seat is booked"), t("choose day"), t("choose hour"), t("no group available"), t("and")];
+    let [bookSeat, changeDate, leave, chooseDay, chooseHour, noGroupAvailable, and] =
+        [t("book your seat"), t("change date"), t("leave"), t("choose day"), t("choose hour"), t("no group available"), t("and")];
     const [buttonText, setButtonText] = useState({ text: bookSeat })
 
     // press handler 
@@ -128,7 +128,7 @@ export default function TeacherScreen({ route }) {
     useEffect(() => {
         setButtonText(getButtonText())
 
-    }, [selectedGroup, selectedDay])
+    }, [selectedGroup, selectedDay, userInfo])
 
     const getButtonText = () => {
         if (!selectedDay) {
@@ -136,11 +136,11 @@ export default function TeacherScreen({ route }) {
         } else if (hours.length > 0 && selectedHour === "00:00") {
             return ({ text: chooseHour })
         } else if (hours.length === 0) {
-            return ({ text: noGroupAvailable })
+            return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
             let myGroupsId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
             if (myGroupsId?.includes(selectedGroup.id)) {
-                return ({ text: bookedSeat, booked: true })
+                return ({ text: leave, booked: true })
             } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id)) {
                 return ({ text: changeDate })
             } else {
@@ -149,22 +149,26 @@ export default function TeacherScreen({ route }) {
         }
     }
 
-
     // submit handler
     const dispatch = useDispatch();
     const { language } = useSelector((state) => state.languageState);
-    const showMessageHandler = () => {
+    const bookTeacher = () => {
         if (selectedGroup) {
-            let theDays = days.filter(x => selectedGroup.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language]).join(language === "en" ? ", " : " و ")
-            let hours = selectedGroup.days.filter((x, i, arr) => i === arr.findIndex(y => y.timeIn24Format === x.timeIn24Format)).map(x => transformTime(x.timeIn24Format, language)).join(language === "en" ? ", " : " و ")
-            let message = language === "en"
-                ? `You have been booked on ${theDays} at ${hours}`
-                : `تم حجز مقعدك في يوم ${theDays} الساعة ${hours}`
-            dispatch(showMessage(message));
-            console.log("🚀 ~ file: TeacherScreen.js:164 ~ showMessageHandler ~teacher, selectedGroup.id, selectedSubject.id:", item.id, selectedGroup.id, selectedSubject.id)
-            dispatch(addTeacher({ id: item.id, groupsId: [selectedGroup.id], favorite: false }, item, selectedGroup))
+            if (buttonText.booked) {
+                dispatch(leaveTeacher(item.id))
+            } else {
+                let theDays = days.filter(x => selectedGroup.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language]).join(language === "en" ? ", " : " و ")
+                let hours = selectedGroup.days.filter((x, i, arr) => i === arr.findIndex(y => y.timeIn24Format === x.timeIn24Format)).map(x => transformTime(x.timeIn24Format, language)).join(language === "en" ? ", " : " و ")
+                let message = language === "en"
+                    ? `You have been booked on ${theDays} at ${hours}`
+                    : `تم حجز مقعدك في يوم ${theDays} الساعة ${hours}`
+                dispatch(showMessage(message));
+                console.log("🚀 ~ file: TeacherScreen.js:164 ~ bookTeacher ~teacher, selectedGroup.id, selectedSubject.id:", item.id, selectedGroup.id, selectedSubject.id)
+                dispatch(addTeacher({ id: item.id, groupsId: [selectedGroup.id], favorite: false }, item, selectedGroup))
+            }
         }
     }
+
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
@@ -203,7 +207,15 @@ export default function TeacherScreen({ route }) {
                         EL {item.price}
                     </Text>
                 </View>
-                <PrimaryButton style={{ width: "65%" }} onPress={showMessageHandler} disabled={!selectedDay || selectedHour === "00:00" || buttonText.booked} >
+                <PrimaryButton
+                    style={{
+                        width: "65%", backgroundColor:
+                            buttonText.booked ?
+                                Color.red :
+                                buttonText.notAvailable ? Color.darkgray : Color.darkcyan
+                    }}
+                    onPress={bookTeacher}
+                    disabled={!selectedDay || selectedHour === "00:00"} >
                     <Text style={styles.buttonText}>{buttonText.text}</Text>
                 </PrimaryButton>
             </View>

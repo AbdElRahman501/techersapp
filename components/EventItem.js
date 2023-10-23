@@ -1,10 +1,11 @@
 import React from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View } from 'react-native'
 import { Border, Color, globalStyles, widthPercentage } from '../GlobalStyles';
 import { teachers } from '../data';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 import { calculateEndTime, transformTime } from '../actions/GlobalFunctions';
+import CustomImage from './CustomImage ';
 
 export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: { eventTime, subject, duration, color, teacherId } }) {
     const { language } = useSelector(state => state.languageState)
@@ -36,10 +37,10 @@ export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: 
                 </View>
             </View>
             <View style={[globalStyles.container, { flexDirection: language === 'ar' ? 'row-reverse' : 'row', paddingHorizontal: 20 }]}>
-                <Image
+                <CustomImage
                     style={{ width: 24, height: 24, borderRadius: 12, margin: 5 }}
-                    source={teacher.imageSource}
                     resizeMode="contain"
+                    source={teacher.imageSource}
                 />
                 <CustomText style={[globalStyles.smallText, { padding: 10 }]}>
                     يحين موعد درس اللغة العربية عند الاستاذ {teacher.name} في الساعه {eventTime} في العنوان 3 شارع ابراج المصنع الحربي
