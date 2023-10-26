@@ -16,7 +16,7 @@ import PhoneInput from '../components/PhoneInput';
 import { getErrorMessage, isDataExpired } from '../actions/GlobalFunctions';
 import { PHONE_VERIFICATION_URL } from '../store/actions/api';
 import axios from 'axios';
-import CustomModal from '../components/CustomModal';
+import AlertModal from '../components/alertModal';
 import VerifyPhoneModal from '../components/VerifyPhoneModal';
 
 
@@ -26,12 +26,12 @@ export default function SignUpScreen({ route }) {
     const [loading, setLoading] = useState(false)
     const { loading: theLaoding, userInfo, error } = useSelector(state => state.userInfo);
     const [data, setData] = useState({})
-    const [errorMessage, setErrorMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState(null)
     const navigation = useNavigation();
     const [signUpData, setSignUpData] = useState({ role: user, policy: false, phoneNumber: "" });
     const [valid, setValid] = useState(false);
     const [formattedPhone, setFormattedPhone] = useState("");
-    const signIn = t("sign in")
+    const [signIn, change] = [t("sign in"), t("change")];
     const resendDuration = 90
 
     const [visible, setVisible] = useState(false);
@@ -73,7 +73,16 @@ export default function SignUpScreen({ route }) {
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={user === "teacher" ? t("sign-up-teacher") : t("sign-up-student")} />
                 <LoadingModal visible={loading} />
-                <CustomModal visible={errorMessage !== ""} onClose={() => setErrorMessage("")} buttonTitle={errorMessage[language] ? signIn : null} handleSubmit={() => navigation.navigate("SigninScreen", { phoneNumber: signUpData.phoneNumber })} message={errorMessage[language] || errorMessage} />
+                <AlertModal
+                    visible={errorMessage !== null}
+                    imageSource={require('../assets/icons/alert.png')}
+                    title={errorMessage?.title[language] || errorMessage}
+                    content={errorMessage?.content[language] || ""}
+                    primaryButton={change}
+                    secondaryButton={errorMessage ? signIn : null}
+                    primaryButtonSubmit={() => setErrorMessage(null)}
+                    secondaryButtonSubmit={() => { setErrorMessage(null); navigation.navigate("SigninScreen", { phoneNumber: signUpData.phoneNumber }) }}
+                />
                 <VerifyPhoneModal visible={visible} resendDuration={resendDuration} data={data} phoneNumberVerification={phoneNumberVerification} onClose={() => setVisible(false)} signUpData={signUpData} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}

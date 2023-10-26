@@ -11,12 +11,14 @@ import Analytics from '../components/Analytics';
 import DayOption from '../components/DayOption';
 import HoursOption from '../components/HoursOption';
 import FriendItem from '../components/FriendItem';
-import { areAppointmentsOverlapping, calculateEndTime, equalArs, getEvents, getMyGroups, getTextInputAlign, removeDuplicatesById, sortArrayByTime, transformTime } from '../actions/GlobalFunctions';
+import { areAppointmentsOverlapping, calculateEndTime, equalArs, getBookedMessage, getEvents, getMyGroups, getTextInputAlign, removeDuplicatesById, sortArrayByTime, transformTime } from '../actions/GlobalFunctions';
 import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from "../store/actions/showMessageActions";
 import { addTeacher, leaveTeacher } from '../store/actions/bookingFunctions';
+import AlertModal from '../components/alertModal';
+import LoadingModal from '../components/LoadingModal';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
@@ -152,19 +154,37 @@ export default function TeacherScreen({ route }) {
     // submit handler
     const dispatch = useDispatch();
     const { language } = useSelector((state) => state.languageState);
+    const [visible, setVisible] = useState(false);
+    const [message, setMessage] = useState("")
+
+    const [confirm, cancel] = [t("confirm"), t("cancel")];
+
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
                 dispatch(leaveTeacher(item.id))
             } else {
-                let theDays = days.filter(x => selectedGroup.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language]).join(language === "en" ? ", " : " و ")
-                let hours = selectedGroup.days.filter((x, i, arr) => i === arr.findIndex(y => y.timeIn24Format === x.timeIn24Format)).map(x => transformTime(x.timeIn24Format, language)).join(language === "en" ? ", " : " و ")
-                let message = language === "en"
-                    ? `You have been booked on ${theDays} at ${hours}`
-                    : `تم حجز مقعدك في يوم ${theDays} الساعة ${hours}`
-                dispatch(showMessage(message));
-                console.log("🚀 ~ file: TeacherScreen.js:164 ~ bookTeacher ~teacher, selectedGroup.id, selectedSubject.id:", item.id, selectedGroup.id, selectedSubject.id)
                 dispatch(addTeacher({ id: item.id, groupsId: [selectedGroup.id], favorite: false }, item, selectedGroup))
+            }
+        }
+    }
+    const showPopup = () => {
+        if (selectedGroup) {
+            if (buttonText.booked) {
+                let message = language === "en"
+                    ? `Are you sure you want to leave the group?`
+                    : `هل انت متاكد من انك تريد مغادرة المجموعة`
+                setMessage(message)
+                setVisible(true)
+            } else {
+                let message = getBookedMessage(selectedGroup, language)
+                if (language === "en") {
+                    message = `Are you sure you want to join the group of ${message}`
+                } else {
+                    message = `هل انت متاكد من انك تريد الانضمام الي مجموعه ${message}`
+                }
+                setMessage(message)
+                setVisible(true)
             }
         }
     }
@@ -172,6 +192,17 @@ export default function TeacherScreen({ route }) {
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
+            <LoadingModal visible={loading} />
+            <AlertModal
+                visible={visible || loading}
+                imageSource={require('../assets/icons/alert.png')}
+                title={confirm}
+                content={message}
+                primaryButton={confirm}
+                secondaryButton={cancel}
+                primaryButtonSubmit={() => { setVisible(false); bookTeacher() }}
+                secondaryButtonSubmit={() => setVisible(false)}
+            />
             <ScrollView style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -214,7 +245,7 @@ export default function TeacherScreen({ route }) {
                                 Color.red :
                                 buttonText.notAvailable ? Color.darkgray : Color.darkcyan
                     }}
-                    onPress={bookTeacher}
+                    onPress={showPopup}
                     disabled={!selectedDay || selectedHour === "00:00"} >
                     <Text style={styles.buttonText}>{buttonText.text}</Text>
                 </PrimaryButton>

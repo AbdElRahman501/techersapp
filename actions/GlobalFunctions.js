@@ -1,4 +1,4 @@
-import { teachers } from "../data";
+import { days, teachers } from "../data";
 
 export const submitCheck = (inputs) => {
     const errors = {};
@@ -169,8 +169,13 @@ export const getErrorMessage = (error) => {
         case "this phoneNumber already exists":
             return {
                 message: {
-                    ar: 'هذا الرقم موجود بالفعل',
-                    en: 'this phone number already exists'
+                    title: {
+                        ar: 'هذا الرقم مستخدم بالفعل',
+                        en: 'this phone number already exists'
+                    }, content: {
+                        ar: 'هناك حساب مسجل بالفعل بهذا الرقم. هل تريد تسجيل الدخول؟ او استخدام رقو اخر',
+                        en: 'There is an account already registered with this phone number. Do you want to login? Or use the last one'
+                    }
                 }
             };
         case "User not found or incorrect password":
@@ -456,7 +461,7 @@ export const areGroupsOverLapped = (myGroups, myGroup) => {
     if (myGroups.length === 0 || !myGroup) {
         return false;
     }
-    let allDays = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId }))).flat()
+    let allDays = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId, groupId: group.id }))).flat()
     let myDays = myGroup.days
     let overLapped = false
     let overlappedTime = {}
@@ -483,6 +488,25 @@ export const equalArs = (array1, array2) => {
     return true;
 }
 
+export const getBookedMessage = (group, language) => {
+    if (!group || !language) {
+        return "";
+    }
+    let [dayOne, dayTwo] = days.filter(x => group.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language])
+    let [hourOne, hourTwo] = group.days.map(x => transformTime(x.timeIn24Format, language))
+    let message
+    if (hourOne !== hourTwo) {
+        message = language === "en"
+            ? `${dayOne} at ${hourOne} and ${dayTwo} at ${hourTwo}`
+            : ` ${dayOne} الساعة ${hourOne} و  ${dayTwo} الساعة ${hourTwo}`
+    } else {
+        let theDays = [dayOne, dayTwo].join(language === 'en' ? ' and ' : ' و ')
+        message = language === "en"
+            ? `${theDays} at ${hourOne}`
+            : ` ${theDays} الساعة ${hourOne}`
+    }
+    return message
+}
 export const removeDuplicatesById = (array) => {
     const uniqueArray = array.filter((item, index, self) => {
         return index === self.findIndex(obj => obj.id === item.id);

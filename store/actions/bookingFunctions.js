@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER_FAIL, USER_SUCCESS } from "../constants/userConstants";
+import { USER_FAIL, USER_SUCCESS, USER_UPDATE_REQUEST } from "../constants/userConstants";
 
-export const addTeacher = (serverTeacher, teacher, selectedGroup) => async (dispatch) => {
+export const addTeacher = (serverTeacher, teacher, selectedGroup) => async (dispatch, getState) => {
+    dispatch({ type: USER_UPDATE_REQUEST, payload: getState().userInfo.userInfo });
     try {
         const dataJSON = await AsyncStorage.getItem("userInfo");
         const myTeachersJSON = await AsyncStorage.getItem("myTeachers");
@@ -46,8 +47,8 @@ export const addTeacher = (serverTeacher, teacher, selectedGroup) => async (disp
 };
 
 
-export const leaveTeacher = (id) => async (dispatch) => {
-    
+export const leaveTeacher = (id) => async (dispatch, getState) => {
+    dispatch({ type: USER_UPDATE_REQUEST, payload: getState().userInfo.userInfo });
     try {
         const userInfoJSON = await AsyncStorage.getItem("userInfo");
         let userInfo = JSON.parse(userInfoJSON);

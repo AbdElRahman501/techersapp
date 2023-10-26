@@ -1,5 +1,6 @@
 {
     "welcome": "مرحباً .",
+    "sorry": "عذراً",
     "welcome-again": "مرحبا بك من جديد",
     "greeting": "مرحبا {name} !",
     "next": "التالي",
@@ -59,13 +60,15 @@
     "create-new-password": "انشاء كلمة مرور جديدة",
     "create-new-password-description": "انشاء كلمة مرور جديدة لتسجيل الدخول.",
     "create new student": "انشاء حساب طالب جديد",
+    "confirm": "تاكيد",
+    "cancel": "الغاء",
     "book-now": "احجز الان",
     "my-subjects": "موادي",
     "see-all": "عرض الكل",
     "know more": "اعرف المزيد",
     "my-fav-teachers": "أساتذتي المفضلين",
     "my teachers": "أساتذتي",
-    "close teacher" : "أساتذة بالقرب مني",
+    "close teacher": "أساتذة بالقرب مني",
     "teacher-title": "الاستاذ {name}",
     "teacher-content": "مدرس  {subject} في {area}",
     "search": "بحث",
@@ -91,7 +94,9 @@
     "colleagues from": "زميل لك من درس  {name}",
     "messages": "الرسائل",
     "book your seat": "احجز مقعدك",
+    "cannot book time": "لا يمكنك حجز {message} لان لديك حصة في نفس الوقت",
     "change date": "تغيير موعد",
+    "change": "تغيير",
     "leave": "المغادرة",
     "choose day": "اختر اليوم",
     "no group available": "لا مجموعة متاحة",
@@ -105,5 +110,6 @@
     "boy": "طالب",
     "girl": "طالبة",
     "student account": "حساب طالب مستقل",
-    "student-parent account": "حساب طالب تابع لولي الامر"
+    "student-parent account": "حساب طالب تابع لولي الامر",
+    "conflict": "لديك تعارض"
 }

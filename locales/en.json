@@ -1,5 +1,6 @@
 {
     "welcome": "Welcome .",
+    "sorry": "Sorry",
     "welcome-again": "Welcome Again",
     "greeting": "Hello, {name}!",
     "next": "Next",
@@ -59,13 +60,15 @@
     "create-new-password": "Create new password",
     "create-new-password-description": "Create your new password to log in.",
     "create new student": "Create new student",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
     "book-now": "Book Now",
     "my-subjects": "My Subjects",
     "see-all": "See All",
     "know more": "Know More",
     "my-fav-teachers": "My Fav Teachers",
     "my teachers": "My Teachers",
-    "close teacher" : "Close Teacher",
+    "close teacher": "Close Teacher",
     "teacher-title": "Mr. {name}",
     "teacher-content": "Teacher {subject} in {area}",
     "search": "Search",
@@ -91,7 +94,9 @@
     "colleagues from": "Your colleagues from {name} class",
     "messages": "Messages",
     "book your seat": "Book Your Seat",
+    "cannot book time": " You cannot book {message} because you already have a class at the same time.",
     "change date": "Change Date",
+    "change": "Change",
     "leave": "Leave",
     "choose day": "Choose day",
     "no group available": "No group available",
@@ -105,5 +110,7 @@
     "boy": "Male",
     "girl": "Female",
     "student account": "Student Account",
-    "student-parent account": "Student-Parent Account"
+    "student-parent account": "Student-Parent Account",
+    "conflict": "You have conflict"
+
 }
