@@ -111,6 +111,14 @@
     "girl": "Female",
     "student account": "Student Account",
     "student-parent account": "Student-Parent Account",
-    "conflict": "You have conflict"
-
+    "conflict": "You have conflict",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "logout": "Logout",
+    "logout title": "Sad to see you go 😔",
+    "logout description": "Are you sure you want to logout?",
+    "general": "General",
+    "account": "Account"
 }

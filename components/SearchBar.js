@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Search_icon_Svg } from '../assets/icons/Icons';
 import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles';
 import { useNavigation } from '@react-navigation/core';
+import t from '../actions/changeLanguage';
 
 export default function SearchBar({ autoFocus, button, changHandler, value }) {
   const [isFocused, setIsFocused] = useState(!button)
@@ -20,7 +21,7 @@ export default function SearchBar({ autoFocus, button, changHandler, value }) {
         paddingLeft: Height.hi_input
       }]}
         autoFocus={autoFocus}
-        placeholder={"Search"}
+        placeholder={t("search")}
         autoCapitalize="none"
         onChangeText={changHandler}
         value={value}

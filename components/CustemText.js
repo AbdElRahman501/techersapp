@@ -4,10 +4,7 @@ import { useSelector } from 'react-redux';
 
 const CustomText = (props) => {
     const { language } = useSelector((state) => state.languageState);
-    const textAlign = language === 'en' ? 'left' : 'right';
-    const mergedStyle = [{ textAlign }, props.style];
-
-    return <Text {...props} style={mergedStyle} />;
+    return <Text {...props} style={[{ textAlign: language === 'en' ? 'left' : 'right' }, props.style]} />;
 };
 
 export default CustomText;

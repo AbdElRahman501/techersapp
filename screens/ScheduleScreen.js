@@ -8,6 +8,7 @@ import { getEvents, getEventsDuration, getTheMonths, getWeeksOfMonth } from '../
 import { useSelector } from 'react-redux'
 import * as Haptics from 'expo-haptics';
 import { teachers } from '../data'
+import t from '../actions/changeLanguage'
 
 export default function ScheduleScreen() {
     const { loading, userInfo, error } = useSelector(state => state.userInfo)
@@ -68,7 +69,7 @@ export default function ScheduleScreen() {
                         onPress={reset} >
                         <Text style={[globalStyles.title, { color: Color.cyanBackGround }]} >O</Text>
                     </TouchableOpacity>
-                    <Text style={[globalStyles.title, { margin: 27, padding: 5 }]} >Next Schedules</Text>
+                    <Text style={[globalStyles.title, { margin: 27, padding: 5 }]} >{t("schedule")}</Text>
                     <TimeLine today={today} selectedDay={selectedDay} eventsDuration={eventsDuration} events={events} />
                 </View>
             </View>

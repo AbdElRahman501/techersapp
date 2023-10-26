@@ -6,7 +6,7 @@ export default function CustomImage(props) {
     const isLocal = typeof props.source === 'number'
 
     const isSvgLink = (link) => {
-        if (!isLocal) {
+        if (!isLocal && props.source) {
             const fileExtension = link.split('.').pop().toLowerCase();
             return fileExtension === 'svg';
         } else { return false }

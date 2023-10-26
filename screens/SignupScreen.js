@@ -7,7 +7,7 @@ import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
 import t from "../actions/changeLanguage";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,13 +18,13 @@ import { PHONE_VERIFICATION_URL } from '../store/actions/api';
 import axios from 'axios';
 import AlertModal from '../components/alertModal';
 import VerifyPhoneModal from '../components/VerifyPhoneModal';
+import { showMessage } from '../store/actions/showMessageActions';
 
 
 export default function SignUpScreen({ route }) {
     const { user } = route.params;
     const { language } = useSelector(state => state.languageState)
     const [loading, setLoading] = useState(false)
-    const { loading: theLaoding, userInfo, error } = useSelector(state => state.userInfo);
     const [data, setData] = useState({})
     const [errorMessage, setErrorMessage] = useState(null)
     const navigation = useNavigation();
@@ -35,12 +35,17 @@ export default function SignUpScreen({ route }) {
     const resendDuration = 90
 
     const [visible, setVisible] = useState(false);
+    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!valid) {
             Alert.alert('Invalid Phone Number', 'Please enter a valid phone number');
         } else {
-            phoneNumberVerification(signUpData.phoneNumber)
+            if (user === "student") {
+                phoneNumberVerification(signUpData.phoneNumber)
+            } else {
+                dispatch(showMessage("Teachers Profile Coming Soon 🚀 \ntry student profile 🚀"))
+            }
         }
     };
     const phoneNumberVerification = async (phoneNumber) => {

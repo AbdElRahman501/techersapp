@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 export default function ContainerTitle({ title, pressedTitle, pressHandler, style }) {
     const { language } = useSelector(state => state.languageState)
     return (
-        <View style={[styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse" }, { ...style }]}>
+        <View style={[styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse" }, style]}>
             <Text style={styles.title} >{title}</Text>
             {pressedTitle &&
                 <PressedText style={{ fontSize: FontSize.size_base }} title={pressedTitle} pressHandler={pressHandler} />

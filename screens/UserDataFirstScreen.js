@@ -68,10 +68,11 @@ export default function UserDataFirstScreen({ route }) {
 
     useEffect(() => {
         if (data.phoneNumber) {
+            let { phoneNumber, parentPhoneNumber, ...restOfData } = signUpData
             if (signUpData.isParent) {
-                setSignUpData({ ...signUpData, parentPhoneNumber: data.phoneNumber, phoneNumber: null })
+                setSignUpData({ ...restOfData, parentPhoneNumber: data.phoneNumber })
             } else {
-                setSignUpData({ ...signUpData, phoneNumber: data.phoneNumber, parentPhoneNumber: null })
+                setSignUpData({ ...restOfData, phoneNumber: data.phoneNumber })
             }
         }
     }, [signUpData.isParent])

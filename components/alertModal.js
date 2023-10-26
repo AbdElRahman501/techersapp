@@ -4,7 +4,7 @@ import PrimaryButton from "./PrimaryButton";
 import { Color, FontSize, globalStyles } from "../GlobalStyles";
 import t from "../actions/changeLanguage";
 
-const AlertModal = ({ title, content, visible, imageSource, secondaryButton, primaryButton, secondaryButtonSubmit, primaryButtonSubmit, children }) => {
+const AlertModal = ({ title, content, visible, imageSource, secondaryButton, primaryButton, primaryButtonStyle, secondaryButtonSubmit, primaryButtonSubmit, children }) => {
     const ok = t("ok")
     return (
         <Modal visible={visible} animationType="fade" transparent>
@@ -29,7 +29,7 @@ const AlertModal = ({ title, content, visible, imageSource, secondaryButton, pri
                                 <Text style={[globalStyles.title, { color: Color.darkcyan }]}>{secondaryButton}</Text>
                             </PrimaryButton>
                         }
-                        <PrimaryButton style={{ flex: 2 }} onPress={primaryButtonSubmit}>
+                        <PrimaryButton style={[{ flex: 2 }, primaryButtonStyle]} onPress={primaryButtonSubmit}>
                             <Text style={[globalStyles.title, { color: Color.white }]}>{primaryButton || ok}</Text>
                         </PrimaryButton>
                     </View>
