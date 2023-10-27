@@ -9,7 +9,7 @@ export default function SettingItem({ Icon, title, regular, pressHandler, style 
     return (
         <TouchableOpacity onPress={pressHandler} style={[globalStyles.parentFlexBox, { marginVertical: 10, width: "100%", justifyContent: "space-between", flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
             <View style={[globalStyles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
-                <View style={[globalStyles.shadowBox, { elevation: 15, width: Height.hi_md, height: Height.hi_md, backgroundColor: Color.white, borderRadius: Height.hi_md / 2, alignItems: 'center', justifyContent: 'center' }]} >
+                <View style={[globalStyles.shadowBox, { elevation: 20, width: Height.hi_md, height: Height.hi_md, backgroundColor: Color.white, borderRadius: Height.hi_md / 2, alignItems: 'center', justifyContent: 'center' }]} >
                     <Icon width={24} height={24} viewBox="0 0 24 24" />
                 </View>
                 <Text style={[globalStyles.title, { marginHorizontal: Margin.m_base, }, style]} >{title}</Text>

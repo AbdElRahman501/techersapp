@@ -10,14 +10,14 @@ const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
     const navigation = useNavigation()
     const [clicked, setClicked] = useState(false);
-
+    const { svg: Svg_icon } = item
 
     const handelScale = () => {
         setClicked(true)
         if (item.addButton) {
             setTimeout(() => {
                 setClicked(false)
-                console.log("Go To Add Subject Screen")
+                navigation.navigate("SearchScreen")
             }, 250);
         } else {
             setTimeout(() => {
@@ -31,12 +31,15 @@ const Subject = React.memo(({ item }) => {
             <Animated.View style={[styles.card, { transform: [{ scale: transition(1, 0.8, 200, clicked) }] }]}>
                 <View style={[styles.subject, {
                 }]}>
-                    <CustomImage
-                        style={{ height: "80%", width: "80%" }}
-                        resizeMode="contain"
-                        source={item.imageSource}
-                    />
-
+                    {Svg_icon ?
+                        <Svg_icon color={Color.darkcyan} height="80%" width="80%" viewBox="0 0 24 24" />
+                        :
+                        <CustomImage
+                            style={{ height: "80%", width: "80%" }}
+                            resizeMode="contain"
+                            source={item.imageSource}
+                        />
+                    }
                 </View>
                 <Text style={styles.title}>{item[language]}</Text>
             </Animated.View>

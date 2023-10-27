@@ -549,3 +549,46 @@ export const Theme_Icon = (props) => (
     </Defs>
   </Svg>
 )
+export const Logout_Icon = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20}
+    height={18}
+    fill="none"
+    {...props}
+  >
+    <Path
+      fill="url(#a)"
+      fillRule="evenodd"
+      d="M6 1a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-3a1 1 0 1 1 2 0v2h10V2H8v2a1 1 0 0 1-2 0V1Zm-.793 3.793a1 1 0 0 1 0 1.414L3.414 8H13a1 1 0 1 1 0 2H3.414l1.793 1.793a1 1 0 1 1-1.414 1.414l-3.5-3.5a1 1 0 0 1 0-1.414l3.5-3.5a1 1 0 0 1 1.414 0Z"
+      clipRule="evenodd"
+    />
+    <Defs>
+      <LinearGradient
+        id="a"
+        x1={10}
+        x2={10}
+        y1={0}
+        y2={18}
+        gradientUnits="userSpaceOnUse"
+      >
+        <Stop stopColor="#F857A6" />
+        <Stop offset={1} stopColor="#FF585A" />
+      </LinearGradient>
+    </Defs>
+  </Svg>
+)
+export const Add_Icon = (props) => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={25}
+    height={24}
+    fill="none"
+    {...props}
+  >
+    <Path
+      fill={props.color || "#000"}
+      d="M6.513 0A6.022 6.022 0 0 0 .5 6.013v11.974A6.022 6.022 0 0 0 6.513 24h11.974c3.313 0 6.013-2.7 6.013-6.013V6.013C24.5 2.7 21.8 0 18.487 0H6.513Zm0 2.01h11.974a3.974 3.974 0 0 1 4.004 4.003v11.974a3.973 3.973 0 0 1-4.004 4.004H6.513a3.973 3.973 0 0 1-4.004-4.004V6.013A3.973 3.973 0 0 1 6.513 2.01Zm6.223 3.062a1.004 1.004 0 0 0-.99 1.018v4.84h-4.84a1.004 1.004 0 1 0 0 2.008h4.84v4.84a1.005 1.005 0 1 0 2.01 0v-4.84h4.839a1.004 1.004 0 1 0 0-2.008h-4.84V6.09a1.003 1.003 0 0 0-1.019-1.018Z"
+    />
+  </Svg>
+)

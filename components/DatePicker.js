@@ -1,14 +1,14 @@
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { Border, Color, FontSize, globalStyles } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 import SortingContainer from './SortingContainer';
 import SliderModal from './SliderModal';
 const containerHeight = 300
 
-export default function DatePicker({ value, placeholder, changHandler, children, rightIcon }) {
+export default function DatePicker({ value, placeholder, changHandler, children, rightIcon, checkInputs }) {
     const [isFocused, setIsFocused] = useState(false);
     const { language } = useSelector(state => state.languageState);
 
@@ -28,12 +28,21 @@ export default function DatePicker({ value, placeholder, changHandler, children,
         }
     }
 
+    const [error, setError] = useState(false)
+
+    useEffect(() => {
+        if (checkInputs && !value) {
+            setError(true)
+        } else if (value) {
+            setError(false)
+        }
+    }, [checkInputs, value])
     return (
         <TouchableWithoutFeedback onPress={() => setIsFocused(!isFocused)} >
             <View
 
                 style={[globalStyles.inputField, {
-                    borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+                    borderColor: isFocused ? Color.darkcyan : error ? Color.red : Color.input_stroke,
                     flexDirection: language === "en" ? "row" : "row-reverse"
                 }]}
             >
@@ -67,7 +76,7 @@ export default function DatePicker({ value, placeholder, changHandler, children,
                                     width: FontSize.size_xl,
                                     height: FontSize.size_xl,
                                     viewBox: "0 0 24 24",
-                                    color: isFocused ? Color.darkcyan : Color.darkgray
+                                    color: isFocused ? Color.darkcyan : error ? Color.red : Color.darkgray
                                 });
                             })}
                         </View>

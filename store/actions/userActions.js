@@ -46,8 +46,8 @@ export const register = (userData) => async (dispatch) => {
         dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
     }
 };
-export const update = (userData) => async (dispatch) => {
-    dispatch({ type: USER_UPDATE_REQUEST, payload: userData });
+export const update = (userData) => async (dispatch, getState) => {
+    dispatch({ type: USER_UPDATE_REQUEST, payload: getState().userInfo.userInfo });
     try {
         let { data } = await Axios.put(UPDATE_URL, userData);
         if (!data) return

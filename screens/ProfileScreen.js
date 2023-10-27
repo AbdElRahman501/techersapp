@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Border, Color, FontSize, Height, Margin, globalStyles } from '../GlobalStyles';
 import CustomImage from '../components/CustomImage ';
 import CustomText from '../components/CustemText';
-import { Burger_Button_Icon, Earth_Icon, Home_icon_Svg, Teacher_Icon, Theme_Icon } from '../assets/icons/Icons';
+import { Burger_Button_Icon, Earth_Icon, Logout_Icon, Teacher_Icon, Theme_Icon } from '../assets/icons/Icons';
 import SettingItem from '../components/SettingItem';
 import { ToggleLanguage } from '../store/actions/langActions';
 import t from '../actions/changeLanguage';
@@ -59,7 +59,7 @@ export default function ProfileScreen() {
                 <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_xl, width: "100%" }]} >
                     {t("account")}
                 </CustomText>
-                <SettingItem Icon={() => <Home_icon_Svg color={Color.red} />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
+                <SettingItem Icon={() => <Logout_Icon />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
 
             </SafeAreaView>
         </ScrollView>

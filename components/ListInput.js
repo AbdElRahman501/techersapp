@@ -1,32 +1,38 @@
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { Color, FontSize, globalStyles } from '../GlobalStyles'
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 import SortingContainer from './SortingContainer';
 import SliderModal from './SliderModal';
 const containerHeight = 300
 
-export default function ListInput({ value: initialValue, data, placeholder, changHandler, children, rightIcon, style }) {
+export default function ListInput({ value, data, placeholder, changHandler, children, rightIcon, checkInputs, style }) {
     const { language } = useSelector(state => state.languageState);
     const options = data.map(x => x[language] || x)
     const [isFocused, setIsFocused] = useState(false);
     const [selectedOption, setSelectedOption] = useState("")
-    const [value, setValue] = useState(initialValue || "")
+    const [error, setError] = useState(false)
 
     const submitHandler = () => {
         setIsFocused(false)
-        setValue(initialValue || options[selectedOption])
         changHandler(data[selectedOption])
     }
 
+    useEffect(() => {
+        if (checkInputs && !value) {
+            setError(true)
+        } else if (value) {
+            setError(false)
+        }
+    }, [checkInputs, value])
     return (
         <TouchableWithoutFeedback onPress={() => setIsFocused(!isFocused)} >
             <View
 
                 style={[globalStyles.inputField, {
-                    borderColor: isFocused ? Color.darkcyan : Color.input_stroke,
+                    borderColor: isFocused ? Color.darkcyan : error ? Color.red : Color.input_stroke,
                     flexDirection: language === "en" ? "row" : "row-reverse"
                 }, style]}
             >
@@ -41,7 +47,7 @@ export default function ListInput({ value: initialValue, data, placeholder, chan
                                     width: FontSize.size_xl,
                                     height: FontSize.size_xl,
                                     viewBox: "0 0 24 24",
-                                    color: isFocused ? Color.darkcyan : Color.darkgray
+                                    color: isFocused ? Color.darkcyan : error ? Color.red : Color.darkgray
                                 });
                             })}
                         </View>

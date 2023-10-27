@@ -33,14 +33,15 @@ export default function UserDataScreen() {
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        const { parentPhoneNumber, birthDay, educationType, schoolYear } = signUpData
+        const { parentPhoneNumber, birthDay } = signUpData
+        const schoolYear = signUpData?.schoolYear?.value
+        const educationType = signUpData?.educationType?.en
         const lat = location?.lat;
         const lon = location?.lon;
         const city = location?.city || signUpData.city
         const governorate = location?.governorate || signUpData.governorate
-        console.log(birthDay, educationType, schoolYear, city, governorate, lat, lon);
         if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear && city && governorate && lat && lon) {
-            dispatch(update({ ...signUpData, unCompleted: false, lat, lon, city, governorate }))
+            dispatch(update({ ...signUpData, unCompleted: false, educationType, schoolYear, lat, lon, city, governorate }))
         } else {
             setCheckInputs(true)
         }
@@ -91,38 +92,45 @@ export default function UserDataScreen() {
                                 gap: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse"
                             }} >
                                 <ListInput
+                                    checkInputs={checkInputs}
                                     style={{ flex: 2 }}
                                     value={signUpData.governorate?.[language] || ""}
                                     data={governorates}
                                     placeholder={governoratePlaceholder}
-                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, city: "", governorate: e }))}
+                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, city: "", governorate: e || "" }))}
                                 />
                                 {signUpData.governorate &&
                                     <ListInput
+                                        checkInputs={checkInputs}
                                         style={{ flex: 2 }}
                                         value={signUpData.city?.[language] || ""}
                                         data={cities.filter(x => x.governorate_id === signUpData.governorate.id)}
                                         placeholder={cityPlaceholder}
-                                        changHandler={(e) => setSignUpData(pv => ({ ...pv, city: e }))}
+                                        changHandler={(e) => setSignUpData(pv => ({ ...pv, city: e || "" }))}
                                     />
                                 }
                             </View>
                             <ListInput
+                                checkInputs={checkInputs}
+                                value={signUpData.schoolYear?.[language] || ""}
                                 data={years} placeholder={t("placeholder-schoole-year")}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, schoolYear: e.value }))}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, schoolYear: e || "" }))}
                             >
                                 <School_SVG />
                             </ListInput>
                             <DatePicker
+                                checkInputs={checkInputs}
                                 placeholder={t("placeholder-birth-day")}
                                 value={signUpData.birthDay || ""}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, birthDay: e }))}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, birthDay: e || "" }))}
                             >
                                 <Calender_Svg />
                             </DatePicker>
                             <ListInput
+                                checkInputs={checkInputs}
+                                value={signUpData.educationType?.[language] || ""}
                                 data={schoolTypes} placeholder={t("placeholder-education-type")}
-                                changHandler={(e) => setSignUpData(pv => ({ ...pv, educationType: e.en }))}
+                                changHandler={(e) => setSignUpData(pv => ({ ...pv, educationType: e || "" }))}
                             >
                                 <Language_Svg />
                             </ListInput>
@@ -131,7 +139,7 @@ export default function UserDataScreen() {
                                     {t(loading ? "loading" : "submit")}
                                 </Text>
                             </PrimaryButton>
-                            <PressedText title={"logout"} pressHandler={() => dispatch(signOut())} />
+                            {/* <PressedText title={"logout"} pressHandler={() => dispatch(signOut())} /> */}
                         </View>
                     </View>
                 </ScrollView>
