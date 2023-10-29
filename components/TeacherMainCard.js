@@ -7,7 +7,7 @@ import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } from '../actions/GlobalFunctions'
 
-export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler, userInfo }) {
+export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
     const subjects = removeDuplicatesById(item.groups.map(x => x.subject))

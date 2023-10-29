@@ -99,6 +99,8 @@
     "change date": "Change Date",
     "change": "Change",
     "leave": "Leave",
+    "leave message": "Are you sure you want to leave the group?",
+    "confirm message": "Are you sure you want to join the group of ",
     "choose day": "Choose day",
     "no group available": "No group available",
     "choose hour": "Choose hour",

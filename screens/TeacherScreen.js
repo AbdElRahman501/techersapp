@@ -29,7 +29,6 @@ export default function TeacherScreen({ route }) {
     const [selectedDay, setSelectedDay] = useState();
     const [selectedHour, setSelectedHour] = useState("00:00");
     const [selectedSubject, setSelectedSubject] = useState()
-
     const [hours, setHours] = useState([]);
     const [myGroups, setMyGroups] = useState([])
 
@@ -70,7 +69,7 @@ export default function TeacherScreen({ route }) {
         return availableGroups
     }
 
-    const updateGroup = (group, day) => {
+    const updateGroup = (group, day, subject) => {
         if (group) {
             let theSelectedDay = day || group.days.map(x => x.day)[0]
             setSelectedGroup(group)
@@ -80,7 +79,7 @@ export default function TeacherScreen({ route }) {
             setSelectedHour(group.days.find(x => x.day === theSelectedDay).timeIn24Format)
         } else {
             setSelectedGroup()
-            setSelectedSubject(removeDuplicatesById(item.groups.map(x => x.subject))[0])
+            setSelectedSubject(subject || removeDuplicatesById(item.groups.map(x => x.subject))[0])
             setSelectedHour("00:00")
             setSelectedDay()
             setHours([])
@@ -113,7 +112,7 @@ export default function TeacherScreen({ route }) {
         if (myGroup) {
             updateGroup(myGroup)
         } else {
-            updateGroup()
+            updateGroup(null, null, subject)
         }
     }
 
@@ -157,33 +156,28 @@ export default function TeacherScreen({ route }) {
     const [visible, setVisible] = useState(false);
     const [message, setMessage] = useState("")
 
-    const [confirm, cancel] = [t("confirm"), t("cancel")];
+    const [confirm, cancel, leaveMessage, confirmMessage] = [t("confirm"), t("cancel"), t("leave message"), t("confirm message")];
 
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
                 dispatch(leaveTeacher(item.id))
             } else {
-                dispatch(addTeacher({ id: item.id, groupsId: [selectedGroup.id], favorite: false }, item, selectedGroup))
+                const groupsID = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
+                let prevGroups = item.groups.filter(x => groupsID?.includes(x.id))
+                prevGroups = prevGroups.filter(x => x.subject.id !== selectedGroup.subject.id)?.map(x => x.id)
+                dispatch(addTeacher({ id: item.id, groupsId: [...prevGroups, selectedGroup.id], favorite: false }, item, selectedGroup))
             }
         }
     }
     const showPopup = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
-                let message = language === "en"
-                    ? `Are you sure you want to leave the group?`
-                    : `هل انت متاكد من انك تريد مغادرة المجموعة`
-                setMessage(message)
+                setMessage(leaveMessage)
                 setVisible(true)
             } else {
                 let message = getBookedMessage(selectedGroup, language)
-                if (language === "en") {
-                    message = `Are you sure you want to join the group of ${message}`
-                } else {
-                    message = `هل انت متاكد من انك تريد الانضمام الي مجموعه ${message}`
-                }
-                setMessage(message)
+                setMessage(confirmMessage + message)
                 setVisible(true)
             }
         }

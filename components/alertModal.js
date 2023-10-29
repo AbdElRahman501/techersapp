@@ -22,7 +22,7 @@ const AlertModal = ({ title, content, visible, imageSource, secondaryButton, pri
                     {content && <Text style={[globalStyles.contentText, { lineHeight: 30, width: "100%", textAlign: 'center', color: Color.darkgray }]}
                     >{content}</Text>}
                     {children}
-                    <View style={{ width: "80%", gap: 15, flexDirection: "row", marginTop: 20 }}>
+                    <View style={{ width: "100%", gap: 15, flexDirection: "row", marginTop: 20 }}>
                         {secondaryButton &&
                             <PrimaryButton
                                 style={{ flex: 2, backgroundColor: Color.white, borderWidth: 1, borderColor: Color.darkcyan }}

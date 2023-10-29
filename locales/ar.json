@@ -99,6 +99,8 @@
     "change date": "تغيير موعد",
     "change": "تغيير",
     "leave": "المغادرة",
+    "leave message": "هل انت متاكد من انك تريد مغادرة المجموعة",
+    "confirm message" : "هل انت متاكد من انك تريد الانضمام الي مجموعه",
     "choose day": "اختر اليوم",
     "no group available": "لا مجموعة متاحة",
     "choose hour": "اختر الساعة",
