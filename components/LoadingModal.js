@@ -4,7 +4,7 @@ import { Color } from '../GlobalStyles';
 
 const LoadingModal = ({ visible }) => {
     return (
-        <Modal transparent visible={visible}>
+        <Modal transparent visible={visible === true}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <ActivityIndicator size="large" color={Color.darkcyan} />

@@ -40,7 +40,8 @@ export default function UserDataScreen() {
         const lon = location?.lon;
         const city = location?.city || signUpData.city
         const governorate = location?.governorate || signUpData.governorate
-        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear && city && governorate && lat && lon) {
+        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear && city && governorate) {
+            setState({})
             dispatch(update({ ...signUpData, unCompleted: false, educationType, schoolYear, lat, lon, city, governorate }))
         } else {
             setCheckInputs(true)
@@ -63,10 +64,10 @@ export default function UserDataScreen() {
     }, [userInfo])
 
     useEffect(() => {
-        if (signUpData?.city) {
+        if (signUpData?.city && !location?.gps) {
             dispatch(getLatLon({ city: signUpData.city?.en, governorate: signUpData.governorate?.en }))
         }
-    }, [signUpData?.city])
+    }, [signUpData?.city, location?.gps])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
@@ -92,6 +93,7 @@ export default function UserDataScreen() {
                                 gap: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse"
                             }} >
                                 <ListInput
+                                    setState={setState}
                                     checkInputs={checkInputs}
                                     style={{ flex: 2 }}
                                     value={signUpData.governorate?.[language] || ""}
@@ -101,6 +103,7 @@ export default function UserDataScreen() {
                                 />
                                 {signUpData.governorate &&
                                     <ListInput
+                                        setState={setState}
                                         checkInputs={checkInputs}
                                         style={{ flex: 2 }}
                                         value={signUpData.city?.[language] || ""}
@@ -111,6 +114,7 @@ export default function UserDataScreen() {
                                 }
                             </View>
                             <ListInput
+                                setState={setState}
                                 checkInputs={checkInputs}
                                 value={signUpData.schoolYear?.[language] || ""}
                                 data={years} placeholder={t("placeholder-schoole-year")}
@@ -119,6 +123,7 @@ export default function UserDataScreen() {
                                 <School_SVG />
                             </ListInput>
                             <DatePicker
+                                setState={setState}
                                 checkInputs={checkInputs}
                                 placeholder={t("placeholder-birth-day")}
                                 value={signUpData.birthDay || ""}
@@ -127,6 +132,7 @@ export default function UserDataScreen() {
                                 <Calender_Svg />
                             </DatePicker>
                             <ListInput
+                                setState={setState}
                                 checkInputs={checkInputs}
                                 value={signUpData.educationType?.[language] || ""}
                                 data={schoolTypes} placeholder={t("placeholder-education-type")}
@@ -134,6 +140,9 @@ export default function UserDataScreen() {
                             >
                                 <Language_Svg />
                             </ListInput>
+                            <View style={[globalStyles.parentFlexBox, { width: "100%" }]}>
+                                {(state.error || error) && <Text style={[globalStyles.smallText, { color: Color.red }]}>{state.error?.message[language] || state.error?.message}</Text>}
+                            </View>
                             <PrimaryButton disabled={loading || locationLoading} style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>
                                     {t(loading ? "loading" : "submit")}

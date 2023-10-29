@@ -28,7 +28,7 @@ export default function UserDataFirstScreen({ route }) {
     const [submitted, setSubmitted] = useState(false)
 
     const [trigger, setTrigger] = useState(students?.length > 0)
-    const [signInAs, namePlaceholder, passwordPlaceholder, or] = [t("sign in as"), t("full-name-student"), t("password-input"), t("or")]
+    const [signInAs, namePlaceholder, passwordPlaceholder,iamParentText, or] = [t("sign in as"), t("full-name-student"), t("password-input"),t("iam parent"), t("or")]
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -127,7 +127,7 @@ export default function UserDataFirstScreen({ route }) {
                                 <View style={[globalStyles.parentFlexBox, { width: "100%", maxWidth: 500, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start" }]}>
                                     <Checkbox checked={signUpData.isParent} onChange={(e) => setSignUpData(pv => ({ ...pv, isParent: e }))} />
                                     <View style={[globalStyles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
-                                        <CustomText style={globalStyles.regular}>انا ولي امر</CustomText>
+                                        <CustomText style={globalStyles.regular}>{iamParentText}</CustomText>
                                     </View>
                                 </View>
                             }

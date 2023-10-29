@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 import SortingContainer from './SortingContainer';
 import SliderModal from './SliderModal';
+import { inputChecker } from '../actions/GlobalFunctions';
 const containerHeight = 300
 
-export default function DatePicker({ value, placeholder, changHandler, children, rightIcon, checkInputs }) {
+export default function DatePicker({ value, placeholder, changHandler, children, rightIcon, checkInputs, setState }) {
     const [isFocused, setIsFocused] = useState(false);
     const { language } = useSelector(state => state.languageState);
 
@@ -33,7 +34,9 @@ export default function DatePicker({ value, placeholder, changHandler, children,
     useEffect(() => {
         if (checkInputs && !value) {
             setError(true)
+            setState(inputChecker(value, placeholder))
         } else if (value) {
+            setState(pv => pv.error ? pv : "")
             setError(false)
         }
     }, [checkInputs, value])

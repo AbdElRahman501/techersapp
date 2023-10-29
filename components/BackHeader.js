@@ -1,9 +1,10 @@
-import { StyleSheet, Image, TouchableOpacity, Text, View, BackHandler } from 'react-native'
+import { TouchableOpacity, Text, View, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { FontFamily, FontSize, Margin } from '../GlobalStyles'
+import { Color, Margin, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
+import { Next_Icon } from '../assets/icons/Icons';
 export default function BackHeader({ title, onPress, onPressHandler, style }) {
     const navigation = useNavigation();
 
@@ -28,36 +29,14 @@ export default function BackHeader({ title, onPress, onPressHandler, style }) {
         navigation.goBack();
     };
     return (
-        <View style={[styles.header, style]}>
-            {(history.length > 1 || onPress) && <TouchableOpacity onPress={onPress ? onPressHandler : handleGoBack}>
-                <Image style={[styles.backIcon]}
-                    source={require("../assets/icons/back-icon.png")}
-                />
-            </TouchableOpacity>}
-            <Text style={[styles.headerTitle, { paddingRight: history.length > 1 ? Margin.m_sm * 5 : 0 }]}>{title}</Text>
+        <View style={[globalStyles.parentFlexBox, { marginVertical: Margin.m_sm, width: "100%", justifyContent: (history.length > 1 || onPress) ? 'space-between' : "center" }, style]}>
+            {(history.length > 1 || onPress) &&
+                <TouchableOpacity style={{ padding: 5 }} onPress={onPress ? onPressHandler : handleGoBack}>
+                    <Next_Icon color={Color.black} width={26} height={26} viewBox="0 0 26 26" style={{ transform: [{ scaleX: -1 }] }} />
+                </TouchableOpacity>
+            }
+            <Text style={globalStyles.title}>{title}</Text>
+            {(history.length > 1 || onPress) && <View style={{ margin: 5, width: 26, height: 26 }} />}
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        width: "100%",
-        marginVertical: Margin.m_sm
-    },
-    backIcon: {
-        width: 24,
-        height: 24,
-        resizeMode: "contain",
-        margin: Margin.m_sm
-    },
-    headerTitle: {
-        flex: 1,
-        textAlign: "center",
-        textAlignVertical: "center",
-        fontSize: FontSize.size_lg,
-        fontFamily: FontFamily.montserratArabic
-    }
-
-})

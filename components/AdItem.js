@@ -28,7 +28,7 @@ const AdItem = React.memo(({ item, holdHandler }) => {
                 </View>
                 <CustomImage
                     style={{ height: heightPercentage(18), width: heightPercentage(18), borderRadius: heightPercentage(18) / 2, marginHorizontal: fontEm(1) }}
-                    resizeMode="center"
+                    resizeMode="cover"
                     source={item.imageSource}
                 />
             </View>

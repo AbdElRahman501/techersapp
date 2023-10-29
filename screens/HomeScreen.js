@@ -23,7 +23,7 @@ export default function HomeScreen() {
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacher, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
 
   const svg_icon = (props) => {
-    return <Add_Icon {...props} />
+    return <Add_Icon height="80%" width="80%" viewBox="0 0 24 25" {...props} />
   }
 
   const item = {

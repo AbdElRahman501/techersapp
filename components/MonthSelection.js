@@ -1,6 +1,6 @@
 import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, Text, View, FlatList } from 'react-native'
-import { Color, globalStyles, widthPercentage } from '../GlobalStyles'
+import { Color, Margin, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { Next_Icon } from '../assets/icons/Icons'
 
@@ -75,7 +75,7 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
     });
 
     return (
-        <View style={[styles.sliderContainer]}>
+        <View style={[styles.sliderContainer, { marginTop: Margin.m_sm }]}>
             <TouchableOpacity style={[styles.button, { paddingBottom: 10, marginLeft: 50 }]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
                 <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
             </TouchableOpacity>

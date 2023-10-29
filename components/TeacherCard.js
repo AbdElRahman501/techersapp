@@ -22,7 +22,7 @@ const TeacherCard = React.memo(({ item }) => {
             <View style={styles.imagContainer}>
                 <CustomImage
                     style={{ height: "100%", width: "100%", borderRadius: Border.br_6xl }}
-                    resizeMode="contain"
+                    resizeMode="cover"
                     source={item.imageSource}
                 />
             </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         borderColor: Color.lightGray,
         padding: 10,
         borderWidth: 1,
-        borderRadius: Border.br_6xl,
+        borderRadius: Border.br_6xl + 10,
     },
     imagContainer: {
         marginBottom: 5,
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 6,
         borderRadius: 5,
+        borderBottomLeftRadius: Border.br_6xl ,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

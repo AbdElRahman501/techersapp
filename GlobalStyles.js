@@ -105,7 +105,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Padding.p_m,
-    paddingHorizontal: Padding.page_p,
+    marginHorizontal: Padding.page_p,
     marginBottom: Height.nav_tap + 20
   },
   logo: {
@@ -232,8 +232,7 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    minWidth: "80%",
-    maxWidth: "90%",
+    width: "80%",
     backgroundColor: "white",
     padding: 20,
     borderRadius: 35,

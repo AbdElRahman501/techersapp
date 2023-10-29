@@ -32,7 +32,7 @@ const Subject = React.memo(({ item }) => {
                 <View style={[styles.subject, {
                 }]}>
                     {Svg_icon ?
-                        <Svg_icon color={Color.darkcyan} height="80%" width="80%" viewBox="0 0 24 24" />
+                        <Svg_icon color={Color.darkcyan} />
                         :
                         <CustomImage
                             style={{ height: "80%", width: "80%" }}

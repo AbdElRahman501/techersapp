@@ -6,7 +6,7 @@ import { Border, Color, FontFamily, FontSize, Height, Margin, fontEm, widthPerce
 const OTPInput = ({ length, onComplete }) => {
   const [otp, setOTP] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
-  const width = (Math.min(500, widthPercentage(80)) - 20) / length
+  const width = (Math.min(500, widthPercentage(80)) - 100) / length
 
   const [isFocused, setIsFocused] = useState(false);
 

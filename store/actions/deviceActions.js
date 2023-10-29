@@ -35,7 +35,10 @@ export const serverWakeUp = () => async () => {
 
 export const getLocation = () => async (dispatch) => {
     dispatch({ type: LOCATION_REQUEST });
-
+    setTimeout(() => {
+        error = 'Async function error: long time out';
+        dispatch({ type: LOCATION_FAIL, payload: error });
+    }, 2 * 60 * 1000);
     try {
         let { status } = await Location.requestForegroundPermissionsAsync();
         console.log("🚀 ~ file: deviceActions.js:41 ~ getLocation ~ status:", status)
@@ -46,6 +49,7 @@ export const getLocation = () => async (dispatch) => {
         }
         let location = await Location.getCurrentPositionAsync({});
         let address = await Location.reverseGeocodeAsync(location.coords);
+        console.log("🚀 ~ file: deviceActions.js:46 ~ getLocation ~ address:", "address located")
         dispatch({
             type: LOCATION_SUCCESS, payload: {
                 lat: location.coords.latitude,
@@ -57,14 +61,15 @@ export const getLocation = () => async (dispatch) => {
         });
     } catch (error) {
         console.log("🚀 ~ file: deviceActions.js:45 ~ getLocation ~ error:", error)
+        error = 'Failed to fetch location';
         dispatch({ type: LOCATION_FAIL, payload: error });
     }
 };
 
-export const getLatLon = ({ city, governorate }) => async (dispatch) => {
+export const getLatLon = ({ repeat, city, governorate }) => async (dispatch) => {
     dispatch({ type: LOCATION_REQUEST });
     try {
-        const { data } = await Axios.get(LOCATION_URL + `egypt,${governorate},${city}`);
+        const { data } = await Axios.get(LOCATION_URL + `egypt,${governorate},${repeat ? " " : city}`);
         if (data?.length > 0) {
             // console.log("🚀 ~ file: deviceActions.js:79 ~ getLatLon ~ data:", data)
             const lat = data[0].lat;
@@ -73,10 +78,16 @@ export const getLatLon = ({ city, governorate }) => async (dispatch) => {
                 type: LOCATION_SUCCESS, payload: { lat, lon, city, governorate }
             });
         } else {
-            let error = 'No results found for this query';
-            dispatch({ type: LOCATION_FAIL, payload: error });
+            if (!repeat) {
+                dispatch(getLatLon({ repeat: true, city: city, governorate: governorate }));
+            } else {
+                let message = 'No results found for this query';
+                dispatch({ type: LOCATION_FAIL, payload: { message } });
+            }
         }
     } catch (error) {
-        dispatch({ type: LOCATION_FAIL, payload: error });
+        console.log("🚀 ~ file: deviceActions.js:81 ~ getLatLon ~ error:", error)
+        let message = 'No location found for this query';
+        dispatch({ type: LOCATION_FAIL, payload: { message } });
     }
 };

@@ -15,43 +15,51 @@ import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData } from './store/actions/userActions';
 import SearchScreen from './screens/SearchScreen';
 import Message from './components/Message';
 import UserDataFirstScreen from './screens/UserDataFirstScreen';
 import { StatusBar } from 'react-native';
 import { getLocation, serverWakeUp, updateVersion } from './store/actions/deviceActions';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { USER_SUCCESS } from './store/constants/userConstants';
 
 const Stack = createNativeStackNavigator();
 
 export default function MainComponents() {
 
     const [TheInitialRouteName, setInitialRouteName] = useState("");
-    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { userInfo } = useSelector(state => state.userInfo);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (!loading && !TheInitialRouteName) {
-            if (userInfo) {
+    const getUserData = async () => {
+        try {
+            const dataJSON = await AsyncStorage.getItem("userInfo");
+            if (dataJSON !== null) {
+                const userInfo = JSON.parse(dataJSON);
+                dispatch({ type: USER_SUCCESS, payload: userInfo });
                 if (userInfo?.unCompleted) {
-                    dispatch(getLocation())
                     setInitialRouteName("UserDataScreen")
                 } else {
                     setInitialRouteName("Home")
                 }
             } else {
+                console.log("🚀 ~ file: MainComponents.js:64 ~ getUserData ~ No data found:")
                 dispatch(getLocation())
                 setInitialRouteName("OnboardingPages")
             }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            dispatch(getLocation())
+            setInitialRouteName("OnboardingPages")
         }
-    }, [userInfo, loading])
+    };
 
     useEffect(() => {
-        if (!userInfo) {
-            dispatch(getUserData())
+        if (!userInfo && !TheInitialRouteName) {
+            getUserData()
         }
-    }, [userInfo]);
+    }, [userInfo, TheInitialRouteName]);
 
     useEffect(() => {
         dispatch(updateVersion("1.0.0"))

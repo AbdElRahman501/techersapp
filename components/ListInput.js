@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
 import SortingContainer from './SortingContainer';
 import SliderModal from './SliderModal';
+import { inputChecker } from '../actions/GlobalFunctions';
 const containerHeight = 300
 
-export default function ListInput({ value, data, placeholder, changHandler, children, rightIcon, checkInputs, style }) {
+export default function ListInput({ value, data, placeholder, changHandler, children, rightIcon, checkInputs, setState, style }) {
     const { language } = useSelector(state => state.languageState);
     const options = data.map(x => x[language] || x)
     const [isFocused, setIsFocused] = useState(false);
@@ -23,7 +24,9 @@ export default function ListInput({ value, data, placeholder, changHandler, chil
     useEffect(() => {
         if (checkInputs && !value) {
             setError(true)
+            setState(inputChecker(value, placeholder))
         } else if (value) {
+            setState(pv => pv.error ? pv : "")
             setError(false)
         }
     }, [checkInputs, value])

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { signOut } from '../store/actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { Border, Color, FontSize, Height, Margin, globalStyles } from '../GlobalStyles';
@@ -42,21 +42,21 @@ export default function ProfileScreen() {
                             resizeMode="contain"
                             source={require('../assets/teachers/boy.png')}
                         />
-                        <View style={{ marginHorizontal: Margin.m_sm }}>
+                        <View style={{ marginHorizontal: Margin.m_sm , gap: 3 }}>
                             <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{userInfo?.fullName || ""}</CustomText>
                             <CustomText style={globalStyles.smallText}>{userInfo?.schoolYear[language] || ""}</CustomText>
                         </View>
                     </TouchableOpacity>
                     <Burger_Button_Icon width={24} height={24} viewBox="0 0 24 24" />
                 </View>
-                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_xl, width: "100%" }]} >
+                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
                     {t("general")}
                 </CustomText>
 
                 <SettingItem Icon={() => <Earth_Icon />} title={t("language")} regular={language} pressHandler={() => dispatch(ToggleLanguage())} />
                 <SettingItem Icon={() => <Teacher_Icon />} title={t("my teachers")} pressHandler={() => console.log("my teachers")} />
                 <SettingItem Icon={() => <Theme_Icon />} title={t("theme")} regular={t("light")} pressHandler={() => console.log("Theme")} />
-                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_xl, width: "100%" }]} >
+                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
                     {t("account")}
                 </CustomText>
                 <SettingItem Icon={() => <Logout_Icon />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
@@ -66,21 +66,3 @@ export default function ProfileScreen() {
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        paddingTop: Height.nav_tap,
-        flex: 1,
-        alignItems: "center",
-    },
-
-    button: {
-        backgroundColor: Color.red,
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 10,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 16,
-    },
-})

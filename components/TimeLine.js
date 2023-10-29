@@ -30,7 +30,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             y: isToday ? (currentHour) * 100 : theHour * 100,
             animated: "smooth"
         });
-    }, [events])
+    }, [events , scrollViewRef?.current])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
