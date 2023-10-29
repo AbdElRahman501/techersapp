@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { View, Animated, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Height, Padding, widthPercentage } from '../GlobalStyles';
 
-const CustomDropdown = ({ data, selectedItem, onSelect, children, height, style }) => {
+const CustomDropdown = (props) => {
+    const { data, selectedItem, onSelect, children, height, style } = props
     const [isPickerOpen, setPickerOpen] = useState(false);
     const animatedHeight = useRef(new Animated.Value(0)).current;
 
@@ -28,15 +29,17 @@ const CustomDropdown = ({ data, selectedItem, onSelect, children, height, style 
         onSelect(item);
         togglePicker();
     };
-    const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => handleItemPress(item)}>
-            {React.cloneElement(children, { item })}
-        </TouchableOpacity>
+    const renderItem = useCallback(
+        ({ item }) => {
+            return <TouchableOpacity onPress={() => handleItemPress(item)}>
+                {React.cloneElement(children, { item, ...props })}
+            </TouchableOpacity>
+        },
+        [props]
     );
-
     return (
         <View style={[styles.container]}>
-            {React.cloneElement(children, { item: selectedItem, togglePicker, isSelected: true, onlyOne: data.length })}
+            {React.cloneElement(children, { item: selectedItem, togglePicker, isSelected: true, onlyOne: data.length, ...props })}
             <View style={{ width: widthPercentage(100) }}>
                 <Animated.View style={[styles.picker, { height: animatedHeight }]}>
                     <FlatList

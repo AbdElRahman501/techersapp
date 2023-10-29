@@ -41,11 +41,18 @@ export default function HomeScreen() {
       });
     } else {
       const myT = findMyTeachers(teachers, userInfo.myTeachers || [])
+
+      const myGroupSubjects = myT.map(teacher => {
+        const groupsID = userInfo?.myTeachers?.find(x => x.id === teacher.id)?.groupsId
+        const myGroups = teacher.groups.filter(x => groupsID?.includes(x.id))
+        return myGroups.map(x => x.subject)
+      }).flat()
       const myFav = myT.filter(x => x.favorite === true)
-      const mySubj = removeDuplicatesById(myT.map(x => x.mainSubject))
+      const mySubj = removeDuplicatesById(myGroupSubjects)
       setMyTeachers(myT)
       setMyFavTeachers(myFav)
-      setMySubjects([...mySubj, { ...item, id: mySubj.length + 2 }])
+      setMySubjects([...mySubj, { ...item, id: 10000 }])
+
     }
   }, [userInfo])
 

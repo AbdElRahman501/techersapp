@@ -11,7 +11,7 @@ import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import DayItem from '../components/DayItem';
 import MonthItem from '../components/MonthItem';
-import { filterArrayByIds, findMyTeachers } from '../actions/GlobalFunctions';
+import { findMyTeachers } from '../actions/GlobalFunctions';
 
 
 
@@ -32,7 +32,10 @@ export default function SubjectScreen({ route }) {
     useEffect(() => {
         if (userInfo) {
             const myT = findMyTeachers(teachers, userInfo.myTeachers)
-            const theTeachers = myT.filter(x => x.mainSubject.id === item.id)
+            const theTeachers = myT.filter(x => {
+                const teacherSubjects = x.groups.map(y => y.subject.id)
+                return teacherSubjects.includes(item.id)
+            })
             setSubjectTeachers(theTeachers);
             setSelectedOption(theTeachers[0])
         }
@@ -43,7 +46,7 @@ export default function SubjectScreen({ route }) {
     return selectedOption && (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={item[language]} />
-            <CustomDropdown data={subjectTeachers} selectedItem={selectedOption} onSelect={handleSelect} height={250}  >
+            <CustomDropdown subject={item} data={subjectTeachers} selectedItem={selectedOption} onSelect={handleSelect} height={250}  >
                 <TeacherItem />
             </CustomDropdown>
             <ScrollView style={{ flex: 1 }} >

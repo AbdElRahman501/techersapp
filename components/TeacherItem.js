@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { checkArrayForUserId, getSubjectTitle, getTitle } from '../actions/GlobalFunctions'
 
 
-export default function TeacherItem({ item, isSelected, togglePicker, onlyOne }) {
+export default function TeacherItem({ subject, item, isSelected, togglePicker, onlyOne }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
     const id = 18
@@ -30,7 +30,7 @@ export default function TeacherItem({ item, isSelected, togglePicker, onlyOne })
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText numberOfLines={1} lineBreakMode="tail" style={[styles.title]}>{getTitle(item.gender, item.name)}</CustomText>
-                    <CustomText style={[styles.regular]}>{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
+                    <CustomText style={[styles.regular]}>{getSubjectTitle(item.gender, subject[language] || item.mainSubject[language])}</CustomText>
                 </View>
                 <CustomImage
                     style={[styles.image]}
