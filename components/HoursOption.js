@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
-import { Color, Height, Margin, globalStyles } from '../GlobalStyles'
+import { Color, FontSize, Height, Margin, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
 import { areGroupsOverLapped, getBookedMessage, getTitle, transformTime } from '../actions/GlobalFunctions';
 import AlertModal from './alertModal';
@@ -46,13 +46,13 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelP
                 primaryButton={t("change")}
                 primaryButtonSubmit={() => setVisible(false)}
             >
-                <TouchableOpacity onPress={handleChangeDate} style={[globalStyles.student, { minWidth: "80%", marginVertical: 0, marginTop: Margin.m_sm, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
+                <TouchableOpacity onPress={handleChangeDate} style={[globalStyles.student, { width: "100%", marginVertical: 0, marginTop: Margin.m_sm, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
                     <CustomImage
                         style={{ height: Height.hi_md, width: Height.hi_md, borderRadius: Height.hi_md / 2 }}
                         resizeMode="contain"
                         source={myTeacher?.imageSource}
                     />
-                    <View style={{ marginHorizontal: Margin.m_sm }}>
+                    <View style={{ marginHorizontal: Margin.m_sm, flex: 1 }}>
                         <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{getTitle(myTeacher?.gender, myTeacher?.name) + " (" + overLappedGroup?.subject[language] + ")"}</CustomText>
                         <CustomText style={globalStyles.smallText}>{getBookedMessage(overLappedGroup, language)}</CustomText>
                     </View>

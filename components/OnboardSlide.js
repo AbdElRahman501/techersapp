@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
-import { Color, FontFamily, FontSize, heightPercentage, widthPercentage } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Height, Padding, heightPercentage, widthPercentage } from '../GlobalStyles';
 import { useSelector } from 'react-redux';
 
 const OnboardSlide = React.memo(({ item }) => {
@@ -13,7 +13,7 @@ const OnboardSlide = React.memo(({ item }) => {
                 source={item.backgroundImageSource}
             >
                 <Image
-                    style={{ width: widthPercentage(95), height: heightPercentage(60) }}
+                    style={{ width: "100%", height: "65%", alignSelf: "center" }}
                     resizeMode="contain"
                     source={item.imageSource}
                 />
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 
     itemContainer: {
         width: widthPercentage(100),
+        height: heightPercentage(100) - Height.hi_md - (Padding.p_xl * 2),
         height: "100%",
         alignItems: 'center',
         justifyContent: 'center',
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize.size_xl,
         fontFamily: FontFamily.montserratArabic,
         color: Color.black,
+        paddingBottom: 10,
         textAlign: 'center',
         width: "90%"
     },

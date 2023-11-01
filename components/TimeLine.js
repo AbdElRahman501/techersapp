@@ -30,7 +30,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             y: isToday ? (currentHour) * 100 : theHour * 100,
             animated: "smooth"
         });
-    }, [events , scrollViewRef?.current])
+    }, [events, scrollViewRef?.current])
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -59,27 +59,28 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
             <View style={[globalStyles.container, { paddingVertical: 15 }]}>
                 <Svg height={hours.length * 100} width={widthPercentage(100)} >
                     {hours.map((hour, i) => (
-                        <View key={i} >
-                            <Line
-                                x1={20}
-                                y1={i * 100}
-                                x2={widthPercentage(100) - 20}
-                                y2={i * 100}
-                                stroke="black"
-                                opacity={0.1}
-                                strokeWidth="2"
-                            />
-                            <Line
-                                x1={50}
-                                y1={(i + 0.5) * 100}
-                                x2={widthPercentage(100) - 50}
-                                y2={(i + 0.5) * 100}
-                                stroke="black"
-                                opacity={0.1}
-                                strokeWidth="1"
-                            />
-                        </View>
-
+                        <Line
+                            key={i}
+                            x1={20}
+                            y1={i * 100}
+                            x2={widthPercentage(100) - 20}
+                            y2={i * 100}
+                            stroke="black"
+                            opacity={0.1}
+                            strokeWidth="2"
+                        />
+                    ))}
+                    {hours.map((hour, i) => (
+                        <Line
+                            key={i}
+                            x1={50}
+                            y1={(i + 0.5) * 100}
+                            x2={widthPercentage(100) - 50}
+                            y2={(i + 0.5) * 100}
+                            stroke="black"
+                            opacity={0.1}
+                            strokeWidth="1"
+                        />
                     ))}
                     {isToday &&
                         <>

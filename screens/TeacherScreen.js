@@ -32,7 +32,6 @@ export default function TeacherScreen({ route }) {
     const [hours, setHours] = useState([]);
     const [myGroups, setMyGroups] = useState([])
 
-
     let [bookSeat, changeDate, leave, chooseDay, chooseHour, noGroupAvailable, and] =
         [t("book your seat"), t("change date"), t("leave"), t("choose day"), t("choose hour"), t("no group available"), t("and")];
     const [buttonText, setButtonText] = useState({ text: bookSeat })
@@ -59,6 +58,8 @@ export default function TeacherScreen({ route }) {
     const changeSubjectHandler = (subject) => {
         setSelectedSubject(subject)
         init(userInfo, subject)
+        getBookedGroups(subject)
+
     }
 
 
@@ -120,11 +121,23 @@ export default function TeacherScreen({ route }) {
     useEffect(() => {
         if (userInfo) {
             init(userInfo)
-            let myTeachers = userInfo.myTeachers?.filter(x => x.id !== item.id)
-            setMyGroups(getMyGroups(myTeachers, teachers))
+            getBookedGroups(selectedSubject)
         }
     }, [userInfo])
 
+    const getBookedGroups = (subject) => {
+        let myTeachers = userInfo.myTeachers?.filter(x => x.id !== item.id)
+        let myGroups = getMyGroups(myTeachers, teachers)
+        const thisTeacherBookedGroupsIds = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
+        let thisTeacherBookedGroups = item.groups.filter(x => thisTeacherBookedGroupsIds?.includes(x.id)).filter(x => x.subject.id !== subject?.id)
+        if (thisTeacherBookedGroups.length > 0 && subject) {
+            thisTeacherBookedGroups = thisTeacherBookedGroups.map(
+                x => ({ ...x, teacherId: item.id, color: userInfo.myTeachers.find(y => y.id === item.id).color })
+            )
+            myGroups = [...myGroups, ...thisTeacherBookedGroups]
+        }
+        setMyGroups(myGroups)
+    }
     // button message
     useEffect(() => {
         setButtonText(getButtonText())
@@ -140,9 +153,10 @@ export default function TeacherScreen({ route }) {
             return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
             let myGroupsId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-            if (myGroupsId?.includes(selectedGroup.id)) {
+            let isTheSameSubject = item.groups.filter(x => myGroupsId?.includes(x.id)).find(x => x.subject.id === selectedSubject?.id)
+            if (myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
                 return ({ text: leave, booked: true })
-            } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id)) {
+            } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
                 return ({ text: changeDate })
             } else {
                 return ({ text: bookSeat })

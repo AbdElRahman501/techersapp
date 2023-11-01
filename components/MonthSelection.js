@@ -75,9 +75,9 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
     });
 
     return (
-        <View style={[styles.sliderContainer, { marginTop: Margin.m_sm }]}>
-            <TouchableOpacity style={[styles.button, { paddingBottom: 10, marginLeft: 50 }]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
-                <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
+        <View style={[styles.sliderContainer, { marginTop: Margin.m_sm, flexDirection: language === 'ar' ? 'row-reverse' : 'row' }]}>
+            <TouchableOpacity style={[styles.button, { marginHorizontal: 25 }]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
+                <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? 1 : -1 }] }} />
             </TouchableOpacity>
             <View style={{ flex: 1 }}>
                 <FlatList
@@ -87,6 +87,7 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
                     keyExtractor={keyExtractor}
                     horizontal
                     pagingEnabled
+                    inverted={language === 'ar'}
                     showsHorizontalScrollIndicator={false}
                     snapToInterval={null}
                     getItemLayout={getItemLayout}
@@ -96,8 +97,8 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
 
                 />
             </View>
-            <TouchableOpacity style={[styles.button, { paddingTop: 10, marginRight: 50 }]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
-                <Next_Icon width={24} height={24} color={scrolledIndex > 0 ? Color.darkgray : Color.darkcyan} />
+            <TouchableOpacity style={[styles.button, { marginHorizontal: 25 }]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
+                <Next_Icon width={24} height={24} color={scrolledIndex > 0 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? -1 : 1 }] }} />
             </TouchableOpacity>
         </View>
     )

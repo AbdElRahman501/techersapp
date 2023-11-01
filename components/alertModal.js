@@ -6,7 +6,7 @@ import t from "../actions/changeLanguage";
 
 const AlertModal = ({ title, content, visible, imageSource, secondaryButton, primaryButton, primaryButtonStyle, secondaryButtonSubmit, primaryButtonSubmit, children }) => {
     const ok = t("ok")
-    const width = widthPercentage(25)
+    const width = Math.max(widthPercentage(25), 140);
     return (
         <Modal visible={visible === true} animationType="fade" transparent>
             <View style={globalStyles.modalContainer}>
@@ -19,7 +19,7 @@ const AlertModal = ({ title, content, visible, imageSource, secondaryButton, pri
                         />
                     </View>}
                     <Text style={[globalStyles.title, { marginBottom: 5 }]}>{title}</Text>
-                    {content && <Text style={[globalStyles.contentText, { lineHeight: 30, width: "100%", textAlign: 'center', color: Color.darkgray }]}
+                    {content && <Text style={[globalStyles.contentText, { lineHeight: 25, width: "100%", textAlign: 'center', color: Color.darkgray }]}
                     >{content}</Text>}
                     {children}
                     <View style={{ width: "100%", gap: 15, flexDirection: "row", marginTop: 20 }}>

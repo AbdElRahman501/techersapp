@@ -322,7 +322,7 @@ export const getTheMonths = () => {
     const week = [];
     let currentDay = new Date(sunday);
 
-    const currentMonthIndex = today.getMonth();
+    const currentMonthIndex = new Date().getMonth();
     const months = [
         { ...monthNames[currentMonthIndex - 1], id: currentMonthIndex - 1 },
         { ...monthNames[currentMonthIndex], id: currentMonthIndex }

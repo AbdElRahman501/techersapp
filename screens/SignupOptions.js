@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, ImageBackground, Image, View, SafeAreaView, Platform } from "react-native";
-import { Border, FontFamily, Color, FontSize, Padding, heightPercentage, widthPercentage, Margin } from "../GlobalStyles";
+import { StyleSheet, Text, ImageBackground, Image, View, SafeAreaView } from "react-native";
+import { Border, FontFamily, Color, FontSize, Padding, Margin } from "../GlobalStyles";
 import { useSelector } from "react-redux";
 import PrimaryButton from "../components/PrimaryButton";
 import PressedText from "../components/PressedText";
@@ -21,7 +21,7 @@ const SignUpOptions = () => {
         <Header lastSlide={true} />
 
         <Image
-          style={{ flex: 1, width: "90%" , maxWidth: 450 }}
+          style={{ flex: 1, width: "90%", maxWidth: 450 }}
           resizeMode="contain"
           source={require("../assets/image-2.png")}
         />
@@ -46,10 +46,7 @@ const SignUpOptions = () => {
             </PrimaryButton>
           </View>
         </View>
-        <View style={[styles.flexContainer , {marginBottom: Platform.select({
-            ios: Margin.m_xxl,
-            android: Margin.m_base,
-          }),}]} >
+        <View style={[styles.flexContainer, { marginBottom: Margin.m_base }]} >
           <View style={[styles.parentFlexBox, { flexDirection: language === 'en' ? "row" : "row-reverse" }]}>
             <Text style={styles.regularText}>{t("already have an account")}</Text>
             <PressedText style={{ marginRight: 8 }} title={t("sign in")} pressHandler={() => navigation.navigate("SigninScreen")} />

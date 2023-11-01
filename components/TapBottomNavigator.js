@@ -10,47 +10,53 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
     const navigation = useNavigation();
     const [currentScreen, setCurrentScreen] = useState(TheInitialRouteName);
     const navigationState = useNavigationState(state => state);
-    
+
     useEffect(() => {
         if (navigationState?.routes) {
             const history = navigationState.routes.map(route => route.name);
             setCurrentScreen(history[history.length - 1]);
         }
     }, [navigationState, TheInitialRouteName]);
-    
+
     const goTo = (distinction) => {
         if (currentScreen !== distinction) {
             navigation.navigate(distinction);
         }
     }
-    
+
 
     return (currentScreen === 'Home' || currentScreen === 'Community' || currentScreen === 'Schedule' || currentScreen === 'Profile') && (
-        <SafeAreaView style={styles.container} >
-            <TouchableOpacity style={{padding: 20}} onPress={() => goTo("Home")}  >
-                {currentScreen === "Home"
-                    ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
-                    : <Home_icon_Svg />
-                }
-            </TouchableOpacity>
-            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Community')}>
-                {currentScreen === 'Community'
-                    ? <Community_Icon_Fill />
-                    : <Community_Icon />
-                }
-            </TouchableOpacity>
-            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Schedule')}>
-                {currentScreen === 'Schedule'
-                    ? <Calender_home_svg_fill />
-                    : <Calender_home_Svg />
-                }
-            </TouchableOpacity>
-            <TouchableOpacity style={{padding: 20}} onPress={() => goTo('Profile')}>
-                {currentScreen === 'Profile'
-                    ? <User_Icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
-                    : <User_Icon_Svg />
-                }
-            </TouchableOpacity>
+        <SafeAreaView style={{
+            zIndex: 999,
+            position: 'absolute',
+            bottom: 0,
+        }}>
+            <View style={styles.container}>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo("Home")}  >
+                    {currentScreen === "Home"
+                        ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
+                        : <Home_icon_Svg />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Community')}>
+                    {currentScreen === 'Community'
+                        ? <Community_Icon_Fill />
+                        : <Community_Icon />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Schedule')}>
+                    {currentScreen === 'Schedule'
+                        ? <Calender_home_svg_fill />
+                        : <Calender_home_Svg />
+                    }
+                </TouchableOpacity>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Profile')}>
+                    {currentScreen === 'Profile'
+                        ? <User_Icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
+                        : <User_Icon_Svg />
+                    }
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -64,9 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-around',
-        zIndex: 999,
-        position: 'absolute',
-        bottom: 0,
+
         borderColor: Color.lightGray,
         borderWidth: 1,
         ...Platform.select({
