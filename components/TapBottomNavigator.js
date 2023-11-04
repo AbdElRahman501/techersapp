@@ -26,11 +26,7 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
 
 
     return (currentScreen === 'Home' || currentScreen === 'Community' || currentScreen === 'Schedule' || currentScreen === 'Profile') && (
-        <SafeAreaView style={{
-            zIndex: 999,
-            position: 'absolute',
-            bottom: 0,
-        }}>
+        <SafeAreaView style={styles.tapContainer}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo("Home")}  >
                     {currentScreen === "Home"
@@ -65,12 +61,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         height: Height.nav_tap,
-        width: '100%',
         flexDirection: 'row',
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-around',
-
+    },
+    tapContainer: {
+        width: '100%',
+        zIndex: 999,
+        position: 'absolute',
+        justifyContent: 'center',
+        bottom: 0,
+        left: 0,
+        backgroundColor: '#fff',
         borderColor: Color.lightGray,
         borderWidth: 1,
         ...Platform.select({
@@ -89,6 +91,5 @@ const styles = StyleSheet.create({
             },
         }),
     }
-
 
 })

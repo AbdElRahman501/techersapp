@@ -8,7 +8,6 @@ import AdsSlider from '../components/AdsSlider';
 import SearchBar from '../components/SearchBar';
 import t from '../actions/changeLanguage';
 import SlideContainer from '../components/SlideContainer';
-import { teachers } from '../data';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
@@ -17,6 +16,7 @@ import { Add_Icon } from '../assets/icons/Icons';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
+  const { loading: teachersLoading, teachers, error: teachersError } = useSelector(state => state.teachersState);
   const [myTeachers, setMyTeachers] = useState([])
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [mySubjects, setMySubjects] = useState([])
@@ -39,9 +39,8 @@ export default function HomeScreen() {
         index: 0,
         routes: [{ name: 'SigninScreen' }],
       });
-    } else {
+    } else if (teachers?.length > 0) {
       const myT = findMyTeachers(teachers, userInfo.myTeachers || [])
-
       const myGroupSubjects = myT.map(teacher => {
         const groupsID = userInfo?.myTeachers?.find(x => x.id === teacher.id)?.groupsId
         const myGroups = teacher.groups.filter(x => groupsID?.includes(x.id))
@@ -54,7 +53,7 @@ export default function HomeScreen() {
       setMySubjects([...mySubj, { ...item, id: 10000 }])
 
     }
-  }, [userInfo])
+  }, [userInfo, teachers])
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

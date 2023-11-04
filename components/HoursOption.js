@@ -20,6 +20,8 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelP
     const [myTeacher, setMyTeacher] = useState()
     const [overLappedGroup, setOverLapGroup] = useState()
     const navigation = useNavigation()
+    const [message, setMessage] = useState("")
+    const [overLappedMessage, setOverLappedMessage] = useState("")
 
     useEffect(() => {
         if (overlappedTime?.teacherId) {
@@ -36,13 +38,22 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelP
             navigation.push("TeacherScreen", { item: myTeacher })
         }
     };
+    const submitHandler = () => {
+        if (unavailable) {
+            setVisible(true)
+            setMessage(getBookedMessage(teacherGroup, language))
+            setOverLappedMessage(getBookedMessage(overLappedGroup, language))
+        } else {
+            handelPress(item)
+        }
+    }
     return (
         <>
             <AlertModal
                 visible={visible}
                 imageSource={require('../assets/icons/alert.png')}
                 title={t("sorry") + " 😔 " + t("conflict")}
-                content={t('cannot book time', { message: getBookedMessage(teacherGroup, language) })}
+                content={t('cannot book time', { message: message })}
                 primaryButton={t("change")}
                 primaryButtonSubmit={() => setVisible(false)}
             >
@@ -54,19 +65,13 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelP
                     />
                     <View style={{ marginHorizontal: Margin.m_sm, flex: 1 }}>
                         <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{getTitle(myTeacher?.gender, myTeacher?.name) + " (" + overLappedGroup?.subject[language] + ")"}</CustomText>
-                        <CustomText style={globalStyles.smallText}>{getBookedMessage(overLappedGroup, language)}</CustomText>
+                        <CustomText style={globalStyles.smallText}>{overLappedMessage}</CustomText>
                     </View>
                 </TouchableOpacity>
 
             </AlertModal>
             <TouchableWithoutFeedback
-                onPress={() => {
-                    if (unavailable) {
-                        setVisible(true)
-                    } else {
-                        handelPress(item)
-                    }
-                }}   >
+                onPress={submitHandler}   >
                 <View style={[globalStyles.dayCard, {
                     width: 100,
                     height: 40,

@@ -22,6 +22,7 @@ import { StatusBar } from 'react-native';
 import { getLocation, serverWakeUp, updateVersion } from './store/actions/deviceActions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_SUCCESS } from './store/constants/userConstants';
+import { getTeachersData } from './store/actions/teachersActions';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ export default function MainComponents() {
                 if (userInfo?.unCompleted) {
                     setInitialRouteName("UserDataScreen")
                 } else {
+                    dispatch(getTeachersData());
                     setInitialRouteName("Home")
                 }
             } else {
@@ -62,7 +64,7 @@ export default function MainComponents() {
     }, [userInfo, TheInitialRouteName]);
 
     useEffect(() => {
-        dispatch(updateVersion("1.0.0"))
+        dispatch(updateVersion("1.0.0.0"))
         dispatch(serverWakeUp())
     }, [])
 

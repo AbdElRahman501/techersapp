@@ -53,7 +53,7 @@ export default function ScheduleScreen() {
     }
 
     return (
-        <View style={[globalStyles.container, { backgroundColor: Color.white, paddingTop: Padding.p_m, marginBottom: Height.nav_tap }]} >
+        <SafeAreaView style={[globalStyles.container, { backgroundColor: Color.white, paddingTop: Padding.p_m, marginBottom: Height.nav_tap }]} >
             <MonthSelection selectedMonth={selectedMonth} months={months} currentMonth={currentMonth} setMonth={setSelectedMonth} />
             <View style={[globalStyles.container, { maxHeight: 120, width: '100%', backgroundColor: Color.cyanBackGround, borderTopLeftRadius: Border.br_3xl }]}>
                 <View style={[globalStyles.container, { overflow: 'hidden', transform: [{ translateX: 10 }], width: '100%', borderBottomLeftRadius: Border.br_26xl, backgroundColor: Color.white }]}>
@@ -73,7 +73,7 @@ export default function ScheduleScreen() {
                     <TimeLine today={today} selectedDay={selectedDay} eventsDuration={eventsDuration} events={events} />
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

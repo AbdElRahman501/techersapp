@@ -9,13 +9,13 @@ import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } f
 
 export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler }) {
     const { language } = useSelector(state => state.languageState)
-    const [liked, setLiked] = useState({ state: false, number: item.likes.length })
-    const subjects = removeDuplicatesById(item.groups.map(x => x.subject))
+    const [liked, setLiked] = useState({ state: false, number: item?.likes.length })
+    const subjects = removeDuplicatesById(item?.groups.map(x => x.subject))
 
     const id = 18
 
     useEffect(() => {
-        if (checkArrayForUserId(item.likes, id) && !liked.state) {
+        if (checkArrayForUserId(item?.likes, id) && !liked.state) {
             setLiked(pv => ({ ...pv, state: true }))
         }
     }, [])
@@ -24,9 +24,9 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
         <View style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
-                    <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item.gender, item.name)}</CustomText>
+                    <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item?.gender, item?.name)}</CustomText>
                     <View style={{ gap: 10, justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
-                        {subjects.map((subject, i) => <TouchableOpacity key={i} onPress={() => changeSubjectHandler(subject)} disabled={!selectedSubject} >
+                        {subjects.map((subject, i) => <TouchableOpacity key={i} onPress={() => changeSubjectHandler && changeSubjectHandler(subject)} disabled={!selectedSubject} >
                             <CustomText style={[styles.regular, {
                                 color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
                             }]}>
@@ -49,14 +49,14 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
                                 {liked.number}
                             </CustomText>
                         </TouchableOpacity>
-                        <CustomText style={styles.regular}>{formatDistance(item.distance, language)}</CustomText>
+                        <CustomText style={styles.regular}>{formatDistance(item?.distance, language)}</CustomText>
                     </View>
                 </View>
             </View>
             <CustomImage
                 style={[styles.image, language === 'en' ? { marginRight: 10 } : { marginLeft: 10 }]}
                 resizeMode="cover"
-                source={item.imageSource} />
+                source={item?.imageSource} />
         </View >
     )
 }

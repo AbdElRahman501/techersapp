@@ -20,8 +20,8 @@ const FriendItem = React.memo(({ item, teacher }) => {
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText style={styles.title}>{item.name}</CustomText>
-                    <CustomText numberOfLines={1} lineBreakMode="tail" style={styles.regular}>{t("colleagues from", { name: getTitle(teacher.gender, teacher.name) })}</CustomText>
-                    <CustomText numberOfLines={1} lineBreakMode="tail" style={styles.regular}>{t("ask about teacher", { name: getTitle(teacher.gender, teacher.name) })}</CustomText>
+                    <CustomText numberOfLines={1} lineBreakMode="tail" style={styles.regular}>{t("colleagues from", { name: getTitle(teacher?.gender, teacher?.name) })}</CustomText>
+                    <CustomText numberOfLines={1} lineBreakMode="tail" style={styles.regular}>{t("ask about teacher", { name: getTitle(teacher?.gender, teacher?.name) })}</CustomText>
                 </View>
                 <CustomImage
                     style={[styles.image]}

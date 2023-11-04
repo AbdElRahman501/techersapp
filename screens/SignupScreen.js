@@ -64,7 +64,7 @@ export default function SignUpScreen({ route }) {
         } catch (error) {
             setLoading(false)
             let errorMessage = getErrorMessage(error?.response?.data || error)?.message
-            setErrorMessage(errorMessage)
+            setErrorMessage(errorMessage || "")
         }
     }
 

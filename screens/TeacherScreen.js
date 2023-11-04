@@ -19,24 +19,32 @@ import { showMessage } from "../store/actions/showMessageActions";
 import { addTeacher, leaveTeacher } from '../store/actions/bookingFunctions';
 import AlertModal from '../components/alertModal';
 import LoadingModal from '../components/LoadingModal';
+import { getTeacherInfo } from '../store/actions/teachersActions';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
+    const dispatch = useDispatch();
+    let [bookSeat, changeDate, leave, chooseDay, chooseHour, noGroupAvailable, and, confirm, cancel, leaveMessage, confirmMessage] =
+        [t("book your seat"), t("change date"), t("leave"), t("choose day"), t("choose hour"), t("no group available"), t("and"), t("confirm"), t("cancel"), t("leave message"), t("confirm message")];
+
+    const { language } = useSelector((state) => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { loading: teacherLoading, teacher: theTeacher, error: teacherError } = useSelector(state => state.teacherInfoState);
+    // const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
 
+    const [teacher, setTeacher] = useState(theTeacher && theTeacher.id === item.id ? theTeacher : null);
+
+    const [visible, setVisible] = useState(false);
+    const [message, setMessage] = useState("")
     const [selectedGroup, setSelectedGroup] = useState();
-
     const [selectedDay, setSelectedDay] = useState();
     const [selectedHour, setSelectedHour] = useState("00:00");
     const [selectedSubject, setSelectedSubject] = useState()
     const [hours, setHours] = useState([]);
-    const [myGroups, setMyGroups] = useState([])
-
-    let [bookSeat, changeDate, leave, chooseDay, chooseHour, noGroupAvailable, and] =
-        [t("book your seat"), t("change date"), t("leave"), t("choose day"), t("choose hour"), t("no group available"), t("and")];
     const [buttonText, setButtonText] = useState({ text: bookSeat })
 
-    // press handler 
+    const myGroups = []
+    // // press handler 
     const dayHandelPress = (fullName) => {
         setSelectedDay(fullName)
         let isTheSameGroup = selectedGroup?.days.map(y => y.day).includes(fullName)
@@ -49,7 +57,7 @@ export default function TeacherScreen({ route }) {
         setHours(getHours(fullName, selectedSubject, selectedGroup))
     }
     const hoursHandelPress = (hour) => {
-        let myGroup = item.groups.find(x => x.id === hour.groupId)
+        let myGroup = teacher.groups.find(x => x.id === hour.groupId)
         if (hour.day !== selectedDay) {
             setSelectedDay(hour.day)
         }
@@ -57,15 +65,12 @@ export default function TeacherScreen({ route }) {
     }
     const changeSubjectHandler = (subject) => {
         setSelectedSubject(subject)
-        init(userInfo, subject)
-        getBookedGroups(subject)
-
     }
 
 
-    // functions 
+    // // functions 
     const availableGroups = (dayName, subject) => {
-        let availableGroups = item.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
+        let availableGroups = teacher.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
         availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(dayName))
         return availableGroups
     }
@@ -80,7 +85,7 @@ export default function TeacherScreen({ route }) {
             setSelectedHour(group.days.find(x => x.day === theSelectedDay).timeIn24Format)
         } else {
             setSelectedGroup()
-            setSelectedSubject(subject || removeDuplicatesById(item.groups.map(x => x.subject))[0])
+            setSelectedSubject(subject || removeDuplicatesById(teacher.groups.map(x => x.subject))[0])
             setSelectedHour("00:00")
             setSelectedDay()
             setHours([])
@@ -101,48 +106,30 @@ export default function TeacherScreen({ route }) {
         }
     }
 
-    const init = (userInfo, subject) => {
-        let myGroupsId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-        let availableGroups
-        if (subject) {
-            availableGroups = item.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
-        } else {
-            availableGroups = item.groups
-        }
-        let myGroup = availableGroups.find(x => myGroupsId?.includes(x.id))
-        if (myGroup) {
-            updateGroup(myGroup)
-        } else {
-            updateGroup(null, null, subject)
-        }
-    }
-
 
     useEffect(() => {
-        if (userInfo) {
-            init(userInfo)
-            getBookedGroups(selectedSubject)
+        if (teacher) {
+            setSelectedSubject(teacher.groups.map(x => x.subject)[0])
         }
-    }, [userInfo])
+    }, [teacher])
 
-    const getBookedGroups = (subject) => {
-        let myTeachers = userInfo.myTeachers?.filter(x => x.id !== item.id)
-        let myGroups = getMyGroups(myTeachers, teachers)
-        const thisTeacherBookedGroupsIds = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-        let thisTeacherBookedGroups = item.groups.filter(x => thisTeacherBookedGroupsIds?.includes(x.id)).filter(x => x.subject.id !== subject?.id)
-        if (thisTeacherBookedGroups.length > 0 && subject) {
-            thisTeacherBookedGroups = thisTeacherBookedGroups.map(
-                x => ({ ...x, teacherId: item.id, color: userInfo.myTeachers.find(y => y.id === item.id).color })
-            )
-            myGroups = [...myGroups, ...thisTeacherBookedGroups]
+    useEffect(() => {
+        if (!theTeacher && !teacherLoading) {
+            dispatch(getTeacherInfo(item.id))
+        } else if (theTeacher && theTeacher.id !== item.id) {
+            dispatch(getTeacherInfo(item.id))
+        } if (theTeacher && theTeacher.id === item.id) {
+            setTeacher(theTeacher)
         }
-        setMyGroups(myGroups)
-    }
+    }, [theTeacher])
+
     // button message
     useEffect(() => {
-        setButtonText(getButtonText())
+        if (teacher) {
+            setButtonText(getButtonText())
+        }
 
-    }, [selectedGroup, selectedDay, userInfo])
+    }, [selectedGroup, selectedDay, teacher])
 
     const getButtonText = () => {
         if (!selectedDay) {
@@ -152,8 +139,8 @@ export default function TeacherScreen({ route }) {
         } else if (hours.length === 0) {
             return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
-            let myGroupsId = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-            let isTheSameSubject = item.groups.filter(x => myGroupsId?.includes(x.id)).find(x => x.subject.id === selectedSubject?.id)
+            let myGroupsId = userInfo?.myTeachers?.find(x => x.id === teacher.id)?.groupsId
+            let isTheSameSubject = teacher.groups.filter(x => myGroupsId?.includes(x.id)).find(x => x.subject.id === selectedSubject?.id)
             if (myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
                 return ({ text: leave, booked: true })
             } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
@@ -164,23 +151,15 @@ export default function TeacherScreen({ route }) {
         }
     }
 
-    // submit handler
-    const dispatch = useDispatch();
-    const { language } = useSelector((state) => state.languageState);
-    const [visible, setVisible] = useState(false);
-    const [message, setMessage] = useState("")
-
-    const [confirm, cancel, leaveMessage, confirmMessage] = [t("confirm"), t("cancel"), t("leave message"), t("confirm message")];
+    // // submit handler
 
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
-                dispatch(leaveTeacher(item.id))
+                // dispatch(leaveTeacher(item.id))
             } else {
-                const groupsID = userInfo?.myTeachers?.find(x => x.id === item.id)?.groupsId
-                let prevGroups = item.groups.filter(x => groupsID?.includes(x.id))
-                prevGroups = prevGroups.filter(x => x.subject.id !== selectedGroup.subject.id)?.map(x => x.id)
-                dispatch(addTeacher({ id: item.id, groupsId: [...prevGroups, selectedGroup.id], favorite: false }, item, selectedGroup))
+                const theGroup = { ...selectedGroup, teacherId: item.id }
+                console.log("🚀 ~ file: TeacherScreen.js:657 ~ bookTeacher ~ selectedGroup:", theGroup.id);
             }
         }
     }
@@ -200,7 +179,7 @@ export default function TeacherScreen({ route }) {
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
-            <LoadingModal visible={loading} />
+            <LoadingModal visible={teacherLoading} />
             <AlertModal
                 visible={visible || loading}
                 imageSource={require('../assets/icons/alert.png')}
@@ -215,12 +194,13 @@ export default function TeacherScreen({ route }) {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
-                <View style={[styles.appContainer]}>
+                {teacher &&
+                    <TeacherMainCard userInfo={userInfo} item={teacher} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
+                }
+                <View style={[styles.appContainer, { display: teacher ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />
-                    <LongText content={item.about} style={[styles.regular, { textAlign: getTextInputAlign(item.about) }]} />
-                    {/* <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
-                    <Analytics item={item} /> */}
+                    <LongText content={teacher?.about} style={[styles.regular, { textAlign: getTextInputAlign(teacher?.about) }]} />
+                    <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <ContainerTitle title={t("schedule")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <SlideContainer data={days} selectedGroup={selectedGroup} selectedDay={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />
@@ -228,22 +208,24 @@ export default function TeacherScreen({ route }) {
                     <View style={styles.lineContainer}>
                         <View style={styles.line} />
                     </View>
-                    <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups} teacher={item} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
-                        <HoursOption />
-                    </SlideContainer>
+                    {teacher &&
+                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
+                            <HoursOption />
+                        </SlideContainer>
+                    }
                     <ContainerTitle title={t("colleagues")} />
                     <SlideContainer data={friends} scrollAnimation={true}  >
-                        <FriendItem teacher={item} />
+                        <FriendItem teacher={teacher} />
                     </SlideContainer>
                 </View>
             </ScrollView>
-            <View style={[styles.buttonContainer]}>
+            <View style={[styles.buttonContainer, { display: teacher ? "flex" : "none" }]}>
                 <View style={{ paddingHorizontal: Padding.p_sm }} >
                     <Text style={[styles.regular]}>
                         {t("per month")}
                     </Text>
                     <Text style={[styles.title]}>
-                        EL {item.price}
+                        EL {teacher?.price}
                     </Text>
                 </View>
                 <PrimaryButton

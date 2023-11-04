@@ -6,6 +6,7 @@ import languageReducer from './reducers/languageReducer';
 import { userReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 import { locationReducer } from './reducers/deviceReducers';
+import { teacherInfoReducer, teachersReducer } from './reducers/teacherReducers';
 
 
 const initialState = {
@@ -19,7 +20,9 @@ const store = configureStore({
         languageState: languageReducer,
         messageState: messageReducer,
         userInfo: userReducer,
-        locationState: locationReducer
+        locationState: locationReducer,
+        teachersState: teachersReducer,
+        teacherInfoState: teacherInfoReducer
     },
     preloadedState: initialState,
     devTools: false,

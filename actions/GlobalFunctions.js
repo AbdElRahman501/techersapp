@@ -226,10 +226,12 @@ export const formatDistance = (distance, lang, index) => {
     }
 };
 export const checkArrayForUserId = (array, userId) => {
+    if (!array || !array.length) return false
     return array.some((item) => item.id === userId);
 };
 
 export const getTitle = (gender, name) => {
+    if (!name) return '';
     let language = isArabic(name) ? "ar" : "en"
     if (language === 'ar') {
         if (gender === 'male') {
