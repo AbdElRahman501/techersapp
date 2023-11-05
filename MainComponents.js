@@ -64,7 +64,7 @@ export default function MainComponents() {
     }, [userInfo, TheInitialRouteName]);
 
     useEffect(() => {
-        dispatch(updateVersion("1.0.0.0"))
+        dispatch(updateVersion("1.0.0.1"))
         dispatch(serverWakeUp())
     }, [])
 

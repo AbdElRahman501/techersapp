@@ -7,7 +7,7 @@ const DayItem = React.memo(({ item, selectedDay, handelPress, selectedGroup }) =
     const { language } = useSelector(state => state.languageState)
     let isSelected = selectedDay === item.fullName
     let isInMyGroup = selectedGroup?.days.map(x => x.day)?.includes(item.fullName)
-    let sameHour = selectedGroup?.days.every((day) => day.time === selectedGroup.days[0].time)
+    let sameHour = selectedGroup?.days.every((day) => day.timeIn24Format === selectedGroup.days[0].timeIn24Format)
 
 
     return (

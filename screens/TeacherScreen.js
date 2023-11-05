@@ -20,6 +20,7 @@ import { addTeacher, leaveTeacher } from '../store/actions/bookingFunctions';
 import AlertModal from '../components/alertModal';
 import LoadingModal from '../components/LoadingModal';
 import { getTeacherInfo } from '../store/actions/teachersActions';
+import { addGroup } from '../store/actions/groupsActions';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
@@ -30,7 +31,8 @@ export default function TeacherScreen({ route }) {
     const { language } = useSelector((state) => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const { loading: teacherLoading, teacher: theTeacher, error: teacherError } = useSelector(state => state.teacherInfoState);
-    // const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
+    const { loading: teachersLoading, teachers, error: teachersError } = useSelector(state => state.teachersState);
+    const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
 
     const [teacher, setTeacher] = useState(theTeacher && theTeacher.id === item.id ? theTeacher : null);
 
@@ -43,7 +45,6 @@ export default function TeacherScreen({ route }) {
     const [hours, setHours] = useState([]);
     const [buttonText, setButtonText] = useState({ text: bookSeat })
 
-    const myGroups = []
     // // press handler 
     const dayHandelPress = (fullName) => {
         setSelectedDay(fullName)
@@ -65,15 +66,11 @@ export default function TeacherScreen({ route }) {
     }
     const changeSubjectHandler = (subject) => {
         setSelectedSubject(subject)
+        init(subject)
     }
 
 
     // // functions 
-    const availableGroups = (dayName, subject) => {
-        let availableGroups = teacher.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
-        availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(dayName))
-        return availableGroups
-    }
 
     const updateGroup = (group, day, subject) => {
         if (group) {
@@ -85,7 +82,7 @@ export default function TeacherScreen({ route }) {
             setSelectedHour(group.days.find(x => x.day === theSelectedDay).timeIn24Format)
         } else {
             setSelectedGroup()
-            setSelectedSubject(subject || removeDuplicatesById(teacher.groups.map(x => x.subject))[0])
+            setSelectedSubject(subject || teacher.groups.map(x => x.subject)[0])
             setSelectedHour("00:00")
             setSelectedDay()
             setHours([])
@@ -93,8 +90,9 @@ export default function TeacherScreen({ route }) {
     }
 
     const getHours = (day, subject, group) => {
-        let avGroups = availableGroups(day, subject) || []
-        let avHours = avGroups.map(x => x.days.map(y => ({ ...y, groupId: x.id }))).flat()
+        let availableGroups = teacher.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
+        availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(day)) || []
+        let avHours = availableGroups.map(x => x.days.map(y => ({ ...y, groupId: x.id }))).flat()
         let primaryTimes = avHours.filter(x => x.day === day)
         let secondaryTime = avHours.find(x => x.groupId === group?.id && x.day !== day)
         secondaryTime = secondaryTime && { ...avHours.find(x => x.groupId === group?.id && x.day !== day), secondary: true }
@@ -109,9 +107,20 @@ export default function TeacherScreen({ route }) {
 
     useEffect(() => {
         if (teacher) {
-            setSelectedSubject(teacher.groups.map(x => x.subject)[0])
+            init()
         }
     }, [teacher])
+
+
+    const init = (subject) => {
+        const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
+        if (teacherBookedGroups?.length > 0) {
+            const group = teacherBookedGroups.find(x => x.subject.id === subject?.id)
+            updateGroup(group || teacherBookedGroups[0])
+        } else {
+            updateGroup(null, null, subject)
+        }
+    }
 
     useEffect(() => {
         if (!theTeacher && !teacherLoading) {
@@ -128,8 +137,7 @@ export default function TeacherScreen({ route }) {
         if (teacher) {
             setButtonText(getButtonText())
         }
-
-    }, [selectedGroup, selectedDay, teacher])
+    }, [selectedGroup, selectedDay, teacher, myGroups])
 
     const getButtonText = () => {
         if (!selectedDay) {
@@ -139,11 +147,11 @@ export default function TeacherScreen({ route }) {
         } else if (hours.length === 0) {
             return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
-            let myGroupsId = userInfo?.myTeachers?.find(x => x.id === teacher.id)?.groupsId
-            let isTheSameSubject = teacher.groups.filter(x => myGroupsId?.includes(x.id)).find(x => x.subject.id === selectedSubject?.id)
-            if (myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
+            const myBookedGroup = myGroups.find(x => x.teacherId === item.id && x?.subject?.id === selectedGroup.subject.id)
+            const isTheSameSubject = myBookedGroup?.subject?.id === selectedSubject.id
+            if (myBookedGroup?.id === selectedGroup.id) {
                 return ({ text: leave, booked: true })
-            } else if (myGroupsId && !myGroupsId?.includes(selectedGroup.id) && isTheSameSubject) {
+            } else if (isTheSameSubject) {
                 return ({ text: changeDate })
             } else {
                 return ({ text: bookSeat })
@@ -152,14 +160,13 @@ export default function TeacherScreen({ route }) {
     }
 
     // // submit handler
-
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
                 // dispatch(leaveTeacher(item.id))
             } else {
                 const theGroup = { ...selectedGroup, teacherId: item.id }
-                console.log("🚀 ~ file: TeacherScreen.js:657 ~ bookTeacher ~ selectedGroup:", theGroup.id);
+                dispatch(addGroup(theGroup))
             }
         }
     }
@@ -209,7 +216,8 @@ export default function TeacherScreen({ route }) {
                         <View style={styles.line} />
                     </View>
                     {teacher &&
-                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
+                        //teachers should replace with my teachers
+                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups?.filter(x => !((x?.teacherId === item.id && x?.subject?.id === selectedSubject?.id)))} teachers={teachers} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
                             <HoursOption />
                         </SlideContainer>
                     }

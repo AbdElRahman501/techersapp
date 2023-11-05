@@ -461,7 +461,7 @@ export const areAppointmentsOverlapping = (firstTime, secondTime) => {
 }
 export const areGroupsOverLapped = (myGroups, myGroup) => {
     if (myGroups.length === 0 || !myGroup) {
-        return false;
+        return { overLapped: false, overlappedTime: "" };
     }
     let allDays = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId, groupId: group.id }))).flat()
     let myDays = myGroup.days

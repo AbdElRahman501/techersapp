@@ -11,6 +11,9 @@ export const TEACHERS_URL = `${URL}/api/teachers/`
 
 
 
+//groups
+export const ADD_GROUP_URL = `${URL}/api/groups/`
+
 //location api
 
 export const LOCATION_URL = 'https://nominatim.openstreetmap.org/search?format=json&q='

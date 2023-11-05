@@ -5,12 +5,11 @@ import { useSelector } from 'react-redux';
 import { areGroupsOverLapped, getBookedMessage, getTitle, transformTime } from '../actions/GlobalFunctions';
 import AlertModal from './alertModal';
 import { useNavigation } from '@react-navigation/core';
-import { days, teachers } from '../data';
 import CustomImage from './CustomImage ';
 import CustomText from './CustemText';
 import t from '../actions/changeLanguage';
 
-const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelPress }) => {
+const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroups, handelPress }) => {
     const { language } = useSelector(state => state.languageState)
     let isSelected = selectedHour === item.timeIn24Format
     let teacherGroup = teacher.groups.find(x => x.id === item.groupId)
@@ -26,7 +25,7 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, myGroups, handelP
     useEffect(() => {
         if (overlappedTime?.teacherId) {
             const theTeacher = teachers.find(x => x.id === overlappedTime.teacherId)
-            const group = theTeacher.groups.find(x => x.id === overlappedTime.groupId)
+            const group = myGroups.find(x => x.id === overlappedTime.groupId && x.teacherId === overlappedTime.teacherId)
             setMyTeacher(theTeacher)
             setOverLapGroup(group)
         }
