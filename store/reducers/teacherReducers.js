@@ -1,4 +1,17 @@
 import { TEACHERS_FAIL, TEACHERS_REQUEST, TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from "../constants/teachersConstants";
+const removeDuplicatesById = (array) => {
+    const uniqueArray = array.filter((item, index, self) => {
+        return index === self.findIndex(obj => obj.id === item.id);
+    });
+    return uniqueArray;
+}
+const truncateArray = (arr, requiredLength) => {
+    if (arr.length > requiredLength) {
+        arr.splice(0, arr.length - requiredLength);
+    }
+    return arr;
+}
+
 export const teachersReducer = (state = {}, action) => {
     switch (action.type) {
         case TEACHERS_REQUEST:
@@ -13,14 +26,15 @@ export const teachersReducer = (state = {}, action) => {
 };
 
 
-export const teacherInfoReducer = (state = {}, action) => {
+export const teacherInfoReducer = (state = { teachersHistory: [] }, action) => {
     switch (action.type) {
         case TEACHER_REQUEST:
-            return { loading: true };
+            return { ...state, loading: true };
         case TEACHER_SUCCESS:
-            return { loading: false, teacher: action.payload };
+            const stateHistory = truncateArray(removeDuplicatesById(state.teachersHistory), 5)
+            return { loading: false, teachersHistory: [...stateHistory, action.payload] };
         case TEACHER_FAIL:
-            return { loading: false, error: action.payload };
+            return { ...state, loading: false, error: action.payload };
         default:
             return state;
     }

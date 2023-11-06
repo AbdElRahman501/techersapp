@@ -30,11 +30,11 @@ export default function TeacherScreen({ route }) {
 
     const { language } = useSelector((state) => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
-    const { loading: teacherLoading, teacher: theTeacher, error: teacherError } = useSelector(state => state.teacherInfoState);
+    const { loading: teacherLoading, teachersHistory, error: teacherError } = useSelector(state => state.teacherInfoState);
     const { loading: teachersLoading, teachers, error: teachersError } = useSelector(state => state.teachersState);
     const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
 
-    const [teacher, setTeacher] = useState(theTeacher && theTeacher.id === item.id ? theTeacher : null);
+    const [teacher, setTeacher] = useState(teachersHistory?.find(x => x?.id === item?.id));
 
     const [visible, setVisible] = useState(false);
     const [message, setMessage] = useState("")
@@ -66,7 +66,9 @@ export default function TeacherScreen({ route }) {
     }
     const changeSubjectHandler = (subject) => {
         setSelectedSubject(subject)
-        init(subject)
+        const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
+        const group = teacherBookedGroups.find(x => x.subject.id === subject?.id)
+        updateGroup(group, null, subject)
     }
 
 
@@ -104,33 +106,23 @@ export default function TeacherScreen({ route }) {
         }
     }
 
-
     useEffect(() => {
         if (teacher) {
-            init()
+            const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
+            updateGroup(teacherBookedGroups[0])
         }
     }, [teacher])
 
-
-    const init = (subject) => {
-        const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
-        if (teacherBookedGroups?.length > 0) {
-            const group = teacherBookedGroups.find(x => x.subject.id === subject?.id)
-            updateGroup(group || teacherBookedGroups[0])
-        } else {
-            updateGroup(null, null, subject)
-        }
-    }
-
     useEffect(() => {
-        if (!theTeacher && !teacherLoading) {
-            dispatch(getTeacherInfo(item.id))
-        } else if (theTeacher && theTeacher.id !== item.id) {
-            dispatch(getTeacherInfo(item.id))
-        } if (theTeacher && theTeacher.id === item.id) {
-            setTeacher(theTeacher)
+        if (!teacher) {
+            const theTeacher = teachersHistory?.find(x => x?.id === item.id)
+            if (!theTeacher) {
+                dispatch(getTeacherInfo(item.id))
+            } else {
+                setTeacher(theTeacher)
+            }
         }
-    }, [theTeacher])
+    }, [teachersHistory])
 
     // button message
     useEffect(() => {

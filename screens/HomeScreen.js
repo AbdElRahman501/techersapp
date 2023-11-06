@@ -63,7 +63,7 @@ export default function HomeScreen() {
       >
         <SafeAreaView style={[globalStyles.body]} >
           <HomeHeader user={userInfo} />
-          <AdsSlider />
+          {teachers?.length && <AdsSlider data={teachers} />}
           <SearchBar button={true} />
           <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
           {mySubjects.length > 0 &&

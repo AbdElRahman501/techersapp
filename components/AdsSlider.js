@@ -5,15 +5,14 @@ import { Next_Icon } from '../assets/icons/Icons';
 import { GestureHandlerRootView, State } from 'react-native-gesture-handler';
 import AdItem from './AdItem';
 import Indicator from './Indicator';
-import * as data from '../data';
 
-export default function AdsSlider() {
+export default function AdsSlider({ data }) {
     const scrollViewRef = useRef(null);
     const [scrolledIndex, setScrolledIndex] = useState(0);
     const [holding, setHolding] = useState(false);
     const width = (widthPercentage(100) - 48);
 
-    const teachers = addFirstElementAfterLast(data.teachers)
+    const teachers = addFirstElementAfterLast(data)
     const scrollToNext = () => {
         if (scrolledIndex < teachers.length - 1) {
             scrollViewRef.current.scrollTo({ x: width * (scrolledIndex + 1), animated: true });
@@ -63,8 +62,8 @@ export default function AdsSlider() {
     }, [scrolledIndex, holding]);
 
     function addFirstElementAfterLast(arr) {
-        if (arr.length === 0) {
-            return arr;
+        if (!arr) {
+            return [];
         }
         const firstElement = arr[0];
         return [...arr, firstElement];
@@ -93,7 +92,7 @@ export default function AdsSlider() {
                 </TouchableOpacity>
             </View>
             <View style={{ transform: [{ scale: 0.6 }], height: 10, width: widthPercentage(100), justifyContent: "flex-end", alignItems: "center" }}>
-                <Indicator arr={data.teachers} activeIndex={scrolledIndex === data.teachers.length ? 0 : scrolledIndex} />
+                <Indicator arr={data} activeIndex={scrolledIndex === data?.length ? 0 : scrolledIndex} />
             </View>
         </GestureHandlerRootView>
 

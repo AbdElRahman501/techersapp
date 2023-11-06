@@ -5,14 +5,10 @@ export const SIGNIN_URL = `${URL}/api/users/signin`
 export const PHONE_VERIFICATION_URL = `${URL}/api/users/phoneVerification`
 export const REGISTER_URL = `${URL}/api/users/register`
 export const UPDATE_URL = `${URL}/api/users/update`
+export const ADD_GROUP_URL = `${URL}/api/users/myGroups`
 
 //teachers
 export const TEACHERS_URL = `${URL}/api/teachers/`
-
-
-
-//groups
-export const ADD_GROUP_URL = `${URL}/api/groups/`
 
 //location api
 

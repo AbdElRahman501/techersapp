@@ -23,6 +23,7 @@ import { getLocation, serverWakeUp, updateVersion } from './store/actions/device
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_SUCCESS } from './store/constants/userConstants';
 import { getTeachersData } from './store/actions/teachersActions';
+import { getMyGroups } from './store/actions/groupsActions';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ export default function MainComponents() {
                     setInitialRouteName("UserDataScreen")
                 } else {
                     dispatch(getTeachersData());
+                    dispatch(getMyGroups());
                     setInitialRouteName("Home")
                 }
             } else {
