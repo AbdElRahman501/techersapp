@@ -7,7 +7,7 @@ export const groupsReducer = (state = { myGroups: [] }, action) => {
         case MY_GROUPS_SUCCESS:
             return { loading: false, myGroups: action.payload };
         case MY_GROUPS_FAIL:
-            return { ...state, loading: false, error: action.payload };
+            return { loading: false, myGroups: state.myGroups, error: action.payload };
         default:
             return state;
     }

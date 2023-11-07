@@ -1,45 +1,44 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS, USER_UPDATE_REQUEST } from "../constants/userConstants";
-import { REGISTER_URL, SIGNIN_URL, UPDATE_URL } from "./api";
-import { getErrorMessage, getSubjectTitle } from "../../actions/GlobalFunctions";
+import { REGISTER_URL, SIGNIN_URL, SYNCED_DATA_URL, UPDATE_URL } from "./api";
+import { getErrorMessage, modifyGroups, modifyStudent, modifyTeachers } from "../../actions/GlobalFunctions";
 import { schoolTypes, subjects, years } from "../../data";
-import { TEACHERS_SUCCESS } from "../constants/teachersConstants";
+import { MY_TEACHERS_SUCCESS, TEACHERS_SUCCESS } from "../constants/teachersConstants";
+import { setMyGroups } from "./groupsActions";
+import { MY_GROUPS_SUCCESS } from "../constants/groupsConstants";
 
-function getTheYear(yearValue) {
-    return years.find(x => x.value === yearValue)
-}
-function getTheEducation(educationTypeValue) {
-    return schoolTypes.find(x => x.en === educationTypeValue)
-}
-const getSubject = (subject) => {
-    return subjects.find(x => x.en === subject)
-}
 export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        let { data } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
-        if (!data) return
-        if (data.students) {
+        let { data: { students, student, closeTeachers, myTeachers, myGroups } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
+        if (students) {
             dispatch({ type: USER_SUCCESS });
-            navigateToUserScreen(data.students);
+            navigateToUserScreen(students);
             return
-        } else if (!data.student) return
-        if (data?.teachers?.length > 0) {
-            const teachers = data.teachers.map(x => {
-                x.mainSubject = { ...getSubject(x.mainSubject.subject), schoolYears: x.mainSubject.schoolYears.map(y => getTheYear(y)) }
-                return x
-            })
-            await AsyncStorage.setItem("teachers", JSON.stringify(teachers));
-            dispatch({ type: TEACHERS_SUCCESS, payload: teachers });
-        }
-        const userInfo = { ...data.student, schoolYear: getTheYear(data.student.schoolYear), educationType: getTheEducation(data.student.educationType) }
-        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        console.log('Data saved successfully.');
+        } else if (!student) return
+        myGroups = modifyGroups(myGroups, subjects, years)
+        myTeachers = modifyTeachers(myTeachers, subjects, years)
+        const userInfo = modifyStudent(student, years, schoolTypes)
+
+        dispatch({ type: TEACHERS_SUCCESS, payload: modifyTeachers(closeTeachers, subjects, years) });
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
+        dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
+
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
+        await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
+
+        console.log('user Info sign in  successfully.');
     } catch (error) {
-        console.log("🚀 ~ file: userActions.js:29 ~ register ~ error:", error?.response?.data || error)
-        dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
+        console.log("🚀 ~ file: userActions.js:29 ~ signIn ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
     }
 };
 
@@ -47,15 +46,28 @@ export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) =
 export const register = (userData) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        let { data } = await Axios.post(REGISTER_URL, userData);
-        if (!data) return
-        data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
-        await AsyncStorage.setItem("userInfo", JSON.stringify(data));
-        console.log('Data saved successfully.');
-        dispatch({ type: USER_SUCCESS, payload: data });
+        let { data: { createdStudents, closeTeachers, myTeachers, myGroups } } = await Axios.post(REGISTER_URL, userData);
+        if (!createdStudents) return
+        myGroups = modifyGroups(myGroups, subjects, years)
+        myTeachers = modifyTeachers(myTeachers, subjects, years)
+
+        dispatch({ type: TEACHERS_SUCCESS, payload: modifyTeachers(closeTeachers, subjects, years) });
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: modifyTeachers(myTeachers, subjects, years) });
+        dispatch({ type: MY_GROUPS_SUCCESS, payload: modifyGroups(myGroups, subjects, years) })
+        dispatch({ type: USER_SUCCESS, payload: createdStudents });
+
+        await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
+        await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
+        await AsyncStorage.setItem("userInfo", JSON.stringify(createdStudents));
+        console.log('userInfo registered successfully.');
     } catch (error) {
-        console.log("🚀 ~ file: userActions.js:29 ~ register ~ error:", error?.response?.data || error)
-        dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
+        console.log("🚀 ~ file: userActions.js:52 ~ register ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
     }
 };
 export const update = (userData) => async (dispatch, getState) => {
@@ -63,13 +75,18 @@ export const update = (userData) => async (dispatch, getState) => {
     try {
         let { data } = await Axios.put(UPDATE_URL, userData);
         if (!data) return
-        data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
-        await AsyncStorage.setItem("userInfo", JSON.stringify(data));
-        console.log('Data saved successfully.');
-        dispatch({ type: USER_SUCCESS, payload: data });
+        const userInfo = modifyStudent(data, years, schoolTypes)
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        console.log('userInfo updated successfully.');
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
     } catch (error) {
-        console.log("🚀 ~ file: userActions.js:29 ~ register ~ error:", error?.response?.data || error)
-        dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
+        console.log("🚀 ~ file: userActions.js:71 ~ update ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
     }
 };
 export const signOut = () => async (dispatch) => {
@@ -78,7 +95,7 @@ export const signOut = () => async (dispatch) => {
         await AsyncStorage.removeItem('userInfo');
         console.log('Data removed successfully.');
     } catch (error) {
-        console.error('Error removing data:', error);
+        console.log("🚀 ~ file: userActions.js:86 ~ signOut ~ error:", error)
     }
 };
 
@@ -93,19 +110,46 @@ export const getUserData = () => async (dispatch) => {
             dispatch({ type: USER_FAIL, payload: { error: "No data found" } });
         }
     } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch({ type: USER_FAIL, payload: error });
+        console.log("🚀 ~ file: userActions.js:101 ~ getUserData ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message
+        });
     }
 };
 export const setUserData = (data) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
-    data = { ...data, schoolYear: getTheYear(data.schoolYear), educationType: getTheEducation(data.educationType) }
+    const userInfo = modifyStudent(data, years, schoolTypes)
     try {
-        await AsyncStorage.setItem("userInfo", JSON.stringify(data));
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         console.log('Data saved successfully.');
-        dispatch({ type: USER_SUCCESS, payload: data });
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
     } catch (error) {
-        console.log("🚀 ~ file: userActions.js:29 ~ register ~ error:", error?.response?.data || error)
-        dispatch({ type: USER_FAIL, payload: getErrorMessage(error?.response?.data || error) });
+        console.log("🚀 ~ file: userActions.js:118 ~ setUserData ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
     }
 };
+
+export const syncedData = (userInfo) => async (dispatch) => {
+    const { id, role, updatedAt } = userInfo
+    try {
+        const { data: { student } } = await Axios.put(SYNCED_DATA_URL, { id, role, updatedAt });
+        if (!student) return
+        const userInfo = modifyStudent(student, years, schoolTypes)
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        console.log('user synced success successfully.');
+        dispatch(setMyGroups(student.id))
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
+
+    } catch (error) {
+        console.log("🚀 ~ file: userActions.js:140 ~ syncedData ~ error:", error)
+    }
+
+}

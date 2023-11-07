@@ -1,4 +1,4 @@
-import { TEACHERS_FAIL, TEACHERS_REQUEST, TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from "../constants/teachersConstants";
+import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, TEACHERS_FAIL, TEACHERS_REQUEST, TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from "../constants/teachersConstants";
 const removeDuplicatesById = (array) => {
     const uniqueArray = array.filter((item, index, self) => {
         return index === self.findIndex(obj => obj.id === item.id);
@@ -25,6 +25,18 @@ export const teachersReducer = (state = {}, action) => {
     }
 };
 
+export const myTeachersReducer = (state = {}, action) => {
+    switch (action.type) {
+        case MY_TEACHERS_REQUEST:
+            return { loading: true };
+        case MY_TEACHERS_SUCCESS:
+            return { loading: false, teachers: action.payload };
+        case MY_TEACHERS_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;
+    }
+};
 
 export const teacherInfoReducer = (state = { teachersHistory: [] }, action) => {
     switch (action.type) {

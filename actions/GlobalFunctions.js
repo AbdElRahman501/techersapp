@@ -460,7 +460,7 @@ export const areAppointmentsOverlapping = (firstTime, secondTime) => {
     return firstTimeInMinutes < secondEndTimeInMinutes && secondTimeInMinutes < firstEndTimeInMinutes;
 }
 export const areGroupsOverLapped = (myGroups, myGroup) => {
-    if (myGroups.length === 0 || !myGroup) {
+    if (myGroups?.length === 0 || !myGroup) {
         return { overLapped: false, overlappedTime: "" };
     }
     let allDays = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId, groupId: group.id }))).flat()
@@ -567,4 +567,54 @@ export const isDataExpired = (storedTime, duration) => {
     expirationTime.setSeconds(expirationTime.getSeconds() + duration);
     const currentTime = new Date();
     return expirationTime < currentTime;
+}
+export const getTheYear = (years, yearValue) => {
+    if (!years?.length || !yearValue) return {
+        ar: 'لا يوجد', en: 'No data',
+    }
+    return years.find(x => x.value === yearValue)
+}
+export const getSubject = (subjects, subject) => {
+    if (!subjects?.length || !subject) return {
+        ar: 'لا يوجد', en: 'No data',
+    }
+    const { imageSource, ...others } = subjects.find(x => x.en === subject)
+    return others
+}
+export const getTheEducation = (schoolTypes, educationTypeValue) => {
+    if (!schoolTypes?.length || !educationTypeValue) return {
+        ar: 'لا يوجد', en: 'No data',
+    }
+    return schoolTypes.find(x => x.en === educationTypeValue)
+}
+export const modifyTeachers = (teachers, subjects, years) => {
+    if (!teachers?.length) return []
+    teachers = teachers.map(teacher => {
+        teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
+        return teacher
+    })
+    return teachers
+
+}
+export const modifyTeacher = (teacher, subjects, years) => {
+    if (!teacher) return null
+    teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
+    teacher.groups = modifyGroups(teacher.groups, subjects, years)
+    return teacher
+}
+export const modifyGroups = (groups, subjects, years) => {
+    if (!groups?.length) return []
+    groups = groups.map(group => {
+        group.subject = getSubject(subjects, group.subject)
+        group.schoolYear = getTheYear(years, group.schoolYear)
+        return group
+    })
+    return groups
+
+}
+
+export const modifyStudent = (student, years, educationTypes) => {
+    if (!student) return null
+    student = { ...student, schoolYear: getTheYear(years, student.schoolYear), educationType: getTheEducation(educationTypes, student.educationType) }
+    return student
 }

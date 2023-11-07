@@ -37,14 +37,20 @@ export const getLocation = () => async (dispatch) => {
     dispatch({ type: LOCATION_REQUEST });
     setTimeout(() => {
         error = 'Async function error: long time out';
-        dispatch({ type: LOCATION_FAIL, payload: error });
+        dispatch({ type: LOCATION_FAIL, payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message });
     }, 2 * 60 * 1000);
     try {
         let { status } = await Location.requestForegroundPermissionsAsync();
         console.log("🚀 ~ file: deviceActions.js:41 ~ getLocation ~ status:", status)
         if (status !== 'granted') {
             let error = 'Permission to access location was denied';
-            dispatch({ type: LOCATION_FAIL, payload: error });
+            dispatch({ type: LOCATION_FAIL, payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message });
             return;
         }
         let location = await Location.getCurrentPositionAsync({});
@@ -62,7 +68,10 @@ export const getLocation = () => async (dispatch) => {
     } catch (error) {
         console.log("🚀 ~ file: deviceActions.js:45 ~ getLocation ~ error:", error)
         error = 'Failed to fetch location';
-        dispatch({ type: LOCATION_FAIL, payload: error });
+        dispatch({ type: LOCATION_FAIL, payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message });
     }
 };
 

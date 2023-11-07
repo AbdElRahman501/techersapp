@@ -6,7 +6,7 @@ import languageReducer from './reducers/languageReducer';
 import { userReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 import { locationReducer } from './reducers/deviceReducers';
-import { teacherInfoReducer, teachersReducer } from './reducers/teacherReducers';
+import { myTeachersReducer, teacherInfoReducer, teachersReducer } from './reducers/teacherReducers';
 import { groupsReducer } from './reducers/groupsReducers';
 
 
@@ -24,9 +24,14 @@ const store = configureStore({
         locationState: locationReducer,
         teachersState: teachersReducer,
         teacherInfoState: teacherInfoReducer,
-        myGroupsState: groupsReducer
+        myGroupsState: groupsReducer,
+        myTeachersState: myTeachersReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false, // Disable the serializable check
+            immutableCheck: false, // Disable the immutable state check
+        }).concat(thunk),
     preloadedState: initialState,
-    devTools: false,
-}, applyMiddleware(thunk))
+})
 export default store;

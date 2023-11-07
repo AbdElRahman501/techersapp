@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
-import { days, friends, teachers } from '../data';
+import { days, friends } from '../data';
 import t from '../actions/changeLanguage';
-import { Color, FontFamily, FontSize, Margin, Padding, globalStyles, widthPercentage } from '../GlobalStyles';
+import { Color, FontFamily, FontSize, Margin, Padding } from '../GlobalStyles';
 import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherMainCard from '../components/TeacherMainCard';
@@ -11,16 +11,14 @@ import Analytics from '../components/Analytics';
 import DayOption from '../components/DayOption';
 import HoursOption from '../components/HoursOption';
 import FriendItem from '../components/FriendItem';
-import { areAppointmentsOverlapping, calculateEndTime, equalArs, getBookedMessage, getEvents, getMyGroups, getTextInputAlign, removeDuplicatesById, sortArrayByTime, transformTime } from '../actions/GlobalFunctions';
+import { getBookedMessage, getTextInputAlign, sortArrayByTime } from '../actions/GlobalFunctions';
 import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { showMessage } from "../store/actions/showMessageActions";
-import { addTeacher, leaveTeacher } from '../store/actions/bookingFunctions';
 import AlertModal from '../components/alertModal';
 import LoadingModal from '../components/LoadingModal';
 import { getTeacherInfo } from '../store/actions/teachersActions';
-import { addGroup } from '../store/actions/groupsActions';
+import { addGroup, leaveGroup } from '../store/actions/groupsActions';
 
 export default function TeacherScreen({ route }) {
     const { item } = route.params;
@@ -108,7 +106,7 @@ export default function TeacherScreen({ route }) {
 
     useEffect(() => {
         if (teacher) {
-            const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
+            const teacherBookedGroups = myGroups?.filter(x => x?.teacherId === teacher.id) || []
             updateGroup(teacherBookedGroups[0])
         }
     }, [teacher])
@@ -139,7 +137,7 @@ export default function TeacherScreen({ route }) {
         } else if (hours.length === 0) {
             return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
-            const myBookedGroup = myGroups.find(x => x.teacherId === item.id && x?.subject?.id === selectedGroup.subject.id)
+            const myBookedGroup = myGroups?.find(x => x.teacherId === item.id && x?.subject?.id === selectedGroup.subject.id)
             const isTheSameSubject = myBookedGroup?.subject?.id === selectedSubject.id
             if (myBookedGroup?.id === selectedGroup.id) {
                 return ({ text: leave, booked: true })
@@ -155,7 +153,7 @@ export default function TeacherScreen({ route }) {
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
-                // dispatch(leaveTeacher(item.id))
+                dispatch(leaveGroup(selectedGroup.id, item.id))
             } else {
                 const theGroup = { ...selectedGroup, teacherId: item.id }
                 dispatch(addGroup(theGroup))

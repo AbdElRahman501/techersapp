@@ -25,7 +25,7 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
     useEffect(() => {
         if (overlappedTime?.teacherId) {
             const theTeacher = teachers.find(x => x.id === overlappedTime.teacherId)
-            const group = myGroups.find(x => x.id === overlappedTime.groupId && x.teacherId === overlappedTime.teacherId)
+            const group = myGroups?.find(x => x?.id === overlappedTime.groupId && x?.teacherId === overlappedTime.teacherId)
             setMyTeacher(theTeacher)
             setOverLapGroup(group)
         }

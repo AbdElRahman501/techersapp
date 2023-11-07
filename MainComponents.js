@@ -22,8 +22,9 @@ import { StatusBar } from 'react-native';
 import { getLocation, serverWakeUp, updateVersion } from './store/actions/deviceActions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_SUCCESS } from './store/constants/userConstants';
-import { getTeachersData } from './store/actions/teachersActions';
+import { getCloseTeachers, getMyTeachersData } from './store/actions/teachersActions';
 import { getMyGroups } from './store/actions/groupsActions';
+import { syncedData } from './store/actions/userActions';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,23 +40,29 @@ export default function MainComponents() {
             const dataJSON = await AsyncStorage.getItem("userInfo");
             if (dataJSON !== null) {
                 const userInfo = JSON.parse(dataJSON);
+                dispatch(syncedData(userInfo))
                 dispatch({ type: USER_SUCCESS, payload: userInfo });
                 if (userInfo?.unCompleted) {
                     setInitialRouteName("UserDataScreen")
+                    dispatch(serverWakeUp())
                 } else {
-                    dispatch(getTeachersData());
+                    dispatch(getCloseTeachers(userInfo.id));
+                    dispatch(getMyTeachersData())
                     dispatch(getMyGroups());
                     setInitialRouteName("Home")
                 }
             } else {
                 console.log("🚀 ~ file: MainComponents.js:64 ~ getUserData ~ No data found:")
                 dispatch(getLocation())
+                dispatch(serverWakeUp())
                 setInitialRouteName("OnboardingPages")
             }
         } catch (error) {
             console.error('Error fetching data:', error);
             dispatch(getLocation())
             setInitialRouteName("OnboardingPages")
+            dispatch(serverWakeUp())
+
         }
     };
 
@@ -67,7 +74,6 @@ export default function MainComponents() {
 
     useEffect(() => {
         dispatch(updateVersion("1.0.0.1"))
-        dispatch(serverWakeUp())
     }, [])
 
     return TheInitialRouteName && (
