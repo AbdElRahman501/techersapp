@@ -6,6 +6,7 @@ import { schoolTypes, subjects, years } from "../../data";
 import { modifyGroups, modifyStudent, removeDuplicatesById } from '../../actions/GlobalFunctions';
 import { USER_SUCCESS } from '../constants/userConstants';
 import { MY_TEACHERS_SUCCESS } from '../constants/teachersConstants';
+import { showMessage } from './showMessageActions';
 
 export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => {
     dispatch({ type: MY_GROUPS_REQUEST })
@@ -35,6 +36,7 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
         console.log('group added successfully.');
     } catch (error) {
         console.log("🚀 ~ file: groupsActions.js:25 ~ addGroup ~ error:", error)
+        dispatch(showMessage("Failed to add group"))
         dispatch({
             type: MY_GROUPS_FAIL, payload:
                 error.response && error.response.data.message
@@ -66,6 +68,7 @@ export const leaveGroup = (groupId, teacherId) => async (dispatch, getState) => 
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         console.log('group removed successfully.');
     } catch (error) {
+        dispatch(showMessage("Failed to remove group"))
         console.log("🚀 ~ file: groupsActions.js:25 ~ addGroup ~ error:", error)
         dispatch({
             type: MY_GROUPS_FAIL, payload:

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 
 
 const { width, height } = Dimensions.get('window');
@@ -56,8 +56,9 @@ export const Padding = {
 };
 /* Paddings */
 export const Margin = {
-  m_base: 16,
+  s_xsm: 8,
   m_sm: 12,
+  m_base: 16,
   m_m1: 18,
   m_lg: 24,
   m_xl: 48,
@@ -106,7 +107,7 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Padding.p_m,
     marginHorizontal: Padding.page_p,
-    marginBottom: Height.nav_tap + 20
+    marginBottom: Platform.OS === "ios" ? Height.nav_tap + 40 : Height.nav_tap + 20
   },
   logo: {
     height: Height.logo_lg,
@@ -219,7 +220,7 @@ export const globalStyles = StyleSheet.create({
   },
   student: {
     padding: 5,
-    marginVertical: Margin.m_sm,
+    marginVertical: Margin.s_xsm,
     borderColor: Color.lightGray,
     width: "100%",
     borderWidth: 1,

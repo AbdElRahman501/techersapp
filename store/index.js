@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk';
 import counterReducer from './reducers/counterReducer';
 import languageReducer from './reducers/languageReducer';
-import { userReducer } from './reducers/userReducer';
+import { userReducer, usersReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 import { locationReducer } from './reducers/deviceReducers';
 import { closeTeachersReducer, myTeachersReducer, teacherInfoReducer } from './reducers/teacherReducers';
@@ -26,6 +26,7 @@ const store = configureStore({
         teacherInfoState: teacherInfoReducer,
         myGroupsState: groupsReducer,
         myTeachersState: myTeachersReducer,
+        usersState: usersReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

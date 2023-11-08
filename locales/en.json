@@ -123,5 +123,7 @@
     "logout title": "Sad to see you go 😔",
     "logout description": "Are you sure you want to logout?",
     "general": "General",
-    "account": "Account"
+    "account": "Account",
+    "switch": "Switch"
+
 }

@@ -42,7 +42,7 @@ export default function StudentOption({ student }) {
             />
             <View style={{ marginHorizontal: Margin.m_sm }}>
                 <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{student?.fullName || ""}</CustomText>
-                <CustomText style={globalStyles.smallText}>{student?.schoolYear || ""}</CustomText>
+                <CustomText style={globalStyles.smallText}>{(student?.schoolYear && student?.schoolYear[language]) || ""}</CustomText>
                 <CustomText style={globalStyles.smallText}>{student.parentPhoneNumber ? studentParentAccount : studentAccount}</CustomText>
             </View>
         </TouchableOpacity>

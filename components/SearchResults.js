@@ -1,17 +1,18 @@
 import { ScrollView, StyleSheet, TouchableOpacity, Animated, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/core';
-import { teachers } from '../data'
 import TeacherMainCard from './TeacherMainCard'
 import PrimaryButton from './PrimaryButton'
 import { Color, FontFamily, FontSize } from '../GlobalStyles';
 import { searchEngin } from '../actions/GlobalFunctions';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from "../store/actions/showMessageActions";
 
 
 export default function SearchResults({ value }) {
     const navigation = useNavigation()
+    const { loading: teachersLoading, closeTeacher: teachers, error: teachersError } = useSelector(state => state.closeTeachersState);
+
     const [SearchResults, setSearchResults] = useState([])
 
     const dispatch = useDispatch();
