@@ -4,28 +4,30 @@ import { USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS, USER_UPDATE_REQUES
 import { REGISTER_URL, SIGNIN_URL, SYNCED_DATA_URL, UPDATE_URL } from "./api";
 import { getErrorMessage, modifyGroups, modifyStudent, modifyTeachers } from "../../actions/GlobalFunctions";
 import { schoolTypes, subjects, years } from "../../data";
-import { MY_TEACHERS_SUCCESS, TEACHERS_SUCCESS } from "../constants/teachersConstants";
+import { MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_SUCCESS } from "../constants/teachersConstants";
 import { setMyGroups } from "./groupsActions";
 import { MY_GROUPS_SUCCESS } from "../constants/groupsConstants";
 
-export const signIn = ({ emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
+export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        let { data: { students, student, closeTeachers, myTeachers, myGroups } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password });
+        let { data: { students, student, closeTeachers, myTeachers, myGroups } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password, id });
         if (students) {
             dispatch({ type: USER_SUCCESS });
-            navigateToUserScreen(students);
+            navigateToUserScreen(students.map(student => ({ ...student, password })));
             return
         } else if (!student) return
         myGroups = modifyGroups(myGroups, subjects, years)
         myTeachers = modifyTeachers(myTeachers, subjects, years)
+        closeTeachers = modifyTeachers(closeTeachers, subjects, years)
         const userInfo = modifyStudent(student, years, schoolTypes)
 
-        dispatch({ type: TEACHERS_SUCCESS, payload: modifyTeachers(closeTeachers, subjects, years) });
+        dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
 
+        await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
         await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
@@ -50,12 +52,14 @@ export const register = (userData) => async (dispatch) => {
         if (!createdStudents) return
         myGroups = modifyGroups(myGroups, subjects, years)
         myTeachers = modifyTeachers(myTeachers, subjects, years)
+        closeTeachers = modifyTeachers(closeTeachers, subjects, years)
 
-        dispatch({ type: TEACHERS_SUCCESS, payload: modifyTeachers(closeTeachers, subjects, years) });
-        dispatch({ type: MY_TEACHERS_SUCCESS, payload: modifyTeachers(myTeachers, subjects, years) });
-        dispatch({ type: MY_GROUPS_SUCCESS, payload: modifyGroups(myGroups, subjects, years) })
+        dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
+        dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
         dispatch({ type: USER_SUCCESS, payload: createdStudents });
 
+        await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
         await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(createdStudents));
@@ -93,6 +97,9 @@ export const signOut = () => async (dispatch) => {
     dispatch({ type: USER_SIGNOUT });
     try {
         await AsyncStorage.removeItem('userInfo');
+        await AsyncStorage.removeItem('myGroups');
+        await AsyncStorage.removeItem('myTeachers');
+        await AsyncStorage.removeItem('closeTeachers');
         console.log('Data removed successfully.');
     } catch (error) {
         console.log("🚀 ~ file: userActions.js:86 ~ signOut ~ error:", error)
@@ -116,23 +123,6 @@ export const getUserData = () => async (dispatch) => {
                 error.response && error.response.data.message
                     ? error.response.data.message
                     : error.message
-        });
-    }
-};
-export const setUserData = (data) => async (dispatch) => {
-    dispatch({ type: USER_REQUEST });
-    const userInfo = modifyStudent(data, years, schoolTypes)
-    try {
-        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        console.log('Data saved successfully.');
-        dispatch({ type: USER_SUCCESS, payload: userInfo });
-    } catch (error) {
-        console.log("🚀 ~ file: userActions.js:118 ~ setUserData ~ error:", error)
-        dispatch({
-            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
-                (error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message))
         });
     }
 };

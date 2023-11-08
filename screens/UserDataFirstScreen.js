@@ -28,7 +28,7 @@ export default function UserDataFirstScreen({ route }) {
     const [submitted, setSubmitted] = useState(false)
 
     const [trigger, setTrigger] = useState(students?.length > 0)
-    const [signInAs, namePlaceholder, passwordPlaceholder,iamParentText, or] = [t("sign in as"), t("full-name-student"), t("password-input"),t("iam parent"), t("or")]
+    const [signInAs, namePlaceholder, passwordPlaceholder, iamParentText, or] = [t("sign in as"), t("full-name-student"), t("password-input"), t("iam parent"), t("or")]
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -44,13 +44,13 @@ export default function UserDataFirstScreen({ route }) {
     useEffect(() => {
         if (userInfo) {
             if (userInfo && !userInfo?.unCompleted) {
-                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "Home")
+                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo.fullName, "go to Home")
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "Home" }],
                 });
             } else if (userInfo?.unCompleted) {
-                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo, "UserDataScreen")
+                console.log("🚀 ~ file: SignupScreen.js:62 ~ SignUpScreen ~ userInfo:", userInfo.fullName, "un Completed go to UserDataScreen")
                 navigation.reset({
                     index: 0,
                     routes: [{ name: "UserDataScreen" }],

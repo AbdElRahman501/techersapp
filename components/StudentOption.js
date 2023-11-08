@@ -5,7 +5,7 @@ import { Color, Height, Margin, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import t from '../actions/changeLanguage'
-import { setUserData } from '../store/actions/userActions'
+import { signIn } from '../store/actions/userActions'
 
 export default function StudentOption({ student }) {
     const navigation = useNavigation()
@@ -15,7 +15,7 @@ export default function StudentOption({ student }) {
     const dispatch = useDispatch()
     const handlePress = () => {
         if (student?.isParent) {
-            dispatch(setUserData(student))
+            dispatch(signIn({ id: student.id, password: student.password }))
         } else {
             Alert.alert(
                 'حساب طالب مستقل',

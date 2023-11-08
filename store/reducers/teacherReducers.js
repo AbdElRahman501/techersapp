@@ -1,4 +1,5 @@
-import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, TEACHERS_FAIL, TEACHERS_REQUEST, TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from "../constants/teachersConstants";
+import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_FAIL, CLOSE_TEACHERS_REQUEST, CLOSE_TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from "../constants/teachersConstants";
+import { USER_SIGNOUT } from "../constants/userConstants";
 const removeDuplicatesById = (array) => {
     const uniqueArray = array.filter((item, index, self) => {
         return index === self.findIndex(obj => obj.id === item.id);
@@ -12,27 +13,31 @@ const truncateArray = (arr, requiredLength) => {
     return arr;
 }
 
-export const teachersReducer = (state = {}, action) => {
+export const closeTeachersReducer = (state = { closeTeacher: [] }, action) => {
     switch (action.type) {
-        case TEACHERS_REQUEST:
-            return { loading: true };
-        case TEACHERS_SUCCESS:
-            return { loading: false, teachers: action.payload };
-        case TEACHERS_FAIL:
-            return { loading: false, error: action.payload };
+        case CLOSE_TEACHERS_REQUEST:
+            return { closeTeacher: [], loading: true };
+        case CLOSE_TEACHERS_SUCCESS:
+            return { loading: false, closeTeacher: action.payload };
+        case CLOSE_TEACHERS_FAIL:
+            return { closeTeacher: [], loading: false, error: action.payload };
+        case USER_SIGNOUT:
+            return { closeTeacher: [] };
         default:
             return state;
     }
 };
 
-export const myTeachersReducer = (state = {}, action) => {
+export const myTeachersReducer = (state = { myTeachers: [] }, action) => {
     switch (action.type) {
         case MY_TEACHERS_REQUEST:
-            return { loading: true };
+            return { myTeachers: state.myTeachers, loading: true };
         case MY_TEACHERS_SUCCESS:
-            return { loading: false, teachers: action.payload };
+            return { loading: false, myTeachers: action.payload };
         case MY_TEACHERS_FAIL:
-            return { loading: false, error: action.payload };
+            return { myTeachers: state.myTeachers, loading: false, error: action.payload };
+        case USER_SIGNOUT:
+            return { myTeachers: [] };
         default:
             return state;
     }

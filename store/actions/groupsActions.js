@@ -3,26 +3,33 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MY_GROUPS_REQUEST, MY_GROUPS_SUCCESS, MY_GROUPS_FAIL } from '../constants/groupsConstants';
 import { ADD_GROUP_URL, MY_GROUPS_URL } from './api';
 import { schoolTypes, subjects, years } from "../../data";
-import { modifyGroups, modifyStudent } from '../../actions/GlobalFunctions';
+import { modifyGroups, modifyStudent, removeDuplicatesById } from '../../actions/GlobalFunctions';
 import { USER_SUCCESS } from '../constants/userConstants';
+import { MY_TEACHERS_SUCCESS } from '../constants/teachersConstants';
 
-export const addGroup = (newGroup) => async (dispatch, getState) => {
+export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => {
     dispatch({ type: MY_GROUPS_REQUEST })
 
     try {
         const { id, role } = getState().userInfo.userInfo
-        let myGroups = getState().myGroupsState.myGroups || []
+        let myGroups = getState().myGroupsState.myGroups
+        let myTeachers = getState().myTeachersState.myTeachers
+        myTeachers = removeDuplicatesById([...myTeachers, newTeacher])
+
         const existGroup = myGroups.find(x => x.teacherId === newGroup.teacherId && x.subject?.id === newGroup.subject?.id)
         if (existGroup) {
             myGroups = myGroups.filter(x => x.id !== existGroup.id)
         }
         myGroups = [...myGroups, newGroup];
         const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
+
         const { data: student } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
         if (!student) return
         const userInfo = modifyStudent(student, years, schoolTypes)
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
+        await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         console.log('group added successfully.');
@@ -43,14 +50,19 @@ export const leaveGroup = (groupId, teacherId) => async (dispatch, getState) => 
     try {
         const { id, role } = getState().userInfo.userInfo
         let myGroups = getState().myGroupsState.myGroups || []
+        let myTeachers = getState().myTeachersState.myTeachers
         myGroups = myGroups.filter(x => !(x.id === groupId && x.teacherId === teacherId));
+        const myTeachersId = myGroups.map(y => y.teacherId)
+        myTeachers = myTeachers.filter(x => myTeachersId.includes(x.id))
         const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
         const { data: student } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
         if (!student) return
         const userInfo = modifyStudent(student, years, schoolTypes)
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
+        await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         console.log('group removed successfully.');
     } catch (error) {

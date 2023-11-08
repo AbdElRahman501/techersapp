@@ -510,6 +510,7 @@ export const getBookedMessage = (group, language) => {
     return message
 }
 export const removeDuplicatesById = (array) => {
+    if (!array?.length) return []
     const uniqueArray = array.filter((item, index, self) => {
         return index === self.findIndex(obj => obj.id === item.id);
     });
@@ -591,6 +592,7 @@ export const modifyTeachers = (teachers, subjects, years) => {
     if (!teachers?.length) return []
     teachers = teachers.map(teacher => {
         teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
+        teacher.groups = modifyGroups(teacher.groups, subjects, years)
         return teacher
     })
     return teachers
@@ -605,7 +607,7 @@ export const modifyTeacher = (teacher, subjects, years) => {
 export const modifyGroups = (groups, subjects, years) => {
     if (!groups?.length) return []
     groups = groups.map(group => {
-        group.subject = getSubject(subjects, group.subject)
+        group.subject = subjects.find(x => x.en === group.subject)
         group.schoolYear = getTheYear(years, group.schoolYear)
         return group
     })

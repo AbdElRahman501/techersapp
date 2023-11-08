@@ -29,10 +29,11 @@ export default function TeacherScreen({ route }) {
     const { language } = useSelector((state) => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const { loading: teacherLoading, teachersHistory, error: teacherError } = useSelector(state => state.teacherInfoState);
-    const { loading: teachersLoading, teachers, error: teachersError } = useSelector(state => state.teachersState);
+    const { loading: myTeachersLoading, myTeachers, error: myTeachersError } = useSelector(state => state.myTeachersState);
+    const { loading: teachersLoading, closeTeacher, error: teachersError } = useSelector(state => state.closeTeachersState);
     const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
 
-    const [teacher, setTeacher] = useState(teachersHistory?.find(x => x?.id === item?.id));
+    const [teacher, setTeacher] = useState(myTeachers.find(x => x?.id === item.id) || teachersHistory?.find(x => x?.id === item?.id));
 
     const [visible, setVisible] = useState(false);
     const [message, setMessage] = useState("")
@@ -113,7 +114,7 @@ export default function TeacherScreen({ route }) {
 
     useEffect(() => {
         if (!teacher) {
-            const theTeacher = teachersHistory?.find(x => x?.id === item.id)
+            const theTeacher = myTeachers.find(x => x?.id === item.id) || teachersHistory?.find(x => x?.id === item.id)
             if (!theTeacher) {
                 dispatch(getTeacherInfo(item.id))
             } else {
@@ -156,7 +157,7 @@ export default function TeacherScreen({ route }) {
                 dispatch(leaveGroup(selectedGroup.id, item.id))
             } else {
                 const theGroup = { ...selectedGroup, teacherId: item.id }
-                dispatch(addGroup(theGroup))
+                dispatch(addGroup(theGroup, teacher))
             }
         }
     }
@@ -176,9 +177,9 @@ export default function TeacherScreen({ route }) {
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
-            <LoadingModal visible={teacherLoading} />
+            <LoadingModal visible={teacherLoading || myGroupsLoading} />
             <AlertModal
-                visible={visible || loading}
+                visible={visible || loading || myGroupsLoading}
                 imageSource={require('../assets/icons/alert.png')}
                 title={confirm}
                 content={message}
@@ -206,8 +207,7 @@ export default function TeacherScreen({ route }) {
                         <View style={styles.line} />
                     </View>
                     {teacher &&
-                        //teachers should replace with my teachers
-                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups?.filter(x => !((x?.teacherId === item.id && x?.subject?.id === selectedSubject?.id)))} teachers={teachers} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
+                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups?.filter(x => !((x?.teacherId === item.id && x?.subject?.id === selectedSubject?.id)))} teachers={closeTeacher} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
                             <HoursOption />
                         </SlideContainer>
                     }

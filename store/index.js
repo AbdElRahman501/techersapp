@@ -6,7 +6,7 @@ import languageReducer from './reducers/languageReducer';
 import { userReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 import { locationReducer } from './reducers/deviceReducers';
-import { myTeachersReducer, teacherInfoReducer, teachersReducer } from './reducers/teacherReducers';
+import { closeTeachersReducer, myTeachersReducer, teacherInfoReducer } from './reducers/teacherReducers';
 import { groupsReducer } from './reducers/groupsReducers';
 
 
@@ -22,7 +22,7 @@ const store = configureStore({
         messageState: messageReducer,
         userInfo: userReducer,
         locationState: locationReducer,
-        teachersState: teachersReducer,
+        closeTeachersState: closeTeachersReducer,
         teacherInfoState: teacherInfoReducer,
         myGroupsState: groupsReducer,
         myTeachersState: myTeachersReducer,
