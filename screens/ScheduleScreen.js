@@ -4,14 +4,14 @@ import { Border, Color, Height, Padding, globalStyles } from '../GlobalStyles'
 import TimeLine from '../components/TimeLine'
 import MonthSelection from '../components/MonthSelection'
 import WeekView from '../components/WeekView'
-import { getEvents, getEventsDuration, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
+import { getEvents, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux'
 import * as Haptics from 'expo-haptics';
-import { teachers } from '../data'
 import t from '../actions/changeLanguage'
 
 export default function ScheduleScreen() {
-    const { loading, userInfo, error } = useSelector(state => state.userInfo)
+    const { myTeachers } = useSelector(state => state.myTeachersState);
+    const { myGroups } = useSelector(state => state.myGroupsState);
 
     const { today, months, currentMonth } = getTheMonths()
     const [weeks, setWeeks] = useState(getWeeksOfMonth(currentMonth.id))
@@ -27,18 +27,18 @@ export default function ScheduleScreen() {
             Haptics.NotificationFeedbackType.Success
         )
     }
+
+
     useEffect(() => {
-        if (userInfo) {
-            let theEvents = getEvents(userInfo.myTeachers, selectedDay.fullName, teachers)
-            let theEventsDuration = getEventsDuration(userInfo)
-            setEventsDuration(theEventsDuration)
-            if (theEvents.length > 0) {
-                setEvents(theEvents)
-            } else {
-                setEvents([])
-            }
+        let theEvents = getEvents(myGroups, selectedDay.fullName)
+        let theEventsDuration = myTeachers?.length > 0 ? myTeachers.map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday })) : []
+        setEventsDuration(theEventsDuration)
+        if (theEvents.length > 0) {
+            setEvents(theEvents)
+        } else {
+            setEvents([])
         }
-    }, [userInfo, selectedDay])
+    }, [selectedDay])
 
 
     useEffect(() => {

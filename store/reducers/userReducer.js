@@ -32,6 +32,8 @@ export const usersReducer = (state = {}, action) => {
             return { ...state, switchLoading: false };
         case USERS_SWITCHING_FAIL:
             return { ...state, switchLoading: false, switchError: action.payload };
+        case USER_SIGNOUT:
+            return {};
         default:
             return state;
     }

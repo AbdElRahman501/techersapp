@@ -6,8 +6,8 @@ import { getEvents, getStartedEvents, isDateAfter } from '../actions/GlobalFunct
 import { teachers } from '../data'
 
 const ScheduleDayOption = ({ item, eventsDuration, selectedMonth, SelectedId, today, handelPress }) => {
-    const { loading, userInfo, error } = useSelector(state => state.userInfo)
-    const events = getEvents(userInfo?.myTeachers, item.fullName, teachers)
+    const { myGroups } = useSelector(state => state.myGroupsState);
+    const events = getEvents(myGroups, item.fullName)
     let theFilterEvents = getStartedEvents(events, eventsDuration, item)
 
     let isToday = today?.id === item?.id

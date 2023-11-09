@@ -23,7 +23,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
     let isPassed = new Date(today?.id) > new Date(selectedDay?.id)
 
     let theFilterEvents = getStartedEvents(events, eventsDuration, selectedDay)
-    const theHour = theFilterEvents.length > 0 ? Math.min(...theFilterEvents.map(x => x.eventTime.split(":")[0])) - dayStart : 0
+    const theHour = theFilterEvents.length > 0 ? Math.min(...theFilterEvents.map(x => x.timeIn24Format.split(":")[0])) - dayStart : 0
 
     useEffect(() => {
         scrollViewRef.current.scrollTo({

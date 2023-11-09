@@ -13,6 +13,8 @@ import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
 import { removeDuplicatesById } from '../actions/GlobalFunctions';
 import { Add_Icon } from '../assets/icons/Icons';
+import LoadingModal from '../components/LoadingModal';
+
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
@@ -56,6 +58,8 @@ export default function HomeScreen() {
         showsHorizontalScrollIndicator={false}
       >
         <SafeAreaView style={[globalStyles.body]} >
+          {/* { display: (teachersLoading || myTeachersLoading || myGroupsLoading || loading) ? "none" : "flex" } */}
+          {/* <LoadingModal visible={teachersLoading || myTeachersLoading || myGroupsLoading || loading} /> */}
           <HomeHeader user={userInfo} />
           {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
           <SearchBar button={true} />

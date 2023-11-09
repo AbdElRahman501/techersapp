@@ -30,9 +30,7 @@ export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen 
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
-        dispatch({ type: USERS_FAIL, payload: { message: "Users not found" } });
       
-        await AsyncStorage.removeItem("users");
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
@@ -100,12 +98,13 @@ export const update = (userData) => async (dispatch, getState) => {
     }
 };
 export const signOut = () => async (dispatch) => {
-    dispatch({ type: USER_SIGNOUT });
     try {
         await AsyncStorage.removeItem('userInfo');
         await AsyncStorage.removeItem('myGroups');
         await AsyncStorage.removeItem('myTeachers');
         await AsyncStorage.removeItem('closeTeachers');
+        await AsyncStorage.removeItem("users");
+        dispatch({ type: USER_SIGNOUT });
         console.log('Data removed successfully.');
     } catch (error) {
         console.log("🚀 ~ file: userActions.js:86 ~ signOut ~ error:", error)

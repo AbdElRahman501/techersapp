@@ -1,5 +1,4 @@
-/* export const URL = 'http://192.168.1.16:3000' */
-export const URL = 'https://alostaz-server.onrender.com'
+export const URL = 'https://alostaz-server.onrender.com' 
 export const API_URL = `${URL}/api`
 export const SIGNIN_URL = `${URL}/api/users/signin`
 export const PHONE_VERIFICATION_URL = `${URL}/api/users/phoneVerification`

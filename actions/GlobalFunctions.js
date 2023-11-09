@@ -195,27 +195,12 @@ export const isArabic = (text) => {
     const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
     return arabicRegex.test(text);
 };
-export const getModifiedName = (fullName) => {
-    if (isArabic(fullName)) {
-        return fullName;
 
-    } else {
-        const names = fullName.split(' ');
-        const modifiedNames = names.filter((name, index) => index === 0 || index === names.length - 1);
-        const modifiedFullName = modifiedNames.map((name) => name.charAt(0).toUpperCase() + name.slice(1)).join(' ');
-        return modifiedFullName;
-    }
-}
 export const getTextInputAlign = (text) => {
     if (text) {
         return isArabic(text) ? "right" : "left";
     }
 };
-export const formatPhoneNumber = (phoneNumber) => {
-    const maskedDigits = phoneNumber.length - (5);
-    const visiblePart = phoneNumber.substr(0, 3) + '*'.repeat(maskedDigits) + phoneNumber.substr(-2);
-    return visiblePart;
-}
 
 export const formatDistance = (distance, lang, index) => {
     if (distance >= 1000) {
@@ -264,18 +249,6 @@ export const getSubjectTitle = (gender, subject) => {
     return '';
 }
 
-export const filterArrayByIds = (array, idArray) => {
-    const ids = idArray.map(x => x.id)
-    return array.filter(item => ids.includes(item.id));
-};
-export const findMyTeachers = (array, myTeachersArray) => {
-    const ids = myTeachersArray.map(x => x.id)
-    return array.filter(item => ids.includes(item.id)).map(x => {
-        const myTeacher = myTeachersArray.find(y => y.id === x.id)
-        return { ...x, ...myTeacher }
-    })
-};
-
 export const searchEngin = (array, value) => {
     if (value) {
 
@@ -286,13 +259,6 @@ export const searchEngin = (array, value) => {
 
 }
 
-export const teacherByYears = (array, year) => {
-    return array.map(item => {
-        if (item.mainSubject.schoolYears.find(x => x.id === year.id)) {
-            return item
-        }
-    })
-}
 
 const dayNames = {
     '0': { ar: 'الأحد', en: 'Sun', fullName: 'Sunday' },
@@ -436,17 +402,6 @@ export const calculateEndTime = (startTime, duration) => {
 
     return endTime;
 }
-export const isTimeBetween = (time, startTime, endTime) => {
-    const [timeHour, timeMinute] = time.split(":");
-    const [startHour, startMinute] = startTime.split(":");
-    const [endHour, endMinute] = endTime.split(":");
-
-    const timeMinutes = parseInt(timeHour) * 60 + parseInt(timeMinute);
-    const startMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
-    const endMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
-
-    return timeMinutes >= startMinutes && timeMinutes <= endMinutes;
-}
 export const areAppointmentsOverlapping = (firstTime, secondTime) => {
     const firstTimeParts = firstTime.timeIn24Format.split(":");
     const secondTimeParts = secondTime.timeIn24Format.split(":");
@@ -476,39 +431,31 @@ export const areGroupsOverLapped = (myGroups, myGroup) => {
     })
     return { overLapped, overlappedTime };
 }
-export const equalArs = (array1, array2) => {
-    if (array1.length !== array2.length) {
-        return false;
-    }
-
-    for (let i = 0; i < array1.length; i++) {
-        if (array1[i] !== array2[i]) {
-            return false;
-        }
-    }
-
-    return true;
-}
 
 export const getBookedMessage = (group, language) => {
     if (!group || !language) {
         return "";
     }
-    let [dayOne, dayTwo] = days.filter(x => group.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language])
-    let [hourOne, hourTwo] = group.days.map(x => transformTime(x.timeIn24Format, language))
-    let message
-    if (hourOne !== hourTwo) {
+    let myDays = days.filter(x => group.days.map(y => y.day).includes(x.fullName)).map(x => x.day[language])
+    let hours = group.days.map(x => transformTime(x.timeIn24Format, language))
+    let message = ""
+    if (hours.every(x => x === hours[0])) {
+        let theDays = myDays.join(language === 'en' ? ' and ' : ' و ')
         message = language === "en"
-            ? `${dayOne} at ${hourOne} and ${dayTwo} at ${hourTwo}`
-            : ` ${dayOne} الساعة ${hourOne} و  ${dayTwo} الساعة ${hourTwo}`
+            ? `${theDays} at ${hours[0]}`
+            : ` ${theDays} الساعة ${hours[0]}`
     } else {
-        let theDays = [dayOne, dayTwo].join(language === 'en' ? ' and ' : ' و ')
-        message = language === "en"
-            ? `${theDays} at ${hourOne}`
-            : ` ${theDays} الساعة ${hourOne}`
+        for (let i = 0; i < myDays.length; i++) {
+            const day = myDays[i];
+            const hour = hours[i];
+            message = message + (language === "en"
+                ? ((i > 0 ? ' and ' : '') + `${day} at ${hour}`)
+                : ((i > 0 ? ' و ' : '') + `${day} الساعة ${hour}`))
+        }
     }
     return message
 }
+
 export const removeDuplicatesById = (array) => {
     if (!array?.length) return []
     const uniqueArray = array.filter((item, index, self) => {
@@ -516,35 +463,22 @@ export const removeDuplicatesById = (array) => {
     });
     return uniqueArray;
 }
+export const getColor = (colorArr) => {
+    const colors = ['#FF0000', '#FF7F00', '#808000', '#008000', '#0000FF', '#4B0082', '#8B00FF']
+    let color = colors[Math.floor(Math.random() * 7)]
+    while (colorArr.includes(color) && colorArr.length < 7) {
+        color = colors[Math.floor(Math.random() * 7)]
+    }
+    return color;
+}
 
-export const getEvents = (myTeachers, day, teachers) => {
-    if (!myTeachers || !day) return []
-    let theTeachers = teachers.filter(x => myTeachers.map(x => x.id).includes(x.id))
-    let theEvents = theTeachers?.map((x, i) => {
-        let myTeacher = myTeachers?.find(y => y.id === x.id)
-        return x.groups.filter(y => myTeacher.groupsId.includes(y.id)).map(y => ({ ...y, teacherId: x.id, color: myTeacher.color }))
-    }).flat().filter(x => x.days.find(y => y.day.toLowerCase() === day.toLowerCase())).map(x => {
-        let event = x.days.find(y => y.day.toLowerCase() === day.toLowerCase())
-        return { eventTime: event?.timeIn24Format, duration: event?.duration, teacherId: x.teacherId, color: x.color, subject: x.subject, ...event }
-    })
-
+export const getEvents = (myGroups, day) => {
+    if (!myGroups?.length) return []
+    let theEvents = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId, groupId: group.id, subject: group.subject, color: group.color }))).flat().filter(x => x.day.toLowerCase() === day.toLowerCase())
     return theEvents
 }
-export const getMyGroups = (myTeachers, teachers) => {
-    if (!myTeachers || !teachers) return []
-    let theTeachers = teachers.filter(x => myTeachers.map(x => x.id).includes(x.id))
-    let myGroups = theTeachers?.map((x, i) => {
-        let myTeacher = myTeachers?.find(y => y.id === x.id)
-        return x.groups.filter(y => myTeacher.groupsId.includes(y.id)).map(y => ({ ...y, teacherId: x.id, color: myTeacher.color }))
-    }).flat()
-    return myGroups
-}
-export const getEventsDuration = (userInfo) => {
-    if (!userInfo?.myTeachers) return []
-    let eventsDuration = teachers.filter(x => userInfo?.myTeachers.find(y => y.id === x.id)
-    ).map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday }))
-    return eventsDuration
-}
+
+
 
 export const isDateAfter = (dateString, comparisonDate) => {
     const dateParts = dateString.split("-");
@@ -606,9 +540,13 @@ export const modifyTeacher = (teacher, subjects, years) => {
 }
 export const modifyGroups = (groups, subjects, years) => {
     if (!groups?.length) return []
+    const colorArr = []
     groups = groups.map(group => {
+        let color = getColor(colorArr)
+        colorArr.push(color)
         group.subject = subjects.find(x => x.en === group.subject)
         group.schoolYear = getTheYear(years, group.schoolYear)
+        group.color = group.color || color
         return group
     })
     return groups

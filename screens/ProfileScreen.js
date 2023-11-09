@@ -23,10 +23,8 @@ export default function ProfileScreen() {
     const [logout, cancel] = [t("logout"), t("cancel")]
 
     useEffect(() => {
-        if (!users?.length) {
-            dispatch(getUsers())
-        }
-    }, [users])
+        dispatch(getUsers())
+    }, [])
 
     return (
         <ScrollView style={{ flex: 1, backgroundColor: Color.white }}

@@ -2,7 +2,7 @@ import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
 import { useSelector } from 'react-redux';
-import { days, months, teachers } from '../data';
+import { days, months } from '../data';
 import CustomDropdown from '../components/CustomDropdown';
 import TeacherItem from '../components/TeacherItem';
 import t from '../actions/changeLanguage';
@@ -11,14 +11,13 @@ import SlideContainer from '../components/SlideContainer';
 import ContainerTitle from '../components/ContainerTitle';
 import DayItem from '../components/DayItem';
 import MonthItem from '../components/MonthItem';
-import { findMyTeachers } from '../actions/GlobalFunctions';
-
-
 
 export default function SubjectScreen({ route }) {
     const { item } = route.params;
     const { language } = useSelector(state => state.languageState)
-    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { myGroups } = useSelector(state => state.myGroupsState);
+    const { myTeachers } = useSelector(state => state.myTeachersState);
+
     const [subjectTeachers, setSubjectTeachers] = useState([]);
     const [selectedOption, setSelectedOption] = useState();
 
@@ -30,19 +29,15 @@ export default function SubjectScreen({ route }) {
     const revMonths = months.slice().reverse();
 
     useEffect(() => {
-        if (userInfo) {
-            const myT = findMyTeachers(teachers, userInfo.myTeachers)
-            const theTeachers = myT.filter(x => {
-                const teacherSubjects = x.groups.map(y => y.subject.id)
-                return teacherSubjects.includes(item.id)
-            })
-            setSubjectTeachers(theTeachers);
-            setSelectedOption(theTeachers[0])
+        if (myGroups?.length > 0, myTeachers?.length > 0) {
+            const teachersId = myGroups.filter(x => x.subject?.id === item.id).map(x => x.teacherId)
+            const teachers = myTeachers.filter(x => teachersId.includes(x.id))
+            setSubjectTeachers(teachers);
+            setSelectedOption(teachers[0])
         }
-    }, [userInfo])
+    }, [myGroups, myTeachers])
 
     const [attendance, homework, payment, exams] = [t("attendance"), t("homework"), t("payment"), t("exams")]
-
     return selectedOption && (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={item[language]} />

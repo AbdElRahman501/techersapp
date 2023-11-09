@@ -95,11 +95,7 @@ export const widthPercentage = (parent) => {
 export const fontEm = (em) => {
   return (widthPercentage(4) * em)
 };
-export const getColorByIndex = (index) => {
-  const colors = ['#FF0000', '#FF7F00', '#808000', '#008000', '#0000FF', '#4B0082', '#8B00FF']
-  const colorIndex = index % colors.length || 0;
-  return colors[colorIndex];
-}
+
 export const globalStyles = StyleSheet.create({
   body: {
     flex: 1,

@@ -11,7 +11,7 @@ import Analytics from '../components/Analytics';
 import DayOption from '../components/DayOption';
 import HoursOption from '../components/HoursOption';
 import FriendItem from '../components/FriendItem';
-import { getBookedMessage, getTextInputAlign, sortArrayByTime } from '../actions/GlobalFunctions';
+import { getBookedMessage, getColor, getTextInputAlign, sortArrayByTime } from '../actions/GlobalFunctions';
 import LongText from '../components/LongText';
 import PrimaryButton from '../components/PrimaryButton';
 import { useDispatch, useSelector } from 'react-redux';
@@ -149,14 +149,14 @@ export default function TeacherScreen({ route }) {
             }
         }
     }
-
     // // submit handler
     const bookTeacher = () => {
         if (selectedGroup) {
             if (buttonText.booked) {
                 dispatch(leaveGroup(selectedGroup.id, item.id))
             } else {
-                const theGroup = { ...selectedGroup, teacherId: item.id }
+                const myGroupsColorArray = myGroups.filter(x => !!x.color).map(x => x.color)
+                const theGroup = { ...selectedGroup, teacherId: item.id, color: teacher?.color || getColor(myGroupsColorArray) }
                 dispatch(addGroup(theGroup, teacher))
             }
         }
