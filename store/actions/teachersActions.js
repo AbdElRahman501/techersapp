@@ -6,7 +6,6 @@ import { subjects, years } from "../../data";
 import { modifyTeacher, modifyTeachers } from '../../actions/GlobalFunctions';
 
 export const getCloseTeachers = (id) => async (dispatch) => {
-    dispatch({ type: CLOSE_TEACHERS_REQUEST });
     try {
         const dataJSON = await AsyncStorage.getItem("closeTeachers");
         if (dataJSON !== null) {
@@ -21,12 +20,6 @@ export const getCloseTeachers = (id) => async (dispatch) => {
         console.log('server close teachers fetched successfully.');
     } catch (error) {
         console.log("🚀 ~ file: teachersActions.js:24 ~ getCloseTeachers ~ error:", error)
-        dispatch({
-            type: CLOSE_TEACHERS_FAIL, payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
     }
 };
 export const getTeacherInfo = (id) => async (dispatch) => {

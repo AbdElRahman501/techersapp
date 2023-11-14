@@ -96,24 +96,3 @@ export const getMyGroups = () => async (dispatch) => {
     }
 
 }
-
-
-export const setMyGroups = (id) => async (dispatch) => {
-    dispatch({ type: MY_GROUPS_REQUEST })/*  */
-    try {
-        const { data } = await Axios.get(MY_GROUPS_URL + id)
-        if (!data) return
-        const myGroups = modifyGroups(data, subjects, years)
-        await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
-        dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
-    } catch (error) {
-        console.log("🚀 ~ file: groupsActions.js:66 ~ setMyGroups ~ error:", error)
-        dispatch({
-            type: MY_GROUPS_FAIL, payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        })
-    }
-
-}

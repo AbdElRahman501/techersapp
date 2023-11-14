@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, Modal, Text, View } from "react-native";
 import PrimaryButton from "./PrimaryButton";
-import { Color, FontSize, globalStyles, widthPercentage } from "../GlobalStyles";
+import { Color, globalStyles, widthPercentage } from "../GlobalStyles";
 import t from "../actions/changeLanguage";
 
 const AlertModal = ({ title, content, visible, imageSource, secondaryButton, primaryButton, primaryButtonStyle, secondaryButtonSubmit, primaryButtonSubmit, children }) => {

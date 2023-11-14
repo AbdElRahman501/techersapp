@@ -19,13 +19,14 @@ import AlertModal from '../components/alertModal';
 import LoadingModal from '../components/LoadingModal';
 import { getTeacherInfo } from '../store/actions/teachersActions';
 import { addGroup, leaveGroup } from '../store/actions/groupsActions';
+import NetInfo from '@react-native-community/netinfo';
+import NetworkPage from '../components/NetworkPage';
 
 export default function TeacherScreen({ route }) {
-    const { item } = route.params;
+    const { item, subject } = route.params;
     const dispatch = useDispatch();
     let [bookSeat, changeDate, leave, chooseDay, chooseHour, noGroupAvailable, and, confirm, cancel, leaveMessage, confirmMessage] =
         [t("book your seat"), t("change date"), t("leave"), t("choose day"), t("choose hour"), t("no group available"), t("and"), t("confirm"), t("cancel"), t("leave message"), t("confirm message")];
-
     const { language } = useSelector((state) => state.languageState);
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
     const { loading: teacherLoading, teachersHistory, error: teacherError } = useSelector(state => state.teacherInfoState);
@@ -40,9 +41,11 @@ export default function TeacherScreen({ route }) {
     const [selectedGroup, setSelectedGroup] = useState();
     const [selectedDay, setSelectedDay] = useState();
     const [selectedHour, setSelectedHour] = useState("00:00");
-    const [selectedSubject, setSelectedSubject] = useState()
+    const [selectedSubject, setSelectedSubject] = useState(subject)
     const [hours, setHours] = useState([]);
     const [buttonText, setButtonText] = useState({ text: bookSeat })
+    const [networkPageVisible, setNetworkPageVisible] = useState(false);
+    const [isConnected, setIsConnected] = useState(true);
 
     // // press handler 
     const dayHandelPress = (fullName) => {
@@ -71,7 +74,12 @@ export default function TeacherScreen({ route }) {
     }
 
 
-    // // functions 
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => { setIsConnected(state.isConnected); });
+        return () => { unsubscribe(); };
+    }, []);
+
+    // functions 
 
     const updateGroup = (group, day, subject) => {
         if (group) {
@@ -108,7 +116,11 @@ export default function TeacherScreen({ route }) {
     useEffect(() => {
         if (teacher) {
             const teacherBookedGroups = myGroups?.filter(x => x?.teacherId === teacher.id) || []
-            updateGroup(teacherBookedGroups[0])
+            if (selectedSubject) {
+                updateGroup(teacherBookedGroups.find(x => x.subject.id === selectedSubject.id))
+            } else {
+                updateGroup(teacherBookedGroups[0])
+            }
         }
     }, [teacher])
 
@@ -116,12 +128,16 @@ export default function TeacherScreen({ route }) {
         if (!teacher) {
             const theTeacher = myTeachers.find(x => x?.id === item.id) || teachersHistory?.find(x => x?.id === item.id)
             if (!theTeacher) {
-                dispatch(getTeacherInfo(item.id))
+                if (isConnected) {
+                    dispatch(getTeacherInfo(item.id))
+                } else {
+                    setNetworkPageVisible(true)
+                }
             } else {
                 setTeacher(theTeacher)
             }
         }
-    }, [teachersHistory])
+    }, [teachersHistory, isConnected])
 
     // button message
     useEffect(() => {
@@ -174,28 +190,35 @@ export default function TeacherScreen({ route }) {
         }
     }
 
+    useEffect(() => {
+        if (!myGroupsLoading) {
+            setVisible(false)
+        }
+    }, [myGroupsLoading])
+
     return (
         <SafeAreaView style={[styles.container]} >
             <BackHeader title={t("teacher page")} />
             <LoadingModal visible={teacherLoading || myGroupsLoading} />
             <AlertModal
-                visible={visible || loading || myGroupsLoading}
+                visible={(visible)}
                 imageSource={require('../assets/icons/alert.png')}
                 title={confirm}
                 content={message}
                 primaryButton={confirm}
                 secondaryButton={cancel}
-                primaryButtonSubmit={() => { setVisible(false); bookTeacher() }}
+                primaryButtonSubmit={() => { bookTeacher() }}
                 secondaryButtonSubmit={() => setVisible(false)}
             />
+            <NetworkPage visible={networkPageVisible} item={item} />
             <ScrollView style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                {teacher &&
+                {(teacher && !networkPageVisible) &&
                     <TeacherMainCard userInfo={userInfo} item={teacher} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
                 }
-                <View style={[styles.appContainer, { display: teacher ? "flex" : "none" }]}>
+                <View style={[styles.appContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />
                     <LongText content={teacher?.about} style={[styles.regular, { textAlign: getTextInputAlign(teacher?.about) }]} />
                     <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
@@ -217,7 +240,7 @@ export default function TeacherScreen({ route }) {
                     </SlideContainer>
                 </View>
             </ScrollView>
-            <View style={[styles.buttonContainer, { display: teacher ? "flex" : "none" }]}>
+            <View style={[styles.buttonContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
                 <View style={{ paddingHorizontal: Padding.p_sm }} >
                     <Text style={[styles.regular]}>
                         {t("per month")}

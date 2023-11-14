@@ -5,7 +5,6 @@ import { REGISTER_URL, SIGNIN_URL, SYNCED_DATA_URL, UPDATE_URL } from "./api";
 import { getErrorMessage, modifyGroups, modifyStudent, modifyTeachers } from "../../actions/GlobalFunctions";
 import { schoolTypes, subjects, years } from "../../data";
 import { MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_SUCCESS } from "../constants/teachersConstants";
-import { setMyGroups } from "./groupsActions";
 import { MY_GROUPS_SUCCESS } from "../constants/groupsConstants";
 import { showMessage } from "./showMessageActions";
 
@@ -30,7 +29,7 @@ export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen 
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
-      
+
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
@@ -132,13 +131,25 @@ export const getUsers = () => async (dispatch) => {
 export const syncedData = (userInfo) => async (dispatch) => {
     const { id, role, updatedAt } = userInfo
     try {
-        const { data: { student } } = await Axios.put(SYNCED_DATA_URL, { id, role, updatedAt });
+        let { data: { student, closeTeachers, myTeachers, myGroups } } = await Axios.put(SYNCED_DATA_URL, { id, role, updatedAt });
         if (!student) return
+        myGroups = modifyGroups(myGroups, subjects, years)
+        myTeachers = modifyTeachers(myTeachers, subjects, years)
+        closeTeachers = modifyTeachers(closeTeachers, subjects, years)
         const userInfo = modifyStudent(student, years, schoolTypes)
-        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        console.log('user synced success successfully.');
-        dispatch(setMyGroups(student.id))
+
+        dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
+        dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
+        dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
+
+
+        await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
+        await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
+
+        console.log("user synced successfully.");
 
     } catch (error) {
         console.log("🚀 ~ file: userActions.js:140 ~ syncedData ~ error:", error)
