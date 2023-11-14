@@ -66,7 +66,7 @@ export default function ProfileScreen() {
                     {t("general")}
                 </CustomText>
 
-                <SettingItem Icon={() => <Earth_Icon />} title={t("language")} regular={language} pressHandler={() => dispatch(ToggleLanguage())} />
+                <SettingItem Icon={() => <Earth_Icon />} title={t("language")} regular={language === "en" ? "en" : "عربي"} pressHandler={() => dispatch(ToggleLanguage())} />
                 <SettingItem Icon={() => <Teacher_Icon />} title={t("my teachers")} pressHandler={() => console.log("my teachers")} />
                 <SettingItem Icon={() => <Theme_Icon />} title={t("theme")} regular={t("light")} pressHandler={() => console.log("Theme")} />
                 <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >

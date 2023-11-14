@@ -464,10 +464,10 @@ export const removeDuplicatesById = (array) => {
     return uniqueArray;
 }
 export const getColor = (colorArr) => {
-    const colors = ['#FF0000', '#FF7F00', '#808000', '#008000', '#0000FF', '#4B0082', '#8B00FF']
-    let color = colors[Math.floor(Math.random() * 7)]
-    while (colorArr.includes(color) && colorArr.length < 7) {
-        color = colors[Math.floor(Math.random() * 7)]
+    const colors = ["#8fc0a9", "#c8d5b9", "#8BAB98", "#5D9678", "#C2B99F", "#EBCEA0", '#81b29a', '#ccdd99', '#E9C46A', '#99cc99']
+    let color = colors[Math.floor(Math.random() * colors.length)]
+    while (colorArr?.includes(color) && colorArr?.length < colors.length) {
+        color = colors[Math.floor(Math.random() * colors.length)]
     }
     return color;
 }
