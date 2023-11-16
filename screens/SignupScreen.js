@@ -1,16 +1,14 @@
-import { Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView, Alert, StatusBar } from 'react-native'
+import { Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView, Alert } from 'react-native'
 import React, { useState } from 'react'
-import { Color, FontSize, Height, Margin, fontEm, globalStyles, heightPercentage } from '../GlobalStyles'
+import { Color, Margin, globalStyles } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
-import DividerWithText from '../components/DividerWithText ';
 import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
 import t from "../actions/changeLanguage";
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import PrimaryButton from '../components/PrimaryButton';
-import { Ionicons } from '@expo/vector-icons';
 import LoadingModal from '../components/LoadingModal';
 import PhoneInput from '../components/PhoneInput';
 import { getErrorMessage, isDataExpired } from '../actions/GlobalFunctions';
@@ -18,7 +16,6 @@ import { PHONE_VERIFICATION_URL } from '../store/actions/api';
 import axios from 'axios';
 import AlertModal from '../components/alertModal';
 import VerifyPhoneModal from '../components/VerifyPhoneModal';
-import { showMessage } from '../store/actions/showMessageActions';
 
 
 export default function SignUpScreen({ route }) {
@@ -35,17 +32,13 @@ export default function SignUpScreen({ route }) {
     const resendDuration = 90
 
     const [visible, setVisible] = useState(false);
-    const dispatch = useDispatch();
 
     const handleSubmit = () => {
         if (!valid) {
             Alert.alert('Invalid Phone Number', 'Please enter a valid phone number');
         } else {
-            if (user === "student") {
-                phoneNumberVerification(signUpData.phoneNumber)
-            } else {
-                dispatch(showMessage("Teachers Profile Coming Soon 🚀 \ntry student profile 🚀"))
-            }
+            phoneNumberVerification(signUpData.phoneNumber)
+
         }
     };
     const phoneNumberVerification = async (phoneNumber) => {

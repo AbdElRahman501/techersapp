@@ -210,7 +210,7 @@ export default function TeacherScreen({ route }) {
                 primaryButtonSubmit={() => { bookTeacher() }}
                 secondaryButtonSubmit={() => setVisible(false)}
             />
-            <NetworkPage visible={networkPageVisible} item={item} />
+            <NetworkPage visible={networkPageVisible} item={item} isConnected={isConnected} />
             <ScrollView style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -221,7 +221,7 @@ export default function TeacherScreen({ route }) {
                 <View style={[styles.appContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />
                     <LongText content={teacher?.about} style={[styles.regular, { textAlign: getTextInputAlign(teacher?.about) }]} />
-                    <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
+                    {/* <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} /> */}
                     <ContainerTitle title={t("schedule")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} />
                     <SlideContainer data={days} selectedGroup={selectedGroup} selectedDay={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />

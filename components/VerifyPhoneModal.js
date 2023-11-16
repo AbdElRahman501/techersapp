@@ -20,7 +20,11 @@ export default function VerifyPhoneModal({ phoneNumberVerification, resendDurati
 
     const handleOTPComplete = otp => {
         if (code === otp || otp === "55555") {
-            navigation.navigate("UserData1", { students, signUpData })
+            if (signUpData?.role === "student") {
+                navigation.navigate("UserData1", { students, signUpData })
+            } else {
+                navigation.navigate("TeacherSignUpScreen", { signUpData })
+            }
             onClose()
         }
     };

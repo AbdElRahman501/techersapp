@@ -98,7 +98,7 @@ export default function UserDataFirstScreen({ route }) {
                                 <DividerWithText text={or} />
                             </View>
                             <View style={{ width: "100%", display: trigger ? "none" : 'flex' }}>
-                                <GenderSelection checkInputs={checkInputs} setCheckInputs={setCheckInputs}
+                                <GenderSelection role={data.role} checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                                     setState={setState}
                                     genderSelection={(e) => setSignUpData({ ...signUpData, gender: e })} gender={signUpData.gender}
                                 />

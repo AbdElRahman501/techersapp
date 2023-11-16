@@ -112,6 +112,8 @@
     "day_started": "Day Started at {time}",
     "boy": "Male",
     "girl": "Female",
+    "teacher male": "Male",
+    "teacher female": "Female",
     "student account": "Student Account",
     "student-parent account": "Student-Parent Account",
     "conflict": "You have conflict",
@@ -124,6 +126,9 @@
     "logout description": "Are you sure you want to logout?",
     "general": "General",
     "account": "Account",
-    "switch": "Switch"
+    "switch": "Switch",
+    "no connection title": "No Internet Connection",
+    "no connection description": "Pleas check your internet connection it looks like you are not connected to the internet",
+    "try again": "Try Again"
 
 }

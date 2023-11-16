@@ -5,7 +5,9 @@ import { globalStyles } from '../GlobalStyles'
 import t from '../actions/changeLanguage'
 import { inputChecker } from '../actions/GlobalFunctions'
 
-export default function GenderSelection({ genderSelection, gender, setCheckInputs, checkInputs, setState }) {
+export default function GenderSelection({ role, genderSelection, gender, setCheckInputs, checkInputs, setState }) {
+
+    const [studentMale, studentFemale, teacherMale, teacherFemale] = [t("boy"), t("girl"), t("teacher male"), t("teacher female")]
 
     useEffect(() => {
         if (checkInputs) {
@@ -26,7 +28,7 @@ export default function GenderSelection({ genderSelection, gender, setCheckInput
                             resizeMode="contain"
                             source={require('../assets/boy.png')} />
                     </View>
-                    <Text style={globalStyles.regular}>{t("boy")}</Text>
+                    <Text style={globalStyles.regular}>{role === "student" ? studentMale : teacherMale}</Text>
                 </Animated.View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => genderSelection("female")} >
@@ -37,7 +39,7 @@ export default function GenderSelection({ genderSelection, gender, setCheckInput
                             resizeMode="contain"
                             source={require('../assets/girl.png')} />
                     </View>
-                    <Text style={globalStyles.regular}>{t("girl")}</Text>
+                    <Text style={globalStyles.regular}>{role === "student" ? studentFemale : teacherFemale}</Text>
                 </Animated.View>
             </TouchableWithoutFeedback>
         </View>

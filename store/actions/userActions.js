@@ -77,6 +77,16 @@ export const register = (userData) => async (dispatch) => {
         });
     }
 };
+export const teacherRegister = (userData) => async (dispatch) => {
+    try {
+        let { data } = await Axios.post(REGISTER_URL, userData);
+        if (!data) return
+        console.log("🚀 ~ file: userActions.js:83 ~ teacherRegister ~ data:", data)
+    } catch (error) {
+        console.log("🚀 ~ file: userActions.js:52 ~ register ~ error:", error)
+
+    }
+};
 export const update = (userData) => async (dispatch, getState) => {
     dispatch({ type: USER_UPDATE_REQUEST, payload: getState().userInfo.userInfo });
     try {

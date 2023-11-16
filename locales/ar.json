@@ -112,6 +112,8 @@
     "day_started": "يبدأ اليوم في {time}",
     "boy": "طالب",
     "girl": "طالبة",
+    "teacher male": "معلم",
+    "teacher female": "معلمة",
     "student account": "حساب طالب مستقل",
     "student-parent account": "حساب طالب تابع لولي الامر",
     "conflict": "لديك تعارض",
@@ -124,5 +126,8 @@
     "logout description": "هل انت متاكد انك تريد تسجيل الخروج؟",
     "general": "عام",
     "account": "الحساب",
-    "switch": "تبديل"
+    "switch": "تبديل",
+    "no connection title": "لا يوجد اتصال بالانترنت",
+    "no connection description": "يرجى التحقق من اتصالك بالانترنت , يبدو انك غير متصل بالانترنت",
+    "try again": "حاول مرة اخرى"
 }

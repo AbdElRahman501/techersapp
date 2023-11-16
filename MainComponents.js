@@ -25,6 +25,7 @@ import { USER_SUCCESS } from './store/constants/userConstants';
 import { getCloseTeachers, getMyTeachersData } from './store/actions/teachersActions';
 import { getMyGroups } from './store/actions/groupsActions';
 import { syncedData } from './store/actions/userActions';
+import TeacherSignUpScreen from './screens/TeacherSignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,7 +74,7 @@ export default function MainComponents() {
     }, [userInfo, TheInitialRouteName]);
 
     useEffect(() => {
-        dispatch(updateVersion("1.0.0.1"))
+        dispatch(updateVersion("1.0.0.0"))
     }, [])
 
     return TheInitialRouteName && (
@@ -114,6 +115,8 @@ export default function MainComponents() {
                     <Stack.Screen name="TeacherScreen" component={TeacherScreen}
                         options={{ headerShown: false }} />
                     <Stack.Screen name="SearchScreen" component={SearchScreen}
+                        options={{ headerShown: false }} />
+                    <Stack.Screen name="TeacherSignUpScreen" component={TeacherSignUpScreen}
                         options={{ headerShown: false }} />
                 </Stack.Navigator>
                 <Message />
