@@ -12,6 +12,7 @@ import t from '../actions/changeLanguage';
 import AlertModal from '../components/alertModal';
 import UsersModal from '../components/UsersModal';
 import LoadingModal from '../components/LoadingModal';
+import TapBottomNavigator from '../components/TapBottomNavigator';
 
 export default function ProfileScreen() {
     const { language } = useSelector(state => state.languageState)
@@ -27,55 +28,57 @@ export default function ProfileScreen() {
     }, [])
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: Color.white }}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-        >
-            <SafeAreaView style={[globalStyles.body]} >
-                <LoadingModal visible={switchLoading || loading} />
-                <AlertModal
-                    visible={visible || loading}
-                    imageSource={require('../assets/icons/alert.png')}
-                    title={t("logout title")}
-                    content={t("logout description")}
-                    primaryButton={logout}
-                    primaryButtonStyle={{ backgroundColor: Color.red }}
-                    secondaryButton={cancel}
-                    primaryButtonSubmit={() => { setVisible(false); dispatch(signOut()) }}
-                    secondaryButtonSubmit={() => setVisible(false)}
-                />
-                {users?.length > 0 && <UsersModal usersVisible={usersVisible || switchLoading} setUsersVisible={setUsersVisible} users={users} userInfo={userInfo} />}
+        <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
+                <View style={[globalStyles.body]}>
+                    <LoadingModal visible={switchLoading || loading} />
+                    <AlertModal
+                        visible={visible || loading}
+                        imageSource={require('../assets/icons/alert.png')}
+                        title={t("logout title")}
+                        content={t("logout description")}
+                        primaryButton={logout}
+                        primaryButtonStyle={{ backgroundColor: Color.red }}
+                        secondaryButton={cancel}
+                        primaryButtonSubmit={() => { setVisible(false); dispatch(signOut()) }}
+                        secondaryButtonSubmit={() => setVisible(false)}
+                    />
+                    {users?.length > 0 && <UsersModal usersVisible={usersVisible || switchLoading} setUsersVisible={setUsersVisible} users={users} userInfo={userInfo} />}
 
-                <View style={{ marginHorizontal: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }}>
-                    <TouchableOpacity disabled={!users?.length} onPress={() => setUsersVisible(true)} style={[globalStyles.student, { borderWidth: 0, minWidth: "80%", marginVertical: 0, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
-                        <CustomImage
-                            style={{ height: Height.hi_m, width: Height.hi_m, borderRadius: Border.br_3xl }}
-                            resizeMode="contain"
-                            source={require('../assets/teachers/boy.png')}
-                        />
-                        <View style={{ marginHorizontal: Margin.m_sm, gap: 3 }}>
-                            <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{userInfo?.fullName || ""}</CustomText>
-                            <CustomText style={globalStyles.smallText}>{userInfo?.schoolYear[language] || ""}</CustomText>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log("burger button")}>
-                        <Burger_Button_Icon width={24} height={24} viewBox="0 0 24 24" />
-                    </TouchableOpacity>
+                    <View style={{ marginHorizontal: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }}>
+                        <TouchableOpacity disabled={!users?.length} onPress={() => setUsersVisible(true)} style={[globalStyles.student, { borderWidth: 0, minWidth: "80%", marginVertical: 0, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
+                            <CustomImage
+                                style={{ height: Height.hi_m, width: Height.hi_m, borderRadius: Border.br_3xl }}
+                                resizeMode="contain"
+                                source={require('../assets/teachers/boy.png')}
+                            />
+                            <View style={{ marginHorizontal: Margin.m_sm, gap: 3 }}>
+                                <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{userInfo?.fullName || ""}</CustomText>
+                                <CustomText style={globalStyles.smallText}>{userInfo?.schoolYear[language] || ""}</CustomText>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => console.log("burger button")}>
+                            <Burger_Button_Icon width={24} height={24} viewBox="0 0 24 24" />
+                        </TouchableOpacity>
+                    </View>
+                    <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
+                        {t("general")}
+                    </CustomText>
+
+                    <SettingItem Icon={() => <Earth_Icon />} title={t("language")} regular={language === "en" ? "en" : "عربي"} pressHandler={() => dispatch(ToggleLanguage())} />
+                    <SettingItem Icon={() => <Teacher_Icon />} title={t("my teachers")} pressHandler={() => console.log("my teachers")} />
+                    <SettingItem Icon={() => <Theme_Icon />} title={t("theme")} regular={t("light")} pressHandler={() => console.log("Theme")} />
+                    <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
+                        {t("account")}
+                    </CustomText>
+                    <SettingItem Icon={() => <Logout_Icon />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
                 </View>
-                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
-                    {t("general")}
-                </CustomText>
-
-                <SettingItem Icon={() => <Earth_Icon />} title={t("language")} regular={language === "en" ? "en" : "عربي"} pressHandler={() => dispatch(ToggleLanguage())} />
-                <SettingItem Icon={() => <Teacher_Icon />} title={t("my teachers")} pressHandler={() => console.log("my teachers")} />
-                <SettingItem Icon={() => <Theme_Icon />} title={t("theme")} regular={t("light")} pressHandler={() => console.log("Theme")} />
-                <CustomText style={[globalStyles.regular, { marginVertical: Margin.m_base, fontSize: FontSize.size_lg, width: "100%" }]} >
-                    {t("account")}
-                </CustomText>
-                <SettingItem Icon={() => <Logout_Icon />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
-
-            </SafeAreaView>
-        </ScrollView>
+            </ScrollView >
+            <TapBottomNavigator currentScreen={'Profile'} />
+        </SafeAreaView>
     )
 }
 

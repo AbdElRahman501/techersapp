@@ -19,14 +19,16 @@ const SplashScreen = () => {
   const navigation = useNavigation();
 
   const onClose = (page) => {
-    size.value = withTiming(widthPercentage(1500), { duration: 1000, easing: Easing.cubic });
-    translateY.value = withTiming(-1650, { duration: 1000, easing: Easing.cubic });
     setTimeout(() => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: page }],
-      });
-    }, 1000)
+      size.value = withTiming(widthPercentage(1500), { duration: 1000, easing: Easing.cubic });
+      translateY.value = withTiming(-1650, { duration: 1000, easing: Easing.cubic });
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: page }],
+        });
+      }, 900)
+    }, 1500)
   }
 
   const dispatch = useDispatch();

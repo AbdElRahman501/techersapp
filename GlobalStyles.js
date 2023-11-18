@@ -103,7 +103,7 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Padding.p_m,
     marginHorizontal: Padding.page_p,
-    marginBottom: Platform.OS === "ios" ? Height.nav_tap + 50 : Height.nav_tap + 20
+    marginBottom: 20
   },
   logo: {
     height: Height.logo_lg,
