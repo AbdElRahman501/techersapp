@@ -215,8 +215,8 @@ export default function TeacherScreen({ route }) {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                {(teacher && !networkPageVisible) &&
-                    <TeacherMainCard userInfo={userInfo} item={teacher} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
+                {(!networkPageVisible) &&
+                    <TeacherMainCard userInfo={userInfo} item={teacher || item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
                 }
                 <View style={[styles.appContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />

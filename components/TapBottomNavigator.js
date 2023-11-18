@@ -6,9 +6,9 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-export default function TapBottomNavigator({ TheInitialRouteName }) {
+export default function TapBottomNavigator() {
     const navigation = useNavigation();
-    const [currentScreen, setCurrentScreen] = useState(TheInitialRouteName);
+    const [currentScreen, setCurrentScreen] = useState();
     const navigationState = useNavigationState(state => state);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
             const history = navigationState.routes.map(route => route.name);
             setCurrentScreen(history[history.length - 1]);
         }
-    }, [navigationState, TheInitialRouteName]);
+    }, [navigationState]);
 
     const goTo = (distinction) => {
         if (currentScreen !== distinction) {
@@ -28,25 +28,25 @@ export default function TapBottomNavigator({ TheInitialRouteName }) {
     return (currentScreen === 'Home' || currentScreen === 'Community' || currentScreen === 'Schedule' || currentScreen === 'Profile') && (
         <SafeAreaView style={styles.tapContainer}>
             <View style={styles.container}>
-                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo("Home")}  >
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => { goTo("Home"); setCurrentScreen("Home"); }}  >
                     {currentScreen === "Home"
                         ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
                         : <Home_icon_Svg />
                     }
                 </TouchableOpacity>
-                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Community')}>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => { goTo('Community'); setCurrentScreen('Community'); }}>
                     {currentScreen === 'Community'
                         ? <Community_Icon_Fill />
                         : <Community_Icon />
                     }
                 </TouchableOpacity>
-                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Schedule')}>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => { goTo('Schedule'); setCurrentScreen('Schedule'); }}>
                     {currentScreen === 'Schedule'
                         ? <Calender_home_svg_fill />
                         : <Calender_home_Svg />
                     }
                 </TouchableOpacity>
-                <TouchableOpacity style={{ padding: 20 }} onPress={() => goTo('Profile')}>
+                <TouchableOpacity style={{ padding: 20 }} onPress={() => { goTo('Profile'); setCurrentScreen('Profile'); }}>
                     {currentScreen === 'Profile'
                         ? <User_Icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
                         : <User_Icon_Svg />

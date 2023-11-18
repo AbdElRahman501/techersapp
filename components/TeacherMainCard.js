@@ -6,6 +6,7 @@ import CustomText from './CustemText'
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } from '../actions/GlobalFunctions'
+import Animated from 'react-native-reanimated';
 
 export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler }) {
     const { language } = useSelector(state => state.languageState)
@@ -21,7 +22,7 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
     }, [])
 
     return (
-        <View style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
+        <Animated.View sharedTransitionTag={item?.id} style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item?.gender, item?.name)}</CustomText>
@@ -57,7 +58,7 @@ export default function TeacherMainCard({ item, selectedSubject, changeSubjectHa
                 style={[styles.image, language === 'en' ? { marginRight: 10 } : { marginLeft: 10 }]}
                 resizeMode="cover"
                 source={item?.imageSource} />
-        </View >
+        </Animated.View >
     )
 }
 const styles = StyleSheet.create({

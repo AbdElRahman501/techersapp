@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import UserDataScreen from "./screens/UserDataScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -14,70 +14,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import SigninScreen from "./screens/SigninScreen";
 import SignUpScreen from "./screens/SignupScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useDispatch, useSelector } from 'react-redux';
 import SearchScreen from './screens/SearchScreen';
 import Message from './components/Message';
 import UserDataFirstScreen from './screens/UserDataFirstScreen';
 import { StatusBar } from 'react-native';
-import { getLocation, serverWakeUp, updateVersion } from './store/actions/deviceActions';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER_SUCCESS } from './store/constants/userConstants';
-import { getCloseTeachers, getMyTeachersData } from './store/actions/teachersActions';
-import { getMyGroups } from './store/actions/groupsActions';
-import { syncedData } from './store/actions/userActions';
 import TeacherSignUpScreen from './screens/TeacherSignUpScreen';
+import SplashScreen from './screens/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function MainComponents() {
 
-    const [TheInitialRouteName, setInitialRouteName] = useState("");
-    const { userInfo } = useSelector(state => state.userInfo);
 
-    const dispatch = useDispatch();
-
-    const getUserData = async () => {
-        try {
-            const dataJSON = await AsyncStorage.getItem("userInfo");
-            if (dataJSON !== null) {
-                const userInfo = JSON.parse(dataJSON);
-                dispatch(syncedData(userInfo))
-                dispatch({ type: USER_SUCCESS, payload: userInfo });
-                if (userInfo?.unCompleted) {
-                    setInitialRouteName("UserDataScreen")
-                    dispatch(serverWakeUp())
-                } else {
-                    dispatch(getCloseTeachers(userInfo.id));
-                    dispatch(getMyTeachersData())
-                    dispatch(getMyGroups());
-                    setInitialRouteName("Home")
-                }
-            } else {
-                console.log("🚀 ~ file: MainComponents.js:64 ~ getUserData ~ No data found:")
-                dispatch(getLocation())
-                dispatch(serverWakeUp())
-                setInitialRouteName("OnboardingPages")
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            dispatch(getLocation())
-            setInitialRouteName("OnboardingPages")
-            dispatch(serverWakeUp())
-
-        }
-    };
-
-    useEffect(() => {
-        if (!userInfo && !TheInitialRouteName) {
-            getUserData()
-        }
-    }, [userInfo, TheInitialRouteName]);
-
-    useEffect(() => {
-        dispatch(updateVersion("1.0.0.0"))
-    }, [])
-
-    return TheInitialRouteName && (
+    return (
         <NavigationContainer >
             <>
                 <StatusBar
@@ -85,9 +34,11 @@ export default function MainComponents() {
                     barStyle="dark-content"
                 />
                 <Stack.Navigator
-                    initialRouteName={TheInitialRouteName}
+                    initialRouteName={"Splash Screen"}
                     screenOptions={{ headerShown: false }}
                 >
+                    <Stack.Screen name="Splash Screen" component={SplashScreen}
+                        options={{ headerShown: false }} />
                     <Stack.Screen name="OnboardingPages" component={OnboardingPages}
                         options={{ headerShown: false }} />
                     <Stack.Screen name="SignUpOptions" component={SignUpOptions}
@@ -119,8 +70,6 @@ export default function MainComponents() {
                     <Stack.Screen name="TeacherSignUpScreen" component={TeacherSignUpScreen}
                         options={{ headerShown: false }} />
                 </Stack.Navigator>
-                <Message />
-                <TapBottomNavigator TheInitialRouteName={TheInitialRouteName} />
             </>
         </NavigationContainer >
     )

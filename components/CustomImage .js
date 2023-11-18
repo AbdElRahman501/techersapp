@@ -1,6 +1,6 @@
-import { Image } from 'react-native'
 import React from 'react'
 import { SvgUri } from 'react-native-svg';
+import Animated from 'react-native-reanimated';
 
 export default function CustomImage(props) {
     const isLocal = typeof props.source === 'number'
@@ -13,7 +13,7 @@ export default function CustomImage(props) {
     };
 
     return isLocal ? (
-        <Image
+        <Animated.Image
             {...props}
             source={props.source}
         />
@@ -25,7 +25,7 @@ export default function CustomImage(props) {
             uri={props.source}
         />
     ) : (
-        <Image
+        <Animated.Image
             {...props}
             source={{
                 uri: props.source,

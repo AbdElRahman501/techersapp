@@ -4,23 +4,25 @@ import { Search_icon_Svg } from '../assets/icons/Icons';
 import { Border, Color, FontFamily, FontSize, Height } from '../GlobalStyles';
 import { useNavigation } from '@react-navigation/core';
 import t from '../actions/changeLanguage';
+import Animated from 'react-native-reanimated';
 
-export default function SearchBar({ autoFocus, button, changHandler, value }) {
+export default function SearchBar({ autoFocus, button, changHandler, value, ...props }) {
   const [isFocused, setIsFocused] = useState(!button)
   const navigation = useNavigation()
 
   const isDark = useColorScheme() === 'dark'
 
   return (
-    <View style={[styles.inputField, {
-      shadowColor: isFocused ? Color.darkcyan : isDark ? "none" : Color.darkgray,
-      flexDirection: "row"
-    }]}>
+    <Animated.View
+      sharedTransitionTag={"Search Bar"}
+      style={[styles.inputField, {
+        shadowColor: isFocused ? Color.darkcyan : isDark ? "none" : Color.darkgray,
+        flexDirection: "row"
+      }]}>
       <TextInput style={[styles.input, {
         textAlign: "right",
         paddingLeft: Height.hi_input
       }]}
-        autoFocus={autoFocus}
         placeholder={t("search")}
         autoCapitalize="none"
         onChangeText={changHandler}
@@ -35,6 +37,7 @@ export default function SearchBar({ autoFocus, button, changHandler, value }) {
         }
         }
         onBlur={() => setIsFocused(false)}
+        {...props}
       />
       <View style={styles.rightIcon}>
         <Search_icon_Svg
@@ -44,7 +47,7 @@ export default function SearchBar({ autoFocus, button, changHandler, value }) {
           color={isFocused ? Color.darkcyan : Color.input_stroke}
         />
       </View>
-    </View>
+    </Animated.View>
   )
 }
 

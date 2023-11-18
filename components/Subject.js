@@ -1,34 +1,25 @@
-import { StyleSheet, Text, View, Platform, Animated, TouchableWithoutFeedback, Image } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
+import { StyleSheet, Text, View, Platform, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/core';
-import transition from '../actions/transition';
 import CustomImage from './CustomImage ';
 
 const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
     const navigation = useNavigation()
-    const [clicked, setClicked] = useState(false);
     const { svg: Svg_icon } = item
 
     const handelScale = () => {
-        setClicked(true)
         if (item.addButton) {
-            setTimeout(() => {
-                setClicked(false)
-                navigation.navigate("SearchScreen")
-            }, 250);
+            navigation.navigate("SearchScreen")
         } else {
-            setTimeout(() => {
-                setClicked(false)
-                navigation.navigate("SubjectScreen", { item })
-            }, 250);
+            navigation.navigate("SubjectScreen", { item })
         }
     }
     return (
-        <TouchableWithoutFeedback onPress={handelScale} >
-            <Animated.View style={[styles.card, { transform: [{ scale: transition(1, 0.8, 200, clicked) }] }]}>
+        <Pressable style={({ pressed }) => ({ transform: [{ scale: pressed ? 0.8 : 1 }] })} onPress={handelScale} >
+            <View style={[styles.card]}>
                 <View style={[styles.subject, {
                 }]}>
                     {Svg_icon ?
@@ -42,8 +33,8 @@ const Subject = React.memo(({ item }) => {
                     }
                 </View>
                 <Text style={styles.title}>{item[language]}</Text>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+            </View>
+        </Pressable>
     );
 }, (prevProps, nextProps) => {
     return prevProps.item.id !== nextProps.item.id;
