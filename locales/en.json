@@ -8,6 +8,7 @@
     "or": "Or",
     "ok": "Ok",
     "skip": "Skip",
+    "continue": "Continue",
     "start": "Start Now",
     "join us": "Join Us",
     "loading": "Loading..",
@@ -129,6 +130,10 @@
     "switch": "Switch",
     "no connection title": "No Internet Connection",
     "no connection description": "Pleas check your internet connection it looks like you are not connected to the internet",
-    "try again": "Try Again"
+    "try again": "Try Again",
+    "previous session title": "Resume Account Creation?",
+    "previous session description": "It looks like you were in the middle of creating your account. Do you want to continue where you left off?",
+    "my address": "My Address",
+    "pick your address": "Pick your address"
 
 }

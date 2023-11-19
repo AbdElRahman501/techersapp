@@ -11,63 +11,43 @@ import { useNavigation } from '@react-navigation/core';
 import DatePicker from '../components/DatePicker';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
-import { signOut, update } from '../store/actions/userActions';
+import { register } from '../store/actions/userActions';
 import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
-import PressedText from '../components/PressedText';
-import governorates from '../locales/governorates.json';
-import cities from '../locales/cities.json';
-import { getLatLon } from '../store/actions/deviceActions';
 import LoadingModal from '../components/LoadingModal';
 
-export default function UserDataScreen() {
+export default function UserDataScreen({ route }) {
+    const { signUpData: data } = route.params;
     const { language } = useSelector(state => state.languageState)
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
-    const { loading: locationLoading, location, error: locationError } = useSelector(state => state.locationState);
     const [state, setState] = useState({})
-    const [signUpData, setSignUpData] = useState({});
+    const [signUpData, setSignUpData] = useState(data);
     const [checkInputs, setCheckInputs] = useState(false)
     const navigation = useNavigation();
-    const [phoneNumberPlaceholder, governoratePlaceholder, cityPlaceholder] = [t("placeholder-parent-phone"), t("placeholder-governorate"), t("placeholder-city")];
+    const [phoneNumberPlaceholder] = [t("placeholder-parent-phone")];
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         const { parentPhoneNumber, birthDay } = signUpData
         const schoolYear = signUpData?.schoolYear?.value
         const educationType = signUpData?.educationType?.en
-        const lat = location?.lat;
-        const lon = location?.lon;
-        const city = location?.city || signUpData.city
-        const governorate = location?.governorate || signUpData.governorate
-        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear && city && governorate) {
+        if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear) {
             setState({})
-            dispatch(update({ ...signUpData, unCompleted: false, educationType, schoolYear, lat, lon, city, governorate }))
+            dispatch(register({ ...signUpData, educationType, schoolYear }))
         } else {
             setCheckInputs(true)
         }
     };
     useEffect(() => {
-        if (userInfo && !userInfo?.unCompleted) {
+        if (userInfo) {
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
             });
-        } else if (userInfo) {
-            setSignUpData({ ...userInfo })
-        } else {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "SignUpOptions" }],
-            });
         }
     }, [userInfo])
 
-    useEffect(() => {
-        if (signUpData?.city && !location?.gps) {
-            dispatch(getLatLon({ city: signUpData.city?.en, governorate: signUpData.governorate?.en }))
-        }
-    }, [signUpData?.city, location?.gps])
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
@@ -79,7 +59,7 @@ export default function UserDataScreen() {
                     <View style={globalStyles.bodyContainer} >
                         <View style={[globalStyles.form]}>
                             <CustomText style={[globalStyles.title, { marginBottom: Margin.m_xl }]}>{t("sign-up-thanks")}</CustomText>
-                            {!userInfo?.parentPhoneNumber &&
+                            {!signUpData.isParent &&
                                 <FancyInput inputType={"phone"} value={signUpData.parentPhoneNumber || ""} setState={setState}
                                     checkInputs={checkInputs} setCheckInputs={setCheckInputs}
                                     placeholder={phoneNumberPlaceholder} keyboardType={"phone-pad"}
@@ -88,31 +68,6 @@ export default function UserDataScreen() {
                                     <Parent_Phone_Svg />
                                 </FancyInput>
                             }
-                            <View style={{
-                                display: location?.gps ? 'none' : 'flex', width: "100%",
-                                gap: Margin.m_base, flexDirection: language === "en" ? "row" : "row-reverse"
-                            }} >
-                                <ListInput
-                                    setState={setState}
-                                    checkInputs={checkInputs}
-                                    style={{ flex: 2 }}
-                                    value={signUpData.governorate?.[language] || ""}
-                                    data={governorates}
-                                    placeholder={governoratePlaceholder}
-                                    changHandler={(e) => setSignUpData(pv => ({ ...pv, city: "", governorate: e || "" }))}
-                                />
-                                {signUpData.governorate &&
-                                    <ListInput
-                                        setState={setState}
-                                        checkInputs={checkInputs}
-                                        style={{ flex: 2 }}
-                                        value={signUpData.city?.[language] || ""}
-                                        data={cities.filter(x => x.governorate_id === signUpData.governorate.id)}
-                                        placeholder={cityPlaceholder}
-                                        changHandler={(e) => setSignUpData(pv => ({ ...pv, city: e || "" }))}
-                                    />
-                                }
-                            </View>
                             <ListInput
                                 setState={setState}
                                 checkInputs={checkInputs}
@@ -143,7 +98,7 @@ export default function UserDataScreen() {
                             <View style={[globalStyles.parentFlexBox, { width: "100%" }]}>
                                 {(state.error || error) && <Text style={[globalStyles.smallText, { color: Color.red }]}>{state.error?.message[language] || state.error?.message}</Text>}
                             </View>
-                            <PrimaryButton disabled={loading || locationLoading} style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
+                            <PrimaryButton disabled={loading} style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>
                                     {t(loading ? "loading" : "submit")}
                                 </Text>

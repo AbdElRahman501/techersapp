@@ -11,11 +11,12 @@ import CustomText from '../components/CustemText';
 import PrimaryButton from '../components/PrimaryButton';
 import LoadingModal from '../components/LoadingModal';
 import PhoneInput from '../components/PhoneInput';
-import { getErrorMessage, isDataExpired } from '../actions/GlobalFunctions';
+import { getErrorMessage, isDataExpired, modifyStudent } from '../actions/GlobalFunctions';
 import { PHONE_VERIFICATION_URL } from '../store/actions/api';
 import axios from 'axios';
 import AlertModal from '../components/alertModal';
 import VerifyPhoneModal from '../components/VerifyPhoneModal';
+import { schoolTypes, years } from '../data';
 
 
 export default function SignUpScreen({ route }) {
@@ -48,11 +49,11 @@ export default function SignUpScreen({ route }) {
         }
         setLoading(true)
         try {
-            const { data } = await axios.post(PHONE_VERIFICATION_URL, { phoneNumber, formattedPhone });
+            const { data: { students, ...data } } = await axios.post(PHONE_VERIFICATION_URL, { phoneNumber, formattedPhone });
             if (!data) return
             console.log("🚀 ~ file: SignupScreen.js:51 ~ phoneNumberVerification ~ data:", data)
             setLoading(false)
-            setData(data)
+            setData({ students: students.map(student => modifyStudent(student, years, schoolTypes)), ...data })
             setVisible(true)
         } catch (error) {
             setLoading(false)

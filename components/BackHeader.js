@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
 import { Next_Icon } from '../assets/icons/Icons';
+import { previousSessionHandler } from '../store/actions/deviceActions';
 export default function BackHeader({ title, onPress, onPressHandler, style }) {
     const navigation = useNavigation();
 
@@ -13,6 +14,7 @@ export default function BackHeader({ title, onPress, onPressHandler, style }) {
 
     useEffect(() => {
         setHistory(navigationState.routes.map(route => route.name));
+        previousSessionHandler(navigationState.routes)
     }, [navigationState]);
 
     useEffect(() => {

@@ -8,6 +8,7 @@
     "or": "او",
     "ok": "حسناً",
     "skip": "تخطي",
+    "continue": "استمرار",
     "start": "ابدأ الان",
     "join us": "انضم الينا .",
     "loading": "جاري التحميل..",
@@ -129,5 +130,9 @@
     "switch": "تبديل",
     "no connection title": "لا يوجد اتصال بالانترنت",
     "no connection description": "يرجى التحقق من اتصالك بالانترنت , يبدو انك غير متصل بالانترنت",
-    "try again": "حاول مرة اخرى"
+    "try again": "حاول مرة اخرى",
+    "previous session title": "استكمال إنشاء الحساب؟",
+    "previous session description": "يبدو أنك كنت في منتصف إنشاء حسابك. هل ترغب في متابعة من حيث تركت؟",
+    "my address": "عنواني",
+    "pick your address": "حدد عنوانك"
 }

@@ -56,16 +56,17 @@ export const register = (userData) => async (dispatch) => {
         myGroups = modifyGroups(myGroups, subjects, years)
         myTeachers = modifyTeachers(myTeachers, subjects, years)
         closeTeachers = modifyTeachers(closeTeachers, subjects, years)
+        const userInfo = modifyStudent(createdStudents, years, schoolTypes)
 
         dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
-        dispatch({ type: USER_SUCCESS, payload: createdStudents });
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
 
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
         await AsyncStorage.setItem("myTeachers", JSON.stringify(myTeachers));
-        await AsyncStorage.setItem("userInfo", JSON.stringify(createdStudents));
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         console.log('userInfo registered successfully.');
     } catch (error) {
         console.log("🚀 ~ file: userActions.js:52 ~ register ~ error:", error)

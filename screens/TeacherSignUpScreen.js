@@ -1,4 +1,4 @@
-import { Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView, Image, Animated } from 'react-native'
+import { Text, View, TouchableWithoutFeedback, ImageBackground, Keyboard, ScrollView, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Color, Margin, globalStyles } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
@@ -9,13 +9,8 @@ import t from "../actions/changeLanguage";
 import { useDispatch, useSelector } from 'react-redux'
 import { Lock_Svg, User_Icon_Svg } from '../assets/icons/Icons';
 import PrimaryButton from '../components/PrimaryButton';
-import DividerWithText from '../components/DividerWithText ';
-import CustomText from '../components/CustemText';
-import StudentOption from '../components/StudentOption';
-import { register, teacherRegister } from '../store/actions/userActions';
 import LoadingModal from '../components/LoadingModal';
 import GenderSelection from '../components/GenderSelection';
-import Checkbox from '../components/Checkbox';
 
 
 export default function TeacherSignUpScreen({ route }) {
@@ -34,7 +29,8 @@ export default function TeacherSignUpScreen({ route }) {
   const handleSubmit = () => {
     setSubmitted(true)
     if (submitCheck({ password: signUpData.password, name: signUpData.name, gender: signUpData.gender }).isValid) {
-      dispatch(teacherRegister(signUpData))
+      // dispatch(teacherRegister(signUpData))
+      navigation.navigate("AddressScreen", { signUpData })
     } else {
       setCheckInputs(true)
     }
@@ -91,7 +87,7 @@ export default function TeacherSignUpScreen({ route }) {
               </View>
               <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit} disabled={state.error}>
                 <Text style={[globalStyles.title, { color: Color.white }]}>
-                  {t("sign up")}
+                  {t("continue")}
                 </Text>
               </PrimaryButton>
             </View>

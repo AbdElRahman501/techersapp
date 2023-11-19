@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, { useSharedValue, Easing, withTiming } from 'react-native-reanimated';
 import { widthPercentage } from '../GlobalStyles';
-import { getLocation, serverWakeUp, updateVersion } from '../store/actions/deviceActions';
+import { getLocation, previousSessionHandler, serverWakeUp, updateVersion } from '../store/actions/deviceActions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_SUCCESS } from '../store/constants/userConstants';
 import { getCloseTeachers, getMyTeachersData } from '../store/actions/teachersActions';
@@ -18,14 +18,14 @@ const SplashScreen = () => {
   const { userInfo } = useSelector(state => state.userInfo);
   const navigation = useNavigation();
 
-  const onClose = (page) => {
+  const onClose = (pages) => {
     setTimeout(() => {
       size.value = withTiming(widthPercentage(1500), { duration: 1000, easing: Easing.cubic });
       translateY.value = withTiming(-1650, { duration: 1000, easing: Easing.cubic });
       setTimeout(() => {
         navigation.reset({
           index: 0,
-          routes: [{ name: page }],
+          routes: pages,
         });
       }, 900)
     }, 1500)
@@ -35,27 +35,22 @@ const SplashScreen = () => {
 
   const getUserData = async () => {
     try {
-      const dataJSON = await AsyncStorage.getItem("userInfo");
-      if (dataJSON !== null) {
-        const userInfo = JSON.parse(dataJSON);
-        dispatch(syncedData(userInfo))
+      const userInfoJSON = await AsyncStorage.getItem("userInfo");
+      const userInfo = userInfoJSON ? JSON.parse(userInfoJSON) : null;
+      if (userInfo) {
         dispatch({ type: USER_SUCCESS, payload: userInfo });
-        if (userInfo?.unCompleted) {
-          onClose('UserDataScreen')
-          dispatch(serverWakeUp())
-        } else {
-          dispatch(getCloseTeachers(userInfo.id));
-          dispatch(getMyTeachersData())
-          dispatch(getMyGroups());
-          onClose("Home")
-        }
+        dispatch(syncedData(userInfo))
+        dispatch(getCloseTeachers(userInfo.id));
+        dispatch(getMyTeachersData())
+        dispatch(getMyGroups());
+        onClose([{ name: "Home" }])
       } else {
         dispatch(serverWakeUp())
-        onClose("OnboardingPages")
+        onClose([{ name: "OnboardingPages" }])
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      onClose("OnboardingPages")
+      onClose([{ name: "OnboardingPages" }])
       dispatch(serverWakeUp())
 
     }
@@ -68,7 +63,7 @@ const SplashScreen = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    dispatch(updateVersion("1.0.0.1"))
+    dispatch(updateVersion("1.0.0.4"))
   }, [])
 
 

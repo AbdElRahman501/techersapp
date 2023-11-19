@@ -46,15 +46,10 @@ export default function SigninScreen({ route }) {
         navigation.navigate("UserData1", { students, signUpData })
     }
     useEffect(() => {
-        if (userInfo && !userInfo?.unCompleted) {
+        if (userInfo) {
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
-            });
-        } else if (userInfo?.unCompleted) {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "UserDataScreen" }],
             });
         }
     }, [userInfo])

@@ -2,8 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import * as Location from 'expo-location';
 import { USER_SIGNOUT } from "../constants/userConstants";
-import { LOCATION_FAIL, LOCATION_REQUEST, LOCATION_SUCCESS } from "../constants/deviceConstants";
-import { API_URL, LOCATION_URL } from "./api";
+import { API_URL, LOCATION_URL, LOCATION_URL_REVERSE } from "./api";
 
 export const updateVersion = (newVersion) => async (dispatch) => {
     try {
@@ -33,70 +32,59 @@ export const serverWakeUp = () => async () => {
     }
 };
 
-export const getLocation = () => async (dispatch) => {
-    dispatch({ type: LOCATION_REQUEST });
-    setTimeout(() => {
-        error = 'Async function error: long time out';
-        dispatch({ type: LOCATION_FAIL, payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message });
-    }, 2 * 60 * 1000);
+export const previousSessionHandler = async (currentSession) => {
     try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        console.log("🚀 ~ file: deviceActions.js:41 ~ getLocation ~ status:", status)
-        if (status !== 'granted') {
-            let error = 'Permission to access location was denied';
-            dispatch({ type: LOCATION_FAIL, payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message });
-            return;
-        }
-        let location = await Location.getCurrentPositionAsync({});
-        let address = await Location.reverseGeocodeAsync(location.coords);
-        console.log("🚀 ~ file: deviceActions.js:46 ~ getLocation ~ address:", "address located")
-        dispatch({
-            type: LOCATION_SUCCESS, payload: {
-                lat: location.coords.latitude,
-                lon: location.coords.longitude,
-                city: address[0].city,
-                governorate: address[0].region,
-                gps: true
+        if (currentSession) {
+            await AsyncStorage.setItem('previousSession', JSON.stringify(currentSession));
+        } else {
+            const dataJSON = await AsyncStorage.getItem('previousSession');
+            if (dataJSON) {
+                const previousSession = JSON.parse(dataJSON);
+                return previousSession
             }
-        });
+        }
     } catch (error) {
-        console.log("🚀 ~ file: deviceActions.js:45 ~ getLocation ~ error:", error)
-        error = 'Failed to fetch location';
-        dispatch({ type: LOCATION_FAIL, payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message });
+        console.log("🚀 ~ file: deviceActions.js:123 ~ previousSession ~ error:", error)
+    }
+}
+
+export const getAddressFromCoordinates = async (coordinate) => {
+    try {
+        let address = await Location.reverseGeocodeAsync(coordinate);
+        const { data } = await Axios.get(LOCATION_URL_REVERSE + `lat=${coordinate.latitude}&lon=${coordinate.longitude}`);
+        if (data.display_name) {
+            return ({
+                display_name: data.display_name, lat: Number(data.lat), lon: Number(data.lon), city: address[0].city,
+                governorate: address[0].region,
+                country: address[0].country,
+            });
+        } else {
+            console.warn('No address found for the given coordinates');
+        }
+    } catch (error) {
+        console.error('Error fetching reverse geocoding data:', error.message);
     }
 };
 
-export const getLatLon = ({ repeat, city, governorate }) => async (dispatch) => {
-    dispatch({ type: LOCATION_REQUEST });
+export const getLocation = async () => {
     try {
-        const { data } = await Axios.get(LOCATION_URL + `egypt,${governorate},${repeat ? " " : city}`);
-        if (data?.length > 0) {
-            // console.log("🚀 ~ file: deviceActions.js:79 ~ getLatLon ~ data:", data)
-            const lat = data[0].lat;
-            const lon = data[0].lon;
-            dispatch({
-                type: LOCATION_SUCCESS, payload: { lat, lon, city, governorate }
-            });
-        } else {
-            if (!repeat) {
-                dispatch(getLatLon({ repeat: true, city: city, governorate: governorate }));
-            } else {
-                let message = 'No results found for this query';
-                dispatch({ type: LOCATION_FAIL, payload: { message } });
-            }
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            let error = 'Permission to access location was denied';
+            return;
         }
+        const lastKnownLocation = await Location.getLastKnownPositionAsync();
+        const currentLocation = lastKnownLocation ? lastKnownLocation : await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Low });
+        const location = lastKnownLocation || currentLocation;
+        let address = await Location.reverseGeocodeAsync(location.coords);
+        const { data } = await Axios.get(LOCATION_URL_REVERSE + `lat=${location.coords.latitude}&lon=${location.coords.longitude}`);
+        return ({
+            display_name: data.display_name, lat: location.coords.latitude, lon: location.coords.longitude, city: address[0].city,
+            governorate: address[0].region,
+            country: address[0].country, gps: true
+        });
     } catch (error) {
-        console.log("🚀 ~ file: deviceActions.js:81 ~ getLatLon ~ error:", error)
-        let message = 'No location found for this query';
-        dispatch({ type: LOCATION_FAIL, payload: { message } });
+        console.log("🚀 ~ file: TeacherDataScreen.js:80 ~ getLocation ~ error:", error)
+        return;
     }
 };
