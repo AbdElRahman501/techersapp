@@ -1,16 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import Axios from 'axios';
-import { LOCATION_URL_REVERSE } from '../store/actions/api';
-import * as Location from 'expo-location';
 import { getAddressFromCoordinates } from '../store/actions/deviceActions';
-import LoadingModal from './LoadingModal';
 import { FontSize, globalStyles } from '../GlobalStyles';
 
 const MapComponent = ({ selectedLocation, setSelectedLocation, setSelectedAddress }) => {
   const mapRef = useRef(null);
-  const [loading, setLoading] = useState(false);
 
   const [mapRegion, setMapRegion] = useState({
     latitude: 30.4606,
@@ -25,9 +20,7 @@ const MapComponent = ({ selectedLocation, setSelectedLocation, setSelectedAddres
   };
 
   const getAddress = async (coordinate) => {
-    setLoading(true);
     setSelectedAddress(await getAddressFromCoordinates(coordinate));
-    setLoading(false);
   }
 
   const handleRegionChange = (newRegion) => {
@@ -48,7 +41,6 @@ const MapComponent = ({ selectedLocation, setSelectedLocation, setSelectedAddres
   }, [selectedLocation])
   return (
     <View style={styles.container}>
-      <LoadingModal visible={loading} />
       <MapView
         ref={mapRef}
         style={styles.map}

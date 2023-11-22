@@ -39,11 +39,15 @@ const SplashScreen = () => {
       const userInfo = userInfoJSON ? JSON.parse(userInfoJSON) : null;
       if (userInfo) {
         dispatch({ type: USER_SUCCESS, payload: userInfo });
-        dispatch(syncedData(userInfo))
-        dispatch(getCloseTeachers(userInfo.id));
-        dispatch(getMyTeachersData())
-        dispatch(getMyGroups());
-        onClose([{ name: "Home" }])
+        if (userInfo.role === "student") {
+          dispatch(syncedData(userInfo))
+          dispatch(getCloseTeachers(userInfo.id));
+          dispatch(getMyTeachersData())
+          dispatch(getMyGroups());
+          onClose([{ name: "Home" }])
+        } else {
+          onClose([{ name: "TeachersHomeScreen" }])
+        }
       } else {
         dispatch(serverWakeUp())
         onClose([{ name: "OnboardingPages" }])
@@ -78,8 +82,8 @@ const SplashScreen = () => {
     >
       <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
         <Animated.Image
-          resizeMode="cover"
-          style={[{ width: size, height: size, transform: [{ translateY: translateY }] }]}
+          resizeMode="contain"
+          style={[{ width: size, height: size }]}
           source={require("../assets/logowhite.png")} />
       </View>
 

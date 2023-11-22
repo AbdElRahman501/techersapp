@@ -46,10 +46,15 @@ export default function SigninScreen({ route }) {
         navigation.navigate("UserData1", { students, signUpData })
     }
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo?.role === "student") {
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
+            });
+        } else if (userInfo?.role === "teacher") {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "TeachersHomeScreen" }],
             });
         }
     }, [userInfo])

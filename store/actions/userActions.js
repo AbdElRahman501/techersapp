@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import { USERS_FAIL, USERS_REQUEST, USERS_SUCCESS, USERS_SWITCHING_FAIL, USERS_SWITCHING_REQUEST, USERS_SWITCHING_SUCCESS, USER_FAIL, USER_REQUEST, USER_SIGNOUT, USER_SUCCESS, USER_UPDATE_REQUEST } from "../constants/userConstants";
 import { REGISTER_URL, SIGNIN_URL, SYNCED_DATA_URL, UPDATE_URL } from "./api";
-import { getErrorMessage, modifyGroups, modifyStudent, modifyTeachers } from "../../actions/GlobalFunctions";
+import { getErrorMessage, modifyGroups, modifyStudent, modifyTeacher, modifyTeachers, removeDuplicatesById } from "../../actions/GlobalFunctions";
 import { schoolTypes, subjects, years } from "../../data";
 import { MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_SUCCESS } from "../constants/teachersConstants";
 import { MY_GROUPS_SUCCESS } from "../constants/groupsConstants";
@@ -11,7 +11,11 @@ import { showMessage } from "./showMessageActions";
 export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        let { data: { students, student, closeTeachers, myTeachers, myGroups } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password, id });
+        let { data: { students, student, closeTeachers, myTeachers, myGroups, teacher } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password, id });
+        if (teacher) {
+            dispatch(teacherSignIn(teacher));
+            return
+        }
         if (students) {
             const users = students.map(student => (modifyStudent({ ...student, password }, years, schoolTypes)))
             dispatch({ type: USER_SUCCESS });
@@ -48,8 +52,25 @@ export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen 
 };
 
 
-export const register = (userData) => async (dispatch) => {
+export const teacherSignIn = (teacher) => async (dispatch) => {
+    try {
+        const userInfo = modifyTeacher(teacher, subjects, years)
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+    } catch (error) {
+        console.log("🚀 ~ file: userActions.js:61 ~ teacherSignIn ~ error:", error)
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
+    }
+}
+
+export const register = (userData) => async (dispatch, getState) => {
     dispatch({ type: USER_REQUEST });
+    const users = getState().usersState.users
     try {
         let { data: { createdStudents, closeTeachers, myTeachers, myGroups } } = await Axios.post(REGISTER_URL, userData);
         if (!createdStudents) return
@@ -57,7 +78,11 @@ export const register = (userData) => async (dispatch) => {
         myTeachers = modifyTeachers(myTeachers, subjects, years)
         closeTeachers = modifyTeachers(closeTeachers, subjects, years)
         const userInfo = modifyStudent(createdStudents, years, schoolTypes)
-
+        if (users.length > 0) {
+            const newUsers = removeDuplicatesById([...users, userInfo])
+            dispatch({ type: USERS_SUCCESS, payload: newUsers });
+            await AsyncStorage.setItem("users", JSON.stringify(newUsers));
+        }
         dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
@@ -79,13 +104,21 @@ export const register = (userData) => async (dispatch) => {
     }
 };
 export const teacherRegister = (userData) => async (dispatch) => {
+    dispatch({ type: USER_REQUEST });
     try {
         let { data } = await Axios.post(REGISTER_URL, userData);
         if (!data) return
-        console.log("🚀 ~ file: userActions.js:83 ~ teacherRegister ~ data:", data)
+        const userInfo = modifyTeacher(data, subjects, years)
+        dispatch({ type: USER_SUCCESS, payload: userInfo });
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
     } catch (error) {
         console.log("🚀 ~ file: userActions.js:52 ~ register ~ error:", error)
-
+        dispatch({
+            type: USER_FAIL, payload: getErrorMessage(error?.response?.data ||
+                (error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message))
+        });
     }
 };
 export const update = (userData) => async (dispatch, getState) => {

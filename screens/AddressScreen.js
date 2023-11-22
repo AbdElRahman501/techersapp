@@ -51,6 +51,7 @@ export default function AddressScreen({ route }) {
     };
 
     const handleItemPress = async (location) => {
+        if (!location) return
         setValue(location.display_name);
         setResultsVisible(false);
         const coordinate = {
@@ -66,7 +67,15 @@ export default function AddressScreen({ route }) {
 
     const gpsHandler = async () => {
         setLocationLoading(true);
-        handleItemPress(await getLocation())
+        const timeout = setTimeout(() => {
+            setLocationLoading(false);
+            return
+        }, 12000)
+        const myAddress = await getLocation();
+        if (myAddress) {
+            handleItemPress(myAddress);
+        }
+        clearTimeout(timeout);
         setLocationLoading(false);
     }
 

@@ -1,4 +1,4 @@
-import { days, teachers } from "../data";
+import { days } from "../data";
 
 export const submitCheck = (inputs) => {
     const errors = {};

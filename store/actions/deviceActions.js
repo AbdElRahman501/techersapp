@@ -35,7 +35,11 @@ export const serverWakeUp = () => async () => {
 export const previousSessionHandler = async (currentSession) => {
     try {
         if (currentSession) {
-            await AsyncStorage.setItem('previousSession', JSON.stringify(currentSession));
+            if (currentSession.length > 0) {
+                await AsyncStorage.setItem('previousSession', JSON.stringify(currentSession));
+            } else {
+                await AsyncStorage.removeItem('previousSession');
+            }
         } else {
             const dataJSON = await AsyncStorage.getItem('previousSession');
             if (dataJSON) {
@@ -69,15 +73,16 @@ export const getAddressFromCoordinates = async (coordinate) => {
 export const getLocation = async () => {
     try {
         let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            let error = 'Permission to access location was denied';
-            return;
+        if (status !== 'granted') return console.log("not granted");
+        const isEnabled = await Location.hasServicesEnabledAsync();
+        if (!isEnabled) {
+            await Location.enableNetworkProviderAsync()
         }
         const lastKnownLocation = await Location.getLastKnownPositionAsync();
-        const currentLocation = lastKnownLocation ? lastKnownLocation : await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Low });
-        const location = lastKnownLocation || currentLocation;
+        const location = lastKnownLocation ? lastKnownLocation : await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Low });
         let address = await Location.reverseGeocodeAsync(location.coords);
         const { data } = await Axios.get(LOCATION_URL_REVERSE + `lat=${location.coords.latitude}&lon=${location.coords.longitude}`);
+        if (!data) return
         return ({
             display_name: data.display_name, lat: location.coords.latitude, lon: location.coords.longitude, city: address[0].city,
             governorate: address[0].region,

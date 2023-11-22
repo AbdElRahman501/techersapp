@@ -22,6 +22,7 @@ import TeacherSignUpScreen from './screens/TeacherSignUpScreen';
 import SplashScreen from './screens/SplashScreen';
 import TeacherDataScreen from './screens/TeacherDataScreen';
 import AddressScreen from './screens/AddressScreen';
+import TeachersHomeScreen from './screens/TeachersHomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,8 @@ export default function MainComponents() {
                     <Stack.Screen name="TeacherDataScreen" component={TeacherDataScreen}
                         options={{ headerShown: false }} />
                     <Stack.Screen name="AddressScreen" component={AddressScreen}
+                        options={{ headerShown: false }} />
+                    <Stack.Screen name="TeachersHomeScreen" component={TeachersHomeScreen}
                         options={{ headerShown: false }} />
                 </Stack.Navigator>
             </>
