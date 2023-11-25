@@ -490,6 +490,7 @@ export const isDateAfter = (dateString, comparisonDate) => {
     return date > comparison;
 }
 export const getStartedEvents = (events, eventsDuration, selectedDay) => {
+    if (!events?.length || !eventsDuration[0]?.studyingYear) return []
     let theEvents = events.filter(event => {
         let eventDuration = eventsDuration?.find(x => x.teacherID === event.teacherId);
         let isTheYearStarts = eventDuration && isDateAfter(selectedDay.id, eventDuration.studyingYear.start)
@@ -527,6 +528,7 @@ export const modifyTeachers = (teachers, subjects, years) => {
     teachers = teachers.map(teacher => {
         teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
         teacher.groups = modifyGroups(teacher.groups, subjects, years)
+        teacher.subjects = teacher?.subjects?.map(subject => getSubject(subjects, subject))
         return teacher
     })
     return teachers

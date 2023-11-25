@@ -39,11 +39,12 @@ export default function OBoardingSlides({ setLastSlide }) {
         }
     };
     const renderItem = useCallback(
-        ({ item }) => {
-            return <OnboardSlide item={item} />;
+        ({ item, index }) => {
+            return <OnboardSlide item={item} index={index} scrolledIndex={scrolledIndex} />;
         },
-        []
+        [scrolledIndex]
     );
+
     const keyExtractor = useMemo(
         () => (item) => {
             return item.id;
@@ -53,7 +54,7 @@ export default function OBoardingSlides({ setLastSlide }) {
 
     const onScroll = (event) => {
         const offsetX = event.nativeEvent.contentOffset.x;
-        const currentIndex = Math.floor(offsetX / (widthPercentage(100) - 5));
+        const currentIndex = Number((offsetX / widthPercentage(100)).toFixed(0));
         setLastSlide(currentIndex === info.length - 1);
         setScrolledIndex(currentIndex);
     };

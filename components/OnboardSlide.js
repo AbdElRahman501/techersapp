@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, Animated, ImageBackground } from 'react-native';
 import { Color, FontFamily, FontSize, Height, Padding, heightPercentage, widthPercentage } from '../GlobalStyles';
 import { useSelector } from 'react-redux';
+import transition from '../actions/transition';
 
-const OnboardSlide = React.memo(({ item }) => {
+const OnboardSlide = React.memo(({ item, index, scrolledIndex }) => {
     const { language } = useSelector(state => state.languageState)
     return (
         <View style={styles.itemContainer} >
@@ -12,14 +13,14 @@ const OnboardSlide = React.memo(({ item }) => {
                 resizeMode="contain"
                 source={item.backgroundImageSource}
             >
-                <Image
-                    style={{ width: "100%", height: "65%", alignSelf: "center" }}
+                <Animated.Image
+                    style={{ width: "100%", height: "65%", alignSelf: "center", transform: [{ translateY: transition(50, 0, 300, index === scrolledIndex) }], opacity: transition(0, 1, 300, index === scrolledIndex) }}
                     resizeMode="contain"
                     source={item.imageSource}
                 />
 
-                <Text style={styles.title}>{item.title[language]}</Text>
-                <Text style={styles.content}>{item.content[language]}</Text>
+                <Animated.Text style={[styles.title, { transform: [{ translateY: transition(50, 0, 500, index === scrolledIndex) }], opacity: transition(0, 1, 500, index === scrolledIndex) }]}>{item.title[language]}</Animated.Text>
+                <Animated.Text style={[styles.content, { transform: [{ translateY: transition(50, 0, 600, index === scrolledIndex) }], opacity: transition(0, 1, 600, index === scrolledIndex) }]}>{item.content[language]}</Animated.Text>
             </ImageBackground>
         </View >
     );

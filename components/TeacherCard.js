@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
@@ -7,9 +7,10 @@ import { useSelector } from 'react-redux';
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import CustomText from './CustemText';
 import CustomImage from './CustomImage ';
+import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 
 
-const TeacherCard = React.memo(({ item }) => {
+const TeacherCard = React.memo(({ item, index }) => {
     const navigation = useNavigation()
     const { language } = useSelector(state => state.languageState)
     const id = 18
@@ -18,14 +19,14 @@ const TeacherCard = React.memo(({ item }) => {
     }
 
     return (
-        <TouchableOpacity style={styles.card} onPress={handlePress} >
-            <View style={styles.imagContainer}>
+        <Animated.View style={styles.card} entering={FadeInDown.duration(400 + (index * 200)).easing(Easing.ease)}  >
+            <TouchableOpacity style={styles.imagContainer} onPress={handlePress} >
                 <CustomImage
                     style={{ height: "100%", width: "100%", borderRadius: Border.br_6xl }}
                     resizeMode="cover"
                     source={item.imageSource}
                 />
-            </View>
+            </TouchableOpacity>
             <CustomText style={[styles.title, { width: "100%", height: FontSize.size_lg }]} >{item.name}</CustomText>
             <CustomText style={[styles.regular, { marginBottom: 5 }]} >{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -41,7 +42,7 @@ const TeacherCard = React.memo(({ item }) => {
                 </View>
                 <Text style={styles.regular}>{formatDistance(item.distance, language)}</Text>
             </View>
-        </TouchableOpacity>
+        </Animated.View>
     );
 }, (prevProps, nextProps) => {
     return prevProps.item.id !== nextProps.item.id;
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 6,
         borderRadius: 5,
-        borderBottomLeftRadius: Border.br_6xl ,
+        borderBottomLeftRadius: Border.br_6xl,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

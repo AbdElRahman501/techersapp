@@ -1,4 +1,4 @@
-import { Keyboard, ScrollView, TouchableWithoutFeedback, SafeAreaView, View } from 'react-native'
+import { ScrollView, SafeAreaView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Color, globalStyles } from '../GlobalStyles'
 import HomeHeader from '../components/HomeHeader'
@@ -13,8 +13,8 @@ import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
 import { removeDuplicatesById } from '../actions/GlobalFunctions';
 import { Add_Icon } from '../assets/icons/Icons';
-import LoadingModal from '../components/LoadingModal';
 import TapBottomNavigator from '../components/TapBottomNavigator';
+import FilterButton from '../components/FilterButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -53,46 +53,47 @@ export default function HomeScreen() {
   }, [myGroups]);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-        >
-          <View style={[globalStyles.body]}>
-            {/* { display: (teachersLoading || myTeachersLoading || myGroupsLoading || loading) ? "none" : "flex" } */}
-            {/* <LoadingModal visible={teachersLoading || myTeachersLoading || myGroupsLoading || loading} /> */}
-            <HomeHeader user={userInfo} />
-            {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        <View style={[globalStyles.body]}>
+          {/* { display: (teachersLoading || myTeachersLoading || myGroupsLoading || loading) ? "none" : "flex" } */}
+          {/* <LoadingModal visible={teachersLoading || myTeachersLoading || myGroupsLoading || loading} /> */}
+          <HomeHeader user={userInfo} />
+          {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
+          <View style={{ flexDirection: "row", gap: 20, width: "100%" }} >
             <SearchBar button={true} />
-            <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-            {mySubjects?.length > 0 &&
-              <SlideContainer data={mySubjects}  >
-                <Subject />
-              </SlideContainer>
-            }
-            {myFavTeachers?.length > 0 && <>
-              <ContainerTitle title={myFavTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-              <SlideContainer data={myFavTeachers}  >
-                <TeacherCard />
-              </SlideContainer>
-            </>}
-            {myTeachers?.length > 0 && <>
-              <ContainerTitle title={myTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-              <SlideContainer data={myTeachers}  >
-                <TeacherCard />
-              </SlideContainer>
-            </>}
-            {closeTeacher?.length > 0 && <>
-              <ContainerTitle title={closeTeacherTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-              <SlideContainer data={closeTeacher}  >
-                <TeacherCard />
-              </SlideContainer>
-            </>}
+            <FilterButton button={true} />
           </View>
-        </ScrollView>
-        <TapBottomNavigator currentScreen={"Home"} />
-      </SafeAreaView>
-    </TouchableWithoutFeedback >
+          <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
+          {mySubjects?.length > 0 &&
+            <SlideContainer data={mySubjects}  >
+              <Subject />
+            </SlideContainer>
+          }
+          {myFavTeachers?.length > 0 && <>
+            <ContainerTitle title={myFavTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
+            <SlideContainer data={myFavTeachers}  >
+              <TeacherCard />
+            </SlideContainer>
+          </>}
+          {myTeachers?.length > 0 && <>
+            <ContainerTitle title={myTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
+            <SlideContainer data={myTeachers}  >
+              <TeacherCard />
+            </SlideContainer>
+          </>}
+          {closeTeacher?.length > 0 && <>
+            <ContainerTitle title={closeTeacherTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
+            <SlideContainer data={closeTeacher}  >
+              <TeacherCard />
+            </SlideContainer>
+          </>}
+        </View>
+      </ScrollView>
+      <TapBottomNavigator currentScreen={"Home"} />
+    </SafeAreaView>
   )
 }

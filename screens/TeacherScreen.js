@@ -173,7 +173,7 @@ export default function TeacherScreen({ route }) {
             } else {
                 const myGroupsColorArray = myGroups.filter(x => !!x.color).map(x => x.color)
                 const theGroup = { ...selectedGroup, teacherId: item.id, color: teacher?.color || getColor(myGroupsColorArray) }
-                dispatch(addGroup(theGroup, teacher))
+                dispatch(addGroup(theGroup, { ...item, ...teacher, subjects: undefined, distance: item.distance }))
             }
         }
     }
@@ -216,7 +216,7 @@ export default function TeacherScreen({ route }) {
                 showsHorizontalScrollIndicator={false}
             >
                 {(!networkPageVisible) &&
-                    <TeacherMainCard userInfo={userInfo} item={teacher || item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
+                    <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
                 }
                 <View style={[styles.appContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />

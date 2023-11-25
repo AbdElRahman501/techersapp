@@ -1,19 +1,28 @@
-import { Platform, StyleSheet, TouchableWithoutFeedback, Animated } from 'react-native'
+import { Platform, StyleSheet, TouchableWithoutFeedback, Animated, Pressable } from 'react-native'
 import React from 'react'
 import { Filter_Icon_Fill, Filter_Icon_Stroke } from '../assets/icons/Icons'
 import { Border, Color, Height } from '../GlobalStyles'
 import transition from '../actions/transition';
 import { useState } from 'react';
 import FilterModal from './FilterModal';
-
-export default function FilterButton({ filter, setFilter }) {
+import { useNavigation } from '@react-navigation/core';
+import RNAnimated from 'react-native-reanimated';
+export default function FilterButton({ button, filter, setFilter }) {
     const [clicked, setClicked] = useState(false);
+    const navigation = useNavigation();
+
     return (
-        <>
-            <TouchableWithoutFeedback onPress={() => {
-                setClicked(!clicked)
-                setFilter({ filter: true })
-            }} >
+        <RNAnimated.View
+            sharedTransitionTag={"filter button"}
+        >
+            <Pressable onPress={() => {
+                if (button) {
+                    navigation.navigate("SearchScreen")
+                } else {
+                    setClicked(!clicked)
+                    setFilter({ filter: true })
+                }
+            }}>
                 <Animated.View style={[styles.filterIcon, {
                     transform: [{
                         scale: transition(1, 1.1, 200, clicked)
@@ -25,9 +34,9 @@ export default function FilterButton({ filter, setFilter }) {
                         <Filter_Icon_Stroke />
                     }
                 </Animated.View>
-            </TouchableWithoutFeedback>
+            </Pressable>
             <FilterModal isVisible={clicked} onClose={() => setClicked(false)} onApply={setFilter} />
-        </>
+        </RNAnimated.View>
     )
 }
 

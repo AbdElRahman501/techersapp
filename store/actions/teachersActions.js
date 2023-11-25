@@ -30,7 +30,9 @@ export const getTeacherInfo = (id) => async (dispatch) => {
         dispatch({ type: TEACHER_SUCCESS, payload: modifyTeacher(teacher, subjects, years) });
         console.log('teacher info fetched successfully.');
     } catch (error) {
-        console.log("🚀 ~ file: teachersActions.js:44 ~ getTeacherInfo ~ error:", error)
+        console.log("🚀 ~ file: teachersActions.js:44 ~ getTeacherInfo ~ error:", error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message,)
         dispatch({
             type: TEACHER_FAIL, payload:
                 error.response && error.response.data.message

@@ -6,23 +6,20 @@ import CustomText from './CustemText'
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } from '../actions/GlobalFunctions'
-import Animated from 'react-native-reanimated';
+import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 
-export default function TeacherMainCard({ item, selectedSubject, changeSubjectHandler }) {
+export default function TeacherMainCard({ likes, item, userID, selectedSubject, changeSubjectHandler, index }) {
     const { language } = useSelector(state => state.languageState)
-    const [liked, setLiked] = useState({ state: false, number: item?.likes.length })
-    const subjects = removeDuplicatesById(item?.groups.map(x => x.subject))
-
-    const id = 18
-
+    const [liked, setLiked] = useState({ state: false, number: likes?.length || 0 })
+    const subjects = item?.subjects || removeDuplicatesById(item?.groups.map(x => x.subject))
     useEffect(() => {
-        if (checkArrayForUserId(item?.likes, id) && !liked.state) {
+        if (checkArrayForUserId(likes, userID) && !liked.state) {
             setLiked(pv => ({ ...pv, state: true }))
         }
     }, [])
 
     return (
-        <Animated.View sharedTransitionTag={item?.id} style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
+        <Animated.View sharedTransitionTag={item?.id} entering={index >= 0 ? FadeInDown.duration(400 + (index * 200)).easing(Easing.ease) : false} style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 <View style={styles.info}>
                     <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item?.gender, item?.name)}</CustomText>

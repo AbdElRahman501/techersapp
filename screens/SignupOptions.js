@@ -7,6 +7,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import PressedText from "../components/PressedText";
 import t from "../actions/changeLanguage";
 import Header from "../components/Header";
+import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 
 const SignUpOptions = () => {
   const { language } = useSelector(state => state.languageState);
@@ -20,17 +21,22 @@ const SignUpOptions = () => {
       >
         <Header lastSlide={true} />
 
-        <Image
+        <Animated.Image
+          entering={FadeInDown.duration(500).easing(Easing.ease)}
           style={{ flex: 1, width: "90%", maxWidth: 450 }}
           resizeMode="contain"
           source={require("../assets/image-2.png")}
         />
-        <Text style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p }]}>
+        <Animated.Text
+          entering={FadeInDown.duration(600).easing(Easing.ease)}
+          style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p }]}>
           {t("Join us and explore new ways of learning.")}
-        </Text>
-        <Text style={[styles.content, { paddingHorizontal: Padding.page_p }]}>
+        </Animated.Text>
+        <Animated.Text
+          entering={FadeInDown.duration(700).easing(Easing.ease)}
+          style={[styles.content, { paddingHorizontal: Padding.page_p }]}>
           {t("Whether you are a teacher, a student, or a parent, we have something for you.")}
-        </Text>
+        </Animated.Text>
         <View style={{ marginTop: Margin.m_lg }} >
           <Text style={[styles.content, { color: Color.darkcyan, margin: Margin.m_base }]} >{t("join as")}</Text>
           <View style={[styles.flexContainer, { gap: Margin.m_base }]}>

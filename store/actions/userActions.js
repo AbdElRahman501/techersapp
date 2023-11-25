@@ -78,7 +78,7 @@ export const register = (userData) => async (dispatch, getState) => {
         myTeachers = modifyTeachers(myTeachers, subjects, years)
         closeTeachers = modifyTeachers(closeTeachers, subjects, years)
         const userInfo = modifyStudent(createdStudents, years, schoolTypes)
-        if (users.length > 0) {
+        if (users?.length > 0) {
             const newUsers = removeDuplicatesById([...users, userInfo])
             dispatch({ type: USERS_SUCCESS, payload: newUsers });
             await AsyncStorage.setItem("users", JSON.stringify(newUsers));

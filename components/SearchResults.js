@@ -39,7 +39,7 @@ export default function SearchResults({ value }) {
 
                     </View>
                 ) : (
-                    SearchResults.map(item => (
+                    SearchResults.map((item, index) => (
                         <TouchableOpacity
                             key={item.id}
                             style={styles.card}
@@ -47,7 +47,7 @@ export default function SearchResults({ value }) {
                                 navigation.navigate("TeacherScreen", { item })
                             }}
                         >
-                            <TeacherMainCard item={item} />
+                            <TeacherMainCard item={item} index={index} />
                         </TouchableOpacity>
                     ))
                 )}

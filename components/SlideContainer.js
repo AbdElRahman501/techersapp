@@ -9,8 +9,8 @@ export default function SlideContainer(props) {
     const flatListRef = useRef(null);
 
     const renderItem = useCallback(
-        ({ item }) => {
-            return React.cloneElement(children, { item, ...props })
+        ({ item, index }) => {
+            return React.cloneElement(children, { item, index, ...props })
         },
         [props]
     );
@@ -65,9 +65,9 @@ export default function SlideContainer(props) {
                     showsHorizontalScrollIndicator={false}
                     snapToInterval={null} // Turn off snapping
                     snapToAlignment="start" // Adjust alignment according to your needs
-                    // maxToRenderPerBatch={7}
-                    // removeClippedSubviews={true}
-                    // initialNumToRender={7}
+                // maxToRenderPerBatch={7}
+                // removeClippedSubviews={true}
+                // initialNumToRender={7}
                 />
             </View>
         </View>
