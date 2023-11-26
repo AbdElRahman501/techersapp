@@ -220,7 +220,7 @@ export const globalStyles = StyleSheet.create({
     borderColor: Color.lightGray,
     width: "100%",
     borderWidth: 1,
-    borderRadius: (Height.hi_md / 2) + 5,
+    borderRadius: (Height.br_lg / 2) + 5,
   },
   modalContainer: {
     flex: 1,

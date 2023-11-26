@@ -1,9 +1,9 @@
 import { Text, View, TouchableWithoutFeedback, Keyboard, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Axios from 'axios';
-import { Color, globalStyles } from '../GlobalStyles'
+import { Color, FontSize, globalStyles } from '../GlobalStyles'
 import BackHeader from '../components/BackHeader'
-import { GPS_Mark_Svg } from '../assets/icons/Icons';
+import { Address_Mark_Svg, GPS_Mark_Svg } from '../assets/icons/Icons';
 import MapComponent from '../components/Map';
 import SearchBar from "../components/SearchBar";
 import { LOCATION_URL } from '../store/actions/api';
@@ -13,10 +13,13 @@ import { getAddressFromCoordinates, getLocation } from '../store/actions/deviceA
 import PrimaryButton from '../components/PrimaryButton';
 import { useNavigation } from '@react-navigation/core';
 import t from '../actions/changeLanguage';
-
+import CustomText from '../components/CustemText';
+import DividerWithText from '../components/DividerWithText ';
+import { useSelector } from 'react-redux';
 
 export default function AddressScreen({ route }) {
     const { signUpData } = route.params;
+    const { language } = useSelector(state => state.languageState);
     const [value, setValue] = useState("")
     const [loading, setLoading] = useState(false);
     const [locationLoading, setLocationLoading] = useState(false);
@@ -25,11 +28,11 @@ export default function AddressScreen({ route }) {
     const [resultsVisible, setResultsVisible] = useState(false);
     const [address, setAddress] = useState(null);
     const navigation = useNavigation();
-    const [Submit, pickAddress] = [t("submit"), t("pick your address")]
+    const [confirmAddress, pickAddress] = [t("confirm your address"), t("pick your address")]
 
     const handleChange = async (query) => {
         setValue(query)
-        setAddress(null);
+        // setAddress(null);
         setSelectedLocation(null);
         if (query.length > 2) {
             setResultsVisible(true);
@@ -52,7 +55,7 @@ export default function AddressScreen({ route }) {
 
     const handleItemPress = async (location) => {
         if (!location) return
-        setValue(location.display_name);
+        setValue("");
         setResultsVisible(false);
         const coordinate = {
             latitude: Number(location.lat),
@@ -99,17 +102,29 @@ export default function AddressScreen({ route }) {
                         <SearchBar value={value} changHandler={handleChange} />
                         {resultsVisible && <SearchResultList results={results} onItemPress={handleItemPress} loading={loading} />}
                     </View>
-                    <TouchableOpacity onPress={gpsHandler}
-                        style={[globalStyles.shadowBox, { position: "absolute", zIndex: 99999, bottom: 24, right: 24, padding: 15, backgroundColor: Color.white, borderRadius: 25 }]} >
-                        <GPS_Mark_Svg width={24} height={24} color={address?.gps ? Color.darkcyan : Color.gray} />
-                    </TouchableOpacity>
-                    <PrimaryButton onPress={submitHandler}
-                        style={{ width: "80%", flexDirection: "column", opacity: (address && value) ? 1 : 0.7, position: "absolute", zIndex: 99999, bottom: 24, left: 24, }}
-                        disabled={!address || !value} >
-                        <Text style={[globalStyles.title, { color: Color.white }]}>{(address && value) ? Submit : pickAddress}</Text>
-                    </PrimaryButton>
+                    <View style={{ position: "absolute", zIndex: 99999, bottom: 24, gap: 10, width: "100%" }}>
+                        {address?.display_name && <View style={{ width: "100%", borderRadius: 25, backgroundColor: Color.white, padding: 15 }}>
+                            <CustomText style={[globalStyles.regular]}>{confirmAddress}</CustomText>
+                            <DividerWithText />
+                            <View style={[{ flexDirection: language === "en" ? "row" : "row-reverse", gap: 10, alignItems: "center" }]}>
+                                <Address_Mark_Svg width={24} height={24} color={Color.red} />
+                                <CustomText style={[globalStyles.contentText, { alignItems: 'center', flex: 1 }]}>{address?.display_name || ""}</CustomText>
+                            </View>
+                        </View>}
+                        <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
+                            <PrimaryButton onPress={submitHandler}
+                                style={{ flex: 1, flexDirection: "column", opacity: address ? 1 : 0.7 }}
+                                disabled={!address} >
+                                <Text style={[globalStyles.title, { color: Color.white }]}>{address ? confirmAddress : pickAddress}</Text>
+                            </PrimaryButton>
+                            <TouchableOpacity onPress={gpsHandler}
+                                style={[globalStyles.shadowBox, { padding: 15, backgroundColor: Color.white, borderRadius: 25 }]} >
+                                <GPS_Mark_Svg width={24} height={24} color={address?.gps ? Color.darkcyan : Color.gray} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                     <TouchableWithoutFeedback onPress={() => setResultsVisible(false)}>
-                        <MapComponent selectedLocation={selectedLocation} setSelectedAddress={(data) => { setValue(data.display_name), setAddress(data) }} setSelectedLocation={setSelectedLocation} />
+                        <MapComponent selectedLocation={selectedLocation} setSelectedAddress={(data) => { setAddress(data) }} setSelectedLocation={setSelectedLocation} />
                     </TouchableWithoutFeedback>
                 </View>
             </SafeAreaView>

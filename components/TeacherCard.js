@@ -27,7 +27,7 @@ const TeacherCard = React.memo(({ item, index }) => {
                     source={item.imageSource}
                 />
             </TouchableOpacity>
-            <CustomText style={[styles.title, { width: "100%", height: FontSize.size_lg }]} >{item.name}</CustomText>
+            <CustomText style={[styles.title, { width: "100%", height: FontSize.size_lg, marginBottom: 2 }]} >{item.name}</CustomText>
             <CustomText style={[styles.regular, { marginBottom: 5 }]} >{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={styles.likes}>

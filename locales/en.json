@@ -49,6 +49,7 @@
     "placeholder-governorate": "Governorate",
     "placeholder-city": "City",
     "submit": "Submit",
+    "confirm your address": "Confirm your address",
     "edit": "Edit",
     "enter-verification-code-title": "Enter verification code",
     "enter-verification-code-description": "Enter the verification code sent to your phone number. \n{number}",

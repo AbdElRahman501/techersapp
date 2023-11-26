@@ -34,7 +34,7 @@ export default function TeacherItem({ subject, item, isSelected, togglePicker, o
                 </View>
                 <CustomImage
                     style={[styles.image]}
-                    resizeMode="contain"
+                    resizeMode="cover"
                     source={item.imageSource} />
                 <View style={[styles.dropButton]}>
                     {isSelected && onlyOne != 1 &&

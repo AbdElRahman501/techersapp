@@ -46,7 +46,7 @@ export default function TeacherSignUpScreen({ route }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
-        <BackHeader title={"user Data"} />
+        <BackHeader title={t("sign-up-teacher")} />
         <LoadingModal visible={loading} />
         <ScrollView
           showsVerticalScrollIndicator={false}

@@ -22,18 +22,18 @@ const SignUpOptions = () => {
         <Header lastSlide={true} />
 
         <Animated.Image
-          entering={FadeInDown.duration(500).easing(Easing.ease)}
+          entering={FadeInDown.duration(300).easing(Easing.ease)}
           style={{ flex: 1, width: "90%", maxWidth: 450 }}
           resizeMode="contain"
           source={require("../assets/image-2.png")}
         />
         <Animated.Text
-          entering={FadeInDown.duration(600).easing(Easing.ease)}
+          entering={FadeInDown.duration(400).easing(Easing.ease)}
           style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p }]}>
           {t("Join us and explore new ways of learning.")}
         </Animated.Text>
         <Animated.Text
-          entering={FadeInDown.duration(700).easing(Easing.ease)}
+          entering={FadeInDown.duration(500).easing(Easing.ease)}
           style={[styles.content, { paddingHorizontal: Padding.page_p }]}>
           {t("Whether you are a teacher, a student, or a parent, we have something for you.")}
         </Animated.Text>

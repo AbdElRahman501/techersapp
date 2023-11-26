@@ -67,7 +67,7 @@ const SplashScreen = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    dispatch(updateVersion("1.0.0.4"))
+    dispatch(updateVersion("1.0.0.5"))
   }, [])
 
 

@@ -49,6 +49,7 @@
     "placeholder-governorate": "المحافظه",
     "placeholder-city": "المدينة",
     "submit": "تاكيد",
+    "confirm your address": "تاكيد عنوانك",
     "edit": "تعديل",
     "enter-verification-code-title": "الرجاء ادخال رمز التحقق",
     "enter-verification-code-description": " ادخل رمز التحقق المرسل إليك علي هذا الرقم. \n{number}",

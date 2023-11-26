@@ -18,8 +18,8 @@ export default function ContainerTitle({ title, pressedTitle, pressHandler, styl
 
 const styles = StyleSheet.create({
     parentFlexBox: {
-        marginTop: Margin.m_base,
-        marginBottom: Margin.m_sm,
+        marginTop: Margin.m_sm,
+        marginBottom: Margin.s_xsm,
         width: "100%",
         justifyContent: "space-between",
         alignItems: "end",

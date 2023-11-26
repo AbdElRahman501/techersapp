@@ -33,12 +33,12 @@ const MapComponent = ({ selectedLocation, setSelectedLocation, setSelectedAddres
 
   useEffect(() => {
     mapRef.current.animateToRegion({
-      ...selectedLocation,
+      ...selectedLocation || mapRegion,
       latitudeDelta: Math.min(0.0922, mapRegion.latitudeDelta),
       longitudeDelta: Math.min(0.0421, mapRegion.longitudeDelta),
     });
 
-  }, [selectedLocation])
+  }, [selectedLocation, mapRef])
   return (
     <View style={styles.container}>
       <MapView

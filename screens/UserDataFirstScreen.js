@@ -50,7 +50,7 @@ export default function UserDataFirstScreen({ route }) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
-                <BackHeader title={"user Data"} />
+                <BackHeader title={t("sign-up-student")} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}>

@@ -15,3 +15,4 @@ export const CLOSE_TEACHERS_URL = `${URL}/api/teachers/closeTeachers/`
 //location api
 
 export const LOCATION_URL = 'https://nominatim.openstreetmap.org/search?format=json&q='
+export const LOCATION_URL_REVERSE = 'https://nominatim.openstreetmap.org/reverse?format=json&'

@@ -25,7 +25,7 @@ const FriendItem = React.memo(({ item, teacher }) => {
                 </View>
                 <CustomImage
                     style={[styles.image]}
-                    resizeMode="contain"
+                    resizeMode="cover"
                     source={item.imageSource} />
 
 

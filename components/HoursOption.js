@@ -58,8 +58,8 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
             >
                 <TouchableOpacity onPress={handleChangeDate} style={[globalStyles.student, { width: "100%", marginVertical: 0, marginTop: Margin.m_sm, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
                     <CustomImage
-                        style={{ height: Height.hi_md, width: Height.hi_md, borderRadius: Height.hi_md / 2 }}
-                        resizeMode="contain"
+                        style={{ height: Height.br_lg, width: Height.br_lg, borderRadius: Height.br_lg / 2 }}
+                        resizeMode="cover"
                         source={myTeacher?.imageSource}
                     />
                     <View style={{ marginHorizontal: Margin.m_sm, flex: 1 }}>

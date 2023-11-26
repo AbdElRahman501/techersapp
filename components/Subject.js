@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     title: {
-        fontSize: FontSize.size_base,
+        fontSize: FontSize.size_md,
         fontFamily: FontFamily.montserratArabic,
         color: Color.darkcyan
     }
