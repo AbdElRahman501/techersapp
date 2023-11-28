@@ -8,7 +8,6 @@ import CustomImage from './CustomImage ';
 const Subject = React.memo(({ item }) => {
     const { language } = useSelector(state => state.languageState)
     const navigation = useNavigation()
-    const { svg: Svg_icon } = item
 
     const handelScale = () => {
         if (item.addButton) {
@@ -22,15 +21,12 @@ const Subject = React.memo(({ item }) => {
             <View style={[styles.card]}>
                 <View style={[styles.subject, {
                 }]}>
-                    {Svg_icon ?
-                        <Svg_icon color={Color.darkcyan} />
-                        :
-                        <CustomImage
-                            style={{ height: "80%", width: "80%" }}
-                            resizeMode="contain"
-                            source={item.imageSource}
-                        />
-                    }
+                    <CustomImage
+                        style={{ height: "80%", width: "80%" }}
+                        color={Color.darkcyan}
+                        resizeMode="contain"
+                        source={item.imageSource}
+                    />
                 </View>
                 <Text style={styles.title}>{item[language]}</Text>
             </View>

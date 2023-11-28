@@ -15,7 +15,7 @@ export default function BackHeader({ title, onPress, onPressHandler, style }) {
     useEffect(() => {
         const theHistory = navigationState.routes.map(route => route.name)
         setHistory(theHistory);
-        if (theHistory.includes('SignUpScreen') && (theHistory[theHistory.length - 1] !== 'SignUpScreen')) {
+        if (theHistory.includes('UserData1') || theHistory.includes('TeacherSignUpScreen')) {
             previousSessionHandler(navigationState.routes)
         } else {
             previousSessionHandler([])

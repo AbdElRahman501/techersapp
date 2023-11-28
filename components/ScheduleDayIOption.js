@@ -1,9 +1,8 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Color, FontSize, fontEm, globalStyles, widthPercentage } from '../GlobalStyles'
+import { Color, FontSize, globalStyles, widthPercentage } from '../GlobalStyles'
 import { useSelector } from 'react-redux'
-import { getEvents, getStartedEvents, isDateAfter } from '../actions/GlobalFunctions'
-import { teachers } from '../data'
+import { getEvents, getStartedEvents } from '../actions/GlobalFunctions'
 
 const ScheduleDayOption = ({ item, eventsDuration, selectedMonth, SelectedId, today, handelPress }) => {
     const { myGroups } = useSelector(state => state.myGroupsState);

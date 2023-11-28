@@ -5,13 +5,14 @@ import SortingContainer from './SortingContainer';
 import DistanceFilter from './DistanceFilter';
 import DividerWithText from './DividerWithText ';
 import SlideContainer from './SlideContainer';
-import { subjects } from '../data';
 import SubjectOptions from './SubjectOption';
+import { useSelector } from 'react-redux';
 
 const FilterModal = ({ isVisible, onClose, onApply }) => {
 
     const sortingOptions = ["Default", "A-Z", "Z-A", "Price: Low to High", "Price: High to Low"]
     const [selectedOption, setSelectedOption] = useState(0)
+    const { subjects } = useSelector(state => state.subjectsState);
 
 
     const distances = [1000, 2000, 3000, 4000, 5000]

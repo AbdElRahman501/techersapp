@@ -6,17 +6,17 @@ import PressedText from '../components/PressedText';
 import { useNavigation } from '@react-navigation/core';
 import Checkbox from '../components/Checkbox';
 import t from "../actions/changeLanguage";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CustomText from '../components/CustemText';
 import PrimaryButton from '../components/PrimaryButton';
 import LoadingModal from '../components/LoadingModal';
 import PhoneInput from '../components/PhoneInput';
-import { getErrorMessage, isDataExpired, modifyStudent } from '../actions/GlobalFunctions';
+import { getErrorMessage, isDataExpired } from '../actions/GlobalFunctions';
 import { PHONE_VERIFICATION_URL } from '../store/actions/api';
 import axios from 'axios';
 import AlertModal from '../components/alertModal';
 import VerifyPhoneModal from '../components/VerifyPhoneModal';
-import { schoolTypes, years } from '../data';
+import { getSubjects } from '../store/actions/subjectsActions';
 
 
 export default function SignUpScreen({ route }) {
@@ -33,7 +33,7 @@ export default function SignUpScreen({ route }) {
     const resendDuration = 90
 
     const [visible, setVisible] = useState(false);
-
+    const dispatch = useDispatch()
     const handleSubmit = () => {
         if (!valid) {
             Alert.alert('Invalid Phone Number', 'Please enter a valid phone number');
@@ -52,8 +52,11 @@ export default function SignUpScreen({ route }) {
             const { data: { students, ...data } } = await axios.post(PHONE_VERIFICATION_URL, { phoneNumber, formattedPhone });
             if (!data) return
             console.log("🚀 ~ file: SignupScreen.js:51 ~ phoneNumberVerification ~ data:", data)
+            if (signUpData?.role === "teacher") {
+                dispatch(getSubjects())
+            }
             setLoading(false)
-            setData({ students: students.map(student => modifyStudent(student, years, schoolTypes)), ...data })
+            setData({ students: students, ...data })
             setVisible(true)
         } catch (error) {
             setLoading(false)

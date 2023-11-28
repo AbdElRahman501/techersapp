@@ -11,30 +11,27 @@ import SlideContainer from '../components/SlideContainer';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { removeDuplicatesById } from '../actions/GlobalFunctions';
+import { getSubject, removeDuplicatesById } from '../actions/GlobalFunctions';
 import { Add_Icon } from '../assets/icons/Icons';
 import TapBottomNavigator from '../components/TapBottomNavigator';
 import FilterButton from '../components/FilterButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const { loading, userInfo, error } = useSelector(state => state.userInfo);
-  const { loading: teachersLoading, closeTeacher, error: teachersError } = useSelector(state => state.closeTeachersState);
-  const { loading: myTeachersLoading, myTeachers, error: myTeachersError } = useSelector(state => state.myTeachersState);
-  const { loading: myGroupsLoading, myGroups, error: myGroupsError } = useSelector(state => state.myGroupsState);
-
+  const { userInfo } = useSelector(state => state.userInfo);
+  const { closeTeacher } = useSelector(state => state.closeTeachersState);
+  const { myTeachers } = useSelector(state => state.myTeachersState);
+  const { myGroups } = useSelector(state => state.myGroupsState);
+  const { subjects } = useSelector(state => state.subjectsState)
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [mySubjects, setMySubjects] = useState([])
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacherTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
 
-  const svg_icon = (props) => {
-    return <Add_Icon height="80%" width="80%" viewBox="0 0 24 25" {...props} />
-  }
 
   const item = {
     addButton: true,
     en: "Add Subject", ar: "إضافة مادة",
-    svg: svg_icon
+    imageSource: (props) => <Add_Icon {...props} />
   }
 
 
@@ -48,8 +45,10 @@ export default function HomeScreen() {
   }, [userInfo]);
 
   useEffect(() => {
-    const subjects = removeDuplicatesById(myGroups?.map(x => x?.subject))
-    setMySubjects([...subjects, { ...item, id: 10000 }])
+    const subs = removeDuplicatesById(myGroups?.map(x => {
+      return getSubject(subjects, x?.subject)
+    }))
+    setMySubjects([...subs, { ...item, id: 10000 }])
   }, [myGroups]);
 
   return (

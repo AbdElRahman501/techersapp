@@ -3,11 +3,12 @@ import { Text, View } from 'react-native'
 import { Border, Color, globalStyles, widthPercentage } from '../GlobalStyles';
 import { useSelector } from 'react-redux';
 import CustomText from './CustemText';
-import { calculateEndTime, isArabic, transformTime } from '../actions/GlobalFunctions';
+import { calculateEndTime, getSubject, isArabic, transformTime } from '../actions/GlobalFunctions';
 import CustomImage from './CustomImage ';
 
 export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: { timeIn24Format, subject, duration, color, teacherId } }) {
     const { language } = useSelector(state => state.languageState)
+    const { subjects } = useSelector(state => state.subjectsState)
     const { myTeachers: teachers } = useSelector(state => state.myTeachersState);
     const teacher = teachers.length > 0 && teachers.find(x => x.id === teacherId)
     const [hour, minute] = timeIn24Format.split(":")
@@ -17,6 +18,7 @@ export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: 
     const theDuration = duration / 60
     let theTimeFill = Math.max(((currentHour * 100) + ((currentMinute / 60) * 100)) - ((theEventTime * 100) + 1), 0)
     theTimeFill = Math.min(theTimeFill, theDuration * 99)
+    subject = getSubject(subjects, subject)
 
 
     return (
@@ -30,7 +32,7 @@ export default function EventItem({ dayStart, isPassed, dayEnd, isToday, event: 
         }]} >
             {isToday && <View style={{ position: "absolute", top: 0, left: 0, backgroundColor: color, height: theTimeFill, width: widthPercentage(100) - 100 }} />}
             <View style={[{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', justifyContent: 'space-between', paddingHorizontal: 20 }]}>
-                <Text style={[globalStyles.title, { color: Color.black }]}> {subject ? subject[language] : ""} </Text>
+                <Text style={[globalStyles.title, { color: Color.black }]}> {subject?.[language] || ""} </Text>
                 <View style={{ flexDirection: language === 'ar' ? 'row-reverse' : 'row', gap: 10 }} >
                     <Text style={[globalStyles.contentText]}>{transformTime(timeIn24Format, language)}</Text>
                     <Text style={[globalStyles.contentText]}>{transformTime(calculateEndTime(timeIn24Format, duration), language)}</Text>

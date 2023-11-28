@@ -4,12 +4,14 @@ import { Color, fontEm, globalStyles, heightPercentage, widthPercentage } from '
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import t from '../actions/changeLanguage';
-import { getSubjectTitle, getTitle } from '../actions/GlobalFunctions';
+import { getSubject, getSubjectTitle, getTitle } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
 import CustomImage from './CustomImage ';
 
 const AdItem = React.memo(({ item, holdHandler }) => {
     const { language } = useSelector(state => state.languageState)
+    const { subjects } = useSelector(state => state.subjectsState)
+    const subject = getSubject(subjects, item.mainSubject.subject)
     const navigation = useNavigation()
     const handlePress = () => {
         navigation.navigate("TeacherScreen", { item })
@@ -19,7 +21,7 @@ const AdItem = React.memo(({ item, holdHandler }) => {
             <View style={styles.itemContainer} >
                 <View style={{ flex: 1 }}>
                     <Text style={globalStyles.title}>{getTitle(item.gender, item.name)}</Text>
-                    <Text style={[globalStyles.regular, { color: Color.gray_200, textAlign: 'center' }]}>{getSubjectTitle(item.gender, item.mainSubject[language])}</Text>
+                    <Text style={[globalStyles.regular, { color: Color.gray_200, textAlign: 'center' }]}>{getSubjectTitle(item.gender, subject[language])}</Text>
                     <TouchableOpacity onPress={handlePress} style={styles.primaryButton}>
                         <Text style={[globalStyles.regular, { color: Color.white }]}>
                             {t("book-now")}

@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import CustomImage from './CustomImage '
+import { getTheYear } from '../actions/GlobalFunctions'
+import { years } from '../data'
 
 
 
@@ -17,7 +19,7 @@ const HomeHeader = ({ user }) => {
 
     const { language } = useSelector(state => state.languageState)
     const [history, setHistory] = useState([]);
-
+    const schoolYear = getTheYear(years, user?.schoolYear)
     useEffect(() => {
         setHistory(navigationState.routes.map(route => route.name));
     }, [navigationState]);
@@ -52,7 +54,7 @@ const HomeHeader = ({ user }) => {
                 <View style={{ marginHorizontal: Margin.m_sm, gap: 3 }}>
                     <CustomText style={[globalStyles.regular, { fontSize: FontSize.size_lg, color: Color.darkcyan }]}>{t("welcome")}</CustomText>
                     <CustomText style={globalStyles.regular}>{user?.fullName || ""}</CustomText>
-                    <CustomText style={globalStyles.smallText}>{user?.schoolYear[language] || ""}</CustomText>
+                    <CustomText style={globalStyles.smallText}>{schoolYear?.[language] || ""}</CustomText>
                 </View>
             </View>
             <Notification_icon_Svg

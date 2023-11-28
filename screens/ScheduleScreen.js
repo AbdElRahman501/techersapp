@@ -74,7 +74,7 @@ export default function ScheduleScreen() {
                     <TimeLine today={today} selectedDay={selectedDay} eventsDuration={eventsDuration} events={events} />
                 </View>
             </View>
-            <TapBottomNavigator  currentScreen={"Schedule"} />
+            <TapBottomNavigator currentScreen={"Schedule"} />
         </SafeAreaView>
     )
 }

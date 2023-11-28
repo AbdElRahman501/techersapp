@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
-import { checkArrayForUserId, formatDistance, getSubjectTitle, } from '../actions/GlobalFunctions'
+import { checkArrayForUserId, formatDistance, getSubject, getSubjectTitle, } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux';
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import CustomText from './CustemText';
@@ -13,6 +13,8 @@ import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 const TeacherCard = React.memo(({ item, index }) => {
     const navigation = useNavigation()
     const { language } = useSelector(state => state.languageState)
+    const { subjects } = useSelector(state => state.subjectsState)
+    const subject = getSubject(subjects, item.mainSubject.subject)
     const id = 18
     const handlePress = () => {
         navigation.navigate("TeacherScreen", { item })
@@ -28,7 +30,7 @@ const TeacherCard = React.memo(({ item, index }) => {
                 />
             </TouchableOpacity>
             <CustomText style={[styles.title, { width: "100%", height: FontSize.size_lg, marginBottom: 2 }]} >{item.name}</CustomText>
-            <CustomText style={[styles.regular, { marginBottom: 5 }]} >{getSubjectTitle(item.gender, item.mainSubject[language])}</CustomText>
+            <CustomText style={[styles.regular, { marginBottom: 5 }]} >{getSubjectTitle(item.gender, subject[language])}</CustomText>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={styles.likes}>
                     {checkArrayForUserId(item.likes, id) ?

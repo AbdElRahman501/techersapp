@@ -7,6 +7,7 @@ import { userReducer, usersReducer } from './reducers/userReducer';
 import messageReducer from './reducers/messageReducer';
 import { closeTeachersReducer, myTeachersReducer, teacherInfoReducer } from './reducers/teacherReducers';
 import { groupsReducer } from './reducers/groupsReducers';
+import { subjectsReducer } from './reducers/subjectsReducers';
 
 
 const initialState = {
@@ -24,7 +25,8 @@ const store = configureStore({
         teacherInfoState: teacherInfoReducer,
         myGroupsState: groupsReducer,
         myTeachersState: myTeachersReducer,
-        usersState: usersReducer
+        usersState: usersReducer,
+        subjectsState: subjectsReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -235,6 +235,7 @@ export const getTitle = (gender, name) => {
     return '';
 }
 export const getSubjectTitle = (gender, subject) => {
+    if (!subject) return '';
     let language = isArabic(subject) ? "ar" : "en"
     if (language === 'ar') {
         if (gender === 'male') {
@@ -459,7 +460,7 @@ export const getBookedMessage = (group, language) => {
 export const removeDuplicatesById = (array) => {
     if (!array?.length) return []
     const uniqueArray = array.filter((item, index, self) => {
-        return index === self.findIndex(obj => obj.id === item.id);
+        return index === self.findIndex(obj => obj?.id === item?.id);
     });
     return uniqueArray;
 }
@@ -510,53 +511,16 @@ export const getTheYear = (years, yearValue) => {
     }
     return years.find(x => x.value === yearValue)
 }
-export const getSubject = (subjects, subject) => {
-    if (!subjects?.length || !subject) return {
+export const getSubject = (subjects, subjectTitle) => {
+    if (!subjects?.length || !subjectTitle) return {
         ar: 'لا يوجد', en: 'No data',
     }
-    const { imageSource, ...others } = subjects.find(x => x.en === subject)
-    return others
+    const subject = subjects.find(x => x.en === subjectTitle)
+    return subject
 }
 export const getTheEducation = (schoolTypes, educationTypeValue) => {
     if (!schoolTypes?.length || !educationTypeValue) return {
         ar: 'لا يوجد', en: 'No data',
     }
     return schoolTypes.find(x => x.en === educationTypeValue)
-}
-export const modifyTeachers = (teachers, subjects, years) => {
-    if (!teachers?.length) return []
-    teachers = teachers.map(teacher => {
-        teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
-        teacher.groups = modifyGroups(teacher.groups, subjects, years)
-        teacher.subjects = teacher?.subjects?.map(subject => getSubject(subjects, subject))
-        return teacher
-    })
-    return teachers
-
-}
-export const modifyTeacher = (teacher, subjects, years) => {
-    if (!teacher) return null
-    teacher.mainSubject = { ...getSubject(subjects, teacher.mainSubject.subject), schoolYears: teacher.mainSubject.schoolYears.map(year => getTheYear(years, year)) }
-    teacher.groups = modifyGroups(teacher.groups, subjects, years)
-    return teacher
-}
-export const modifyGroups = (groups, subjects, years) => {
-    if (!groups?.length) return []
-    const colorArr = []
-    groups = groups.map(group => {
-        let color = getColor(colorArr)
-        colorArr.push(color)
-        group.subject = subjects.find(x => x.en === group.subject)
-        group.schoolYear = getTheYear(years, group.schoolYear)
-        group.color = group.color || color
-        return group
-    })
-    return groups
-
-}
-
-export const modifyStudent = (student, years, educationTypes) => {
-    if (!student) return null
-    student = { ...student, schoolYear: getTheYear(years, student.schoolYear), educationType: getTheEducation(educationTypes, student.educationType) }
-    return student
 }

@@ -5,13 +5,20 @@ import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
-import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById } from '../actions/GlobalFunctions'
+import { formatDistance, checkArrayForUserId, getTitle, removeDuplicatesById, getSubject } from '../actions/GlobalFunctions'
 import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 
 export default function TeacherMainCard({ likes, item, userID, selectedSubject, changeSubjectHandler, index }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: likes?.length || 0 })
-    const subjects = item?.subjects || removeDuplicatesById(item?.groups.map(x => x.subject))
+    const { subjects } = useSelector(state => state.subjectsState)
+    let teacherSubjects = removeDuplicatesById(item?.groups?.map(x => {
+        return getSubject(subjects, x?.subject)
+    }))
+    teacherSubjects = teacherSubjects.length > 0 ? teacherSubjects : item?.subjects?.map(x => {
+        return getSubject(subjects, x)
+    })
+
     useEffect(() => {
         if (checkArrayForUserId(likes, userID) && !liked.state) {
             setLiked(pv => ({ ...pv, state: true }))
@@ -24,9 +31,9 @@ export default function TeacherMainCard({ likes, item, userID, selectedSubject, 
                 <View style={styles.info}>
                     <CustomText style={[styles.title]} numberOfLines={2} lineBreakMode="tail" >{getTitle(item?.gender, item?.name)}</CustomText>
                     <View style={{ gap: 10, justifyContent: "flex-start", flexDirection: language === 'ar' ? 'row-reverse' : 'row', alignItems: "center" }}>
-                        {subjects.map((subject, i) => <TouchableOpacity key={i} onPress={() => changeSubjectHandler && changeSubjectHandler(subject)} disabled={!selectedSubject} >
+                        {teacherSubjects.map((subject, i) => <TouchableOpacity key={i} onPress={() => changeSubjectHandler && changeSubjectHandler(subject.en)} disabled={!selectedSubject} >
                             <CustomText style={[styles.regular, {
-                                color: (selectedSubject && subject[language] === selectedSubject[language]) ? Color.darkcyan : Color.darkgray
+                                color: (selectedSubject && subject.en === selectedSubject) ? Color.darkcyan : Color.darkgray
                             }]}>
                                 {subject[language]}
                             </CustomText>

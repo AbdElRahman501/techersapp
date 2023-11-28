@@ -1,9 +1,8 @@
 import Axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MY_GROUPS_REQUEST, MY_GROUPS_SUCCESS, MY_GROUPS_FAIL } from '../constants/groupsConstants';
-import { ADD_GROUP_URL, MY_GROUPS_URL } from './api';
-import { schoolTypes, subjects, years } from "../../data";
-import { modifyGroups, modifyStudent, removeDuplicatesById } from '../../actions/GlobalFunctions';
+import { ADD_GROUP_URL } from './api';
+import { removeDuplicatesById } from '../../actions/GlobalFunctions';
 import { USER_SUCCESS } from '../constants/userConstants';
 import { MY_TEACHERS_SUCCESS } from '../constants/teachersConstants';
 import { showMessage } from './showMessageActions';
@@ -17,16 +16,15 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
         let myTeachers = getState().myTeachersState.myTeachers
         myTeachers = removeDuplicatesById([...myTeachers, newTeacher])
 
-        const existGroup = myGroups.find(x => x.teacherId === newGroup.teacherId && x.subject?.id === newGroup.subject?.id)
+        const existGroup = myGroups.find(x => x.teacherId === newGroup.teacherId && x.subject === newGroup.subject)
         if (existGroup) {
             myGroups = myGroups.filter(x => x.id !== existGroup.id)
         }
         myGroups = [...myGroups, newGroup];
         const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
 
-        const { data: student } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
-        if (!student) return
-        const userInfo = modifyStudent(student, years, schoolTypes)
+        const { data: userInfo } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
+        if (!userInfo) return
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: USER_SUCCESS, payload: userInfo });
@@ -57,9 +55,8 @@ export const leaveGroup = (groupId, teacherId) => async (dispatch, getState) => 
         const myTeachersId = myGroups.map(y => y.teacherId)
         myTeachers = myTeachers.filter(x => myTeachersId.includes(x.id))
         const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
-        const { data: student } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
-        if (!student) return
-        const userInfo = modifyStudent(student, years, schoolTypes)
+        const { data: userInfo } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
+        if (!userInfo) return
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: USER_SUCCESS, payload: userInfo });

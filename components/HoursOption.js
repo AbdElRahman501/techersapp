@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity } from 'react-native'
 import { Color, FontSize, Height, Margin, globalStyles } from '../GlobalStyles'
 import { useSelector } from 'react-redux';
-import { areGroupsOverLapped, getBookedMessage, getTitle, transformTime } from '../actions/GlobalFunctions';
+import { areGroupsOverLapped, getBookedMessage, getSubject, getTitle, transformTime } from '../actions/GlobalFunctions';
 import AlertModal from './alertModal';
 import { useNavigation } from '@react-navigation/core';
 import CustomImage from './CustomImage ';
@@ -11,6 +11,7 @@ import t from '../actions/changeLanguage';
 
 const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroups, handelPress }) => {
     const { language } = useSelector(state => state.languageState)
+    const { subjects } = useSelector(state => state.subjectsState)
     let isSelected = selectedHour === item.timeIn24Format
     let teacherGroup = teacher.groups.find(x => x.id === item.groupId)
     const { overLapped: unavailable, overlappedTime } = areGroupsOverLapped(myGroups, teacherGroup)
@@ -18,6 +19,7 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
 
     const [myTeacher, setMyTeacher] = useState()
     const [overLappedGroup, setOverLapGroup] = useState()
+    const [subject, setSubject] = useState()
     const navigation = useNavigation()
     const [message, setMessage] = useState("")
     const [overLappedMessage, setOverLappedMessage] = useState("")
@@ -28,13 +30,14 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
             const group = myGroups?.find(x => x?.id === overlappedTime.groupId && x?.teacherId === overlappedTime.teacherId)
             setMyTeacher(theTeacher)
             setOverLapGroup(group)
+            setSubject(getSubject(subjects, group?.subject))
         }
     }, [overlappedTime?.teacherId])
 
     const handleChangeDate = () => {
         if (myTeacher) {
             setVisible(false)
-            navigation.push("TeacherScreen", { item: myTeacher, subject: overLappedGroup?.subject })
+            navigation.push("TeacherScreen", { item: myTeacher, subject })
         }
     };
     const submitHandler = () => {
@@ -63,7 +66,7 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
                         source={myTeacher?.imageSource}
                     />
                     <View style={{ marginHorizontal: Margin.m_sm, flex: 1 }}>
-                        <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{getTitle(myTeacher?.gender, myTeacher?.name) + " (" + overLappedGroup?.subject[language] + ")"}</CustomText>
+                        <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{getTitle(myTeacher?.gender, myTeacher?.name) + " (" + subject?.[language] + ")"}</CustomText>
                         <CustomText style={globalStyles.smallText}>{overLappedMessage}</CustomText>
                     </View>
                 </TouchableOpacity>

@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/core';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { teacherRegister } from '../store/actions/userActions';
-import { subjects, years } from '../data';
+import { years } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import LoadingModal from '../components/LoadingModal';
 
@@ -17,6 +17,7 @@ export default function TeacherDataScreen({ route }) {
   const { signUpData } = route.params;
   const { language } = useSelector(state => state.languageState)
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
+  const { subjects } = useSelector(state => state.subjectsState);
   const [state, setState] = useState({})
   const [subject, setSubject] = useState("")
   const [schoolYears, setSchoolYears] = useState([])

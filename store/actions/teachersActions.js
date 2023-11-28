@@ -2,8 +2,6 @@ import Axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CLOSE_TEACHERS_URL, TEACHERS_URL } from './api';
 import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_FAIL, CLOSE_TEACHERS_REQUEST, CLOSE_TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from '../constants/teachersConstants';
-import { subjects, years } from "../../data";
-import { modifyTeacher, modifyTeachers } from '../../actions/GlobalFunctions';
 
 export const getCloseTeachers = (id) => async (dispatch) => {
     try {
@@ -15,7 +13,7 @@ export const getCloseTeachers = (id) => async (dispatch) => {
         }
         const { data: closeTeachers } = await Axios.get(CLOSE_TEACHERS_URL + id);
         if (!closeTeachers) return
-        dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: modifyTeachers(closeTeachers, subjects, years) });
+        dispatch({ type: CLOSE_TEACHERS_SUCCESS, payload: closeTeachers });
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         console.log('server close teachers fetched successfully.');
     } catch (error) {
@@ -27,12 +25,12 @@ export const getTeacherInfo = (id) => async (dispatch) => {
     try {
         const { data: teacher } = await Axios.get(TEACHERS_URL + id);
         if (!teacher) return
-        dispatch({ type: TEACHER_SUCCESS, payload: modifyTeacher(teacher, subjects, years) });
+        dispatch({ type: TEACHER_SUCCESS, payload: teacher });
         console.log('teacher info fetched successfully.');
     } catch (error) {
         console.log("🚀 ~ file: teachersActions.js:44 ~ getTeacherInfo ~ error:", error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message,)
+            ? error.response.data.message
+            : error.message,)
         dispatch({
             type: TEACHER_FAIL, payload:
                 error.response && error.response.data.message

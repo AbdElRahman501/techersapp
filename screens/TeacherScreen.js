@@ -69,7 +69,7 @@ export default function TeacherScreen({ route }) {
     const changeSubjectHandler = (subject) => {
         setSelectedSubject(subject)
         const teacherBookedGroups = myGroups.filter(x => x.teacherId === teacher.id)
-        const group = teacherBookedGroups.find(x => x.subject.id === subject?.id)
+        const group = teacherBookedGroups.find(x => x.subject === subject)
         updateGroup(group, null, subject)
     }
 
@@ -99,7 +99,7 @@ export default function TeacherScreen({ route }) {
     }
 
     const getHours = (day, subject, group) => {
-        let availableGroups = teacher.groups.filter(x => x.subject.id === subject.id && x.schoolYear.id === userInfo.schoolYear.id)
+        let availableGroups = teacher.groups.filter(x => x.subject === subject && x.schoolYear === userInfo.schoolYear)
         availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(day)) || []
         let avHours = availableGroups.map(x => x.days.map(y => ({ ...y, groupId: x.id }))).flat()
         let primaryTimes = avHours.filter(x => x.day === day)
@@ -117,7 +117,7 @@ export default function TeacherScreen({ route }) {
         if (teacher) {
             const teacherBookedGroups = myGroups?.filter(x => x?.teacherId === teacher.id) || []
             if (selectedSubject) {
-                updateGroup(teacherBookedGroups.find(x => x.subject.id === selectedSubject.id))
+                updateGroup(teacherBookedGroups.find(x => x.subject === selectedSubject))
             } else {
                 updateGroup(teacherBookedGroups[0])
             }
@@ -154,8 +154,8 @@ export default function TeacherScreen({ route }) {
         } else if (hours.length === 0) {
             return ({ text: noGroupAvailable, notAvailable: true })
         } else if (selectedGroup) {
-            const myBookedGroup = myGroups?.find(x => x.teacherId === item.id && x?.subject?.id === selectedGroup.subject.id)
-            const isTheSameSubject = myBookedGroup?.subject?.id === selectedSubject.id
+            const myBookedGroup = myGroups?.find(x => x.teacherId === item.id && x?.subject === selectedGroup.subject)
+            const isTheSameSubject = myBookedGroup?.subject === selectedSubject
             if (myBookedGroup?.id === selectedGroup.id) {
                 return ({ text: leave, booked: true })
             } else if (isTheSameSubject) {
@@ -230,7 +230,7 @@ export default function TeacherScreen({ route }) {
                         <View style={styles.line} />
                     </View>
                     {teacher &&
-                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups?.filter(x => !((x?.teacherId === item.id && x?.subject?.id === selectedSubject?.id)))} teachers={closeTeacher} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
+                        <SlideContainer data={sortArrayByTime(hours)} myGroups={myGroups?.filter(x => !((x?.teacherId === item.id && x?.subject === selectedSubject)))} teachers={closeTeacher} teacher={teacher} selectedGroup={selectedGroup} selectedHour={selectedHour} handelPress={hoursHandelPress}   >
                             <HoursOption />
                         </SlideContainer>
                     }

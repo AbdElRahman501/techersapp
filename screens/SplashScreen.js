@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, { useSharedValue, Easing, withTiming } from 'react-native-reanimated';
 import { widthPercentage } from '../GlobalStyles';
-import { getLocation, previousSessionHandler, serverWakeUp, updateVersion } from '../store/actions/deviceActions';
+import { serverWakeUp, updateVersion } from '../store/actions/deviceActions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_SUCCESS } from '../store/constants/userConstants';
 import { getCloseTeachers, getMyTeachersData } from '../store/actions/teachersActions';
@@ -11,6 +11,7 @@ import { getMyGroups } from '../store/actions/groupsActions';
 import { syncedData } from '../store/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
+import { getSubjects } from '../store/actions/subjectsActions';
 
 const SplashScreen = () => {
   const size = useSharedValue(widthPercentage(50));
@@ -39,6 +40,7 @@ const SplashScreen = () => {
       const userInfo = userInfoJSON ? JSON.parse(userInfoJSON) : null;
       if (userInfo) {
         dispatch({ type: USER_SUCCESS, payload: userInfo });
+        dispatch(getSubjects(userInfo.id))
         if (userInfo.role === "student") {
           dispatch(syncedData(userInfo))
           dispatch(getCloseTeachers(userInfo.id));
@@ -49,6 +51,7 @@ const SplashScreen = () => {
           onClose([{ name: "TeachersHomeScreen" }])
         }
       } else {
+        dispatch(getSubjects())
         dispatch(serverWakeUp())
         onClose([{ name: "OnboardingPages" }])
       }
