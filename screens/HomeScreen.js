@@ -11,29 +11,22 @@ import SlideContainer from '../components/SlideContainer';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { getSubject, removeDuplicatesById } from '../actions/GlobalFunctions';
-import { Add_Icon } from '../assets/icons/Icons';
+import { removeDuplicates } from '../actions/GlobalFunctions';
 import TapBottomNavigator from '../components/TapBottomNavigator';
 import FilterButton from '../components/FilterButton';
-
+import { addSubjectItem } from '../data.js';
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { userInfo } = useSelector(state => state.userInfo);
+  const { language } = useSelector(state => state.languageState);
   const { closeTeacher } = useSelector(state => state.closeTeachersState);
   const { myTeachers } = useSelector(state => state.myTeachersState);
   const { myGroups } = useSelector(state => state.myGroupsState);
   const { subjects } = useSelector(state => state.subjectsState)
+  const { schoolYears } = useSelector(state => state.schoolYearsState)
   const [myFavTeachers, setMyFavTeachers] = useState([])
-  const [mySubjects, setMySubjects] = useState([])
+  const [mySubjects, setMySubjects] = useState([...removeDuplicates(myGroups?.map(x => x.subject)), addSubjectItem])
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacherTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
-
-
-  const item = {
-    addButton: true,
-    en: "Add Subject", ar: "إضافة مادة",
-    imageSource: (props) => <Add_Icon {...props} />
-  }
-
 
   useEffect(() => {
     if (!userInfo) {
@@ -45,10 +38,7 @@ export default function HomeScreen() {
   }, [userInfo]);
 
   useEffect(() => {
-    const subs = removeDuplicatesById(myGroups?.map(x => {
-      return getSubject(subjects, x?.subject)
-    }))
-    setMySubjects([...subs, { ...item, id: 10000 }])
+    setMySubjects([...removeDuplicates(myGroups?.map(x => x.subject)), addSubjectItem])
   }, [myGroups]);
 
   return (
@@ -60,7 +50,7 @@ export default function HomeScreen() {
         <View style={[globalStyles.body]}>
           {/* { display: (teachersLoading || myTeachersLoading || myGroupsLoading || loading) ? "none" : "flex" } */}
           {/* <LoadingModal visible={teachersLoading || myTeachersLoading || myGroupsLoading || loading} /> */}
-          <HomeHeader user={userInfo} />
+          <HomeHeader user={userInfo} language={language} schoolYears={schoolYears} />
           {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
           <View style={{ flexDirection: "row", gap: 20, width: "100%" }} >
             <SearchBar button={true} />
@@ -68,25 +58,25 @@ export default function HomeScreen() {
           </View>
           <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
           {mySubjects?.length > 0 &&
-            <SlideContainer data={mySubjects}  >
+            <SlideContainer data={mySubjects} subjects={subjects} language={language}  >
               <Subject />
             </SlideContainer>
           }
           {myFavTeachers?.length > 0 && <>
             <ContainerTitle title={myFavTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-            <SlideContainer data={myFavTeachers}  >
+            <SlideContainer data={myFavTeachers} subjects={subjects} language={language}  >
               <TeacherCard />
             </SlideContainer>
           </>}
           {myTeachers?.length > 0 && <>
             <ContainerTitle title={myTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-            <SlideContainer data={myTeachers}  >
+            <SlideContainer data={myTeachers} subjects={subjects} language={language}  >
               <TeacherCard />
             </SlideContainer>
           </>}
           {closeTeacher?.length > 0 && <>
             <ContainerTitle title={closeTeacherTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-            <SlideContainer data={closeTeacher}  >
+            <SlideContainer data={closeTeacher} subjects={subjects} language={language}  >
               <TeacherCard />
             </SlideContainer>
           </>}

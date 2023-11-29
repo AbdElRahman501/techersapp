@@ -44,7 +44,6 @@ export default function TeacherScreen({ route }) {
     const [selectedSubject, setSelectedSubject] = useState(subject)
     const [hours, setHours] = useState([]);
     const [buttonText, setButtonText] = useState({ text: bookSeat })
-    const [networkPageVisible, setNetworkPageVisible] = useState(false);
     const [isConnected, setIsConnected] = useState(true);
 
     // // press handler 
@@ -130,8 +129,6 @@ export default function TeacherScreen({ route }) {
             if (!theTeacher) {
                 if (isConnected) {
                     dispatch(getTeacherInfo(item.id))
-                } else {
-                    setNetworkPageVisible(true)
                 }
             } else {
                 setTeacher(theTeacher)
@@ -198,6 +195,7 @@ export default function TeacherScreen({ route }) {
 
     return (
         <SafeAreaView style={[styles.container]} >
+            <NetworkPage title={t("teacher page")} visible={!teacher} />
             <BackHeader title={t("teacher page")} />
             <LoadingModal visible={teacherLoading || myGroupsLoading} />
             <AlertModal
@@ -205,20 +203,19 @@ export default function TeacherScreen({ route }) {
                 imageSource={require('../assets/icons/alert.png')}
                 title={confirm}
                 content={message}
-                primaryButton={confirm}
+                primaryButton={buttonText.booked ? leave : confirm}
                 secondaryButton={cancel}
+                primaryButtonStyle={{ backgroundColor: buttonText.booked ? Color.red : Color.darkcyan }}
                 primaryButtonSubmit={() => { bookTeacher() }}
                 secondaryButtonSubmit={() => setVisible(false)}
             />
-            <NetworkPage visible={networkPageVisible} item={item} isConnected={isConnected} />
             <ScrollView style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                {(!networkPageVisible) &&
-                    <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
-                }
-                <View style={[styles.appContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
+
+                <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
+                <View style={[styles.appContainer, { display: teacher ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} />
                     <LongText content={teacher?.about} style={[styles.regular, { textAlign: getTextInputAlign(teacher?.about) }]} />
                     {/* <ContainerTitle title={t("Analytics")} pressedTitle={t("know more")} pressHandler={() => console.log("all")} /> */}
@@ -240,7 +237,7 @@ export default function TeacherScreen({ route }) {
                     </SlideContainer>
                 </View>
             </ScrollView>
-            <View style={[styles.buttonContainer, { display: (teacher && !networkPageVisible) ? "flex" : "none" }]}>
+            <View style={[styles.buttonContainer, { display: teacher ? "flex" : "none" }]}>
                 <View style={{ paddingHorizontal: Padding.p_sm }} >
                     <Text style={[styles.regular]}>
                         {t("per month")}

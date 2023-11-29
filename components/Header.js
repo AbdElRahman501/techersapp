@@ -33,10 +33,7 @@ export default function Header({ lastSlide }) {
             <TouchableOpacity
                 style={[styles.skipButton]}
                 onPress={() =>
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'SignUpOptions' }],
-                    })
+                    navigation.navigate('SignUpOptions')
                 }
             >
                 <Text style={styles.skipButtonText}>{!lastSlide && skip}</Text>

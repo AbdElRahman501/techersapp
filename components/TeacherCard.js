@@ -3,17 +3,14 @@ import React from 'react'
 import { Border, Color, FontFamily, FontSize } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { checkArrayForUserId, formatDistance, getSubject, getSubjectTitle, } from '../actions/GlobalFunctions'
-import { useSelector } from 'react-redux';
 import { Heart_Icon_Fill, Heart_Stroke } from '../assets/icons/Icons';
 import CustomText from './CustemText';
 import CustomImage from './CustomImage ';
 import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
 
 
-const TeacherCard = React.memo(({ item, index }) => {
+const TeacherCard = React.memo(({ item, index, subjects, language }) => {
     const navigation = useNavigation()
-    const { language } = useSelector(state => state.languageState)
-    const { subjects } = useSelector(state => state.subjectsState)
     const subject = getSubject(subjects, item.mainSubject.subject)
     const id = 18
     const handlePress = () => {

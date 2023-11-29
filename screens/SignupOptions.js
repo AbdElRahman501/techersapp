@@ -1,17 +1,24 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, ImageBackground, Image, View, SafeAreaView } from "react-native";
+import { StyleSheet, Text, ImageBackground, Animated, View, SafeAreaView } from "react-native";
 import { Border, FontFamily, Color, FontSize, Padding, Margin } from "../GlobalStyles";
 import { useSelector } from "react-redux";
 import PrimaryButton from "../components/PrimaryButton";
 import PressedText from "../components/PressedText";
 import t from "../actions/changeLanguage";
 import Header from "../components/Header";
-import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
+import transition from "../actions/transition";
 
 const SignUpOptions = () => {
   const { language } = useSelector(state => state.languageState);
   const navigation = useNavigation();
+  const [trigger, setTrigger] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setTrigger(true);
+    }, 150);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,19 +29,16 @@ const SignUpOptions = () => {
         <Header lastSlide={true} />
 
         <Animated.Image
-          entering={FadeInDown.duration(300).easing(Easing.ease)}
-          style={{ flex: 1, width: "90%", maxWidth: 450 }}
+          style={{ flex: 1, width: "90%", maxWidth: 450, transform: [{ translateY: transition(50, 0, 300, trigger) }], opacity: transition(0, 1, 300, trigger) }}
           resizeMode="contain"
           source={require("../assets/image-2.png")}
         />
         <Animated.Text
-          entering={FadeInDown.duration(400).easing(Easing.ease)}
-          style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p }]}>
+          style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p, transform: [{ translateY: transition(50, 0, 500, trigger) }], opacity: transition(0, 1, 500, trigger) }]}>
           {t("Join us and explore new ways of learning.")}
         </Animated.Text>
         <Animated.Text
-          entering={FadeInDown.duration(500).easing(Easing.ease)}
-          style={[styles.content, { paddingHorizontal: Padding.page_p }]}>
+          style={[styles.content, { paddingHorizontal: Padding.page_p, transform: [{ translateY: transition(50, 0, 600, trigger) }], opacity: transition(0, 1, 600, trigger) }]}>
           {t("Whether you are a teacher, a student, or a parent, we have something for you.")}
         </Animated.Text>
         <View style={{ marginTop: Margin.m_lg }} >

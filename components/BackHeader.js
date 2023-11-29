@@ -6,7 +6,7 @@ import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
 import { Next_Icon } from '../assets/icons/Icons';
 import { previousSessionHandler } from '../store/actions/deviceActions';
-export default function BackHeader({ title, onPress, onPressHandler, style }) {
+export default function BackHeader({ title, onPressHandler, style }) {
     const navigation = useNavigation();
 
     const [history, setHistory] = useState([]);
@@ -36,14 +36,14 @@ export default function BackHeader({ title, onPress, onPressHandler, style }) {
         navigation.goBack();
     };
     return (
-        <View style={[globalStyles.parentFlexBox, { marginVertical: Margin.m_sm, width: "100%", justifyContent: (history.length > 1 || onPress) ? 'space-between' : "center" }, style]}>
-            {(history.length > 1 || onPress) &&
-                <TouchableOpacity style={{ padding: 5 }} onPress={onPress ? onPressHandler : handleGoBack}>
+        <View style={[globalStyles.parentFlexBox, { marginVertical: Margin.m_sm, width: "100%", justifyContent: (history.length > 1 || onPressHandler) ? 'space-between' : "center" }, style]}>
+            {(history.length > 1 || onPressHandler) &&
+                <TouchableOpacity style={{ padding: 5 }} onPress={onPressHandler ? onPressHandler : handleGoBack}>
                     <Next_Icon color={Color.black} width={26} height={26} viewBox="0 0 26 26" style={{ transform: [{ scaleX: -1 }] }} />
                 </TouchableOpacity>
             }
             <Text style={globalStyles.title}>{title}</Text>
-            {(history.length > 1 || onPress) && <View style={{ margin: 5, width: 26, height: 26 }} />}
+            {(history.length > 1 || onPressHandler) && <View style={{ margin: 5, width: 26, height: 26 }} />}
         </View>
     )
 }

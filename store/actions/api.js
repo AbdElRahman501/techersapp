@@ -8,6 +8,7 @@ export const ADD_GROUP_URL = `${URL}/api/users/myGroups`
 export const MY_GROUPS_URL = `${URL}/api/users/myGroups/`
 
 export const SUBJECTS_URL = `${URL}/api/subjects/`
+export const SCHOOL_YEARS_URL = `${URL}/api/schoolYears/`
 
 export const SYNCED_DATA_URL = `${URL}/api/users/syncedData`
 //teachers

@@ -26,7 +26,7 @@ export default function TeacherDataScreen({ route }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    const mainSubject = { subject: subject?.en, schoolYears: [schoolYears.value] }
+    const mainSubject = { subject: subject?.en, schoolYears: [schoolYears.en] }
     if (mainSubject) {
       setState({})
       dispatch(teacherRegister({ ...signUpData, mainSubject, verified: true }))

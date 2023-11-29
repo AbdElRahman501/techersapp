@@ -1,4 +1,4 @@
-import { Text, View, TouchableWithoutFeedback, Keyboard, SafeAreaView, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableWithoutFeedback, Keyboard, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import Axios from 'axios';
 import { Color, FontSize, globalStyles } from '../GlobalStyles'
@@ -8,7 +8,6 @@ import MapComponent from '../components/Map';
 import SearchBar from "../components/SearchBar";
 import { LOCATION_URL } from '../store/actions/api';
 import SearchResultList from '../components/SearchResultList';
-import LoadingModal from '../components/LoadingModal';
 import { getAddressFromCoordinates, getLocation } from '../store/actions/deviceActions';
 import PrimaryButton from '../components/PrimaryButton';
 import { useNavigation } from '@react-navigation/core';
@@ -32,8 +31,6 @@ export default function AddressScreen({ route }) {
 
     const handleChange = async (query) => {
         setValue(query)
-        // setAddress(null);
-        setSelectedLocation(null);
         if (query.length > 2) {
             setResultsVisible(true);
             setLoading(true);
@@ -70,15 +67,10 @@ export default function AddressScreen({ route }) {
 
     const gpsHandler = async () => {
         setLocationLoading(true);
-        const timeout = setTimeout(() => {
-            setLocationLoading(false);
-            return
-        }, 12000)
         const myAddress = await getLocation();
         if (myAddress) {
             handleItemPress(myAddress);
         }
-        clearTimeout(timeout);
         setLocationLoading(false);
     }
 
@@ -96,19 +88,21 @@ export default function AddressScreen({ route }) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={t("my address")} />
-                <LoadingModal visible={locationLoading} />
                 <View style={globalStyles.bodyContainer} >
                     <View style={{ width: "100%", flex: 1, position: "absolute", zIndex: 99999, top: 24 }}>
                         <SearchBar value={value} changHandler={handleChange} />
                         {resultsVisible && <SearchResultList results={results} onItemPress={handleItemPress} loading={loading} />}
                     </View>
                     <View style={{ position: "absolute", zIndex: 99999, bottom: 24, gap: 10, width: "100%" }}>
-                        {address?.display_name && <View style={{ width: "100%", borderRadius: 25, backgroundColor: Color.white, padding: 15 }}>
+                        {(address?.display_name || locationLoading) && <View style={{ width: "100%", borderRadius: 25, backgroundColor: Color.white, padding: 15 }}>
                             <CustomText style={[globalStyles.regular]}>{confirmAddress}</CustomText>
                             <DividerWithText />
                             <View style={[{ flexDirection: language === "en" ? "row" : "row-reverse", gap: 10, alignItems: "center" }]}>
                                 <Address_Mark_Svg width={24} height={24} color={Color.red} />
-                                <CustomText style={[globalStyles.contentText, { alignItems: 'center', flex: 1 }]}>{address?.display_name || ""}</CustomText>
+                                {locationLoading
+                                    ? <Text style={{ flex: 1, textAlign: "center", width: "100%" }}> <ActivityIndicator size="small" color={Color.red} /></Text>
+                                    : <CustomText style={[globalStyles.contentText, { alignItems: 'center', flex: 1 }]}>{address?.display_name || ""}</CustomText>
+                                }
                             </View>
                         </View>}
                         <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
@@ -124,7 +118,7 @@ export default function AddressScreen({ route }) {
                         </View>
                     </View>
                     <TouchableWithoutFeedback onPress={() => setResultsVisible(false)}>
-                        <MapComponent selectedLocation={selectedLocation} setSelectedAddress={(data) => { setAddress(data) }} setSelectedLocation={setSelectedLocation} />
+                        <MapComponent setLocationLoading={setLocationLoading} selectedLocation={selectedLocation} setSelectedAddress={(data) => { setAddress(data) }} setSelectedLocation={setSelectedLocation} />
                     </TouchableWithoutFeedback>
                 </View>
             </SafeAreaView>

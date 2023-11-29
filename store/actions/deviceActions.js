@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Axios from 'axios';
 import * as Location from 'expo-location';
 import { USER_SIGNOUT } from "../constants/userConstants";
-import { API_URL, LOCATION_URL, LOCATION_URL_REVERSE } from "./api";
+import { API_URL, LOCATION_URL_REVERSE } from "./api";
 
 export const updateVersion = (newVersion) => async (dispatch) => {
     try {

@@ -7,10 +7,12 @@ import CustomImage from './CustomImage '
 import CustomText from './CustemText'
 import { switchUsers } from '../store/actions/userActions'
 import t from '../actions/changeLanguage'
+import { getTheYear } from '../actions/GlobalFunctions'
 
 export default function UsersModal({ usersVisible, setUsersVisible, users, userInfo }) {
     const [selected, setSelected] = useState(userInfo)
     const { language } = useSelector(state => state.languageState)
+    const { schoolYears } = useSelector(state => state.schoolYearsState)
     const dispatch = useDispatch()
     const [switchTitle, cancel] = [t("switch"), t("cancel")]
 
@@ -34,7 +36,7 @@ export default function UsersModal({ usersVisible, setUsersVisible, users, userI
                             />
                             <View style={{ marginHorizontal: Margin.m_sm }}>
                                 <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{student?.fullName || ""}</CustomText>
-                                <CustomText style={globalStyles.smallText}>{(student?.schoolYear && student?.schoolYear[language]) || ""}</CustomText>
+                                <CustomText style={globalStyles.smallText}>{(getTheYear(schoolYears, student?.schoolYear)[language]) || ""}</CustomText>
                             </View>
                         </TouchableOpacity>
                     ))}

@@ -1,36 +1,36 @@
 import React from 'react'
 import { StyleSheet, Text, View, Platform, Pressable } from 'react-native'
 import { Color, FontFamily, FontSize } from '../GlobalStyles'
-import { useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/core';
 import CustomImage from './CustomImage ';
+import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
+import { getSubject } from '../actions/GlobalFunctions';
 
-const Subject = React.memo(({ item }) => {
-    const { language } = useSelector(state => state.languageState)
+const Subject = React.memo(({ item, index, subjects, language }) => {
     const navigation = useNavigation()
-
+    const subject = getSubject(subjects, item)
     const handelScale = () => {
         if (item.addButton) {
             navigation.navigate("SearchScreen")
         } else {
-            navigation.navigate("SubjectScreen", { item })
+            navigation.navigate("SubjectScreen", { item: subject })
         }
     }
     return (
-        <Pressable style={({ pressed }) => ({ transform: [{ scale: pressed ? 0.8 : 1 }] })} onPress={handelScale} >
-            <View style={[styles.card]}>
+        <Animated.View entering={FadeInDown.duration(400 + (index * 200)).easing(Easing.ease)} >
+            <Pressable style={({ pressed }) => ([styles.card, { transform: [{ scale: pressed ? 0.8 : 1 }] }])} onPress={handelScale}  >
                 <View style={[styles.subject, {
                 }]}>
                     <CustomImage
                         style={{ height: "80%", width: "80%" }}
                         color={Color.darkcyan}
                         resizeMode="contain"
-                        source={item.imageSource}
+                        source={subject?.imageSource || item?.imageSource}
                     />
                 </View>
-                <Text style={styles.title}>{item[language]}</Text>
-            </View>
-        </Pressable>
+                <Text style={styles.title}>{subject?.[language] || item?.[language]}</Text>
+            </Pressable>
+        </Animated.View>
     );
 }, (prevProps, nextProps) => {
     return prevProps.item.id !== nextProps.item.id;

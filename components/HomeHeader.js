@@ -4,22 +4,17 @@ import { Notification_icon_Svg } from '../assets/icons/Icons'
 import CustomText from './CustemText'
 import t from '../actions/changeLanguage'
 import { Color, FontSize, Height, Margin, Padding, fontEm, globalStyles } from '../GlobalStyles'
-import { useSelector } from 'react-redux'
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 import CustomImage from './CustomImage '
 import { getTheYear } from '../actions/GlobalFunctions'
-import { years } from '../data'
 
 
-
-const HomeHeader = ({ user }) => {
+const HomeHeader = ({ user, language, schoolYears }) => {
     const navigation = useNavigation();
     const navigationState = useNavigationState(state => state);
-
-    const { language } = useSelector(state => state.languageState)
+    const schoolYear = getTheYear(schoolYears, user?.schoolYear)
     const [history, setHistory] = useState([]);
-    const schoolYear = getTheYear(years, user?.schoolYear)
     useEffect(() => {
         setHistory(navigationState.routes.map(route => route.name));
     }, [navigationState]);

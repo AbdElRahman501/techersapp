@@ -6,10 +6,12 @@ import { useNavigation } from '@react-navigation/core'
 import { useDispatch, useSelector } from 'react-redux'
 import t from '../actions/changeLanguage'
 import { signIn } from '../store/actions/userActions'
+import { getTheYear } from '../actions/GlobalFunctions'
 
 export default function StudentOption({ student }) {
     const navigation = useNavigation()
     const { language } = useSelector(state => state.languageState)
+    const { schoolYears } = useSelector(state => state.schoolYearsState)
     const [studentParentAccount, studentAccount] = [t("student-parent account"), t("student account")]
 
     const dispatch = useDispatch()
@@ -42,7 +44,7 @@ export default function StudentOption({ student }) {
             />
             <View style={{ marginHorizontal: Margin.m_sm }}>
                 <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{student?.fullName || ""}</CustomText>
-                <CustomText style={globalStyles.smallText}>{(student?.schoolYear && student?.schoolYear[language]) || ""}</CustomText>
+                <CustomText style={globalStyles.smallText}>{(getTheYear(schoolYears, student?.schoolYear)[language]) || ""}</CustomText>
                 <CustomText style={globalStyles.smallText}>{student.parentPhoneNumber ? studentParentAccount : studentAccount}</CustomText>
             </View>
         </TouchableOpacity>

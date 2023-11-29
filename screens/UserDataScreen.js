@@ -30,7 +30,7 @@ export default function UserDataScreen({ route }) {
 
     const handleSubmit = () => {
         const { parentPhoneNumber, birthDay } = signUpData
-        const schoolYear = signUpData?.schoolYear?.value
+        const schoolYear = signUpData?.schoolYear?.en
         const educationType = signUpData?.educationType?.en
         if (submitCheck({ phone: parentPhoneNumber }).isValid && birthDay && educationType && schoolYear) {
             setState({})

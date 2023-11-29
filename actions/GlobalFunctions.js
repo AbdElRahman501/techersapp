@@ -464,6 +464,15 @@ export const removeDuplicatesById = (array) => {
     });
     return uniqueArray;
 }
+export const removeDuplicates = (arr) => {
+    let unique = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (unique.indexOf(arr[i]) === -1) {
+            unique.push(arr[i]);
+        }
+    }
+    return unique;
+}
 export const getColor = (colorArr) => {
     const colors = ["#8fc0a9", "#c8d5b9", "#8BAB98", "#5D9678", "#C2B99F", "#EBCEA0", '#81b29a', '#ccdd99', '#E9C46A', '#99cc99']
     let color = colors[Math.floor(Math.random() * colors.length)]
@@ -509,7 +518,7 @@ export const getTheYear = (years, yearValue) => {
     if (!years?.length || !yearValue) return {
         ar: 'لا يوجد', en: 'No data',
     }
-    return years.find(x => x.value === yearValue)
+    return years.find(x => x.en === yearValue)
 }
 export const getSubject = (subjects, subjectTitle) => {
     if (!subjects?.length || !subjectTitle) return {

@@ -135,5 +135,6 @@
     "previous session title": "استكمال إنشاء الحساب؟",
     "previous session description": "يبدو أنك كنت في منتصف إنشاء حسابك. هل ترغب في متابعة من حيث تركت؟",
     "my address": "عنواني",
-    "pick your address": "حدد عنوانك"
+    "pick your address": "حدد عنوانك",
+    "no results found": "لم يتم العثور على نتائج"
 }

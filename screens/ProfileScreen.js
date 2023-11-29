@@ -13,10 +13,12 @@ import AlertModal from '../components/alertModal';
 import UsersModal from '../components/UsersModal';
 import LoadingModal from '../components/LoadingModal';
 import TapBottomNavigator from '../components/TapBottomNavigator';
+import { getTheYear } from '../actions/GlobalFunctions';
 
 export default function ProfileScreen() {
     const { language } = useSelector(state => state.languageState)
     const { loading, userInfo, error } = useSelector(state => state.userInfo)
+    const { schoolYears } = useSelector(state => state.schoolYearsState)
     const { switchLoading, switchError, loading: loadingUsers, users, error: usersError } = useSelector(state => state.usersState)
     const [visible, setVisible] = useState(false)
     const [usersVisible, setUsersVisible] = useState(false)
@@ -57,7 +59,7 @@ export default function ProfileScreen() {
                             />
                             <View style={{ marginHorizontal: Margin.m_sm, gap: 3 }}>
                                 <CustomText style={[globalStyles.regular, { color: Color.darkcyan }]}>{userInfo?.fullName || ""}</CustomText>
-                                <CustomText style={globalStyles.smallText}>{userInfo?.schoolYear[language] || ""}</CustomText>
+                                <CustomText style={globalStyles.smallText}>{getTheYear(schoolYears, userInfo?.schoolYear)[language] || ""}</CustomText>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => console.log("burger button")}>

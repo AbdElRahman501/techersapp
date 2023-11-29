@@ -1,5 +1,12 @@
 import { Add_Icon } from './assets/icons/Icons';
 
+
+export const addSubjectItem = {
+    id: 10000,
+    addButton: true,
+    en: "Add Subject", ar: "إضافة مادة",
+    imageSource: (props) => <Add_Icon {...props} />
+}
 export const info = [{
     id: 1,
     backgroundImageSource: require('./assets/onboardingBk1.png'),

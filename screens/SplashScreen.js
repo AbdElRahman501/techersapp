@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import { View } from "react-native";
+import { View, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Animated, { useSharedValue, Easing, withTiming } from 'react-native-reanimated';
 import { widthPercentage } from '../GlobalStyles';
 import { serverWakeUp, updateVersion } from '../store/actions/deviceActions';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,24 +11,23 @@ import { syncedData } from '../store/actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getSubjects } from '../store/actions/subjectsActions';
+import transition from '../actions/transition';
 
 const SplashScreen = () => {
-  const size = useSharedValue(widthPercentage(50));
-  const translateY = useSharedValue(0);
   const { userInfo } = useSelector(state => state.userInfo);
+  const [trigger, setTrigger] = React.useState(false);
   const navigation = useNavigation();
 
   const onClose = (pages) => {
     setTimeout(() => {
-      size.value = withTiming(widthPercentage(1500), { duration: 1000, easing: Easing.cubic });
-      translateY.value = withTiming(-1650, { duration: 1000, easing: Easing.cubic });
+      setTrigger(true)
       setTimeout(() => {
         navigation.reset({
           index: 0,
           routes: pages,
         });
-      }, 900)
-    }, 1500)
+      }, 400)
+    }, 2500)
   }
 
   const dispatch = useDispatch();
@@ -86,7 +84,7 @@ const SplashScreen = () => {
       <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
         <Animated.Image
           resizeMode="contain"
-          style={[{ width: size, height: size }]}
+          style={[{ width: transition(widthPercentage(50), widthPercentage(600), 400, trigger), height: transition(widthPercentage(50), widthPercentage(600), 400, trigger) }]}
           source={require("../assets/logowhite.png")} />
       </View>
 
