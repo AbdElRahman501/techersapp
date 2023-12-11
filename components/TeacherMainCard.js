@@ -15,8 +15,8 @@ export default function TeacherMainCard({ likes, item, userID, selectedSubject, 
     let teacherSubjects = removeDuplicatesById(item?.groups?.map(x => {
         return getSubject(subjects, x?.subject)
     }))
-    teacherSubjects = teacherSubjects.length > 0 ? teacherSubjects : item?.subjects?.map(x => {
-        return getSubject(subjects, x)
+    teacherSubjects = teacherSubjects.length > 0 ? teacherSubjects : item?.subjects?.map(subject => {
+        return subject?.en ? subject : getSubject(subjects, subject)
     })
 
     useEffect(() => {

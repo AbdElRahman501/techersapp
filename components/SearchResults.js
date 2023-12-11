@@ -4,15 +4,15 @@ import { useNavigation } from '@react-navigation/core';
 import TeacherMainCard from './TeacherMainCard'
 import PrimaryButton from './PrimaryButton'
 import { Color, FontFamily, FontSize } from '../GlobalStyles';
-import { searchEngin } from '../actions/GlobalFunctions';
+import { getSubject, searchEngin } from '../actions/GlobalFunctions';
 import { useDispatch, useSelector } from 'react-redux'
 import { showMessage } from "../store/actions/showMessageActions";
 
 
 export default function SearchResults({ value }) {
     const navigation = useNavigation()
-    const { loading: teachersLoading, closeTeacher: teachers, error: teachersError } = useSelector(state => state.closeTeachersState);
-
+    const { closeTeacher: teachers } = useSelector(state => state.closeTeachersState);
+    const { subjects } = useSelector(state => state.subjectsState)
     const [SearchResults, setSearchResults] = useState([])
 
     const dispatch = useDispatch();
@@ -21,7 +21,13 @@ export default function SearchResults({ value }) {
     }
 
     useEffect(() => {
-        setSearchResults(searchEngin(teachers, value))
+        const modifiedTeachers = teachers.map((item) => {
+            return {
+                ...item,
+                subjects: item.subjects.map((subject) => getSubject(subjects, subject))
+            }
+        })
+        setSearchResults(searchEngin(modifiedTeachers, value))
     }, [teachers, value])
 
     return (

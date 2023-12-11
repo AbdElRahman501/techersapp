@@ -6,12 +6,13 @@ import CustomText from './CustemText'
 import { Heart_Icon_Fill, Heart_Stroke, Next_Icon } from '../assets/icons/Icons';
 import { useSelector } from 'react-redux'
 import { checkArrayForUserId, getSubjectTitle, getTitle } from '../actions/GlobalFunctions'
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function TeacherItem({ subject, item, isSelected, togglePicker, onlyOne }) {
     const { language } = useSelector(state => state.languageState)
     const [liked, setLiked] = useState({ state: false, number: item.likes.length })
     const id = 18
+    const navigation = useNavigation()
 
     useEffect(() => {
         if (checkArrayForUserId(item.likes, id) && !liked.state) {
@@ -32,10 +33,13 @@ export default function TeacherItem({ subject, item, isSelected, togglePicker, o
                     <CustomText numberOfLines={1} lineBreakMode="tail" style={[styles.title]}>{getTitle(item.gender, item.name)}</CustomText>
                     <CustomText style={[styles.regular]}>{getSubjectTitle(item.gender, subject[language] || item.mainSubject[language])}</CustomText>
                 </View>
-                <CustomImage
-                    style={[styles.image]}
-                    resizeMode="cover"
-                    source={item.imageSource} />
+                <TouchableOpacity onPress={() => navigation.navigate("TeacherScreen", { item })
+                } >
+                    <CustomImage
+                        style={[styles.image]}
+                        resizeMode="cover"
+                        source={item.imageSource} />
+                </TouchableOpacity>
                 <View style={[styles.dropButton]}>
                     {isSelected && onlyOne != 1 &&
                         <TouchableOpacity onPress={togglePicker}>

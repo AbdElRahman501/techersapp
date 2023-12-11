@@ -17,11 +17,7 @@ export default function SlideContainer(props) {
 
     const keyExtractor = useMemo(
         () => (item, index) => {
-            if (item.id) {
-                return item.id;
-            } else {
-                return index
-            }
+            return index
         },
         []
     );

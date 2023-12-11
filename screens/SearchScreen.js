@@ -5,8 +5,11 @@ import BackHeader from "../components/BackHeader";
 import SearchResults from "../components/SearchResults";
 import SearchBar from "../components/SearchBar";
 import FilterButton from "../components/FilterButton";
-const SearchScreen = ({ }) => {
-    const [value, setValue] = useState("");
+import { useSelector } from "react-redux";
+const SearchScreen = ({ route }) => {
+    const subject = route?.params?.subject;
+    const { language } = useSelector(state => state.languageState);
+    const [value, setValue] = useState(subject?.[language] || "");
     const [filter, setFilter] = useState({});
 
     return (

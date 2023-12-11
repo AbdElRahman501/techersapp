@@ -250,12 +250,14 @@ export const getSubjectTitle = (gender, subject) => {
     return '';
 }
 
-export const searchEngin = (array, value) => {
+export const searchEngin = (teachers, value) => {
     if (value) {
-
-        return (array.filter(item => item.name.toLowerCase().includes(value.toLowerCase())))
+        const language = isArabic(value) ? "ar" : "en"
+        const filterByName = (teachers.filter(teacher => teacher.name.toLowerCase().includes(value.toLowerCase())))
+        const filterBySubject = (teachers.filter(teacher => teacher?.subjects?.map(subject => (subject?.[language] || subject)?.toLowerCase()).join(" ").includes(value.toLowerCase())))
+        return removeDuplicatesById([...filterByName, ...filterBySubject])
     } else {
-        return array
+        return teachers
     }
 
 }
@@ -460,7 +462,7 @@ export const getBookedMessage = (group, language) => {
 export const removeDuplicatesById = (array) => {
     if (!array?.length) return []
     const uniqueArray = array.filter((item, index, self) => {
-        return index === self.findIndex(obj => obj?.id === item?.id);
+        return index === self.findIndex(obj => obj?.id ? obj?.id === item?.id : obj?._id === item?._id);
     });
     return uniqueArray;
 }

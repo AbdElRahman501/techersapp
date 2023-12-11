@@ -1,34 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Platform, Pressable } from 'react-native'
-import { Color, FontFamily, FontSize } from '../GlobalStyles'
+import { Color, FontFamily, FontSize, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import CustomImage from './CustomImage ';
 import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
-import { getSubject } from '../actions/GlobalFunctions';
+import { removeDuplicates } from '../actions/GlobalFunctions';
 
-const Subject = React.memo(({ item, index, subjects, language }) => {
+const Subject = React.memo(({ item, index, myGroups, language }) => {
     const navigation = useNavigation()
-    const subject = getSubject(subjects, item)
+    const [isiInMySubject, setIsiInMySubject] = useState(false)
+
+    useEffect(() => {
+        if (!myGroups) return
+        const mySubjectsTitles = removeDuplicates(myGroups.map(x => x.subject))
+        setIsiInMySubject(mySubjectsTitles.includes(item.en))
+    }, [myGroups, item])
+
     const handelScale = () => {
         if (item.addButton) {
             navigation.navigate("SearchScreen")
+        } else if (isiInMySubject) {
+            navigation.navigate("SubjectScreen", { item: item })
         } else {
-            navigation.navigate("SubjectScreen", { item: subject })
+            navigation.navigate("SearchScreen", { subject: item })
         }
     }
     return (
         <Animated.View entering={FadeInDown.duration(400 + (index * 200)).easing(Easing.ease)} >
             <Pressable style={({ pressed }) => ([styles.card, { transform: [{ scale: pressed ? 0.8 : 1 }] }])} onPress={handelScale}  >
-                <View style={[styles.subject, {
-                }]}>
+                <View style={[styles.subject]}>
                     <CustomImage
                         style={{ height: "80%", width: "80%" }}
-                        color={Color.darkcyan}
+                        color={isiInMySubject ? Color.darkcyan : Color.darkgray}
                         resizeMode="contain"
-                        source={subject?.imageSource || item?.imageSource}
+                        source={item?.imageSource || item?.imageSource}
                     />
                 </View>
-                <Text style={styles.title}>{subject?.[language] || item?.[language]}</Text>
+                <Text style={[globalStyles.contentText, { color: isiInMySubject ? Color.darkcyan : Color.darkgray }]}>{item?.[language] || item?.[language]}</Text>
             </Pressable>
         </Animated.View>
     );
@@ -66,7 +74,6 @@ const styles = StyleSheet.create({
     title: {
         fontSize: FontSize.size_md,
         fontFamily: FontFamily.montserratArabic,
-        color: Color.darkcyan
     }
 
 })

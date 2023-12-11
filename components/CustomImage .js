@@ -16,11 +16,11 @@ export default function CustomImage(props) {
             const isSvgLink = props.source?.split('.').pop().toLowerCase() === 'svg';
             if (isSvgLink) {
                 return (<SvgUri
-                    {...props}
                     fill={props.color}
-                    width={props.style.width}
-                    height={props.style.height}
+                    width={props.style?.width}
+                    height={props.style?.height}
                     uri={props.source}
+                    {...props}
                 />)
             } else {
                 return (<Animated.Image

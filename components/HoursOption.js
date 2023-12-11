@@ -37,7 +37,7 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
     const handleChangeDate = () => {
         if (myTeacher) {
             setVisible(false)
-            navigation.push("TeacherScreen", { item: myTeacher, subject })
+            navigation.push("TeacherScreen", { item: myTeacher, subject: subject.en })
         }
     };
     const submitHandler = () => {

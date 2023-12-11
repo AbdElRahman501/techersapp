@@ -29,7 +29,7 @@ export default function SubjectScreen({ route }) {
     const revMonths = months.slice().reverse();
 
     useEffect(() => {
-        if (myGroups?.length > 0, myTeachers?.length > 0) {
+        if (myGroups?.length > 0 && myTeachers?.length > 0 && subjectTeachers?.length === 0) {
             const teachersId = myGroups.filter(x => x.subject === item.en).map(x => x.teacherId)
             const teachers = myTeachers.filter(x => teachersId.includes(x.id))
             setSubjectTeachers(teachers);

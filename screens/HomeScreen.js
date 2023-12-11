@@ -11,10 +11,9 @@ import SlideContainer from '../components/SlideContainer';
 import Subject from '../components/Subject';
 import ContainerTitle from '../components/ContainerTitle';
 import TeacherCard from '../components/TeacherCard';
-import { removeDuplicates } from '../actions/GlobalFunctions';
 import TapBottomNavigator from '../components/TapBottomNavigator';
 import FilterButton from '../components/FilterButton';
-import { addSubjectItem } from '../data.js';
+
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { userInfo } = useSelector(state => state.userInfo);
@@ -25,7 +24,6 @@ export default function HomeScreen() {
   const { subjects } = useSelector(state => state.subjectsState)
   const { schoolYears } = useSelector(state => state.schoolYearsState)
   const [myFavTeachers, setMyFavTeachers] = useState([])
-  const [mySubjects, setMySubjects] = useState([...removeDuplicates(myGroups?.map(x => x.subject)), addSubjectItem])
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacherTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
 
   useEffect(() => {
@@ -37,9 +35,6 @@ export default function HomeScreen() {
     }
   }, [userInfo]);
 
-  useEffect(() => {
-    setMySubjects([...removeDuplicates(myGroups?.map(x => x.subject)), addSubjectItem])
-  }, [myGroups]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
@@ -48,8 +43,6 @@ export default function HomeScreen() {
         showsHorizontalScrollIndicator={false}
       >
         <View style={[globalStyles.body]}>
-          {/* { display: (teachersLoading || myTeachersLoading || myGroupsLoading || loading) ? "none" : "flex" } */}
-          {/* <LoadingModal visible={teachersLoading || myTeachersLoading || myGroupsLoading || loading} /> */}
           <HomeHeader user={userInfo} language={language} schoolYears={schoolYears} />
           {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
           <View style={{ flexDirection: "row", gap: 20, width: "100%" }} >
@@ -57,11 +50,9 @@ export default function HomeScreen() {
             <FilterButton button={true} />
           </View>
           <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-          {mySubjects?.length > 0 &&
-            <SlideContainer data={mySubjects} subjects={subjects} language={language}  >
-              <Subject />
-            </SlideContainer>
-          }
+          <SlideContainer data={subjects} myGroups={myGroups} language={language}  >
+            <Subject />
+          </SlideContainer>
           {myFavTeachers?.length > 0 && <>
             <ContainerTitle title={myFavTeachersTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
             <SlideContainer data={myFavTeachers} subjects={subjects} language={language}  >
