@@ -167,61 +167,119 @@ export const friends = [
     // Add more friend objects as needed
 ];
 
-export const items = [
-
-    {   date: "2023-12-17",
-        type: "exams",
-        description: "امتحان علي الوحده الاولي والثانيه ",
-        score: 79
-    }, {
-        type: "homework",
-        description: "واجب من صفحه 20 الي 25",
-        score: 55
-    }, {
-        type: "payment",
-        description: "تم دفع مصاريف شهر اكتوبر",
-        state: "done"
+export const events = [
+    {
+        "description": "وصف",
+        "id": "2023-12-3",
+        "state": "attend",
+        "type": "attendance"
     },
     {
-        type: "attendance",
-        description: "حضر الساعه العاشرة والنصف",
-        state: "absent"
+        "description": "وصف",
+        "id": "2023-12-3",
+        "type": "homework",
+        "score": 100
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-6",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-6",
+        "type": "homework",
+        "score": 90
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-10",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-10",
+        "type": "homework",
+        "score": 60
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-13",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-13",
+        "type": "homework",
+        "score": 80
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-13",
+        "type": "exams",
+        "score": 60
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-17",
+        "state": "absent",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-20",
+        "state": "late",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-24",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-24",
+        "type": "exams",
+        "score": 80
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-24",
+        "type": "homework",
+        "score": 80
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-27",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-31",
+        "state": "attend",
+        "type": "attendance"
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-31",
+        "type": "exams",
+        "score": 80
+    },
+    {
+        "description": "وصف",
+        "id": "2023-12-31",
+        "type": "homework",
+        "score": 90
+    },
+    {
+        "id": "2023-12-31",
+        "description": "تم دفع مصاريف شهر اكتوبر",
+        "state": "done",
+        "type": "payment"
     }
-]
-export const monthItems = [
-    {
-        type: "attendance",
-        totalNumber: 8,
-        description: "عدد الحضور",
-        state: "attend",
-        score: 90
-    },
-    {
-        type: "absent",
-        totalNumber: 1,
-        description: "عدد الغياب",
-        state: "absent",
-        score: 1
-    },
-    {
-        type: "late",
-        totalNumber: 0,
-        score: 0,
-        state: "late",
-        description: "عدد التاخير",
-    },
-    {
-        type: "exams",
-        description: "نسبة الامتحانات",
-        score: 79
-    }, {
-        type: "homework",
-        description: "نسبة الواجبات",
-        score: 55
-    }, {
-        type: "payment",
-        description: "شهر اكتوبر",
-        state: "done"
-    },
-
 ]

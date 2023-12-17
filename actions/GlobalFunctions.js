@@ -549,3 +549,36 @@ export const getTheEducation = (schoolTypes, educationTypeValue) => {
     }
     return schoolTypes.find(x => x.en === educationTypeValue)
 }
+
+export const typeCalculator = (events, type, state) => {
+    const totalEvents = events.filter(e => (e.type === type))
+    type = type === "attendance" ? state : type
+    const totalNumber = state ? totalEvents.filter(e => e.state === state).length : undefined
+    let totalScore = !state && totalEvents.reduce((total, event) => total + event.score, 0)
+    const score = state ? Math.floor((totalNumber / totalEvents.length) * 100) : Math.floor((totalScore / totalEvents.length))
+    if (type === "payment") return { type, state }
+    else return { type, totalNumber, state, score }
+}
+
+export const sortByDate = (arr, key) => {
+    return arr.sort((a, b) => {
+        const dateA = new Date(a[key]);
+        const dateB = new Date(b[key]);
+        return dateA - dateB;
+    });
+}
+export const sortByName = (arr, key) => {
+    arr.sort((a, b) => {
+        const nameA = a[key].toUpperCase();
+        const nameB = b[key].toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
+
+    return arr;
+}

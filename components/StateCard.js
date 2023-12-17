@@ -7,8 +7,8 @@ import CustomText from './CustemText';
 import ScoreBar from './ScoreBar';
 import { AntDesign, FontAwesome5, Entypo } from '@expo/vector-icons';
 import t from '../actions/changeLanguage';
-
-export default function StateCard({ item }) {
+import Animated, { FadeInDown } from 'react-native-reanimated';
+export default function StateCard({ item, index }) {
     const { language } = useSelector(state => state.languageState)
 
     const Svg_icon = (props) => {
@@ -27,7 +27,7 @@ export default function StateCard({ item }) {
     }
     const color = item.score >= 0 ? getScoreColor(item.score) : getStateColor(item.state)
     return (
-        <View style={[globalStyles.shadowBox, styles.card, { flexDirection: language === "ar" ? "row-reverse" : "row" }]} >
+        <Animated.View entering={FadeInDown.duration(400 + (index * 200))} style={[globalStyles.shadowBox, styles.card, { flexDirection: language === "ar" ? "row-reverse" : "row" }]} >
             <View style={[styles.icon, { backgroundColor: color }]}>
                 <Svg_icon type={item.type} size={Height.hi_c - 30} color={Color.white} />
             </View>
@@ -38,7 +38,7 @@ export default function StateCard({ item }) {
             <View >
                 <ScoreBar width={Height.hi_c - 10} strokeWidth={5} score={item.score} state={item.state} />
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: Height.hi_c,
         // marginHorizontal: 20,
-        borderRadius: Height.hi_c / 2,
+        borderRadius: 16,
         backgroundColor: Color.white,
         padding: 5,
-        marginBottom: 10,
+        marginBottom: 5,
         gap: 10,
-        // borderWidth: 1,
-        // borderColor: Color.lightGray,
+        borderWidth: 1,
+        borderColor: Color.lightGray,
     },
     icon: {
         width: Height.hi_c - 10,

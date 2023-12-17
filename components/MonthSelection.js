@@ -61,16 +61,9 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
     }, [selectedMonth])
 
 
-    useEffect(() => {
-        flatListRef.current.scrollToIndex({
-            index: scrolledIndex,
-            animated: false,
-        });
-    }, []);
-
     const getItemLayout = (data, index) => ({
-        length: (widthPercentage(100) - 200), // Replace with the actual height of each month item
-        offset: (widthPercentage(100) - 200) * index,
+        length: (200), // Replace with the actual height of each month item
+        offset: (200) * index,
         index,
     });
 

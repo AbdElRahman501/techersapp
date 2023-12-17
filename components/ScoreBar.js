@@ -6,10 +6,11 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function ScoreBar({ width, strokeWidth, totalNumber, score, state, ...props }) {
     const color = state ? getStateColor(state) : getScoreColor(score)
+    const isScore = score >= 0
     width = width || 50
     strokeWidth = strokeWidth || 6
     const strokeDasharray = 2 * Math.PI * ((width / 2) - 5);
-    const strokeDashoffset = score >= 0 && strokeDasharray * ((100 - score) / 100)
+    const strokeDashoffset = isScore && strokeDasharray * ((100 - score) / 100)
 
     return (
         <View style={{ position: "relative" }}>
@@ -27,7 +28,7 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
                     stroke={strokeDashoffset ? "#e0e0e0" : color}
                     strokeWidth={strokeWidth}
                 />
-                {strokeDashoffset &&
+                {isScore &&
                     <Circle
                         cx={width / 2}
                         cy={width / 2}
@@ -42,7 +43,7 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
 
                 }
             </Svg>
-            {strokeDashoffset ?
+            {isScore ?
                 <Text style={[globalStyles.smallText, styles.inText,
                 {
                     fontSize: totalNumber ? (width / 2) : ((width / 3) - 2),

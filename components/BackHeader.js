@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, View, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Height, Margin, globalStyles } from '../GlobalStyles'
+import { Height, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import { handleBackPress } from '../actions/navigationActions';
 import { useNavigationState } from '@react-navigation/native';
@@ -37,7 +37,7 @@ export default function BackHeader({ title, onPressHandler, style }) {
         navigation.goBack();
     };
     return (
-        <View style={[globalStyles.parentFlexBox, { height: Height.hi_s, marginVertical: Margin.m_sm, width: "100%", justifyContent: (history.length > 1 || onPressHandler) ? 'space-between' : "center" }, style]}>
+        <View style={[globalStyles.parentFlexBox, { height: Height.hi_s, marginVertical: 5, width: "100%", justifyContent: (history.length > 1 || onPressHandler) ? 'space-between' : "center" }, style]}>
             {(history.length > 1 || onPressHandler) &&
                 <TouchableOpacity style={{ paddingHorizontal: 10 }} onPress={onPressHandler ? onPressHandler : handleGoBack}>
                     <AntDesign name="arrowleft" size={24} color="black" />
