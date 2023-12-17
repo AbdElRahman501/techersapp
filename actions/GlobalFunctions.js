@@ -379,15 +379,8 @@ export const transformTime = (time, language) => {
     const [hour, minute] = typeof time === 'string' ? time.split(':') : [time, "00"];
     let convertedHour = parseInt(hour);
     let period = language === 'ar' ? 'ص' : 'AM';
-
-    if (convertedHour >= 12) {
-        period = language === 'ar' ? 'م' : 'PM';
-    }
-
-    if (convertedHour > 12) {
-        convertedHour -= 12;
-    }
-
+    if (convertedHour >= 12) { period = language === 'ar' ? 'م' : 'PM'; }
+    if (convertedHour > 12) { convertedHour -= 12; }
     return `${convertedHour}:${minute} ${period}`;
 }
 export const calculateEndTime = (startTime, duration) => {
@@ -435,6 +428,27 @@ export const areGroupsOverLapped = (myGroups, myGroup) => {
     return { overLapped, overlappedTime };
 }
 
+export const getDay = (day, language) => {
+    if (language === "en") {
+        return capitalizeFirstLetter(day)
+    } else {
+        return days.find(x => x.fullName === day)?.day?.[language];
+    }
+}
+
+export const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const convertMinutesToHours = (duration, language) => {
+    const hours = (duration / 60).toFixed(2);
+
+    if (language === "ar") {
+        return `${hours} ساعة`;
+    } else {
+        return `${hours} hr`;
+    }
+}
 export const getBookedMessage = (group, language) => {
     if (!group || !language) {
         return "";

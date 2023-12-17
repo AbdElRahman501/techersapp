@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     height: Height.hi_input,
     backgroundColor: Color.input_fill,
     borderRadius: Border.br_6xl,
-    marginBottom: 24,
+    marginBottom: 10,
     shadowOffset: {
       width: 0,
       height: 2,

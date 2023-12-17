@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 export default function SlideContainer(props) {
-    const { scrollAnimation, data, children } = props
+    const { scrollAnimation, data, children, FlatListStyles } = props
     const { language } = useSelector(state => state.languageState)
     const flatListRef = useRef(null);
 
@@ -55,6 +55,7 @@ export default function SlideContainer(props) {
                     data={data}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
+                    contentContainerStyle={FlatListStyles}
                     horizontal
                     pagingEnabled
                     inverted={language === 'ar'}

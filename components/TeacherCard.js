@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 10,
         borderColor: Color.lightGray,
+        marginBottom: 10,
         padding: 10,
         borderWidth: 1,
         borderRadius: Border.br_6xl + 10,

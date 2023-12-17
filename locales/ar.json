@@ -57,6 +57,7 @@
     "verify": "تحقق",
     "sec": "({time}) ثانية",
     "didn't-receive": "لم يتم استلام رمز التحقق ؟",
+    "done": "تم",
     "resend": "اعادة ارسال",
     "use-email": "استخدم البريد الاكتروني",
     "password-input-confirm": "تاكيد كلمة المرور",
@@ -76,6 +77,7 @@
     "teacher-content": "مدرس  {subject} في {area}",
     "search": "بحث",
     "attendance": "الحضور",
+    "attend": "حضر",
     "homework": "الواجبات",
     "payment": "المدفوعات",
     "exams": "الامتحانات",
@@ -136,5 +138,7 @@
     "previous session description": "يبدو أنك كنت في منتصف إنشاء حسابك. هل ترغب في متابعة من حيث تركت؟",
     "my address": "عنواني",
     "pick your address": "حدد عنوانك",
-    "no results found": "لم يتم العثور على نتائج"
+    "no results found": "لم يتم العثور على نتائج",
+    "duration": "المدة",
+    "results of the month": "نتائج شهر "
 }

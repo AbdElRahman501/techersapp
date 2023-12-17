@@ -11,7 +11,7 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
 
     const renderItem = useCallback(
         ({ item }) => {
-            return <View style={{ width: widthPercentage(100) - 200, height: "100%" }}>
+            return <View style={{ width: 200, height: "100%" }}>
                 <Text style={[globalStyles.title, {
                     color: currentMonth.id === item.id ? Color.darkcyan : Color.black
                 }]}>{item[language]}</Text>
@@ -75,11 +75,11 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
     });
 
     return (
-        <View style={[styles.sliderContainer, { marginTop: Margin.m_sm, flexDirection: language === 'ar' ? 'row-reverse' : 'row' }]}>
-            <TouchableOpacity style={[styles.button, { marginHorizontal: 25 }]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
+        <View style={[styles.sliderContainer, { flexDirection: language === 'ar' ? 'row-reverse' : 'row' }]}>
+            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
                 <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? 1 : -1 }] }} />
             </TouchableOpacity>
-            <View style={{ flex: 1 }}>
+            <View style={{ width: 200 }}>
                 <FlatList
                     ref={flatListRef}
                     data={months}
@@ -97,7 +97,7 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
 
                 />
             </View>
-            <TouchableOpacity style={[styles.button, { marginHorizontal: 25 }]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
+            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
                 <Next_Icon width={24} height={24} color={scrolledIndex > 0 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? -1 : 1 }] }} />
             </TouchableOpacity>
         </View>
@@ -110,6 +110,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         overflow: 'hidden',
+        marginTop: Margin.m_sm,
+        width: "100%",
+        justifyContent: "space-between",
     },
     button: {
         width: 50,

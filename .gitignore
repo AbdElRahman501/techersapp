@@ -69,3 +69,4 @@ profile
 .vscode/
 *.code-workspace
 archive.js
+%ProgramData%/Microsoft/Windows/UUS/State/_active.uusver

@@ -1,6 +1,5 @@
 import { Add_Icon } from './assets/icons/Icons';
 
-
 export const addSubjectItem = {
     id: 10000,
     addButton: true,
@@ -44,22 +43,6 @@ export const info = [{
         en: "Teachers can add homework, exam grades, track student attendance, grades, and payments."
     }
 }];
-export const subjects = [
-    { id: 1, ar: "فيزياء", en: "Physics", imageSource: require('./assets/subjects/physics.png') },
-    { id: 2, ar: "رياضايات", en: "Math", imageSource: require('./assets/subjects/math.png') },
-    { id: 3, ar: "انجليزي", en: "English", imageSource: require('./assets/subjects/english.png') },
-    { id: 4, ar: "فن", en: "art", imageSource: require('./assets/subjects/english.png') },
-    { id: 5, ar: "موسيقي", en: "music", imageSource: require('./assets/subjects/english.png') },
-    { id: 6, ar: "كيمياء", en: "chemistry", imageSource: require('./assets/subjects/physics.png') },
-    // {
-    //     addButton: true,
-    //     en: "Add Subject", ar: "إضافة مادة",
-    //     svg: (props) => {
-    //         return <Add_Icon height="80%" width="80%" viewBox="0 0 24 25" {...props} />
-    //     }
-    // }
-
-]
 
 export const years = [
     { id: 1, value: "1-sec", en: "First grade secondary", ar: "الصف الاول الثانوي" },
@@ -183,3 +166,62 @@ export const friends = [
     },
     // Add more friend objects as needed
 ];
+
+export const items = [
+
+    {   date: "2023-12-17",
+        type: "exams",
+        description: "امتحان علي الوحده الاولي والثانيه ",
+        score: 79
+    }, {
+        type: "homework",
+        description: "واجب من صفحه 20 الي 25",
+        score: 55
+    }, {
+        type: "payment",
+        description: "تم دفع مصاريف شهر اكتوبر",
+        state: "done"
+    },
+    {
+        type: "attendance",
+        description: "حضر الساعه العاشرة والنصف",
+        state: "absent"
+    }
+]
+export const monthItems = [
+    {
+        type: "attendance",
+        totalNumber: 8,
+        description: "عدد الحضور",
+        state: "attend",
+        score: 90
+    },
+    {
+        type: "absent",
+        totalNumber: 1,
+        description: "عدد الغياب",
+        state: "absent",
+        score: 1
+    },
+    {
+        type: "late",
+        totalNumber: 0,
+        score: 0,
+        state: "late",
+        description: "عدد التاخير",
+    },
+    {
+        type: "exams",
+        description: "نسبة الامتحانات",
+        score: 79
+    }, {
+        type: "homework",
+        description: "نسبة الواجبات",
+        score: 55
+    }, {
+        type: "payment",
+        description: "شهر اكتوبر",
+        state: "done"
+    },
+
+]

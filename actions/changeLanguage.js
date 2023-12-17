@@ -11,7 +11,7 @@ const t = (key, params = {}) => {
     const translation = translations[language][key];
     // console.log("🚀 ~ file: cahngeLanguage.js:13 ~ t ~ translation:", translation)
     if (!translation) {
-        console.warn(`Translation for key '${key}' in language '${language}' not found.`);
+        console.log(`Translation for key '${key}' in language '${language}' not found.`);
         return key;
     }
 

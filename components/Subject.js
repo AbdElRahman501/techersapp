@@ -30,8 +30,8 @@ const Subject = React.memo(({ item, index, myGroups, language }) => {
             <Pressable style={({ pressed }) => ([styles.card, { transform: [{ scale: pressed ? 0.8 : 1 }] }])} onPress={handelScale}  >
                 <View style={[styles.subject]}>
                     <CustomImage
-                        style={{ height: "80%", width: "80%" }}
-                        color={isiInMySubject ? Color.darkcyan : Color.darkgray}
+                        style={{ height: "80%", width: "80%", opacity: isiInMySubject ? 1 : 0.5 }}
+                        color={isiInMySubject ? Color.darkcyan : Color.black}
                         resizeMode="contain"
                         source={item?.imageSource || item?.imageSource}
                     />
@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 16,
         padding: 5,
-        marginBottom: 10,
+        marginBottom: 5,
         backgroundColor: Color.white,
         ...Platform.select({
             ios: {
-                shadowColor: Color.lightGray,
+                shadowColor: Color.black,
                 shadowOffset: { width: 0, height: 0 },
                 shadowOpacity: 1,
                 shadowRadius: 7,
@@ -69,11 +69,8 @@ const styles = StyleSheet.create({
     },
     card: {
         alignItems: 'center',
-        margin: 10
+        margin: 5
     },
-    title: {
-        fontSize: FontSize.size_md,
-        fontFamily: FontFamily.montserratArabic,
-    }
+
 
 })

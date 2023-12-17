@@ -69,7 +69,7 @@ export default function AdsSlider({ data }) {
         return [...arr, firstElement];
     }
     return (
-        <GestureHandlerRootView style={{ flex: 1, marginVertical: 24, backgroundColor: Color.cyanBackGround }}>
+        <GestureHandlerRootView style={{ flex: 1, marginVertical: 10, backgroundColor: Color.cyanBackGround }}>
             <View style={styles.container}>
                 <TouchableOpacity style={styles.button} onPress={scrollToPrev}>
                     <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />

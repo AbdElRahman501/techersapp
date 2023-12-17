@@ -78,6 +78,7 @@ export const Height = {
   hi_input: 46,
   hi_md: 56,
   br_lg: 64,
+  hi_c: 60,
   br_xl: 71,
   logo_lg: 110,
   nav_tap: 64,
@@ -95,7 +96,29 @@ export const widthPercentage = (parent) => {
 export const fontEm = (em) => {
   return (widthPercentage(4) * em)
 };
-
+export const getScoreColor = (score) => {
+  switch (true) {
+    case score >= 80:
+      return Color.darkcyan;
+    case score >= 70:
+      return Color.yellow;
+    case score >= 60:
+      return "orange";
+    default:
+      return Color.red;
+  }
+}
+export const getStateColor = (state) => {
+  if (state === "attend" || state === "done") {
+    return Color.darkcyan;
+  } else if (state === "late") {
+    return Color.yellow;
+  } else if (state === "absent") {
+    return Color.red;
+  } else {
+    return Color.red;
+  }
+}
 export const globalStyles = StyleSheet.create({
   body: {
     flex: 1,
@@ -133,7 +156,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   shadowBox: {
-    shadowColor: Color.darkgray,
+    shadowColor: Color.gray_200,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -146,17 +169,17 @@ export const globalStyles = StyleSheet.create({
     textAlign: 'center'
   },
   regular: {
-    fontSize: FontSize.size_base,
+    fontSize: FontSize.size_md,
     fontFamily: FontFamily.montserratArabic,
     color: Color.black
   },
   contentText: {
-    fontSize: FontSize.size_md,
+    fontSize: FontSize.size_sm,
     fontFamily: FontFamily.montserratArabic,
     color: Color.gray_200
   },
   smallText: {
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.size_smi,
     fontFamily: FontFamily.montserratArabic,
     color: Color.gray_200
   },

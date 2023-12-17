@@ -35,7 +35,7 @@ export default function SearchResults({ value }) {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
-            <View style={styles.container}>
+            <View style={[styles.container, { gap: 10 }]}>
                 {SearchResults.length === 0 ? (
                     <View>
                         <Text style={styles.title}>Cant find Your Teacher : help us to find him for you</Text>
@@ -46,15 +46,7 @@ export default function SearchResults({ value }) {
                     </View>
                 ) : (
                     SearchResults.map((item, index) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={styles.card}
-                            onPress={() => {
-                                navigation.navigate("TeacherScreen", { item })
-                            }}
-                        >
-                            <TeacherMainCard item={item} index={index} />
-                        </TouchableOpacity>
+                        <TeacherMainCard key={index} item={item} index={index} pressHandler={() => navigation.navigate("TeacherScreen", { item })} />
                     ))
                 )}
             </View>
