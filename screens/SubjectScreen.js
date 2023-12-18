@@ -44,7 +44,7 @@ export default function SubjectScreen({ route }) {
             }
         }
     }, [selectedTeacher, navigationState])
-  
+
     const handlePress = (item) => {
         setSelectedDay("")
         setSelectedState(pv => item.type === pv.type ? "" : item)
@@ -66,12 +66,12 @@ export default function SubjectScreen({ route }) {
                     <Text style={[globalStyles.title, { color: Color.darkcyan, marginHorizontal: 5 }]}>{resultsOf + selectedMonth[language]}</Text>
                 </DividerWithText>
                 <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 10, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "space-between" }}>
-                    <MonthStateCard item={typeCalculator(events, "attendance", "attend")} handlePress={handlePress} selectedState={selectedState} />
-                    <MonthStateCard item={typeCalculator(events, "attendance", "absent")} handlePress={handlePress} selectedState={selectedState} />
-                    <MonthStateCard item={typeCalculator(events, "attendance", "late")} handlePress={handlePress} selectedState={selectedState} />
-                    <MonthStateCard item={typeCalculator(events, "exams")} handlePress={handlePress} selectedState={selectedState} />
-                    <MonthStateCard item={typeCalculator(events, "homework")} handlePress={handlePress} selectedState={selectedState} />
-                    <MonthStateCard item={typeCalculator(events, "payment", "done")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={0} item={typeCalculator(events, "attendance", "attend")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={1} item={typeCalculator(events, "attendance", "absent")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={2} item={typeCalculator(events, "attendance", "late")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={3} item={typeCalculator(events, "exams")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={4} item={typeCalculator(events, "homework")} handlePress={handlePress} selectedState={selectedState} />
+                    <MonthStateCard index={5} item={typeCalculator(events, "payment", "done")} handlePress={handlePress} selectedState={selectedState} />
                 </View>
                 <ScrollView style={{ flex: 1 }}
                     nestedScrollEnabled={true}
@@ -85,7 +85,7 @@ export default function SubjectScreen({ route }) {
                         return <View key={i} >
                             {filteredEvents.length > 0 && <Text style={[globalStyles.contentText, { marginTop: 10 }]}> {item.id} </Text>}
                             {sortByName(filteredEvents, "type").map((event, index) =>
-                                <StateCard item={event} key={index} />
+                                <StateCard item={event} key={index} index={index} />
                             )}
                         </View>
                     }

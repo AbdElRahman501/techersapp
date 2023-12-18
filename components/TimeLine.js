@@ -11,7 +11,7 @@ import t from '../actions/changeLanguage';
 export default function TimeLine({ today, eventsDuration, events, selectedDay }) {
     const { language } = useSelector(state => state.languageState)
     const scrollViewRef = useRef(null);
-    const { dayStart, dayEnd } = { dayStart: 6, dayEnd: 20 }
+    const [dayStart, dayEnd] = [0, 24]
     const hours = Array.from({ length: dayEnd - dayStart }, (_, i) => i + dayStart);
     let hourState = new Date().getHours()
     hourState = (hourState) + ((new Date().getMinutes() / 60))

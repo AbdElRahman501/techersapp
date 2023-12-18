@@ -17,10 +17,15 @@ export default function SlideContainer(props) {
 
     const keyExtractor = useMemo(
         () => (item, index) => {
-            return index
+            if (item.id) {
+                return item.id;
+            } else {
+                return index
+            }
         },
         []
     );
+
     const scrollToNext = (offset) => {
         if (flatListRef?.current) {
             flatListRef.current.scrollToOffset({

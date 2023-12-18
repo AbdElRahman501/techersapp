@@ -3,9 +3,9 @@ import { Text, StyleSheet, View, Pressable, Platform } from 'react-native'
 import { Color, globalStyles } from '../GlobalStyles'
 import t from '../actions/changeLanguage';
 import ScoreBar from './ScoreBar';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-export default function MonthStateCard({ item, handlePress, selectedState }) {
-    const isSelected = selectedState.type ? selectedState.type === item.type : undefined
+import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+export default function MonthStateCard({ item, handlePress, selectedState, index }) {
+    const isSelected = selectedState?.type ? selectedState.type === item.type : undefined
     const scale = useSharedValue(1);
     const opacity = useSharedValue(1);
 
@@ -22,16 +22,16 @@ export default function MonthStateCard({ item, handlePress, selectedState }) {
     }, [isSelected])
 
     return (
-        <Pressable onPress={() => handlePress(item)}>
-            <Animated.View style={scaleAnimatedStyles}  >
+        <Animated.View style={scaleAnimatedStyles} entering={index >= 0 && FadeInDown.duration(400 + (index * 200))}  >
+            <Pressable disabled={!handlePress} onPress={() => handlePress(item)}>
                 <Animated.View style={[styles.subject, opacityAnimatedStyles]}>
                     <View>
                         <ScoreBar width={45} strokeWidth={5} score={item.score} totalNumber={item.totalNumber} state={item.state} />
                     </View>
                 </Animated.View>
                 <Text style={[globalStyles.contentText, { color: isSelected ? Color.darkcyan : Color.darkgray, textAlign: "center" }]}>{t(item.type)}</Text>
-            </Animated.View>
-        </Pressable >
+            </Pressable >
+        </Animated.View>
     )
 }
 

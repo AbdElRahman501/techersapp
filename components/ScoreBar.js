@@ -49,7 +49,7 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
                     fontSize: totalNumber ? (width / 2) : ((width / 3) - 2),
                     color: color
                 }]}>
-                    {totalNumber ? totalNumber : score}
+                    {totalNumber ? totalNumber : Math.round(score)}
                     {!totalNumber && <Text style={[globalStyles.smallText, { color: color }]}>%</Text>}
                 </Text>
                 :

@@ -1,15 +1,14 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import ScoreItem from './ScoreItem'
-import t from '../actions/changeLanguage'
+import MonthStateCard from './MonthStateCard'
 
 export default function Analytics() {
   return (
     <View style={styles.container}>
-      <ScoreItem title={t("attendance")} score={80} />
-      <ScoreItem title={t("homework")} score={79} />
-      <ScoreItem title={t("exams")} score={90} />
-      <ScoreItem title={t("total")} score={80} />
+      <MonthStateCard item={{ type: "attendance", score: 90 }} />
+      <MonthStateCard item={{ type: "exams", score: 60 }} />
+      <MonthStateCard item={{ type: "homework", score: 70 }} />
+      <MonthStateCard item={{ type: "total", score: (90 + 60 + 70) / 3 }} />
     </View>
   )
 }
@@ -19,6 +18,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: "space-evenly",
-    alignItems: "baseline",
   },
 })

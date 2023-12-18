@@ -157,6 +157,42 @@ export const inputChecker = (inputValue, inputType) => {
     return { success: true };
 };
 
+export const getHours = (day, subject, group, userInfo, teacher) => {
+    if (!subject || !day || !teacher || !userInfo) return []
+    let availableGroups = teacher.groups.filter(x => x.subject === subject && x.schoolYear === userInfo.schoolYear)
+    availableGroups = availableGroups?.filter(x => x.days.map(y => y.day).includes(day)) || []
+    let avHours = availableGroups.map(x => x.days.map(y => ({ ...y, groupId: x.id }))).flat()
+    let primaryTimes = avHours.filter(x => x.day === day)
+    let secondaryTime = avHours.find(x => x.groupId === group?.id && x.day !== day)
+    secondaryTime = secondaryTime && { ...avHours.find(x => x.groupId === group?.id && x.day !== day), secondary: true }
+    let isDuplicate = primaryTimes?.map(x => x.timeIn24Format).includes(secondaryTime?.timeIn24Format)
+    if (secondaryTime && !isDuplicate) {
+        return [...avHours.filter(x => x.day === day), secondaryTime]
+    } else {
+        return avHours.filter(x => x.day === day)
+    }
+}
+
+export const getButtonText = (item, myGroups, selectedGroup, selectedSubject, selectedDay, hours, selectedHour) => {
+    if (!selectedDay) {
+        return ({ text: "choose day" })
+    } else if (hours.length > 0 && selectedHour === "00:00") {
+        return ({ text: "choose hour" })
+    } else if (hours.length === 0) {
+        return ({ text: "no group available", notAvailable: true })
+    } else if (selectedGroup) {
+        const myBookedGroup = myGroups?.find(x => x.teacherId === item.id && x?.subject === selectedGroup.subject)
+        const isTheSameSubject = myBookedGroup?.subject === selectedSubject
+        if (myBookedGroup?.id === selectedGroup.id) {
+            return ({ text: "leave", booked: true })
+        } else if (isTheSameSubject) {
+            return ({ text: "change date" })
+        } else {
+            return ({ text: "book your seat" })
+        }
+    }
+}
+
 export const getErrorMessage = (error) => {
     switch (error.message) {
         case "this email already exists":

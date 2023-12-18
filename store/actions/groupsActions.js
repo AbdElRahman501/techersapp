@@ -18,7 +18,7 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
 
         const existGroup = myGroups.find(x => x.teacherId === newGroup.teacherId && x.subject === newGroup.subject)
         if (existGroup) {
-            myGroups = myGroups.filter(x => x.id !== existGroup.id)
+            myGroups = myGroups.filter(x => !(x.id === existGroup.id && x.teacherId === existGroup.teacherId))
         }
         myGroups = [...myGroups, newGroup];
         const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
