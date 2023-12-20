@@ -70,3 +70,11 @@ profile
 *.code-workspace
 archive.js
 %ProgramData%/Microsoft/Windows/UUS/State/_active.uusver
+.env
+dist/assetmap.json
+dist/debug.html
+dist/metadata.json
+dist/assets/4f9e42a4f3060bddd30f6e9369fe6089
+dist/assets/7f5bf82766acc1cb1bb08ffa40a058ef
+dist/assets/57a6325825b1a5a43c0696edb45446f1
+dist/assets/a69cfa432039c43496956ea935416bfc
