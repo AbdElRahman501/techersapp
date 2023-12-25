@@ -5,7 +5,7 @@ export const userReducer = (state = {}, action) => {
         case USER_REQUEST:
             return { loading: true };
         case USER_UPDATE_REQUEST:
-            return { loading: true, userInfo: action.payload };
+            return { ...state, error: false, loading: true };
         case USER_SUCCESS:
             return { loading: false, userInfo: action.payload };
         case USER_FAIL:

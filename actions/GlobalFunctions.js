@@ -1,3 +1,4 @@
+import { Alert, Linking, Platform } from "react-native";
 import { days } from "../data";
 
 export const submitCheck = (inputs) => {
@@ -618,3 +619,29 @@ export const sortByName = (arr, key) => {
 
     return arr;
 }
+
+export const openMaps = (lat, lng, label) => {
+    const scheme = Platform.select({ ios: 'maps://0,0?q=', android: 'geo:0,0?q=' });
+    const latLng = `${lat},${lng}`;
+    const url = Platform.select({
+        ios: `${scheme}${label}@${latLng}`,
+        android: `${scheme}${latLng}(${label})`
+    });
+    // const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+    Alert.alert(
+        'Open Map',
+        'Are you sure you want to open the map.',
+        [
+            {
+                text: 'OK',
+                onPress: () => Linking.openURL(url),
+            },
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+        ],
+        { cancelable: true }
+    );
+    ;
+};

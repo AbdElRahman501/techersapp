@@ -12,7 +12,7 @@ export default function SlideContainer(props) {
         ({ item, index }) => {
             return React.cloneElement(children, { item, index, ...props })
         },
-        [props]
+        [props, data]
     );
 
     const keyExtractor = useMemo(

@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Platform, Pressable } from 'react-native'
-import { Color, FontFamily, FontSize, globalStyles } from '../GlobalStyles'
+import React from 'react'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { Color, globalStyles } from '../GlobalStyles'
 import { useNavigation } from '@react-navigation/core';
 import CustomImage from './CustomImage ';
 import Animated, { Easing, FadeInDown } from 'react-native-reanimated';
-import { removeDuplicates } from '../actions/GlobalFunctions';
 
-const Subject = React.memo(({ item, index, myGroups, language }) => {
+const Subject = React.memo(({ item, index, language }) => {
     const navigation = useNavigation()
-    const [isiInMySubject, setIsiInMySubject] = useState(false)
-
-    useEffect(() => {
-        if (!myGroups) return
-        const mySubjectsTitles = removeDuplicates(myGroups.map(x => x.subject))
-        setIsiInMySubject(mySubjectsTitles.includes(item.en))
-    }, [myGroups, item])
 
     const handelScale = () => {
         if (item.addButton) {
             navigation.navigate("SearchScreen")
-        } else if (isiInMySubject) {
+        } else if (item.isiInMySubject) {
             navigation.navigate("SubjectScreen", { item: item })
         } else {
             navigation.navigate("SearchScreen", { subject: item })
@@ -28,15 +20,15 @@ const Subject = React.memo(({ item, index, myGroups, language }) => {
     return (
         <Animated.View entering={FadeInDown.duration(400 + (index * 200)).easing(Easing.ease)} >
             <Pressable style={({ pressed }) => ([styles.card, { transform: [{ scale: pressed ? 0.8 : 1 }] }])} onPress={handelScale}  >
-                <View style={[styles.subject]}>
+                <View style={[globalStyles.subjectCard, globalStyles.shadowBox, { marginBottom: 5 }]}>
                     <CustomImage
-                        style={{ height: "80%", width: "80%", opacity: isiInMySubject ? 1 : 0.5 }}
-                        color={isiInMySubject ? Color.darkcyan : Color.black}
+                        style={{ height: "80%", width: "80%", opacity: item.isiInMySubject ? 1 : 0.5 }}
+                        color={Color.darkcyan}
                         resizeMode="contain"
-                        source={item?.imageSource || item?.imageSource}
+                        source={item?.imageSource}
                     />
                 </View>
-                <Text style={[globalStyles.contentText, { color: isiInMySubject ? Color.darkcyan : Color.darkgray }]}>{item?.[language] || item?.[language]}</Text>
+                <Text style={[globalStyles.contentText, { color: item.isiInMySubject ? Color.darkcyan : Color.darkgray }]}>{item?.[language] || item?.[language]}</Text>
             </Pressable>
         </Animated.View>
     );
@@ -46,27 +38,7 @@ const Subject = React.memo(({ item, index, myGroups, language }) => {
 
 export default Subject;
 const styles = StyleSheet.create({
-    subject: {
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 16,
-        padding: 5,
-        marginBottom: 5,
-        backgroundColor: Color.white,
-        ...Platform.select({
-            ios: {
-                shadowColor: Color.black,
-                shadowOffset: { width: 0, height: 0 },
-                shadowOpacity: 1,
-                shadowRadius: 7,
-            },
-            android: {
-                elevation: 6,
-            },
-        }),
-    },
+
     card: {
         alignItems: 'center',
         margin: 5

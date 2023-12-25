@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Border, Color, fontEm, getStateColor, globalStyles, widthPercentage } from '../GlobalStyles';
 import MonthSelection from '../components/MonthSelection';
@@ -37,16 +37,21 @@ export default function Calender({ selectedDay, setSelectedDay, selectedMonth, s
                                 const isToday = today?.id === day?.id
                                 const focus = selectedDay ? selectedDay.id === day?.id : true
                                 return <TouchableOpacity onPress={() => target && dayHandelPress(day)} disabled={!isThisMonth} key={index} style={{ width: ((widthPercentage(100) - 40) / 7) - 5, alignItems: "center" }}>
-                                    <Text style={[globalStyles.regular, {
-                                        borderRadius: 8, color: Color.black, textAlign: "center", textAlignVertical: "center", width: 25, height: 25, textAlign: "center",
-                                        color: target ? Color.white : Color.black,
+                                    <View style={[styles.item, {
+                                        borderRadius: 8,
+                                        justifyContent: "center",
+                                        alignItems: "center",
                                         borderWidth: isToday ? 1 : 0,
                                         borderColor: isToday ? Color.darkcyan : "transparent",
                                         backgroundColor: target ? color : Color.white,
                                         opacity: isThisMonth ? focus ? 1 : 0.3 : 0.3
                                     }]} >
-                                        {day.date}
-                                    </Text>
+                                        <Text style={[globalStyles.regular, {
+                                            color: target ? Color.white : Color.black,
+                                        }]} >
+                                            {day.date}
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                             }
                             )}
@@ -57,3 +62,15 @@ export default function Calender({ selectedDay, setSelectedDay, selectedMonth, s
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    item: {
+        color: Color.black,
+        textAlign: "center",
+        width: 25,
+        height: 25,
+        textAlign: "center",
+        overflow: "hidden",
+    }
+
+})

@@ -1,5 +1,6 @@
 {
     "welcome": "مرحباً .",
+    "current version": "الاصدار  {version}",
     "sorry": "عذراً",
     "welcome-again": "مرحبا بك من جديد",
     "greeting": "مرحبا {name} !",
@@ -15,6 +16,8 @@
     "join as": "انضم ك",
     "teacher": "معلم",
     "student or parent": "طالب / ولي أمر",
+    "student": "طالب",
+    "parent": "ولي الامر",
     "Join us and explore new ways of learning.": "انضم الينا واستكشف طرق جديدة لتعلم.",
     "Whether you are a teacher, a student, or a parent, we have something for you.": "معلم او طالب او ولي أمر , لدينا شيء من اجلك .",
     "sign in": "تسجيل الدخول",
@@ -68,6 +71,7 @@
     "cancel": "الغاء",
     "book-now": "احجز الان",
     "my-subjects": "موادي",
+    "my main subject": "المادة الرئيسية الخاصة بي",
     "see-all": "عرض الكل",
     "know more": "اعرف المزيد",
     "my-fav-teachers": "أساتذتي المفضلين",

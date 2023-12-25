@@ -7,27 +7,44 @@ import t from '../actions/changeLanguage';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomText from '../components/CustemText';
 import { Lock_Svg } from '../assets/icons/Icons';
-import { submitCheck } from '../actions/GlobalFunctions';
+import { getErrorMessage, submitCheck } from '../actions/GlobalFunctions';
 import { useNavigation } from '@react-navigation/core';
 import PrimaryButton from '../components/PrimaryButton';
+import { signIn, update } from '../store/actions/userActions';
+import Axios from 'axios';
+import { RESET_PASSWORD_URL } from '../store/actions/api';
+import AlertModal from '../components/alertModal';
 
 const ResetPasswordScreen = ({ route }) => {
+    const { emailOrPhoneNumber } = route?.params
     const { language } = useSelector(state => state.languageState)
-    const { loading, userInfo, error } = useSelector(state => state.userInfo)
     const navigation = useNavigation();
-    const { userData } = route.params;
     const [checkInputs, setCheckInputs] = useState(false)
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [state, setState] = useState({})
+    const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch();
-
-
-
+    const resetPassword = async () => {
+        setLoading(true)
+        try {
+            let { data: { message } } = await Axios.put(RESET_PASSWORD_URL, { emailOrPhoneNumber, newPassword: password });
+            setLoading(false)
+            if (!message) return
+            if (message === "Password reset Successfully") {
+                setVisible(true)
+            }
+        } catch (error) {
+            setLoading(false)
+            let errorMessage = getErrorMessage(error?.response?.data || error)?.message
+            console.log("🚀 ~ file: ResetPasswordScreen.js:39 ~ resetPassword ~ errorMessage:", errorMessage)
+        }
+    }
     const handleSubmit = () => {
         if (password === confirmPassword) {
             if (submitCheck({ password, password: confirmPassword }).isValid) {
-                // dispatch(signIn({ email: userData.email, phoneNumber: userData.phoneNumber, password }))
+                resetPassword()
             } else {
                 setCheckInputs(true)
             }
@@ -43,11 +60,28 @@ const ResetPasswordScreen = ({ route }) => {
         }
 
     };
-
+    const navigateToUserScreen = (students) => {
+        const signUpData = {
+            role: "student",
+            policy: true,
+            isParent: true,
+            password: password,
+            parentPhoneNumber: students[0].parentPhoneNumber,
+        }
+        navigation.navigate("UserData1", { students, signUpData })
+    }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader />
+                <AlertModal
+                    visible={visible}
+                    imageSource={require('../assets/icons/alert.png')}
+                    title={"Password reset successfully"}
+                    content={"Sign in to your account"}
+                    primaryButton={"sign in"}
+                    primaryButtonSubmit={() => dispatch(signIn({ emailOrPhoneNumber, password, navigateToUserScreen }))}
+                />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={styles.container} >
                         <View style={styles.form}>
@@ -73,7 +107,7 @@ const ResetPasswordScreen = ({ route }) => {
                                 <Lock_Svg />
                             </FancyInput>
 
-                            <View style={[globalStyles.rowContainer, { width: "100%"}] }>
+                            <View style={[globalStyles.rowContainer, { width: "100%" }]}>
                                 {state.error && <Text style={[globalStyles.smallText, { color: Color.red, padding: 5 }]}>{state.error?.message[language]}</Text>}
                             </View>
                             <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit}>

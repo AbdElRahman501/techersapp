@@ -5,21 +5,21 @@ import { Next_Icon } from '../assets/icons/Icons';
 import { GestureHandlerRootView, State } from 'react-native-gesture-handler';
 import AdItem from './AdItem';
 import Indicator from './Indicator';
+import { useSelector } from 'react-redux';
 
 export default function AdsSlider({ data }) {
     const scrollViewRef = useRef(null);
     const [scrolledIndex, setScrolledIndex] = useState(0);
     const [holding, setHolding] = useState(false);
     const width = (widthPercentage(100) - 48);
-
-    const teachers = addFirstElementAfterLast(data)
+    const { language } = useSelector(state => state.languageState)
+    const { subjects } = useSelector(state => state.subjectsState)
     const scrollToNext = () => {
-        if (scrolledIndex < teachers.length - 1) {
+        if (scrolledIndex < data.length - 1) {
             scrollViewRef.current.scrollTo({ x: width * (scrolledIndex + 1), animated: true });
         }
         else {
-            scrollViewRef.current.scrollTo({ x: 0, animated: false });
-            scrollViewRef.current.scrollTo({ x: width, animated: true });
+            scrollViewRef.current.scrollTo({ x: 0, animated: "smooth" });
         }
     }
     const holdHandler = ({ nativeEvent }) => {
@@ -35,7 +35,7 @@ export default function AdsSlider({ data }) {
             scrollViewRef.current.scrollTo({ x: width * (scrolledIndex - 1), animated: true });
         }
         else {
-            scrollViewRef.current.scrollTo({ x: width * (teachers.length), animated: false });
+            scrollViewRef.current.scrollTo({ x: width * (data.length), animated: false });
 
         }
 
@@ -52,7 +52,7 @@ export default function AdsSlider({ data }) {
         if (!holding) {
             interval = setInterval(() => {
                 scrollToNext()
-            }, 2500);
+            }, 5000);
         } else {
             setTimeout(() => {
                 setHolding(false);
@@ -61,13 +61,7 @@ export default function AdsSlider({ data }) {
         return () => clearInterval(interval);
     }, [scrolledIndex, holding]);
 
-    function addFirstElementAfterLast(arr) {
-        if (!arr) {
-            return [];
-        }
-        const firstElement = arr[0];
-        return [...arr, firstElement];
-    }
+
     return (
         <GestureHandlerRootView style={{ flex: 1, marginVertical: 10, backgroundColor: Color.cyanBackGround }}>
             <View style={styles.container}>
@@ -83,8 +77,9 @@ export default function AdsSlider({ data }) {
                     ref={scrollViewRef}
                     horizontal
                     showsHorizontalScrollIndicator={false}>
-                    {addFirstElementAfterLast(teachers).map((item, index) => {
-                        return <AdItem item={item} holdHandler={holdHandler} key={index} />
+                    {data.map((item) => {
+                        return <AdItem item={item} language={language}
+                            subjects={subjects} holdHandler={holdHandler} key={item.id} />
                     })}
                 </ScrollView>
                 <TouchableOpacity style={styles.button} onPress={scrollToNext}>
@@ -92,7 +87,7 @@ export default function AdsSlider({ data }) {
                 </TouchableOpacity>
             </View>
             <View style={{ transform: [{ scale: 0.6 }], height: 10, width: widthPercentage(100), justifyContent: "flex-end", alignItems: "center" }}>
-                <Indicator arr={data} activeIndex={scrolledIndex === data?.length ? 0 : scrolledIndex} />
+                <Indicator arr={data} activeIndex={scrolledIndex} />
             </View>
         </GestureHandlerRootView>
 

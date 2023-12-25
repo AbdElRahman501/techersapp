@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/core';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { teacherRegister } from '../store/actions/userActions';
-import { years } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import LoadingModal from '../components/LoadingModal';
 
@@ -18,6 +17,7 @@ export default function TeacherDataScreen({ route }) {
   const { language } = useSelector(state => state.languageState)
   const { loading, userInfo, error } = useSelector(state => state.userInfo);
   const { subjects } = useSelector(state => state.subjectsState);
+  const { schoolYears: years } = useSelector(state => state.schoolYearsState);
   const [state, setState] = useState({})
   const [subject, setSubject] = useState("")
   const [schoolYears, setSchoolYears] = useState([])
@@ -26,7 +26,7 @@ export default function TeacherDataScreen({ route }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    const mainSubject = { subject: subject?.en, schoolYears: [schoolYears.en] }
+    const mainSubject = { subject: subject?.en, schoolYears: schoolYears.map(x => x.en) }
     if (mainSubject) {
       setState({})
       dispatch(teacherRegister({ ...signUpData, mainSubject, verified: true }))
@@ -58,15 +58,16 @@ export default function TeacherDataScreen({ route }) {
                 setState={setState}
                 checkInputs={checkInputs}
                 value={subject?.[language] || ""}
-                data={subjects} placeholder={t("my-subjects")}
+                data={subjects} placeholder={t("my main subject")}
                 changHandler={(e) => setSubject(e)}
               >
                 <School_SVG />
               </ListInput>
               <ListInput
                 setState={setState}
+                multipleSelection={true}
                 checkInputs={checkInputs}
-                value={schoolYears?.[language] || ""}
+                value={schoolYears.length ? schoolYears.map(x => x?.[language] || x) : []}
                 data={years} placeholder={t("placeholder-schoole-year")}
                 changHandler={(e) => setSchoolYears(e)}
               >

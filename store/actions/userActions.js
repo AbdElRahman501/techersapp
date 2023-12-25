@@ -116,7 +116,7 @@ export const teacherRegister = (userData) => async (dispatch) => {
     }
 };
 export const update = (userData) => async (dispatch, getState) => {
-    dispatch({ type: USER_UPDATE_REQUEST, payload: getState().userInfo.userInfo });
+    dispatch({ type: USER_UPDATE_REQUEST });
     try {
         let { data: userInfo } = await Axios.put(UPDATE_URL, userData);
         if (!userInfo) return

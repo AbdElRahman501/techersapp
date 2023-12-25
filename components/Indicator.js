@@ -1,12 +1,11 @@
-import { Animated, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import { Border, Color, globalStyles } from '../GlobalStyles'
-import transition from '../actions/transition'
 
 export default function Indicator({ arr, activeIndex }) {
     return (
         <View style={styles.parentFlexBox} >
-            {arr.map((x, i) => <Animated.View key={i} style={[globalStyles.eventBall, { margin: 5, backgroundColor: Color.darkcyan, opacity: transition(0.3, 1, 500, activeIndex === i), height: transition(5, 20, 500, activeIndex === i) }]} />)}
+            {arr.map((x, i) => <View key={i} style={[globalStyles.eventBall, { margin: 5, backgroundColor: Color.darkcyan, opacity: activeIndex === i ? 1 : 0.3, height: activeIndex === i ? 20 : 5 }]} />)}
         </View>
     )
 }

@@ -12,7 +12,6 @@ import DatePicker from '../components/DatePicker';
 import ListInput from '../components/ListInput';
 import { useSelector, useDispatch } from 'react-redux';
 import { register } from '../store/actions/userActions';
-import { years } from '../data';
 import { schoolTypes } from '../data';
 import PrimaryButton from '../components/PrimaryButton';
 import LoadingModal from '../components/LoadingModal';
@@ -21,6 +20,7 @@ export default function UserDataScreen({ route }) {
     const { signUpData: data } = route.params;
     const { language } = useSelector(state => state.languageState)
     const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { schoolYears: years } = useSelector(state => state.schoolYearsState);
     const [state, setState] = useState({})
     const [signUpData, setSignUpData] = useState(data);
     const [checkInputs, setCheckInputs] = useState(false)

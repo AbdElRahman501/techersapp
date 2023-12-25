@@ -29,6 +29,7 @@ export default function SubjectScreen({ route }) {
     const selectedTeacher = teachers[0]
     const selectedGroup = teachersGroups.find(x => x.teacherId === selectedTeacher.id)
 
+    const [initialHeight, setInitialHeight] = useState(0);
 
     const [selectedDay, setSelectedDay] = useState("")
     const [selectedMonth, setSelectedMonth] = useState(currentMonth)
@@ -54,9 +55,10 @@ export default function SubjectScreen({ route }) {
             <BackHeader title={item[language]} />
             <ScrollView style={{ flex: 1 }}
                 nestedScrollEnabled={true}
-                contentContainerStyle={{ height: heightPercentage(100) + 130 }}
+                contentContainerStyle={{ height: initialHeight ? initialHeight + 125 : "100%" }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
+                onLayout={(event) => setInitialHeight(event.nativeEvent.layout.height)}
             >
                 <View style={{ marginBottom: 10 }}>
                     <TeacherMainCard item={selectedTeacher} group={selectedGroup} pressHandler={(item) => navigation.navigate("TeacherScreen", { item })} />

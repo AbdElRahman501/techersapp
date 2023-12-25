@@ -156,11 +156,17 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   shadowBox: {
-    shadowColor: Color.gray_200,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5
+    ...Platform.select({
+      ios: {
+        shadowColor: Color.gray_200,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 7,
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
   },
   title: {
     fontSize: FontSize.size_lg,
@@ -200,9 +206,9 @@ export const globalStyles = StyleSheet.create({
   },
   eventCard: {
     position: 'absolute',
-    width: widthPercentage(100) - 120,
+    width: widthPercentage(100) - 100,
     backgroundColor: Color.white,
-    borderRadius: Border.br_13xl,
+    borderRadius: Border.br_6xl,
   },
   line: {
     flex: 1,
@@ -244,6 +250,15 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     borderWidth: 1,
     borderRadius: (Height.br_lg / 2) + 5,
+  },
+  subjectCard: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    padding: 5,
+    backgroundColor: Color.white,
   },
   modalContainer: {
     flex: 1,

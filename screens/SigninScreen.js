@@ -6,7 +6,7 @@ import DividerWithText from '../components/DividerWithText ';
 import FancyInput from '../components/TextInput';
 import PressedText from '../components/PressedText';
 import { useNavigation } from "@react-navigation/native";
-import { submitCheck } from '../actions/GlobalFunctions';
+import { getErrorMessage, isDataExpired, submitCheck } from '../actions/GlobalFunctions';
 import t from "../actions/changeLanguage";
 import { useDispatch, useSelector } from "react-redux";
 import { Lock_Svg, Mail_OutLine_Svg } from '../assets/icons/Icons';
@@ -14,17 +14,23 @@ import { signIn } from '../store/actions/userActions';
 import PrimaryButton from '../components/PrimaryButton';
 import { Ionicons } from '@expo/vector-icons';
 import LoadingModal from '../components/LoadingModal';
+import VerifyPhoneModal from '../components/VerifyPhoneModal';
+import { PHONE_VERIFICATION_URL, USER_VERIFICATION_URL } from '../store/actions/api';
+import axios from 'axios';
 
 export default function SigninScreen({ route }) {
     const phoneNumber = route.params?.phoneNumber
     const navigation = useNavigation();
     const { language } = useSelector(state => state.languageState);
-    const { loading, userInfo, error } = useSelector(state => state.userInfo);
+    const { loading: userInfoLoading, userInfo, error } = useSelector(state => state.userInfo);
     const [state, setState] = useState({})
+    const [data, setData] = useState({})
     const [submitted, setSubmitted] = useState(false)
     const [{ emailOrPhoneNumber, password }, setSignInData] = useState({ emailOrPhoneNumber: phoneNumber || "", password: "" });
     const [checkInputs, setCheckInputs] = useState(false)
     const dispatch = useDispatch();
+    const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = () => {
         setSubmitted(true)
@@ -35,6 +41,18 @@ export default function SigninScreen({ route }) {
         }
     };
 
+    const forgetPasswordHandler = () => {
+        if (submitCheck({ emailOrPhoneNumber }).isValid) {
+            phoneNumberVerification(emailOrPhoneNumber)
+            setState({})
+            setCheckInputs("clear")
+        } else {
+            setCheckInputs("clear")
+            setTimeout(() => {
+                setCheckInputs("emailOrPhoneNumber")
+            }, 100)
+        }
+    }
     const navigateToUserScreen = (students) => {
         const signUpData = {
             role: "student",
@@ -44,6 +62,35 @@ export default function SigninScreen({ route }) {
             parentPhoneNumber: students[0].parentPhoneNumber,
         }
         navigation.navigate("UserData1", { students, signUpData })
+    }
+    const phoneNumberVerification = async (emailOrPhoneNumber) => {
+        if (!isDataExpired(data?.time, 90) && data?.emailOrPhoneNumber === emailOrPhoneNumber) {
+            setVisible(true)
+            return
+        }
+        setLoading(true)
+        try {
+            const { data } = await axios.post(USER_VERIFICATION_URL, { emailOrPhoneNumber });
+            console.log("🚀 ~ file: SigninScreen.js:74 ~ phoneNumberVerification ~ data:", data)
+            if (!data) return
+            setLoading(false)
+            setData(data)
+            setVisible(true)
+        } catch (error) {
+            setLoading(false)
+            let errorMessage = getErrorMessage(error?.response?.data || error)?.message
+            console.log("🚀 ~ file: SigninScreen.js:82 ~ phoneNumberVerification ~ errorMessage:", errorMessage)
+        }
+    }
+    const onClose = () => {
+        navigation.navigate("ResetPasswordScreen", { emailOrPhoneNumber })
+        setVisible(false)
+    }
+    const onResend = () => {
+        phoneNumberVerification(emailOrPhoneNumber)
+    }
+    const onEdit = () => {
+        setVisible(false)
     }
     useEffect(() => {
         if (userInfo?.role === "student") {
@@ -68,7 +115,8 @@ export default function SigninScreen({ route }) {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
                 <BackHeader title={t("sign in")} />
-                <LoadingModal visible={loading} />
+                <LoadingModal visible={userInfoLoading || loading} />
+                <VerifyPhoneModal visible={visible} data={data} onResend={onResend} onEdit={onEdit} onClose={onClose} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}>
@@ -98,7 +146,7 @@ export default function SigninScreen({ route }) {
                                 {state.error && <Text style={[globalStyles.smallText, { color: Color.red }]}>{state.error?.message[language] || state.error?.message}</Text>}
                             </View>
                             <View style={[globalStyles.parentFlexBox, { width: "100%", flexDirection: language === 'en' ? "row" : "row-reverse", marginVertical: Margin.m_sm }]}>
-                                <PressedText title={t("forgot-password")} pressHandler={() => console.log("pressed")} />
+                                <PressedText title={t("forgot-password")} pressHandler={() => forgetPasswordHandler()} />
                             </View>
                             <PrimaryButton onPress={handleSubmit} disabled={state.error}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>

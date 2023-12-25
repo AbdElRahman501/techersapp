@@ -46,7 +46,7 @@ const HomeHeader = ({ user, language, schoolYears }) => {
                         source={user?.image || require('../assets/teachers/boy.png')}
                     />
                 </TouchableOpacity>
-                <View style={{ marginHorizontal: Margin.m_sm, gap: 3 }}>
+                <View style={{ marginHorizontal: Margin.m_sm }}>
                     <CustomText style={[globalStyles.regular, { fontSize: FontSize.size_lg, color: Color.darkcyan }]}>{t("welcome")}</CustomText>
                     <CustomText style={globalStyles.regular}>{user?.fullName || ""}</CustomText>
                     <CustomText style={globalStyles.smallText}>{schoolYear?.[language] || ""}</CustomText>

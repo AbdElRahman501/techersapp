@@ -13,7 +13,9 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
     const strokeDashoffset = isScore && strokeDasharray * ((100 - score) / 100)
 
     return (
-        <View style={{ position: "relative" }}>
+        <View style={{
+            position: "relative", width: width, height: width
+        }}>
             <Svg
                 width={width}
                 height={width}

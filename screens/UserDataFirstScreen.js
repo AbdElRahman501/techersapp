@@ -92,15 +92,6 @@ export default function UserDataFirstScreen({ route }) {
                                     {state.error && <Text style={[globalStyles.smallText, { color: Color.red }]}>{state.error?.message[language] || state.error?.message}</Text>}
                                 </View>
                             </View>
-                            {!students?.length > 0 &&
-                                <View style={[globalStyles.parentFlexBox, { width: "100%", maxWidth: 500, flexDirection: language === 'en' ? "row" : "row-reverse", justifyContent: "flex-start" }]}>
-                                    <Checkbox checked={signUpData.isParent} onChange={(e) => setSignUpData(pv => ({ ...pv, isParent: e }))} />
-                                    <View style={[globalStyles.parentFlexBox, { width: "80%", flexDirection: language === 'en' ? "row" : "row-reverse", flexWrap: "wrap" }]}>
-                                        <CustomText style={globalStyles.regular}>{iamParentText}</CustomText>
-                                    </View>
-                                </View>
-                            }
-
                             <PrimaryButton style={{ marginTop: Margin.m_lg }} onPress={handleSubmit} disabled={state.error}>
                                 <Text style={[globalStyles.title, { color: Color.white }]}>
                                     {students.length > 0 ? createNewStudent : continueText}

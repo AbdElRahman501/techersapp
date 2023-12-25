@@ -34,7 +34,9 @@ export default function HomeScreen() {
       });
     }
   }, [userInfo]);
-
+  const myBookedSubjects = subjects.filter(x => myGroups?.map(y => y.subject).includes(x.en)).map(x => ({ ...x, isiInMySubject: true }))
+  const restOfSubjects = subjects.filter(x => !myGroups?.map(y => y.subject).includes(x.en)).map(x => ({ ...x, isiInMySubject: false }))
+  const mySubjects = [...myBookedSubjects, ...restOfSubjects]
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
@@ -44,13 +46,13 @@ export default function HomeScreen() {
       >
         <View style={[globalStyles.body]}>
           <HomeHeader user={userInfo} language={language} schoolYears={schoolYears} />
-          {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher} />}
+          {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher.slice(0, 3)} />}
           <View style={{ flexDirection: "row", gap: 20, width: "100%" }} >
             <SearchBar button={true} />
             <FilterButton button={true} />
           </View>
           <ContainerTitle style={{ marginTop: 0 }} title={subjectTitle} pressedTitle={seeAll} pressHandler={() => console.log("all")} />
-          <SlideContainer data={subjects} myGroups={myGroups} language={language}  >
+          <SlideContainer data={mySubjects} myGroups={myGroups} language={language}  >
             <Subject />
           </SlideContainer>
           {myFavTeachers?.length > 0 && <>

@@ -1,7 +1,7 @@
 import { Platform, StyleSheet, TouchableWithoutFeedback, Animated, Pressable } from 'react-native'
 import React from 'react'
 import { Filter_Icon_Fill, Filter_Icon_Stroke } from '../assets/icons/Icons'
-import { Border, Color, Height } from '../GlobalStyles'
+import { Border, Color, Height, globalStyles } from '../GlobalStyles'
 import transition from '../actions/transition';
 import { useState } from 'react';
 import FilterModal from './FilterModal';
@@ -12,9 +12,7 @@ export default function FilterButton({ button, filter, setFilter }) {
     const navigation = useNavigation();
 
     return (
-        <RNAnimated.View
-            sharedTransitionTag={"filter button"}
-        >
+        <RNAnimated.View>
             <Pressable onPress={() => {
                 if (button) {
                     navigation.navigate("SearchScreen")
@@ -27,7 +25,7 @@ export default function FilterButton({ button, filter, setFilter }) {
                     transform: [{
                         scale: transition(1, 1.1, 200, clicked)
                     }],
-                    shadowColor: transition(Color.gray_200, Color.darkcyan, 200, clicked),
+                    shadowColor: clicked ? Color.darkcyan : Color.gray_200,
                 }
                 ]} >
                     {clicked ? <Filter_Icon_Fill /> :
@@ -42,18 +40,12 @@ export default function FilterButton({ button, filter, setFilter }) {
 
 const styles = StyleSheet.create({
     filterIcon: {
+        ...globalStyles.shadowBox,
         width: Height.hi_input,
         height: Height.hi_input,
         backgroundColor: Color.input_fill,
         borderRadius: Border.br_3xl,
         justifyContent: "center",
         alignItems: "center",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: Platform.OS === 'android' ? 10 : 0,
     }
 })

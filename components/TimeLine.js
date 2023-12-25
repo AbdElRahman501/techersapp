@@ -55,8 +55,9 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
     return (
         <ScrollView
             ref={scrollViewRef}
+            contentContainerStyle={{ paddingTop: 20 }}
             showsVerticalScrollIndicator={false} >
-            <View style={[globalStyles.container, { paddingVertical: 15 }]}>
+            <View style={[globalStyles.container, { position: "relative", width: widthPercentage(100), height: (hours.length * 100) }]}>
                 <Svg height={hours.length * 100} width={widthPercentage(100)} >
                     {hours.map((hour, i) => (
                         <Line
@@ -103,7 +104,7 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
 
                 </Svg>
                 {hours.map((hour, i) => (
-                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { backgroundColor: Color.cyanBackGround, padding: 5, color: Color.darkgray, position: 'absolute', top: (i * 100) - 2 }]} >
+                    <Text key={i} style={[globalStyles.regular, language === 'ar' ? styles.right : styles.left, { backgroundColor: Color.cyanBackGround, padding: 5, color: Color.darkgray, position: 'absolute', top: (i * 100) - 12 }]} >
                         {transformTime(hour, language)}
                     </Text>
                 ))}

@@ -20,13 +20,13 @@ import { getSubjects } from '../store/actions/subjectsActions';
 
 
 export default function SignUpScreen({ route }) {
-    const { user } = route.params;
+    const { user, isParent } = route.params;
     const { language } = useSelector(state => state.languageState)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState({})
     const [errorMessage, setErrorMessage] = useState(null)
     const navigation = useNavigation();
-    const [signUpData, setSignUpData] = useState({ role: user, policy: false, phoneNumber: "" });
+    const [signUpData, setSignUpData] = useState({ role: user, isParent, policy: false, phoneNumber: "" });
     const [valid, setValid] = useState(false);
     const [formattedPhone, setFormattedPhone] = useState("");
     const [signIn, change] = [t("sign in"), t("change")];
@@ -65,6 +65,14 @@ export default function SignUpScreen({ route }) {
         }
     }
 
+    const onClose = () => {
+        if (signUpData.role === "student") {
+            navigation.navigate("UserData1", { students: data?.students, signUpData })
+        } else {
+            navigation.navigate("TeacherSignUpScreen", { signUpData })
+        }
+        setVisible(false)
+    }
     const changeHandler = (text, valid) => {
         setSignUpData(pv => ({ ...pv, phoneNumber: text }));
         setValid(valid);
@@ -85,7 +93,7 @@ export default function SignUpScreen({ route }) {
                     primaryButtonSubmit={() => setErrorMessage(null)}
                     secondaryButtonSubmit={() => { setErrorMessage(null); navigation.navigate("SigninScreen", { phoneNumber: signUpData.phoneNumber }) }}
                 />
-                <VerifyPhoneModal visible={visible} resendDuration={resendDuration} data={data} phoneNumberVerification={phoneNumberVerification} onClose={() => setVisible(false)} signUpData={signUpData} />
+                <VerifyPhoneModal visible={visible} data={data} onResend={() => phoneNumberVerification(signUpData.phoneNumber)} onClose={onClose} onEdit={() => setVisible(false)} phoneNumber={signUpData?.phoneNumber} />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}>

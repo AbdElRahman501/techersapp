@@ -69,6 +69,7 @@ profile
 .vscode/
 *.code-workspace
 archive.js
+%ProgramData%/
 %ProgramData%/Microsoft/Windows/UUS/State/_active.uusver
 .env
 dist/assetmap.json

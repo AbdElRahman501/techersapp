@@ -17,7 +17,8 @@ import { getTheYear } from '../actions/GlobalFunctions';
 
 export default function ProfileScreen() {
     const { language } = useSelector(state => state.languageState)
-    const { loading, userInfo, error } = useSelector(state => state.userInfo)
+    const { loading, userInfo: theUserInfo, error } = useSelector(state => state.userInfo)
+    const [userInfo, setUserInfo] = useState(theUserInfo ? theUserInfo : userInfo)
     const { schoolYears } = useSelector(state => state.schoolYearsState)
     const { switchLoading, switchError, loading: loadingUsers, users, error: usersError } = useSelector(state => state.usersState)
     const [visible, setVisible] = useState(false)
@@ -28,6 +29,7 @@ export default function ProfileScreen() {
     useEffect(() => {
         dispatch(getUsers())
     }, [])
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >

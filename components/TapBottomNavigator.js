@@ -3,14 +3,12 @@ import React from 'react'
 import { Color, Height } from '../GlobalStyles'
 import { Calender_home_Svg, Calender_home_svg_fill, Community_Icon, Community_Icon_Fill, Home_icon_Svg, User_Icon_Svg } from '../assets/icons/Icons'
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
-import Animated from 'react-native-reanimated';
 
 export default function TapBottomNavigator({ currentScreen }) {
     const navigation = useNavigation();
 
     return (
-        <Animated.View sharedTransitionTag={"Tap Bottom Navigator"} style={styles.tapContainer}>
+        <View style={styles.tapContainer}>
             <TouchableOpacity style={{ padding: 20 }} onPress={() => navigation.navigate("Home")}  >
                 {currentScreen === "Home"
                     ? <Home_icon_Svg fill={Color.darkcyan} color={Color.darkcyan} />
@@ -35,7 +33,7 @@ export default function TapBottomNavigator({ currentScreen }) {
                     : <User_Icon_Svg />
                 }
             </TouchableOpacity>
-        </Animated.View>
+        </View>
     )
 }
 

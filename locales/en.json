@@ -1,5 +1,6 @@
 {
     "welcome": "Welcome .",
+    "current version": "Current Version {version}",
     "sorry": "Sorry",
     "welcome-again": "Welcome Again",
     "greeting": "Hello, {name}!",
@@ -15,6 +16,8 @@
     "join as": "Join as",
     "teacher": "Teacher",
     "student or parent": "Student / Parent",
+    "student": "Student",
+    "parent": "Parent",
     "Join us and explore new ways of learning.": "Join us and explore new ways of learning.",
     "Whether you are a teacher, a student, or a parent, we have something for you.": "Whether you are a teacher, a student, or a parent, we have something for you.",
     "sign in": "Sign in",
@@ -68,6 +71,7 @@
     "cancel": "Cancel",
     "book-now": "Book Now",
     "my-subjects": "My Subjects",
+    "my main subject": "My Main Subject",
     "see-all": "See All",
     "know more": "Know More",
     "my-fav-teachers": "My Fav Teachers",

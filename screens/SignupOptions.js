@@ -41,17 +41,22 @@ const SignUpOptions = () => {
           style={[styles.content, { paddingHorizontal: Padding.page_p, transform: [{ translateY: transition(50, 0, 600, trigger) }], opacity: transition(0, 1, 600, trigger) }]}>
           {t("Whether you are a teacher, a student, or a parent, we have something for you.")}
         </Animated.Text>
-        <View style={{ marginTop: Margin.m_lg }} >
-          <Text style={[styles.content, { color: Color.darkcyan, margin: Margin.m_base }]} >{t("join as")}</Text>
-          <View style={[styles.flexContainer, { gap: Margin.m_base }]}>
+        <View style={{ marginTop: Margin.m_lg, gap: 10 }} >
+          <Text style={[styles.content, { color: Color.darkcyan }]} >{t("join as")}</Text>
+          <PrimaryButton style={[styles.button, { width: 250 }]} onPress={() => navigation.navigate("SignUpScreen", { user: "student", isParent: false })} >
+            <Text style={[styles.title, { color: Color.white }]}>
+              {t("student")}
+            </Text>
+          </PrimaryButton>
+          <View style={[styles.flexContainer, { gap: 10 }]}>
             <PrimaryButton style={[styles.button, styles.secButton]} onPress={() => navigation.navigate('SignUpScreen', { user: "teacher" })} >
               <Text style={[styles.title, { color: Color.darkcyan }]}>
                 {t("teacher")}
               </Text>
             </PrimaryButton>
-            <PrimaryButton style={[styles.button]} onPress={() => navigation.navigate("SignUpScreen", { user: "student" })} >
-              <Text style={[styles.title, { color: Color.white }]}>
-                {t("student or parent")}
+            <PrimaryButton style={[styles.button, styles.secButton]} onPress={() => navigation.navigate("SignUpScreen", { user: "student", isParent: true })} >
+              <Text style={[styles.title, { color: Color.darkcyan }]}>
+                {t("parent")}
               </Text>
             </PrimaryButton>
           </View>
@@ -94,7 +99,7 @@ const styles = StyleSheet.create({
     paddingBottom: Padding.p_xl,
   },
   button: {
-    width: 150,
+    width: 120,
     borderRadius: Border.br_6xl,
     justifyContent: 'center',
     alignItems: 'center',

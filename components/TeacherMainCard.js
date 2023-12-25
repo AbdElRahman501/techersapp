@@ -27,7 +27,7 @@ export default function TeacherMainCard({ likes, item, userID, group, selectedSu
     }, [])
 
     return (
-        <Animated.View sharedTransitionTag={item?.id} entering={index >= 0 ? FadeInDown.duration(400 + (index * 200)).easing(Easing.ease) : false} style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
+        <Animated.View entering={index >= 0 ? FadeInDown.duration(400 + (index * 200)).easing(Easing.ease) : false} style={[styles.item, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
             <View style={[styles.content, { flexDirection: language === 'en' ? 'row-reverse' : 'row' }]}>
                 {group?.days?.length ?
                     <View style={styles.info}>

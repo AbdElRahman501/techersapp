@@ -17,9 +17,8 @@ export default function SearchBar({ autoFocus, button, changHandler, value, ...p
 
   return (
     <Animated.View
-      sharedTransitionTag={"Search Bar"}
       style={[styles.inputField, {
-        shadowColor: isFocused ? Color.darkcyan : isDark ? "none" : Color.darkgray,
+        shadowColor: isFocused ? Color.darkcyan :  Color.gray_200,
         flexDirection: language === "en" ? "row" : "row-reverse"
       }]}>
       <View style={styles.rightIcon}>
@@ -58,19 +57,13 @@ export default function SearchBar({ autoFocus, button, changHandler, value, ...p
 
 const styles = StyleSheet.create({
   inputField: {
+    ...globalStyles.shadowBox,
     width: "100%",
     flex: 1,
     height: Height.hi_input,
     backgroundColor: Color.input_fill,
     borderRadius: Border.br_6xl,
     marginBottom: 10,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: Platform.OS === 'android' ? 10 : 0,
   },
   input: {
     flex: 1,

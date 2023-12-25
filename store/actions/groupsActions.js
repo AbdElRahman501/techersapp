@@ -21,7 +21,7 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
             myGroups = myGroups.filter(x => !(x.id === existGroup.id && x.teacherId === existGroup.teacherId))
         }
         myGroups = [...myGroups, newGroup];
-        const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, }))
+        const serverGroups = myGroups.map(x => ({ id: x.id, teacherId: x.teacherId, color: x.color }))
 
         const { data: userInfo } = await Axios.put(ADD_GROUP_URL, { id, role, myGroups: serverGroups })
         if (!userInfo) return

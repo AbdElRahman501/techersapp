@@ -1,9 +1,11 @@
-export const URL = 'https://alostaz-server.onrender.com' 
+export const URL = 'https://alostaz-server.onrender.com'
 export const API_URL = `${URL}/api`
 export const SIGNIN_URL = `${URL}/api/users/signin`
 export const PHONE_VERIFICATION_URL = `${URL}/api/users/phoneVerification`
+export const USER_VERIFICATION_URL = `${URL}/api/users/userVerification`
 export const REGISTER_URL = `${URL}/api/users/register`
 export const UPDATE_URL = `${URL}/api/users/update`
+export const RESET_PASSWORD_URL = `${URL}/api/users/resetPassword`
 export const ADD_GROUP_URL = `${URL}/api/users/myGroups`
 export const MY_GROUPS_URL = `${URL}/api/users/myGroups/`
 

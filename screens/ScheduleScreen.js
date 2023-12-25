@@ -19,8 +19,11 @@ export default function ScheduleScreen() {
     const [selectedDay, setSelectedDay] = useState(today)
     const [selectedMonth, setSelectedMonth] = useState(currentMonth)
 
-    const [events, setEvents] = useState([]);
-    const [eventsDuration, setEventsDuration] = useState([])
+    let theEvents = getEvents(myGroups, selectedDay.fullName)
+    let theEventsDuration = myTeachers?.length > 0 ? myTeachers.map(item => ({ teacherID: item.id, studyingYear: item.studyingYear, midYearHoliday: item.midYearHoliday })) : []
+
+    const [events, setEvents] = useState(theEvents || []);
+    const [eventsDuration, setEventsDuration] = useState(theEventsDuration || [])
 
     const dayHandelPress = (day) => {
         setSelectedDay(day)

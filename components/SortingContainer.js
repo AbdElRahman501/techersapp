@@ -4,7 +4,7 @@ import { Border, Color, globalStyles } from '../GlobalStyles'
 import transition from '../actions/transition'
 import * as Haptics from 'expo-haptics';
 
-export default function SortingContainer({ height, sortingOptions, selectedOption, setSelectedOption, placeholder, style }) {
+export default function SortingContainer({ height, sortingOptions, multipleSelected, multipleSelection, selectedOption, setSelectedOption, placeholder, style }) {
     const scrollViewRef = useRef();
     const ContainerHeight = height || 400;
     const itemHeight = 35;
@@ -12,7 +12,9 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
         const contentOffsetY = event.nativeEvent.contentOffset.y;
         const middleY = contentOffsetY + itemHeight;
         const middleIndex = Math.round(middleY / itemHeight)
-        setSelectedOption(middleIndex - 1);
+        if (!multipleSelection) {
+            setSelectedOption(middleIndex - 1);
+        }
     };
 
     const scrollToIndex = (index) => {
@@ -22,7 +24,9 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
     }
     useEffect(() => {
         if (scrollViewRef.current) {
-            setSelectedOption(selectedOption);
+            if (!multipleSelection) {
+                setSelectedOption(selectedOption);
+            }
             scrollViewRef.current.scrollTo({ y: selectedOption * (itemHeight), animated: false });
         }
     }, [])
@@ -35,20 +39,21 @@ export default function SortingContainer({ height, sortingOptions, selectedOptio
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
-            // disableIntervalMomentum={true}
+        // disableIntervalMomentum={true}
         >
 
             <View style={{ marginBottom: (ContainerHeight / 2) - (itemHeight * 0.5), marginTop: (ContainerHeight / 2) - (itemHeight * 1.5) }}>
                 <View style={[styles.option, { height: itemHeight, opacity: 0.5, transform: [{ scale: 0.8 }] }]} >
                     <Text style={[globalStyles.title]}>{placeholder}</Text>
                 </View>
-                {sortingOptions.map((option, index) => (
-                    <TouchableOpacity key={index} onPress={() => scrollToIndex(index)}>
-                        <Animated.View style={[styles.option, { height: itemHeight, opacity: transition(0.5, 1, 300, index === selectedOption), transform: [{ scale: transition(1, 1.5, 300, index === selectedOption) }] }]} >
+                {sortingOptions.map((option, index) => {
+                    const trigger = multipleSelection ? multipleSelected.includes(index) : index === selectedOption
+                    return <TouchableOpacity key={index} onPress={() => scrollToIndex(index)}>
+                        <Animated.View style={[styles.option, { height: itemHeight, opacity: transition(0.5, 1, 300, trigger), transform: [{ scale: transition(1, 1.5, 300, trigger) }] }]} >
                             <Text style={globalStyles.title}>{option}</Text>
                         </Animated.View>
                     </TouchableOpacity>
-                )
+                }
                 )}
             </View>
         </ScrollView>

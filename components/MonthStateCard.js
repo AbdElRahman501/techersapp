@@ -37,6 +37,7 @@ export default function MonthStateCard({ item, handlePress, selectedState, index
 
 const styles = StyleSheet.create({
     subject: {
+        ...globalStyles.shadowBox,
         width: 50,
         height: 50,
         justifyContent: 'center',
@@ -45,17 +46,6 @@ const styles = StyleSheet.create({
         padding: 5,
         marginBottom: 5,
         backgroundColor: Color.white,
-        ...Platform.select({
-            ios: {
-                shadowColor: Color.black,
-                shadowOffset: { width: 0, height: 0 },
-                shadowOpacity: 1,
-                shadowRadius: 7,
-            },
-            android: {
-                elevation: 6,
-            },
-        }),
     }
 
 

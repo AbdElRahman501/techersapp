@@ -25,11 +25,19 @@ const FancyInput = ({ placeholder, value, changHandler, inputType, rightIcon, ch
     }, [value])
 
     useEffect(() => {
-        if (checkInputs) {
+        if (checkInputs === true) {
             setState(pv => pv.error ? pv : inputChecker(value, inputType))
             setError(inputChecker(value, inputType).error)
             setSuccess(inputChecker(value, inputType).success)
             setCheckInputs(false)
+        } else if (checkInputs === inputType) {
+            setState(inputChecker(value, inputType))
+            setError(inputChecker(value, inputType).error)
+            setSuccess(inputChecker(value, inputType).success)
+            setCheckInputs(false)
+        } else if (checkInputs === "clear") {
+            setError(false)
+            setSuccess(inputChecker(value, inputType).success)
         }
     }, [checkInputs])
 
