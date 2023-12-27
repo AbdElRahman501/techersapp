@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getSubjects } from '../store/actions/subjectsActions';
 import transition from '../actions/transition';
+import { getAds } from '../store/actions/adsActions';
 
 const SplashScreen = () => {
   const { userInfo } = useSelector(state => state.userInfo);
@@ -39,14 +40,15 @@ const SplashScreen = () => {
       if (userInfo) {
         dispatch({ type: USER_SUCCESS, payload: userInfo });
         dispatch(getSubjects(userInfo.id))
+        dispatch(getAds(userInfo.id))
         if (userInfo.role === "student") {
           dispatch(syncedData(userInfo))
           dispatch(getCloseTeachers(userInfo.id));
           dispatch(getMyTeachersData())
           dispatch(getMyGroups());
-          onClose([{ name: "Home" }])
+          // onClose([{ name: "Home" }])
         } else {
-          onClose([{ name: "TeachersHomeScreen" }])
+          // onClose([{ name: "TeachersHomeScreen" }])
         }
       } else {
         dispatch(getSubjects())
@@ -64,11 +66,17 @@ const SplashScreen = () => {
   useEffect(() => {
     if (!userInfo) {
       getUserData()
+    } else if (userInfo) {
+      if (userInfo.role === "student") {
+        onClose([{ name: "Home" }])
+      } else {
+        onClose([{ name: "TeachersHomeScreen" }])
+      }
     }
   }, [userInfo]);
 
   useEffect(() => {
-    dispatch(updateVersion("1.0.0.5"))
+    dispatch(updateVersion("1.0.0.6"))
   }, [])
 
 

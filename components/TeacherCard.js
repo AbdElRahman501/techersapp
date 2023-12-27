@@ -21,7 +21,7 @@ const TeacherCard = React.memo(({ item, index, subjects, language }) => {
         <Animated.View style={styles.card} entering={FadeInDown.duration(400 + (index * 200)).easing(Easing.ease)}  >
             <TouchableOpacity style={styles.imagContainer} onPress={handlePress} >
                 <CustomImage
-                    style={{ height: "100%", width: "100%", borderRadius: Border.br_6xl }}
+                    style={{ height: "100%", width: "100%", backgroundColor: Color.cyanBackGround, borderRadius: Border.br_6xl }}
                     resizeMode="cover"
                     source={item.imageSource}
                 />

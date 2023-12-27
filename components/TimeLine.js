@@ -32,25 +32,6 @@ export default function TimeLine({ today, eventsDuration, events, selectedDay })
         });
     }, [events, scrollViewRef?.current])
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentMinute((prevMinute) => {
-                if (prevMinute < 60) {
-                    return prevMinute + (5 / 60)
-                } else {
-                    setCurrentHour((prevHour) => prevHour + 1);
-                    return 0
-                }
-            });
-        }, 5000);
-        if (!hourState) {
-            clearInterval(intervalId);
-        }
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, []);
-
     const [now, dayStartedTime] = [t("now"), t("day_started", { time: transformTime(dayStart, language) })]
     return (
         <ScrollView

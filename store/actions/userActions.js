@@ -7,11 +7,12 @@ import { MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_SUCCESS } from "../constants/teache
 import { MY_GROUPS_SUCCESS } from "../constants/groupsConstants";
 import { showMessage } from "./showMessageActions";
 import { SUBJECTS_SUCCESS } from "../constants/subjectsConstants";
+import { ADVERTISEMENTS_SUCCESS } from "../constants/adsConstants";
 
 export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen }) => async (dispatch) => {
     dispatch({ type: USER_REQUEST });
     try {
-        let { data: { students, student, closeTeachers, myTeachers, myGroups, teacher, subjects } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password, id });
+        let { data: { students, student, closeTeachers, advertisements, myTeachers, myGroups, teacher, subjects } } = await Axios.post(SIGNIN_URL, { emailOrPhoneNumber, password, id });
         if (teacher) {
             dispatch(teacherSignIn(teacher));
             return
@@ -30,7 +31,9 @@ export const signIn = ({ id, emailOrPhoneNumber, password, navigateToUserScreen 
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: student });
+        dispatch({ type: ADVERTISEMENTS_SUCCESS, payload: advertisements });
 
+        await AsyncStorage.setItem("advertisements", JSON.stringify(advertisements));
         await AsyncStorage.setItem("subjects", JSON.stringify(subjects));
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(student));
@@ -69,7 +72,7 @@ export const register = (userData) => async (dispatch, getState) => {
     dispatch({ type: USER_REQUEST });
     const users = getState().usersState.users
     try {
-        let { data: { student, closeTeachers, myTeachers, myGroups, subjects } } = await Axios.post(REGISTER_URL, userData);
+        let { data: { student, closeTeachers, myTeachers, advertisements, myGroups, subjects } } = await Axios.post(REGISTER_URL, userData);
         if (!student) return
         if (users?.length > 0) {
             const newUsers = removeDuplicatesById([...users, student])
@@ -81,7 +84,9 @@ export const register = (userData) => async (dispatch, getState) => {
         dispatch({ type: MY_TEACHERS_SUCCESS, payload: myTeachers });
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups })
         dispatch({ type: USER_SUCCESS, payload: student });
+        dispatch({ type: ADVERTISEMENTS_SUCCESS, payload: advertisements });
 
+        await AsyncStorage.setItem("advertisements", JSON.stringify(advertisements));
         await AsyncStorage.setItem("subjects", JSON.stringify(subjects));
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("myGroups", JSON.stringify(myGroups));
@@ -192,7 +197,7 @@ export const switchUsers = ({ id, password }) => async (dispatch) => {
     dispatch({ type: USERS_SWITCHING_REQUEST });
 
     try {
-        let { data: { student, closeTeachers, myTeachers, myGroups, subjects } } = await Axios.post(SIGNIN_URL, { password, id });
+        let { data: { student, closeTeachers, myTeachers, advertisements, myGroups, subjects } } = await Axios.post(SIGNIN_URL, { password, id });
         if (!student) return
 
         dispatch({ type: SUBJECTS_SUCCESS, payload: subjects });
@@ -201,7 +206,9 @@ export const switchUsers = ({ id, password }) => async (dispatch) => {
         dispatch({ type: MY_GROUPS_SUCCESS, payload: myGroups });
         dispatch({ type: USER_SUCCESS, payload: student });
         dispatch({ type: USERS_SWITCHING_SUCCESS });
+        dispatch({ type: ADVERTISEMENTS_SUCCESS, payload: advertisements });
 
+        await AsyncStorage.setItem("advertisements", JSON.stringify(advertisements));
         await AsyncStorage.setItem("subjects", JSON.stringify(subjects));
         await AsyncStorage.setItem("closeTeachers", JSON.stringify(closeTeachers));
         await AsyncStorage.setItem("userInfo", JSON.stringify(student));

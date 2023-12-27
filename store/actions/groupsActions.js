@@ -1,10 +1,10 @@
 import Axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MY_GROUPS_REQUEST, MY_GROUPS_SUCCESS, MY_GROUPS_FAIL } from '../constants/groupsConstants';
-import { ADD_GROUP_URL } from './api';
+import { ADD_GROUP_URL, TEACHERS_URL } from './api';
 import { removeDuplicatesById } from '../../actions/GlobalFunctions';
 import { USER_SUCCESS } from '../constants/userConstants';
-import { MY_TEACHERS_SUCCESS } from '../constants/teachersConstants';
+import { MY_TEACHERS_SUCCESS, MY_TEACHERS_UPDATE, TEACHER_SUCCESS } from '../constants/teachersConstants';
 import { showMessage } from './showMessageActions';
 
 export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => {
@@ -12,9 +12,16 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
 
     try {
         const { id, role } = getState().userInfo.userInfo
+        const { data: teacher } = await Axios.get(TEACHERS_URL + newTeacher.id);
+        if (!teacher) return
+        if (teacher.updatedAt !== newTeacher.updatedAt) {
+            dispatch({ type: MY_GROUPS_FAIL, payload: { message: "Teacher data is outdated", refresh: true } })
+            console.log("🚀 ~ file: groupsActions.js:21 ~ addGroup ~ Teacher data is outdated:")
+            return
+        }
         let myGroups = getState().myGroupsState.myGroups
         let myTeachers = getState().myTeachersState.myTeachers
-        myTeachers = removeDuplicatesById([...myTeachers, newTeacher])
+        myTeachers = removeDuplicatesById([...myTeachers, teacher])
 
         const existGroup = myGroups.find(x => x.teacherId === newGroup.teacherId && x.subject === newGroup.subject)
         if (existGroup) {

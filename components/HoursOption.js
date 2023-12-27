@@ -53,11 +53,9 @@ const HoursOption = React.memo(({ item, selectedHour, teacher, teachers, myGroup
         <>
             <AlertModal
                 visible={visible}
-                imageSource={require('../assets/icons/alert.png')}
+                cancelable={() => setVisible(false)}
                 title={t("sorry") + " 😔 " + t("conflict")}
                 content={t('cannot book time', { message: message })}
-                primaryButton={t("change")}
-                primaryButtonSubmit={() => setVisible(false)}
             >
                 <TouchableOpacity onPress={handleChangeDate} style={[globalStyles.student, { width: "100%", marginVertical: 0, marginTop: Margin.m_sm, flexDirection: language === "en" ? "row" : "row-reverse", alignItems: "center" }]}>
                     <CustomImage

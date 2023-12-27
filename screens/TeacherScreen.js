@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, RefreshControl } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import BackHeader from '../components/BackHeader';
 import { days, friends } from '../data';
@@ -44,6 +44,9 @@ export default function TeacherScreen({ route }) {
     const [hours, setHours] = useState(getHours(selectedDay, selectedSubject, selectedGroup, userInfo, teacher) || []);
     const [buttonText, setButtonText] = useState(getButtonText(item, myGroups, selectedGroup, selectedSubject, selectedDay, hours, selectedHour))
     const [isConnected, setIsConnected] = useState(true);
+
+    const [refreshing, setRefreshing] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     // // press handler 
     const dayHandelPress = (fullName) => {
@@ -109,17 +112,18 @@ export default function TeacherScreen({ route }) {
     }, [teacher])
 
     useEffect(() => {
-        if (!teacher) {
-            const theTeacher = myTeachers.find(x => x?.id === item.id) || teachersHistory?.find(x => x?.id === item.id)
+        if (!teacher || refreshing) {
+            const theTeacher = refreshing ? teachersHistory?.find(x => x?.id === item.id) : (myTeachers.find(x => x?.id === item.id) || teachersHistory?.find(x => x?.id === item.id))
             if (!theTeacher) {
                 if (isConnected) {
                     dispatch(getTeacherInfo(item.id))
                 }
             } else {
                 setTeacher(theTeacher)
+                setRefreshing(false)
             }
         }
-    }, [teachersHistory, isConnected])
+    }, [teachersHistory, myTeachers, isConnected])
 
     // button message
     useEffect(() => {
@@ -160,14 +164,21 @@ export default function TeacherScreen({ route }) {
         }
     }, [myGroupsLoading])
 
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        dispatch(getTeacherInfo(item.id))
+        updateGroup()
+    };
+
     return (
         <SafeAreaView style={[styles.container]} >
             <NetworkPage title={t("teacher page")} visible={!teacher} />
             <BackHeader title={t("teacher page")} />
-            <LoadingModal visible={teacherLoading || myGroupsLoading} />
+            <LoadingModal visible={!refreshing && (teacherLoading || myGroupsLoading)} />
             <AlertModal
                 visible={(visible)}
-                imageSource={require('../assets/icons/alert.png')}
+                type={buttonText.booked ? "danger" : "alert"}
                 title={confirm}
                 content={message}
                 primaryButton={buttonText.booked ? leave : confirm}
@@ -179,15 +190,19 @@ export default function TeacherScreen({ route }) {
             <ScrollView style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             >
 
-                <TeacherMainCard userInfo={userInfo} item={item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
+                <TeacherMainCard userInfo={userInfo} item={teacher || item} selectedSubject={selectedSubject} changeSubjectHandler={changeSubjectHandler} />
                 <View style={[styles.appContainer, { display: teacher ? "flex" : "none" }]}>
                     <ContainerTitle title={t("about teacher")} style={{ marginTop: 10 }} />
                     <LongText content={teacher?.about} style={[styles.regular, { textAlign: getTextInputAlign(teacher?.about) }]} />
                     <ContainerTitle title={t("Analytics")} />
                     <Analytics />
                     <ContainerTitle title={t("schedule")} />
+                    {errorMessage && <Text>{errorMessage}</Text>}
                     <SlideContainer data={days} selectedGroup={selectedGroup} selectedDay={selectedDay} handelPress={dayHandelPress}   >
                         <DayOption />
                     </SlideContainer>

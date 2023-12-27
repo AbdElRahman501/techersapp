@@ -22,6 +22,7 @@ export default function HomeScreen() {
   const { myTeachers } = useSelector(state => state.myTeachersState);
   const { myGroups } = useSelector(state => state.myGroupsState);
   const { subjects } = useSelector(state => state.subjectsState)
+  const { advertisements } = useSelector(state => state.adsState)
   const { schoolYears } = useSelector(state => state.schoolYearsState)
   const [myFavTeachers, setMyFavTeachers] = useState([])
   const [subjectTitle, myFavTeachersTitle, myTeachersTitle, closeTeacherTitle, seeAll] = [t("my-subjects"), t("my-fav-teachers"), t("my teachers"), t("close teacher"), t("see-all")]
@@ -46,7 +47,7 @@ export default function HomeScreen() {
       >
         <View style={[globalStyles.body]}>
           <HomeHeader user={userInfo} language={language} schoolYears={schoolYears} />
-          {closeTeacher?.length > 0 && <AdsSlider data={closeTeacher.slice(0, 3)} />}
+          <AdsSlider data={advertisements} />
           <View style={{ flexDirection: "row", gap: 20, width: "100%" }} >
             <SearchBar button={true} />
             <FilterButton button={true} />

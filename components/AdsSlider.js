@@ -6,14 +6,17 @@ import { GestureHandlerRootView, State } from 'react-native-gesture-handler';
 import AdItem from './AdItem';
 import Indicator from './Indicator';
 import { useSelector } from 'react-redux';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function AdsSlider({ data }) {
     const scrollViewRef = useRef(null);
     const [scrolledIndex, setScrolledIndex] = useState(0);
     const [holding, setHolding] = useState(false);
-    const width = (widthPercentage(100) - 48);
+    const width = (widthPercentage(100));
     const { language } = useSelector(state => state.languageState)
     const { subjects } = useSelector(state => state.subjectsState)
+    const [initialHeight, setInitialHeight] = useState(0);
+
     const scrollToNext = () => {
         if (scrolledIndex < data.length - 1) {
             scrollViewRef.current.scrollTo({ x: width * (scrolledIndex + 1), animated: true });
@@ -65,8 +68,10 @@ export default function AdsSlider({ data }) {
     return (
         <GestureHandlerRootView style={{ flex: 1, marginVertical: 10, backgroundColor: Color.cyanBackGround }}>
             <View style={styles.container}>
-                <TouchableOpacity style={styles.button} onPress={scrollToPrev}>
-                    <Next_Icon color={Color.darkcyan} style={{ transform: [{ rotate: '180deg' }] }} />
+                <TouchableOpacity style={[styles.button, { height: initialHeight, left: 0, zIndex: 2 }]} onPress={scrollToPrev}>
+                    <View style={styles.buttonCover}>
+                        <AntDesign name="left" size={15} color={Color.darkcyan} />
+                    </View>
                 </TouchableOpacity>
                 <ScrollView
                     snapToInterval={width}
@@ -76,17 +81,22 @@ export default function AdsSlider({ data }) {
                     onScroll={onScroll}
                     ref={scrollViewRef}
                     horizontal
-                    showsHorizontalScrollIndicator={false}>
-                    {data.map((item) => {
-                        return <AdItem item={item} language={language}
-                            subjects={subjects} holdHandler={holdHandler} key={item.id} />
+                    showsHorizontalScrollIndicator={false}
+                    onLayout={(event) => setInitialHeight(event.nativeEvent.layout.height)}
+                >
+                    {data.map((item, index) => {
+                        return <AdItem key={index} item={item} initialHeight={initialHeight} language={language}
+                            subjects={subjects} holdHandler={holdHandler} />
                     })}
                 </ScrollView>
-                <TouchableOpacity style={styles.button} onPress={scrollToNext}>
-                    <Next_Icon color={Color.darkcyan} />
+                <TouchableOpacity style={[styles.button, { height: initialHeight, right: 0 }]} onPress={scrollToNext}>
+                    <View style={styles.buttonCover}>
+                        <AntDesign name="right" size={15} color={Color.darkcyan} />
+                    </View>
+
                 </TouchableOpacity>
             </View>
-            <View style={{ transform: [{ scale: 0.6 }], height: 10, width: widthPercentage(100), justifyContent: "flex-end", alignItems: "center" }}>
+            <View style={{ position: "absolute", bottom: 0, left: 0, transform: [{ scale: 0.8 }], height: 10, width: widthPercentage(100), justifyContent: "flex-end", alignItems: "center" }}>
                 <Indicator arr={data} activeIndex={scrolledIndex} />
             </View>
         </GestureHandlerRootView>
@@ -105,10 +115,18 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 24,
-        height: heightPercentage(20),
         justifyContent: 'center',
         alignItems: 'center',
-
+        position: 'absolute',
+        top: 0,
+    },
+    buttonCover: {
+        width: 24,
+        height: 24,
+        backgroundColor: Color.cyanBackGround,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15
     }
 
 })

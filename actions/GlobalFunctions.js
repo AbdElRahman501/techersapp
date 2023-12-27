@@ -563,7 +563,9 @@ export const getStartedEvents = (events, eventsDuration, selectedDay) => {
 }
 export const isDataExpired = (storedTime, duration) => {
     const expirationTime = new Date(storedTime);
-    expirationTime.setSeconds(expirationTime.getSeconds() + duration);
+    if (duration) {
+        expirationTime.setSeconds(expirationTime.getSeconds() + duration);
+    }
     const currentTime = new Date();
     return expirationTime < currentTime;
 }

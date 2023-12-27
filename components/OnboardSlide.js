@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: FontSize.size_xl,
+        fontSize: 20,
         fontFamily: FontFamily.montserratArabic,
         color: Color.black,
         paddingBottom: 10,

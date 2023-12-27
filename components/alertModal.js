@@ -1,41 +1,65 @@
 import React from "react";
-import { Image, Modal, Text, View } from "react-native";
+import { Image, Modal, Pressable, Text, View } from "react-native";
 import PrimaryButton from "./PrimaryButton";
 import { Color, globalStyles, widthPercentage } from "../GlobalStyles";
 import t from "../actions/changeLanguage";
+import { Feather } from '@expo/vector-icons';
 
-const AlertModal = ({ title, content, visible, imageSource, secondaryButton, primaryButton, primaryButtonStyle, secondaryButtonSubmit, primaryButtonSubmit, children }) => {
+const AlertModal = ({ title, content, visible, type, cancelable, secondaryButton, primaryButton, primaryButtonStyle, secondaryButtonSubmit, primaryButtonSubmit, children }) => {
     const ok = t("ok")
     const width = Math.max(widthPercentage(25), 140);
-    return (
-        <Modal visible={visible === true} animationType="fade" transparent>
-            <View style={globalStyles.modalContainer}>
-                <View style={[globalStyles.modalContent, { paddingTop: width / 2 }]}>
-                    {imageSource && <View style={{ backgroundColor: Color.white, position: 'absolute', top: -(width / 2), width: width, height: width, alignSelf: 'center', justifyContent: 'center', borderRadius: width / 2 }}>
+
+
+    const TheImage = (props) => {
+        switch (props?.type) {
+            case "success":
+                return (
+                    <View style={{ backgroundColor: Color.white, position: 'absolute', top: -(width / 2), width: width, height: width, alignSelf: 'center', justifyContent: 'center', borderRadius: width / 2 }}>
+                        <Feather style={{ textAlign: 'center' }} name="check-circle" size={width - 40} color={Color.darkcyan} />
+                    </View>
+                )
+            case "danger":
+                return (
+                    <View style={{ backgroundColor: Color.white, position: 'absolute', top: -(width / 2), width: width, height: width, alignSelf: 'center', justifyContent: 'center', borderRadius: width / 2 }}>
+                        <Feather style={{ textAlign: 'center' }} name="x-circle" size={width - 40} color={Color.red} />
+                    </View>
+                )
+            default:
+                return (
+                    <View style={{ backgroundColor: Color.white, position: 'absolute', top: -(width / 2), width: width, height: width, alignSelf: 'center', justifyContent: 'center', borderRadius: width / 2 }}>
                         <Image
-                            source={imageSource}
+                            source={require('../assets/icons/alert.png')}
                             style={{ width: width - 50, height: width - 50, alignSelf: 'center' }}
                             resizeMode="contain"
                         />
-                    </View>}
+                    </View>
+                )
+        }
+    }
+
+    return (
+        <Modal visible={visible === true} animationType="fade" transparent>
+            <Pressable onPress={cancelable} style={globalStyles.modalContainer}>
+                <View style={[globalStyles.modalContent, { paddingTop: width / 2 }]}>
+                    <TheImage type={type} />
                     <Text style={[globalStyles.title, { marginBottom: 5 }]}>{title}</Text>
                     {content && <Text style={[globalStyles.contentText, { lineHeight: 25, width: "100%", textAlign: 'center', color: Color.darkgray }]}
                     >{content}</Text>}
                     {children}
-                    <View style={{ width: "100%", gap: 15, flexDirection: "row", marginTop: 20 }}>
+                    <View style={{ width: "100%", gap: 15, flexDirection: "row", justifyContent: "center", marginTop: 20 }}>
                         {secondaryButton &&
                             <PrimaryButton
-                                style={{ flex: 2, backgroundColor: Color.white, borderWidth: 1, borderColor: Color.darkcyan }}
+                                style={{ flex: 2, backgroundColor: Color.white, borderWidth: 1, borderColor: Color.gray_200 }}
                                 onPress={secondaryButtonSubmit}>
-                                <Text style={[globalStyles.contentText, { color: Color.darkcyan }]}>{secondaryButton}</Text>
+                                <Text style={[globalStyles.contentText, { color: Color.gray_200 }]}>{secondaryButton}</Text>
                             </PrimaryButton>
                         }
-                        <PrimaryButton style={[{ flex: 2 }, primaryButtonStyle]} onPress={primaryButtonSubmit}>
+                        {(primaryButton || !cancelable) && <PrimaryButton style={[{ flex: 2, maxWidth: "50%" }, primaryButtonStyle]} onPress={primaryButtonSubmit}>
                             <Text style={[globalStyles.contentText, { color: Color.white }]}>{primaryButton || ok}</Text>
-                        </PrimaryButton>
+                        </PrimaryButton>}
                     </View>
                 </View>
-            </View>
+            </Pressable>
         </Modal>
     );
 };

@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CLOSE_TEACHERS_URL, TEACHERS_URL } from './api';
-import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_FAIL, CLOSE_TEACHERS_REQUEST, CLOSE_TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS } from '../constants/teachersConstants';
+import { MY_TEACHERS_FAIL, MY_TEACHERS_REQUEST, MY_TEACHERS_SUCCESS, CLOSE_TEACHERS_FAIL, CLOSE_TEACHERS_REQUEST, CLOSE_TEACHERS_SUCCESS, TEACHER_FAIL, TEACHER_REQUEST, TEACHER_SUCCESS, MY_TEACHERS_UPDATE, CLOSE_TEACHERS_UPDATE } from '../constants/teachersConstants';
 
 export const getCloseTeachers = (id) => async (dispatch) => {
     try {
@@ -20,12 +20,15 @@ export const getCloseTeachers = (id) => async (dispatch) => {
         console.log("🚀 ~ file: teachersActions.js:24 ~ getCloseTeachers ~ error:", error)
     }
 };
-export const getTeacherInfo = (id) => async (dispatch) => {
+export const getTeacherInfo = (id) => async (dispatch, getState) => {
     dispatch({ type: TEACHER_REQUEST });
     try {
-        const { data: teacher } = await Axios.get(TEACHERS_URL + id);
+        const userInfo = getState().userInfo.userInfo
+        const { data: teacher } = await Axios.post(TEACHERS_URL, { teacherId: id, studentId: userInfo.id });
         if (!teacher) return
         dispatch({ type: TEACHER_SUCCESS, payload: teacher });
+        dispatch({ type: MY_TEACHERS_UPDATE, payload: teacher });
+        dispatch({ type: CLOSE_TEACHERS_UPDATE, payload: teacher });
         console.log('teacher info fetched successfully.');
     } catch (error) {
         console.log("🚀 ~ file: teachersActions.js:44 ~ getTeacherInfo ~ error:", error.response && error.response.data.message

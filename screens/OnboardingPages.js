@@ -28,7 +28,6 @@ export default function OnboardingPages() {
     <SafeAreaView style={[globalStyles.container, { backgroundColor: Color.white, }]}>
       <AlertModal
         visible={visible}
-        imageSource={require('../assets/icons/alert.png')}
         title={previousSessionTitle}
         content={previousSessionDescription}
         primaryButton={ok}

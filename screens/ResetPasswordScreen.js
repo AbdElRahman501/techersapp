@@ -76,7 +76,7 @@ const ResetPasswordScreen = ({ route }) => {
                 <BackHeader />
                 <AlertModal
                     visible={visible}
-                    imageSource={require('../assets/icons/alert.png')}
+                    type={'success'}
                     title={"Password reset successfully"}
                     content={"Sign in to your account"}
                     primaryButton={"sign in"}

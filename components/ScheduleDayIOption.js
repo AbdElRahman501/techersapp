@@ -13,18 +13,10 @@ const ScheduleDayOption = ({ item, eventsDuration, selectedMonth, SelectedId, to
     let isThisMonth = Number(item?.id.split("-")[1]) === Number(selectedMonth?.id) + 1
 
     const { language } = useSelector(state => state.languageState)
-    const [trigger, setTrigger] = useState(false);
-
-    useEffect(() => {
-        if (SelectedId?.id === item?.id) {
-            setTrigger(true);
-        } else {
-            setTrigger(false);
-        }
-    }, [SelectedId])
+    const trigger = SelectedId?.id === item?.id
 
     return (
-        <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth} style={{ opacity: isThisMonth ? 1 : 0.2 }} >
+        <TouchableOpacity onPress={() => handelPress(item)} disabled={!isThisMonth || trigger} style={{ opacity: isThisMonth ? 1 : 0.2 }} >
             <View style={[globalStyles.dayCard, { width: ((widthPercentage(100) - 20) / 7) - 10, borderWidth: 0, backgroundColor: trigger ? Color.darkcyan : Color.white }]}>
                 <Text numberOfLines={1} lineBreakMode="tail"
                     style={[globalStyles.contentText, { fontSize: FontSize.size_smi, color: trigger ? Color.white : isToday ? Color.darkcyan : Color.darkgray }]} >

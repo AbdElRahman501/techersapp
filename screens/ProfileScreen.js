@@ -14,6 +14,8 @@ import UsersModal from '../components/UsersModal';
 import LoadingModal from '../components/LoadingModal';
 import TapBottomNavigator from '../components/TapBottomNavigator';
 import { getTheYear } from '../actions/GlobalFunctions';
+import DividerWithText from '../components/DividerWithText ';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen() {
     const { language } = useSelector(state => state.languageState)
@@ -23,25 +25,33 @@ export default function ProfileScreen() {
     const { switchLoading, switchError, loading: loadingUsers, users, error: usersError } = useSelector(state => state.usersState)
     const [visible, setVisible] = useState(false)
     const [usersVisible, setUsersVisible] = useState(false)
+    const [version, setVersion] = useState("")
     const dispatch = useDispatch()
     const [logout, cancel] = [t("logout"), t("cancel")]
 
     useEffect(() => {
         dispatch(getUsers())
     }, [])
+    const getVersion = async () => {
+        const version = await AsyncStorage.getItem('version')
+        setVersion(version)
+    }
 
+    useEffect(() => {
+        getVersion()
+    })
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }} >
-            <ScrollView
+            <ScrollView style
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <View style={[globalStyles.body]}>
+                <View style={[globalStyles.body, { marginBottom: Margin.m_xl }]}>
                     <LoadingModal visible={switchLoading || loading} />
                     <AlertModal
                         visible={visible || loading}
-                        imageSource={require('../assets/icons/alert.png')}
+                        type={'danger'}
                         title={t("logout title")}
                         content={t("logout description")}
                         primaryButton={logout}
@@ -80,6 +90,10 @@ export default function ProfileScreen() {
                     </CustomText>
                     <SettingItem Icon={() => <Logout_Icon />} style={{ color: Color.red }} title={logout} pressHandler={() => setVisible(true)} />
                 </View>
+                <DividerWithText />
+                <CustomText style={[globalStyles.regular, { textAlign: "center" }]} >
+                    {t("current version", { version })}
+                </CustomText>
             </ScrollView >
             <TapBottomNavigator currentScreen={'Profile'} />
         </SafeAreaView>

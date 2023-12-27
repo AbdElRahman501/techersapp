@@ -61,6 +61,7 @@ export default function SubjectScreen({ route }) {
                 onLayout={(event) => setInitialHeight(event.nativeEvent.layout.height)}
             >
                 <View style={{ marginBottom: 10 }}>
+                    {/* {teachers.map(teacher => <TeacherMainCard key={teacher.id} item={teacher} group={teachersGroups.find(x => x.teacherId === teacher.id)} pressHandler={(item) => navigation.navigate("TeacherScreen", { item })} />)} */}
                     <TeacherMainCard item={selectedTeacher} group={selectedGroup} pressHandler={(item) => navigation.navigate("TeacherScreen", { item })} />
                 </View>
                 <Calender selectedDay={selectedDay} setSelectedDay={(day) => { setSelectedState(""); setSelectedDay(pv => pv.id === day.id ? "" : day) }} selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} events={events} />

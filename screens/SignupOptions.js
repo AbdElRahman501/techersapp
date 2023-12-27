@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, ImageBackground, Animated, View, SafeAreaView } from "react-native";
-import { Border, FontFamily, Color, FontSize, Padding, Margin } from "../GlobalStyles";
+import { Border, FontFamily, Color, FontSize, Padding, Margin, globalStyles } from "../GlobalStyles";
 import { useSelector } from "react-redux";
 import PrimaryButton from "../components/PrimaryButton";
 import PressedText from "../components/PressedText";
@@ -34,7 +34,7 @@ const SignUpOptions = () => {
           source={require("../assets/image-2.png")}
         />
         <Animated.Text
-          style={[styles.title, { fontSize: FontSize.size_xl, paddingHorizontal: Padding.page_p, transform: [{ translateY: transition(50, 0, 500, trigger) }], opacity: transition(0, 1, 500, trigger) }]}>
+          style={[globalStyles.title, { fontSize: 20, paddingHorizontal: Padding.page_p, transform: [{ translateY: transition(50, 0, 500, trigger) }], opacity: transition(0, 1, 500, trigger) }]}>
           {t("Join us and explore new ways of learning.")}
         </Animated.Text>
         <Animated.Text

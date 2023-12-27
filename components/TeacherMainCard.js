@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
     },
     image: {
+        backgroundColor: Color.cyanBackGround,
         height: 120,
         width: 120,
         borderRadius: 25,

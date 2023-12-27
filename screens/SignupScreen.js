@@ -85,7 +85,6 @@ export default function SignUpScreen({ route }) {
                 <LoadingModal visible={loading} />
                 <AlertModal
                     visible={errorMessage !== null}
-                    imageSource={require('../assets/icons/alert.png')}
                     title={errorMessage?.title[language] || errorMessage}
                     content={errorMessage?.content[language] || ""}
                     primaryButton={change}

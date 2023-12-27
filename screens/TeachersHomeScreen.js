@@ -30,7 +30,7 @@ export default function TeachersHomeScreen() {
     <View>
       <AlertModal
         visible={visible}
-        imageSource={require('../assets/icons/alert.png')}
+        type={'danger'}
         title={t("logout title")}
         content={t("logout description")}
         primaryButton={logout}
