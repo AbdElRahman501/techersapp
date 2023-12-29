@@ -9,6 +9,7 @@ export const RESET_PASSWORD_URL = `${URL}/api/users/resetPassword`
 export const ADD_GROUP_URL = `${URL}/api/users/myGroups`
 export const MY_GROUPS_URL = `${URL}/api/users/myGroups/`
 
+//subjects
 export const SUBJECTS_URL = `${URL}/api/subjects/`
 export const SCHOOL_YEARS_URL = `${URL}/api/schoolYears/`
 
@@ -16,6 +17,9 @@ export const SYNCED_DATA_URL = `${URL}/api/users/syncedData`
 //teachers
 export const TEACHERS_URL = `${URL}/api/teachers/`
 export const CLOSE_TEACHERS_URL = `${URL}/api/teachers/closeTeachers/`
+
+//ads
+export const ADVERTISEMENTS_URL = `${URL}/api/advertisements/`
 
 //location api
 
