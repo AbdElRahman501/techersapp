@@ -40,7 +40,7 @@ const AdItem = ({ item, language, subjects, initialHeight, holdHandler }) => {
                         </TouchableOpacity>
                     </View>
                     <CustomImage
-                        style={{ width: initialHeight - 20, borderRadius: (initialHeight - 20) / 2, maxWidth: 160, aspectRatio: 1, marginHorizontal: fontEm(1) }}
+                        style={{ width: initialHeight - 40, borderRadius: (initialHeight - 40) / 2, aspectRatio: 1, marginHorizontal: fontEm(1) }}
                         resizeMode="cover"
                         source={item.imageSource}
                     />

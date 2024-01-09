@@ -79,6 +79,7 @@ export default function MainComponents() {
                     <Stack.Screen name="TeachersHomeScreen" component={TeachersHomeScreen}
                         options={{ headerShown: false }} />
                 </Stack.Navigator>
+                <Message />
             </>
         </NavigationContainer >
     )

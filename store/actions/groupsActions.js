@@ -12,7 +12,7 @@ export const addGroup = (newGroup, newTeacher) => async (dispatch, getState) => 
 
     try {
         const { id, role } = getState().userInfo.userInfo
-        const { data: teacher } = await Axios.get(TEACHERS_URL + newTeacher.id);
+        const { data: teacher } = await Axios.post(TEACHERS_URL, { teacherId: newTeacher.id, studentId: id });
         if (!teacher) return
         if (teacher.updatedAt !== newTeacher.updatedAt) {
             dispatch({ type: MY_GROUPS_FAIL, payload: { message: "Teacher data is outdated", refresh: true } })

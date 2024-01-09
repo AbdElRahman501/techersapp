@@ -45,8 +45,9 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
 
                 }
             </Svg>
-            {isScore ?
-                <Text style={[globalStyles.smallText, styles.inText,
+
+            <View style={styles.inText}>
+                {isScore ? <Text style={[globalStyles.smallText,
                 {
                     fontSize: totalNumber ? (width / 2) : ((width / 3) - 2),
                     color: color
@@ -54,9 +55,10 @@ export default function ScoreBar({ width, strokeWidth, totalNumber, score, state
                     {totalNumber ? totalNumber : Math.round(score)}
                     {!totalNumber && <Text style={[globalStyles.smallText, { color: color }]}>%</Text>}
                 </Text>
-                :
-                <AntDesign style={styles.inText} name={color === Color.red ? "closecircle" : "checkcircle"} size={width - 20} color={color} />
-            }
+                    :
+                    <AntDesign name={color === Color.red ? "closecircle" : "checkcircle"} size={width - 20} color={color} />
+                }
+            </View>
         </View>
     )
 }
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
         left: 0,
         width: "100%",
         height: "100%",
-        textAlign: "center",
-        textAlignVertical: "center",
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

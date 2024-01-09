@@ -21,6 +21,7 @@ import { getTeacherInfo } from '../store/actions/teachersActions';
 import { addGroup, leaveGroup } from '../store/actions/groupsActions';
 import NetInfo from '@react-native-community/netinfo';
 import NetworkPage from '../components/NetworkPage';
+import { showMessage } from '../store/actions/showMessageActions';
 
 export default function TeacherScreen({ route }) {
     const { item, subject } = route.params;
@@ -166,9 +167,13 @@ export default function TeacherScreen({ route }) {
 
 
     const onRefresh = () => {
-        setRefreshing(true);
-        dispatch(getTeacherInfo(item.id))
-        updateGroup()
+        if (isConnected) {
+            setRefreshing(true);
+            dispatch(getTeacherInfo(item.id))
+            updateGroup()
+        }else{
+            dispatch(showMessage("no internet connection"))
+        }
     };
 
     return (

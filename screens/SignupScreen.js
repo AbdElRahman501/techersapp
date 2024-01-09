@@ -87,9 +87,8 @@ export default function SignUpScreen({ route }) {
                     visible={errorMessage !== null}
                     title={errorMessage?.title[language] || errorMessage}
                     content={errorMessage?.content[language] || ""}
-                    primaryButton={change}
                     secondaryButton={errorMessage ? signIn : null}
-                    primaryButtonSubmit={() => setErrorMessage(null)}
+                    cancelable={() => setErrorMessage(null)}
                     secondaryButtonSubmit={() => { setErrorMessage(null); navigation.navigate("SigninScreen", { phoneNumber: signUpData.phoneNumber }) }}
                 />
                 <VerifyPhoneModal visible={visible} data={data} onResend={() => phoneNumberVerification(signUpData.phoneNumber)} onClose={onClose} onEdit={() => setVisible(false)} phoneNumber={signUpData?.phoneNumber} />

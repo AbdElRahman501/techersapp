@@ -324,17 +324,38 @@ const monthNames = {
     '10': { ar: 'نوفمبر', en: 'November', fullName: 'November' },
     '11': { ar: 'ديسمبر', en: 'December', fullName: 'December' }
 };
-export const getTheMonths = () => {
+
+export const getMonthsFromDate = (startDate) => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    startDate = startDate ? new Date(startDate) : currentMonth > 3 ? new Date(currentYear, currentMonth - 2, 1) : new Date(currentYear - 1, (currentMonth + 10), 1);
+    const startMonth = startDate.getMonth();
+    const startYear = startDate.getFullYear();
+
+    const months = [];
+
+    for (let year = startYear; year <= currentYear; year++) {
+        const monthStart = year === startYear ? startMonth : 0;
+        const monthEnd = year === currentYear ? currentMonth : 11;
+        for (let month = monthStart; month <= monthEnd; month++) {
+            const date = new Date(year, month, 1).getMonth()
+            const monthName = { ...monthNames[date], id: date };
+            months.push(monthName);
+        }
+    }
+
+    return months;
+}
+
+export const getTheMonths = (startDate) => {
     const today = new Date();
     const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
     const week = [];
     let currentDay = new Date(sunday);
 
-    const currentMonthIndex = new Date().getMonth();
-    const months = [
-        { ...monthNames[currentMonthIndex - 1], id: currentMonthIndex - 1 },
-        { ...monthNames[currentMonthIndex], id: currentMonthIndex }
-    ];
+    const months = getMonthsFromDate(startDate);
     for (let i = 0; i < 7; i++) {
         const dayId = currentDay.getDay().toString();
         const day = {
@@ -351,14 +372,18 @@ export const getTheMonths = () => {
     const todayIndex = new Date().getDay();
     const todayObj = week[todayIndex];
 
-    const currentMonth = months[1];
+    const currentMonth = months[months.length - 1];
 
     return { today: todayObj, week, months, currentMonth };
 };
 export const getWeeksOfMonth = (currentMonthIndex) => {
     const weeks = [];
-    const firstDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex, 1);
-    const lastDayOfMonth = new Date(new Date().getFullYear(), currentMonthIndex + 1, 0);
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    let year = currentMonthIndex > currentMonth ? currentYear - 1 : currentYear;
+    const firstDayOfMonth = new Date(year, currentMonthIndex, 1);
+    const lastDayOfMonth = new Date(year, currentMonthIndex + 1, 0);
 
     let currentDay = new Date(firstDayOfMonth);
     let theLastDay = new Date(lastDayOfMonth);
@@ -542,22 +567,35 @@ export const getEvents = (myGroups, day) => {
 }
 
 
-
-export const isDateAfter = (dateString, comparisonDate) => {
-    const dateParts = dateString.split("-");
+export const isDateBetween = (dateToCheck, startDate, endDate) => {
     const year = new Date().getFullYear();
-    const date = new Date(year, parseInt(dateParts[1]) - 1, parseInt(dateParts[2]));
-    const comparisonParts = comparisonDate.split("-");
-    const comparison = new Date(year, parseInt(comparisonParts[0]) - 1, parseInt(comparisonParts[1]));
+    startDate = new Date(year + '-' + startDate);
+    endDate = new Date(year + '-' + endDate);
+    dateToCheck = new Date(dateToCheck);
 
-    return date > comparison;
-}
+    const startMonth = startDate.getMonth() + 1;
+    const startDay = startDate.getDate();
+
+    const endMonth = endDate.getMonth() + 1;
+    const endDay = endDate.getDate();
+
+    const dateMonth = dateToCheck.getMonth() + 1;
+    const dateDay = dateToCheck.getDate();
+
+    const startDateFormatted = `${startMonth.toString().padStart(2, '0')}-${startDay.toString().padStart(2, '0')}`;
+    const endDateFormatted = `${endMonth.toString().padStart(2, '0')}-${endDay.toString().padStart(2, '0')}`;
+    const dateToCheckFormatted = `${dateMonth.toString().padStart(2, '0')}-${dateDay.toString().padStart(2, '0')}`;
+
+    return startDateFormatted <= dateToCheckFormatted || dateToCheckFormatted <= endDateFormatted;
+};
+
+
 export const getStartedEvents = (events, eventsDuration, selectedDay) => {
-    if (!events?.length || !eventsDuration[0]?.studyingYear) return []
+    if (!events?.length) return []
     let theEvents = events.filter(event => {
         let eventDuration = eventsDuration?.find(x => x.teacherID === event.teacherId);
-        let isTheYearStarts = eventDuration && isDateAfter(selectedDay.id, eventDuration.studyingYear.start)
-        return isTheYearStarts
+        let isBetween = eventDuration?.studyingYear ? isDateBetween(selectedDay.id, eventDuration.studyingYear.start, eventDuration.studyingYear.end) : true
+        return isBetween
     })
     return theEvents;
 }

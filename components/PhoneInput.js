@@ -13,7 +13,7 @@ export default function PhoneInput({ value, onChangHandler, setFormattedPhone })
 
     const allowedArabicCountries = ['SA', 'EG', 'AE', 'JO', 'LB', 'KW', 'MA', 'QA', 'TN'];
     return (
-        <View style={{ flexDirection: "row", width: "100%", borderWidth: 1, borderColor: focus ? Color.darkcyan : Color.input_stroke, overflow: "hidden", borderRadius: Border.br_13xl }}>
+        <View style={{ flexDirection: "row", backgroundColor: Color.input_fill, width: "100%", borderWidth: 1, borderColor: focus ? Color.darkcyan : Color.input_stroke, overflow: "hidden", borderRadius: Border.br_13xl }}>
             <PhoneNumberInput
                 ref={phoneInput}
                 textInputProps={{

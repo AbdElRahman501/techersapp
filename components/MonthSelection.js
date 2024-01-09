@@ -69,8 +69,8 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
 
     return (
         <View style={[styles.sliderContainer, { flexDirection: language === 'ar' ? 'row-reverse' : 'row' }]}>
-            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex < months.length - 1} onPress={scrollToPrev}>
-                <Next_Icon width={24} height={24} color={scrolledIndex < months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? 1 : -1 }] }} />
+            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex === 0} onPress={scrollToPrev}>
+                <Next_Icon width={24} height={24} color={scrolledIndex === 0 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? 1 : -1 }] }} />
             </TouchableOpacity>
             <View style={{ width: 200 }}>
                 <FlatList
@@ -90,8 +90,8 @@ export default function MonthSelection({ selectedMonth, months, currentMonth, se
 
                 />
             </View>
-            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex > 0} onPress={scrollToNext}>
-                <Next_Icon width={24} height={24} color={scrolledIndex > 0 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? -1 : 1 }] }} />
+            <TouchableOpacity style={[styles.button]} disabled={scrolledIndex === months.length - 1} onPress={scrollToNext}>
+                <Next_Icon width={24} height={24} color={scrolledIndex === months.length - 1 ? Color.darkgray : Color.darkcyan} style={{ transform: [{ scaleX: language === 'ar' ? -1 : 1 }] }} />
             </TouchableOpacity>
         </View>
     )
