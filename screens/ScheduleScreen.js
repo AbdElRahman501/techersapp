@@ -4,7 +4,7 @@ import { Border, Color, Padding, globalStyles } from '../GlobalStyles'
 import TimeLine from '../components/TimeLine'
 import MonthSelection from '../components/MonthSelection'
 import WeekView from '../components/WeekView'
-import { getEvents, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
+import { getEvents, getOldestDate, getTheMonths, getWeeksOfMonth } from '../actions/GlobalFunctions'
 import { useSelector } from 'react-redux'
 import * as Haptics from 'expo-haptics';
 import t from '../actions/changeLanguage'
@@ -13,8 +13,8 @@ import TapBottomNavigator from '../components/TapBottomNavigator'
 export default function ScheduleScreen() {
     const { myTeachers } = useSelector(state => state.myTeachersState);
     const { myGroups } = useSelector(state => state.myGroupsState);
-
-    const { today, months, currentMonth } = getTheMonths()
+    const startDate = getOldestDate(myGroups)
+    const { today, months, currentMonth } = getTheMonths(startDate)
     const [weeks, setWeeks] = useState(getWeeksOfMonth(currentMonth.id))
     const [selectedDay, setSelectedDay] = useState(today)
     const [selectedMonth, setSelectedMonth] = useState(currentMonth)

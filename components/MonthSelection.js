@@ -6,7 +6,7 @@ import { Next_Icon } from '../assets/icons/Icons'
 
 export default function MonthSelection({ selectedMonth, months, currentMonth, setMonth }) {
     const { language } = useSelector(state => state.languageState)
-    const [scrolledIndex, setScrolledIndex] = useState(1);
+    const [scrolledIndex, setScrolledIndex] = useState(0);
     const flatListRef = useRef(null);
 
     const renderItem = useCallback(

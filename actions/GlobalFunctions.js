@@ -348,7 +348,18 @@ export const getMonthsFromDate = (startDate) => {
 
     return months;
 }
-
+export const getOldestDate = (array) => {
+    if (array.length === 0) return null
+    const oldestDate = array.reduce((oldest, obj) => {
+        const joinedAt = new Date(obj.joinedAt);
+        if (!oldest || joinedAt < oldest) {
+            return joinedAt;
+        }
+        return oldest;
+    }, null);
+    const oldestDateString = oldestDate.toISOString().split('T')[0];
+    return oldestDateString;
+};
 export const getTheMonths = (startDate) => {
     const today = new Date();
     const sunday = new Date(today.setDate(today.getDate() - today.getDay()));
@@ -562,7 +573,7 @@ export const getColor = (colorArr) => {
 
 export const getEvents = (myGroups, day) => {
     if (!myGroups?.length) return []
-    let theEvents = myGroups.map(group => group.days.map(x => ({ ...x, teacherId: group.teacherId, groupId: group.id, subject: group.subject, color: group.color }))).flat().filter(x => x.day.toLowerCase() === day.toLowerCase())
+    let theEvents = myGroups.map(group => group.days.map(x => ({ ...x, joinedAt: group.joinedAt, teacherId: group.teacherId, groupId: group.id, subject: group.subject, color: group.color }))).flat().filter(x => x.day.toLowerCase() === day.toLowerCase())
     return theEvents
 }
 
@@ -588,13 +599,19 @@ export const isDateBetween = (dateToCheck, startDate, endDate) => {
 
     return startDateFormatted <= dateToCheckFormatted || dateToCheckFormatted <= endDateFormatted;
 };
-
+const isDateAfter = (dateToCheck, dateToCompare) => {
+    const checkDate = new Date(dateToCheck);
+    const compareDate = new Date(dateToCompare);
+    return checkDate > compareDate;
+};
 
 export const getStartedEvents = (events, eventsDuration, selectedDay) => {
     if (!events?.length) return []
     let theEvents = events.filter(event => {
         let eventDuration = eventsDuration?.find(x => x.teacherID === event.teacherId);
-        let isBetween = eventDuration?.studyingYear ? isDateBetween(selectedDay.id, eventDuration.studyingYear.start, eventDuration.studyingYear.end) : true
+        if (isDateAfter(event?.joinedAt, selectedDay.id)) return false
+        if (!eventDuration?.studyingYear) return true
+        let isBetween = isDateBetween(selectedDay.id, eventDuration.studyingYear.start, eventDuration.studyingYear.end)
         return isBetween
     })
     return theEvents;

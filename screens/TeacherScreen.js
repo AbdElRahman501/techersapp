@@ -141,8 +141,9 @@ export default function TeacherScreen({ route }) {
                 dispatch(leaveGroup(selectedGroup.id, item.id))
             } else {
                 const myGroupsColorArray = myGroups.filter(x => !!x.color).map(x => x.color)
-                const theGroup = { ...selectedGroup, teacherId: item.id, color: teacher?.color || getColor(myGroupsColorArray) }
-                dispatch(addGroup(theGroup, { ...item, ...teacher, subjects: undefined, distance: item.distance }))
+                const joinedAt = new Date()
+                const newGroup = { ...selectedGroup, joinedAt, teacherId: item.id, color: teacher?.color || getColor(myGroupsColorArray) }
+                dispatch(addGroup(newGroup, { ...item, ...teacher, subjects: undefined, distance: item.distance }))
             }
         }
     }
@@ -171,7 +172,7 @@ export default function TeacherScreen({ route }) {
             setRefreshing(true);
             dispatch(getTeacherInfo(item.id))
             updateGroup()
-        }else{
+        } else {
             dispatch(showMessage("no internet connection"))
         }
     };
